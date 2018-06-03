@@ -1,0 +1,824 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="计算机网络,TCP,IP," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="IP的正式规范文件：RFC 791 所有TCP、UDP、ICMP及IGMP数据都以IP数据报格式传输。不可靠：不能保证IP数据报能够成功到达目的地。可靠性必须由上层提供。无连接：IP不维护后续数据报的状态信息。每个数据报的处理相互独立。IP数据报可以不按发送顺序接收。 传输次序：网络字节序/big endian（大端）字节序 IP首部字段   字段名 长度      版本 4位 4   首部长度">
+<meta name="keywords" content="计算机网络,TCP,IP">
+<meta property="og:type" content="article">
+<meta property="og:title" content="《TCP&#x2F;IP详解卷1》003阅读笔记">
+<meta property="og:url" content="http://yoursite.com/2018/06/02/《TCPIP详解卷1》003阅读笔记/index.html">
+<meta property="og:site_name" content="Ennis -Little Monster">
+<meta property="og:description" content="IP的正式规范文件：RFC 791 所有TCP、UDP、ICMP及IGMP数据都以IP数据报格式传输。不可靠：不能保证IP数据报能够成功到达目的地。可靠性必须由上层提供。无连接：IP不维护后续数据报的状态信息。每个数据报的处理相互独立。IP数据报可以不按发送顺序接收。 传输次序：网络字节序/big endian（大端）字节序 IP首部字段   字段名 长度      版本 4位 4   首部长度">
+<meta property="og:locale" content="default">
+<meta property="og:updated_time" content="2018-06-03T11:33:41.480Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="《TCP&#x2F;IP详解卷1》003阅读笔记">
+<meta name="twitter:description" content="IP的正式规范文件：RFC 791 所有TCP、UDP、ICMP及IGMP数据都以IP数据报格式传输。不可靠：不能保证IP数据报能够成功到达目的地。可靠性必须由上层提供。无连接：IP不维护后续数据报的状态信息。每个数据报的处理相互独立。IP数据报可以不按发送顺序接收。 传输次序：网络字节序/big endian（大端）字节序 IP首部字段   字段名 长度      版本 4位 4   首部长度">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: 'Author'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2018/06/02/《TCPIP详解卷1》003阅读笔记/"/>
+
+
+
+
+
+  <title>《TCP/IP详解卷1》003阅读笔记 | Ennis -Little Monster</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="default">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Ennis -Little Monster</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            Home
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            Archives
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/06/02/《TCPIP详解卷1》003阅读笔记/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Ennis L.M. Wu">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Ennis -Little Monster">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">《TCP/IP详解卷1》003阅读笔记</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-06-02T15:07:17+08:00">
+                2018-06-02
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>IP的正式规范文件：RFC 791</p>
+<p>所有TCP、UDP、ICMP及IGMP数据都以IP数据报格式传输。<br>不可靠：不能保证IP数据报能够成功到达目的地。可靠性必须由上层提供。<br>无连接：IP不维护后续数据报的状态信息。每个数据报的处理相互独立。IP数据报可以不按发送顺序接收。</p>
+<p>传输次序：网络字节序/big endian（大端）字节序</p>
+<h4 id="IP首部字段"><a href="#IP首部字段" class="headerlink" title="IP首部字段"></a>IP首部字段</h4><table>
+<thead>
+<tr>
+<th>字段名</th>
+<th>长度</th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>版本</td>
+<td>4位</td>
+<td>4</td>
+</tr>
+<tr>
+<td>首部长度</td>
+<td>4位</td>
+<td>首部占32bit字的数目，没有任何选项，值为5，首部最长60字节</td>
+</tr>
+<tr>
+<td>服务类型（TOS）</td>
+<td>8位</td>
+<td>3bit优先权子字段（已忽略），4bitTOS子字段，1bit未用位（置为0）</td>
+</tr>
+<tr>
+<td>总长度</td>
+<td>16位</td>
+<td>字节为单位，最长65535字节。<strong>必要内容</strong></td>
+</tr>
+<tr>
+<td>位标识</td>
+<td>16位</td>
+<td>唯一标识主机发送的每一份数据报</td>
+</tr>
+<tr>
+<td>位标志</td>
+<td>3位</td>
+<td></td>
+</tr>
+<tr>
+<td>位片偏移</td>
+<td>13位</td>
+<td></td>
+</tr>
+<tr>
+<td>生存时间（TTL）</td>
+<td>8位</td>
+<td>经过的最多路由器数，初始值通常为64或32，源主机设置。</td>
+</tr>
+<tr>
+<td>协议</td>
+<td>8位</td>
+<td></td>
+</tr>
+<tr>
+<td>首部校验和</td>
+<td>16位</td>
+<td>根据IP首部计算校验和码。</td>
+</tr>
+<tr>
+<td>选项</td>
+<td></td>
+<td>可选，可变长。32bit为界限，不够时插入值为0的填充字节。</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>首部长度：从包头格式图看出，是以32bit为一行的，一行包括若干字段。首部长度的数值是以32bit为单位来描述的，比如四位全为1，十六进制本来是0X0F，也就是十进制的15但是，<strong>这个字段的1不是数值1，而是指1个单位即一个32bit。</strong>所以如果该字段是1111的话。就是15*32bit=60Byte了。 </li>
+<li>4bit的TOS代表：最小时延、最大吞吐量、最高可靠性、最小费用。</li>
+<li>首部长度、总长度计算数据内容的起始位置和长度。</li>
+<li>TTL为0时丢弃数据报，发送ICMP报文通知源主机。</li>
+<li>首部校验和：如果校验和错误，丢弃数据报，但不生成差错报文，由上层发现并重传。</li>
+</ul>
+<h4 id="IP路由选择"><a href="#IP路由选择" class="headerlink" title="IP路由选择"></a>IP路由选择</h4><p>目的主机与源主机直接相连，或都在一个共享网络上，IP数据报直接送到目的主机。<br>否则发往默认路由，由路由器转发。<br><br></p>
+<h6 id="IP层可以配置成路由器或主机"><a href="#IP层可以配置成路由器或主机" class="headerlink" title="IP层可以配置成路由器或主机"></a>IP层可以配置成路由器或主机</h6><p>主机：不转发<br>路由器：转发<br>内含路由器的主机：不转发<br><br></p>
+<h6 id="收到数据报来自网络接口时（即非本地生成的数据报）"><a href="#收到数据报来自网络接口时（即非本地生成的数据报）" class="headerlink" title="收到数据报来自网络接口时（即非本地生成的数据报）"></a>收到数据报来自网络接口时（即非本地生成的数据报）</h6><ul>
+<li>检查IP地址<ul>
+<li>是本机IP地址之一或IP广播地址：发送到指定协议模块<ul>
+<li>IP层设置为路由器：转发</li>
+<li>否则：丢弃<br><br></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h6 id="路由表"><a href="#路由表" class="headerlink" title="路由表"></a>路由表</h6><table>
+<thead>
+<tr>
+<th>项</th>
+<th>含义</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>目的IP地址</td>
+<td>表中标志字段指定类型。完整的主机地址：非0主机号。网络地址：主机号为0。</td>
+</tr>
+<tr>
+<td>下一跳路由器IP地址</td>
+<td>或者有直接连接的网络IP地址。</td>
+</tr>
+<tr>
+<td>标志</td>
+<td>一个指明目的IP地址类型，==<strong>一个标志下一站路由器时真下一站路由器还是直接相连的接口。</strong>看不懂这句==</td>
+</tr>
+<tr>
+<td>指定网络接口</td>
+</tr>
+</tbody>
+</table>
+<p>IP不知道目的的完整路径<br><br></p>
+<h6 id="IP路由选择主要功能"><a href="#IP路由选择主要功能" class="headerlink" title="IP路由选择主要功能"></a>IP路由选择主要功能</h6><p>搜索路由表</p>
+<ol>
+<li>寻找与目的IP完全匹配（网络号和主机号）的条目</li>
+<li>寻找与目的网络号相匹配的条目（必须考虑子网掩码）</li>
+<li>寻找“默认”的条目</li>
+</ol>
+<p>如果找到，报文发送指定的下一站路由器或直接相连的网络接口。<br>如果都未成功，则不能被传送，向应用返回错误<br><br></p>
+<h4 id="子网寻址"><a href="#子网寻址" class="headerlink" title="子网寻址"></a>子网寻址</h4><p>==看不懂图==</p>
+<ul>
+<li>所有主机都要求支持子网寻址。</li>
+<li>IP地址 = 网络号 + 子网号 + 主机号</li>
+<li>B类IP地址 = 网络号（16位）+ 子网号（8位）+ 主机号（8位）</li>
+<li>子网对外部路由器来说隐藏了内部网络组织。</li>
+<li>子网划分缩减了路由表的规模。</li>
+<li>子网对于子网内部的路由器不透明。==不懂==</li>
+</ul>
+<h4 id="子网掩码"><a href="#子网掩码" class="headerlink" title="子网掩码"></a>子网掩码</h4><ul>
+<li>标识多少bit用于子网号，多少bit用于主机号。</li>
+<li>掩码是32bit的值，值为1留给网络号和子网号，值为0留给主机号。</li>
+<li>给定IP地址和子网掩码后可以确定：</li>
+<li><ol>
+<li>本子网上的主机。</li>
+</ol>
+</li>
+<li><ol start="2">
+<li>本网络中其他子网中的主机。</li>
+</ol>
+</li>
+<li><ol start="3">
+<li>其他网络上的主机。</li>
+</ol>
+</li>
+</ul>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/计算机网络-TCP-IP/" rel="tag"># 计算机网络,TCP,IP</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/05/31/《TCPIP详解卷1》002阅读笔记/" rel="next" title="《TCPIP详解卷1》002阅读笔记">
+                <i class="fa fa-chevron-left"></i> 《TCPIP详解卷1》002阅读笔记
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">Ennis L.M. Wu</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">4</span>
+                  <span class="site-state-item-name">posts</span>
+                </a>
+              </div>
+            
+
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                
+                  <span class="site-state-item-count">1</span>
+                  <span class="site-state-item-name">tags</span>
+                
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#IP首部字段"><span class="nav-number">1.</span> <span class="nav-text">IP首部字段</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#IP路由选择"><span class="nav-number">2.</span> <span class="nav-text">IP路由选择</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#IP层可以配置成路由器或主机"><span class="nav-number">2.0.1.</span> <span class="nav-text">IP层可以配置成路由器或主机</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#收到数据报来自网络接口时（即非本地生成的数据报）"><span class="nav-number">2.0.2.</span> <span class="nav-text">收到数据报来自网络接口时（即非本地生成的数据报）</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#路由表"><span class="nav-number">2.0.3.</span> <span class="nav-text">路由表</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#IP路由选择主要功能"><span class="nav-number">2.0.4.</span> <span class="nav-text">IP路由选择主要功能</span></a></li></ol></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#子网寻址"><span class="nav-number">3.</span> <span class="nav-text">子网寻址</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#子网掩码"><span class="nav-number">4.</span> <span class="nav-text">子网掩码</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Ennis L.M. Wu</span>
+
+  
+</div>
+
+
+  <div class="powered-by">Powered by <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a></div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">Theme &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Pisces</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
