@@ -229,6 +229,842 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/07/20/《TCPIP详解卷1》006阅读笔记/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Ennis L.M. Wu">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Ennis -Little Monster">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/07/20/《TCPIP详解卷1》006阅读笔记/" itemprop="url">《TCPIP详解卷1》006阅读笔记</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-07-20T09:57:14+08:00">
+                2018-07-20
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>ICMP的正式规范参见 RFC 792<br><br></p>
+<p>ICMP是IP层的一个组成部分，传递差错报文和其他需要注意的信息。<br>通常被IP层或更高层协议使用。<br><br></p>
+<p><img src="../images/《TCPIP详解卷1》006阅读笔记/ICMP报文.png" alt="image"></p>
+<ul>
+<li>校验和覆盖整个ICMP报文，算法与IP首部相同</li>
+<li>不同类型和代码有不同的内容<br><br></li>
+</ul>
+<h4 id="ICMP报文的类型"><a href="#ICMP报文的类型" class="headerlink" title="ICMP报文的类型"></a>ICMP报文的类型</h4><ul>
+<li>类型字段和代码字段共同决定。</li>
+<li><p>ICMO差错报文始终包含IP首部和产生差错的IP数据报的前8个字节。<br>接收ICMP差错报文的模块可以与某个协议和用户进程联系起来。</p>
+</li>
+<li><p>下面情况不产生差错报文：</p>
+</li>
+<li><ol>
+<li>ICMP差错报文</li>
+</ol>
+</li>
+<li><ol start="2">
+<li>目的地址是广播或多播地址</li>
+</ol>
+</li>
+<li><ol start="3">
+<li>作为链路层广播的数据报</li>
+</ol>
+</li>
+<li><ol start="4">
+<li>不是IP分片的第一片</li>
+</ol>
+</li>
+<li><ol start="5">
+<li>源地址不是单个主机的数据报<br><br></li>
+</ol>
+</li>
+</ul>
+<h4 id="ICMP地址掩码请求与应答"><a href="#ICMP地址掩码请求与应答" class="headerlink" title="ICMP地址掩码请求与应答"></a>ICMP地址掩码请求与应答</h4><p><img src="../images/《TCPIP详解卷1》006阅读笔记/掩码请求和应答.png" alt="iamge"></p>
+<ul>
+<li>用于无盘系统在引导过程中获取自己的子网掩码。</li>
+<li>系统广播他的ICMP请求报文（类似RARP获取IP地址）。</li>
+<li>标识符和序列号由发送端任意设定，在应答中返回进行匹配。<br><br></li>
+</ul>
+<h4 id="ICMP时间戳请求与应答"><a href="#ICMP时间戳请求与应答" class="headerlink" title="ICMP时间戳请求与应答"></a>ICMP时间戳请求与应答</h4><p><img src="../images/《TCPIP详解卷1》006阅读笔记/时间戳请求和应答.png" alt="image"></p>
+<ul>
+<li>请求允许系统向另一个系统查询当前时间。</li>
+<li>返回的建议值是自午夜计算的毫秒数，协调的统一时间。</li>
+<li>缺陷：必须通过其他方法获知当时的日期。</li>
+<li>请求端填写发起时间戳，应答系统收到时填写接收时间戳，发送时填写传送时间戳。<br><img src="../images/《TCPIP详解卷1》006阅读笔记/时间戳请求.png" alt="image"><br><img src="../images/《TCPIP详解卷1》006阅读笔记/值关系.png" alt="image"></li>
+<li>调整值是difference - RTT / 2。<br><br></li>
+</ul>
+<h4 id="ICMP端口不可达差错"><a href="#ICMP端口不可达差错" class="headerlink" title="ICMP端口不可达差错"></a>ICMP端口不可达差错</h4><p>以UDP端口不可达为例。<br><img src="../images/《TCPIP详解卷1》006阅读笔记/例子返回报文.png" alt="image"></p>
+<ul>
+<li>IP首部后面前8个字节是UDP首部（源端口号和目的端口号）。<br><img src="../images/《TCPIP详解卷1》006阅读笔记/不可达报文.png" alt="image"></li>
+</ul>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/06/13/《TCPIP详解卷1》010阅读笔记/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Ennis L.M. Wu">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Ennis -Little Monster">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/06/13/《TCPIP详解卷1》010阅读笔记/" itemprop="url">《TCPIP详解卷1》010阅读笔记</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-06-13T20:05:37+08:00">
+                2018-06-13
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h4 id="名词解释"><a href="#名词解释" class="headerlink" title="名词解释"></a>名词解释</h4><table>
+<thead>
+<tr>
+<th>缩写</th>
+<th>英文全称</th>
+<th>中文</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>AS</td>
+<td>Autonomous System</td>
+<td>自治系统</td>
+</tr>
+<tr>
+<td>IGP</td>
+<td>Interior Gateway Protocol</td>
+<td>内部网关协议/域内选路协议</td>
+</tr>
+<tr>
+<td>EGP</td>
+<td>Exterier Gateway Protocol</td>
+<td>外部网关协议/域内选路协议的分隔选路协议</td>
+</tr>
+<tr>
+<td>BGP</td>
+<td>Border Gateway Protocol</td>
+<td>边界网关协议</td>
+</tr>
+<tr>
+<td>RIP</td>
+<td>Routing Infomation Protocol</td>
+<td>选路信息协议</td>
+</tr>
+<tr>
+<td>OSPF</td>
+<td>Open Shortest Path First</td>
+<td>开放最短路径优先协议</td>
+</tr>
+<tr>
+<td>CIDR</td>
+<td>Classless Inter-Domain Routing</td>
+<td>无类别域间路由</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>IGP用于自治系统内。</li>
+<li>EGP用于自治系统之间。</li>
+<li>BGP意在取代EGP。<br><br></li>
+</ul>
+<h4 id="动态选路"><a href="#动态选路" class="headerlink" title="动态选路"></a>动态选路</h4><ul>
+<li>相邻路由器之间进行通信，告知对方每个路由器当前所连接的网络。</li>
+<li>路由守护程序根据从相邻路由器收到的信息更新内核中的路由表。</li>
+<li>随时间变化时，路由是由路由守护程序动态地增加或删除。</li>
+<li>如果路由守护程序发现前往同一信宿存在多条路由，选择最佳路由加入内核路由表。</li>
+<li>如果路由守护程序发现一条链路已经断开，删除受影响的路由或增加一条路由绕过。</li>
+<li>每个自治系统由单个<strong>实体</strong>管理。==什么是实体？==<br><br></li>
+</ul>
+<h4 id="RIP：选路信息协议"><a href="#RIP：选路信息协议" class="headerlink" title="RIP：选路信息协议"></a>RIP：选路信息协议</h4><ul>
+<li>正式描述文件RFC 1058 [Hedrick 1988a]。</li>
+<li>RIP报文包含在UDP数据报中。</li>
+<li>RIP的度量是以跳计数的。</li>
+<li>最多携带25个路由。<br><br></li>
+</ul>
+<h6 id="度量"><a href="#度量" class="headerlink" title="度量"></a>度量</h6><ul>
+<li>直接连接接口的跳数为1。</li>
+<li>一个路由器到一个网络有多条路由，路由器选择跳数最小的路由。</li>
+<li>度量为16表示无路由到达该IP地址。<br><br></li>
+</ul>
+<h6 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h6><ul>
+<li>RIP没有子网地址的概念。</li>
+<li>路由器或链路发生故障后在稳定下来这段时间可能发生路由环路。</li>
+<li>度量最大值限制了可以使用RIP的网络的大小。<br><br></li>
+</ul>
+<h4 id="RIP版本2"><a href="#RIP版本2" class="headerlink" title="RIP版本2"></a>RIP版本2</h4><ul>
+<li>RFC 1388 [Malkin 1993a] 对RIP定义进行了扩充。</li>
+<li>路由域字段：数据报的所有者。</li>
+<li>选路标记字段：携带一个EGP和BGP的自治系统号。</li>
+<li>子网掩码字段：应用于相应的IP地址。</li>
+<li>下一站IP地址字段：指明发往目的IP地址的报文应该发往哪里。</li>
+<li>除了支持广播，还支持多播。<br><br></li>
+</ul>
+<h4 id="OSPF：开放最短路径优先"><a href="#OSPF：开放最短路径优先" class="headerlink" title="OSPF：开放最短路径优先"></a>OSPF：开放最短路径优先</h4><ul>
+<li>RFC 1247 [Moy 1991] 对第2版OSPF进行了描述。</li>
+<li>OSPF克服了RIP所有限制。</li>
+<li>路由器不与临站交换距离信息，主动测试与临站相连的链路状态。</li>
+<li>信息发给其他临站，临站将这些信息在自治系统中传播出去。</li>
+<li>路由器接收这些链路状态信息，建立完整的路由表。</li>
+<li>链路状态协议总是比距离向量协议稳定更快。</li>
+<li>OSPF直接使用IP，不使用UDP或TCP。</li>
+<li>优于RIP的特点：</li>
+<li><ol>
+<li>可以对每个IP服务类型计算各自的路由集。</li>
+</ol>
+</li>
+<li><ol start="2">
+<li>给每个接口指派一个无维数的费用。</li>
+</ol>
+</li>
+<li><ol start="3">
+<li>同一个目的地址存在多个相同费用的路由时，平均分配流量。</li>
+</ol>
+</li>
+<li><ol start="4">
+<li>支持子网，子网掩码与每个通告相连。</li>
+</ol>
+</li>
+<li><ol start="5">
+<li>无编号网络。</li>
+</ol>
+</li>
+<li><ol start="6">
+<li>简单鉴别机制。</li>
+</ol>
+</li>
+<li><ol start="7">
+<li>采用多播而不是广播形式，减少系统负载。<br><br></li>
+</ol>
+</li>
+</ul>
+<h4 id="BGP：边界网关协议"><a href="#BGP：边界网关协议" class="headerlink" title="BGP：边界网关协议"></a>BGP：边界网关协议</h4><ul>
+<li>RFC 1267 [Lougheed and Rekhter 1991] 对第3版BGP进行描述。</li>
+<li>BGP系统之间交换网络可到达信息，包括所必须经过的自治系统的所有路径。</li>
+<li>使用BGP的一个目的是减少通过流量。</li>
+<li>允许使用基于策略的选路。</li>
+<li>使用TCP作为其传输层协议。</li>
+<li>BGP是一个距离测量协议，列举了到每个目的地址的路由，排除了一些距离向量协议的问题。</li>
+<li>定期发送keepalive报文给临站来监测TCP连接对端的链路或主机失败。</li>
+<li>应用层的keepalive报文与TCP的keepalive报文选项相互独立。<br><br></li>
+</ul>
+<h4 id="CIDR：无类型域间选路"><a href="#CIDR：无类型域间选路" class="headerlink" title="CIDR：无类型域间选路"></a>CIDR：无类型域间选路</h4><ul>
+<li>RFC 1518 [Rekher and Li 1993], RFC 1519 [Fuller et al. 1993]对它描述。</li>
+<li>[Ford, Rekhter, and Braun 1993] 综述。</li>
+<li>一个防止路由表膨胀的方法，也成为超网。</li>
+<li>采用分配多个IP地址的方式，使许多表项总和成更少的数目</li>
+<li>必须满足3种特性：</li>
+<li><ol>
+<li>IP地址必须具有相同的高位地址比特。</li>
+</ol>
+</li>
+<li><ol start="2">
+<li>路由表和选路算法必须扩展成根据32 bit IP地址和32 bit 掩码做出选路决策。</li>
+</ol>
+</li>
+<li><ol start="3">
+<li>选路协议要有32 bit掩码。</li>
+</ol>
+</li>
+</ul>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/06/12/《TCPIP详解卷1》007、008、009阅读笔记/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Ennis L.M. Wu">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Ennis -Little Monster">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/06/12/《TCPIP详解卷1》007、008、009阅读笔记/" itemprop="url">《TCPIP详解卷1》007、008、009阅读笔记</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-06-12T20:32:56+08:00">
+                2018-06-12
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h4 id="007，Ping的工作原理"><a href="#007，Ping的工作原理" class="headerlink" title="007，Ping的工作原理"></a>007，Ping的工作原理</h4><h6 id="Unix系统的实现"><a href="#Unix系统的实现" class="headerlink" title="Unix系统的实现"></a>Unix系统的实现</h6><ul>
+<li>把ICMP报文中标识符字段设置成发送进程的ID号（识别多个Ping程序实例）。</li>
+<li>序列号从0开始，每发送一次新的回显请求就 + 1。</li>
+<li>Ping程序允许我们查看是否有分组丢失、失序或重复。<br><br></li>
+</ul>
+<h6 id="旧版本Ping程序"><a href="#旧版本Ping程序" class="headerlink" title="旧版本Ping程序"></a>旧版本Ping程序</h6><ul>
+<li>每秒发送一个回显请求。</li>
+<li>打印返回的每个分组的每个回显应答。<br><br></li>
+</ul>
+<h6 id="新版本Ping程序"><a href="#新版本Ping程序" class="headerlink" title="新版本Ping程序"></a>新版本Ping程序</h6><ul>
+<li>需要加上 - s 选项以旧版本模式运行。</li>
+<li>Ping程序只发送一个回显请求。</li>
+<li>收到回显应答输出“host is alive”，20秒内没收到输出“no answer”。<br><br></li>
+</ul>
+<h4 id="008，Traceroute的工作原理"><a href="#008，Traceroute的工作原理" class="headerlink" title="008，Traceroute的工作原理"></a>008，Traceroute的工作原理</h4><ul>
+<li>每个处理数据报的路由器都要把TTL的值减1或停留的秒数。</li>
+<li>大多数路由器转发数据报的时延都小于1秒，TTL最终成为一个跳站计数器。</li>
+<li>如果TTL字段是1，路由器将该数据报丢弃，并向信源机放一份ICMP“超时”信息。</li>
+<li>Traceroute程序发送一份TTL字段为1的IP数据报为目的主机，第一个路由器丢弃并发回超时ICMP报文，然后Traceroute程序发送一份TTL字段为2的数据报，得到第二个路由器的地址，以此类推。</li>
+<li>目的主机收到TTL值为1的IP数据报，不会丢弃并产生ICMP超时报文。</li>
+<li>Traceroute程序发送一份不可能值作为UDP端口号（大于30000）的UDP数据报给目的主机，目的主机产生一份“端口不可达”错误的ICMP报文。</li>
+<li>Traceroute程序区分收到的ICMP报文是超时还是端口不可达判断是否结束。<br><br></li>
+</ul>
+<h4 id="009，IP包选路的工作原理"><a href="#009，IP包选路的工作原理" class="headerlink" title="009，IP包选路的工作原理"></a>009，IP包选路的工作原理</h4><h6 id="选路的原理"><a href="#选路的原理" class="headerlink" title="选路的原理"></a>选路的原理</h6><ul>
+<li>IP搜索路由表的步骤：</li>
+<li><ol>
+<li>搜索匹配的主机地址。</li>
+</ol>
+</li>
+<li><ol start="2">
+<li>搜索比配的网络地址。</li>
+</ol>
+</li>
+<li><ol start="3">
+<li>搜索默认表项。</li>
+</ol>
+</li>
+<li>IP层进行的选路是一种选路机制，它搜索路由表并决定向哪个网络接口发送分组。</li>
+<li>选路策略决定把哪些路由放入路由表的规则，路由守护程序提供选路策略。<br><br></li>
+</ul>
+<h6 id="初始化路由表"><a href="#初始化路由表" class="headerlink" title="初始化路由表"></a>初始化路由表</h6><ul>
+<li>在系统引导时显示地的在初始化文件中运行route命令。<br><br></li>
+</ul>
+<h6 id="没有到达目的地的路由"><a href="#没有到达目的地的路由" class="headerlink" title="没有到达目的地的路由"></a>没有到达目的地的路由</h6><p>路由表中没有默认项，又没有找到匹配项。</p>
+<ul>
+<li>数据报由本地主机产生：向应用程序返回一个“主机不可达差错”或“网络不可达差错”。</li>
+<li>被转发的数据报：向原始发送端发送一份ICMP主机不可达差错报文。<br><br></li>
+</ul>
+<h6 id="ICMP重定向差错"><a href="#ICMP重定向差错" class="headerlink" title="ICMP重定向差错"></a>ICMP重定向差错</h6><ul>
+<li>当数据报应该被发送到另一个路由器时，收到数据报的路由器要发送ICMP重定向差错报文给IP数据报的发送端。</li>
+<li>重定向一般用来让具有很少选路信息的主机逐渐建立更完善的路由表。<br><br></li>
+</ul>
+<h6 id="ICMP重定向报文"><a href="#ICMP重定向报文" class="headerlink" title="ICMP重定向报文"></a>ICMP重定向报文</h6><ul>
+<li>重定向报文只能由路由器生成。</li>
+<li>重定向报文是为主机使用的。<br><br></li>
+</ul>
+<h6 id="ICMP路由器发现报文"><a href="#ICMP路由器发现报文" class="headerlink" title="ICMP路由器发现报文"></a>ICMP路由器发现报文</h6><ul>
+<li>一份报文可以通告多个地址。</li>
+<li>路由器启动时定期在所有广播或多播传送接口上发送通告报文。</li>
+<li>某个接口被关闭时，该接口上发送一份通告报文，生命周期值设为0。</li>
+<li>监听来自主机的请求报文，并发送通告报文以响应。</li>
+<li>主机在引导期间发送请求报文。</li>
+<li>监听来自相邻路由器的请求报文。</li>
+</ul>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/06/12/《TCPIP详解卷1》004阅读笔记/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Ennis L.M. Wu">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Ennis -Little Monster">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/06/12/《TCPIP详解卷1》004阅读笔记/" itemprop="url">《TCPIP详解卷1》004阅读笔记</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-06-12T15:38:11+08:00">
+                2018-06-12
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>RFC 826 [Plummer 1982] 是ARP规范描述文档。<br>ARP（地址解析协议）<br>RARP（逆地址解析协议）<br><br></p>
+<p>ARP为IP地址到对应硬件地址之间提供动态映射，因为是自动完成的。<br>RARP被没有磁盘驱动器的系统使用，需要系统管理员手工设置。<br><br></p>
+<p>ARP发送一份称作ARP请求的以太网数据帧给以太网上的每个主机。称作广播。<br><br></p>
+<p>点对点链路不使用ARP。设置这些链路时，必须告知内核链路每一端的IP地址，而不需要硬件地址。<br><br></p>
+<p>ARP高效运行因为每个主机上都有一个ARP高速缓存<br><br></p>
+<h4 id="ARP的分组格式"><a href="#ARP的分组格式" class="headerlink" title="ARP的分组格式"></a>ARP的分组格式</h4><table>
+<thead>
+<tr>
+<th>以太网目的地址</th>
+<th>以太网源地址</th>
+<th>帧类型</th>
+<th>硬件类型</th>
+<th>协议类型</th>
+<th>硬件地址长度</th>
+<th>协议地址长度</th>
+<th>op</th>
+<th>发送端以太网地址</th>
+<th>发送端IP地址</th>
+<th>目的以太网地址</th>
+<th>目的IP地址</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>6</td>
+<td>6</td>
+<td>2</td>
+<td>2</td>
+<td>2</td>
+<td>1</td>
+<td>1</td>
+<td>2</td>
+<td>6</td>
+<td>4</td>
+<td>6</td>
+<td>4</td>
+</tr>
+<tr>
+<td>全1</td>
+<td></td>
+<td>0x0806</td>
+<td>1</td>
+<td>0x0800</td>
+<td>6 bytes</td>
+<td>4 bytes</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>广播地址</td>
+<td></td>
+<td>ARP请求或应答</td>
+<td>表示以太网地址</td>
+<td>表示IP地址</td>
+<td>MAC地址长度</td>
+<td>IP地址长度</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>目的地址：全1的特殊地址是广播地址，电缆上的所有以太网接口都要接收广播的数据帧。</li>
+<li>操作字段（OP）：ARP请求（1）、ARP应答（2）、RARP请求（3）、RARP应答（4），必须字段，因为ARP请求和应答的帧类型字段相同。<br><br></li>
+</ul>
+<h4 id="ARP高速缓存超时设置"><a href="#ARP高速缓存超时设置" class="headerlink" title="ARP高速缓存超时设置"></a>ARP高速缓存超时设置</h4><ul>
+<li>BSD演变来的系统一般设置完整表项超时20分钟，不完整表项超时3分钟。</li>
+<li>表项再次使用时，超时值重设为20分钟。<br><br></li>
+</ul>
+<h4 id="ARP代理"><a href="#ARP代理" class="headerlink" title="ARP代理"></a>ARP代理</h4><ul>
+<li>路由器相当于目的主机的代理，把分组从其他主机转发给它。<br><br></li>
+</ul>
+<h4 id="免费ARP"><a href="#免费ARP" class="headerlink" title="免费ARP"></a>免费ARP</h4><ul>
+<li>是指发送ARP查找自己的IP地址。</li>
+<li>两方面作用：</li>
+<li><ol>
+<li>验证IP是否冲突，一个主机能够通过它来确定是否还有一个主机设置了相同的IP地址。</li>
+</ol>
+</li>
+<li><ol>
+<li>更换物理网卡，假设发送ARP的主机正好改变了物理地址，能够使用此方法通知网络中其他主机及时更新ARP缓存。<br><br></li>
+</ol>
+</li>
+</ul>
+<h4 id="ARP命令"><a href="#ARP命令" class="headerlink" title="ARP命令"></a>ARP命令</h4><ul>
+<li>arp -a 显示ARP高速缓存。</li>
+<li>arp -d 删除ARP高速缓存中某一项。</li>
+<li>arp -s 增加高速缓存中的内容，是永久性的，除非末尾加上关键字temp。</li>
+</ul>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/06/02/《TCPIP详解卷1》003阅读笔记/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -736,166 +1572,6 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/05/05/第四小组第一次任务（MyList）/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Ennis L.M. Wu">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Ennis -Little Monster">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/05/05/第四小组第一次任务（MyList）/" itemprop="url">第四小组第一次任务（MyList）</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-05-05T17:19:23+08:00">
-                2018-05-05
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h1 id="第四小组第一次任务（MyList）"><a href="#第四小组第一次任务（MyList）" class="headerlink" title="第四小组第一次任务（MyList）"></a>第四小组第一次任务（MyList）</h1><h2 id="主要存在的问题"><a href="#主要存在的问题" class="headerlink" title="主要存在的问题"></a>主要存在的问题</h2><ol>
-<li>空指针异常</li>
-<li>双等号和equals的区别</li>
-<li>动态扩容效率问题</li>
-<li>异常处理的问题</li>
-<li>复制数组的效率问题</li>
-<li>已删除的元素置空的问题</li>
-<li>代码设计与规范的问题（输入输出、方法调用，重载</li>
-<li>泛型擦出、泛型数组和泛型通配符（instance</li>
-</ol>
-<h2 id="空指针异常"><a href="#空指针异常" class="headerlink" title="空指针异常"></a>空指针异常</h2><p>首先，什么是空指针异常，既然它叫空指针异常那么首先它是一个异常，它会产生异常错误，那么下面这个语句叫做空指针异常码？<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">MyList list = <span class="keyword">new</span> MyArrayList();</span><br><span class="line">list.add(<span class="keyword">null</span>);</span><br></pre></td></tr></table></figure></p>
-<p>这不是空指针异常，为什么不是，说的简单点就是它不会引发任何错误。(￣ε(#￣)，当然你可以限制这个集合不可以添加null，但这不叫做空指针异常。</p>
-<p>空指针异常是一个引用变量未引用任何变量，也就是null，这时候你要使用他的方法或字段就会引发空指针异常。比如下面这段代码<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">String str = <span class="keyword">null</span>;</span><br><span class="line">str.equals(<span class="string">"aa"</span>);</span><br></pre></td></tr></table></figure></p>
-<p>运行后会显示这样<br><img src="..\images\NullPointerException.png" alt="image" title="异常"><br><strong>NullPointerException就是空指针异常</strong></p>
-<p>拿我们的代码来说indexOf(Object o)这个方法是最容易引发空指针异常的地方，也许你考虑到了，但可能还不够周全。<br>有可能你是这样写的<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">indexOf</span><span class="params">(Object o)</span> </span>&#123;               </span><br><span class="line">   	<span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">0</span> ; i &lt; size ; i++) &#123;</span><br><span class="line">   		<span class="keyword">if</span>(data[i].equals(o)) &#123;</span><br><span class="line">   			<span class="keyword">return</span> i;</span><br><span class="line">   		&#125;</span><br><span class="line">   	&#125;</span><br><span class="line">   	<span class="keyword">return</span> -<span class="number">1</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<p>那这就完全没有考虑null的情况，如果data[i]等于null就出错了<br>也许你会说用o去比较<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">o.equals(data[i])</span><br></pre></td></tr></table></figure></p>
-<p>那如果传入的o也是null同样会引发异常<br>这里比较好的方式是分两种情况<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">indexOf</span><span class="params">(Object o)</span> </span>&#123;</span><br><span class="line">	<span class="keyword">if</span> (o == <span class="keyword">null</span>) &#123;</span><br><span class="line">		<span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; size; i++) &#123;</span><br><span class="line">			<span class="keyword">if</span> (elements[i] == <span class="keyword">null</span>) &#123;</span><br><span class="line">				<span class="keyword">return</span> i;</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">		<span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; size; i++) &#123;</span><br><span class="line">			<span class="keyword">if</span> (o.equals(elements[i])) &#123;</span><br><span class="line">				<span class="keyword">return</span> i;</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">return</span> -<span class="number">1</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<h2 id="双等号和equals的区别"><a href="#双等号和equals的区别" class="headerlink" title="双等号和equals的区别"></a>双等号和equals的区别</h2><p>原始类型的数据（int, double)，之间做比较判断是否相等用的是双等号==，那在引用类型中是否可行呢，我们来运行一段代码<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">String a = <span class="keyword">new</span> String(<span class="string">"字符串"</span>);</span><br><span class="line">String b = <span class="keyword">new</span> String(<span class="string">"字符串"</span>);</span><br><span class="line">System.out.println(a == b);</span><br><span class="line">System.out.println(a.equals(b));</span><br></pre></td></tr></table></figure></p>
-<p><img src="..\images\双等号.png" alt="image"><br>可以看到这里用双等号做比较返回了false，而用equals做比较才返回true。<br>用双等号比较引用变量是比较的是它们在内存中的内存地址，所以只有当两个引用变量引用同一个对象是才返回true。</p>
-<p>equals(Object) 方法是定义在Object类中的一个很有用的方法，它用来比较两个对象是否具有相同的内容，比如String类就重写了equals方法来比较两个字符串的内容是否相等。</p>
-<p>当需要比较两个对象是否相等时请使用equals方法，而不是双等号。</p>
-<h5 id="注意"><a href="#注意" class="headerlink" title="注意"></a>注意</h5><ul>
-<li><strong>Object中的equals实现是使用的双等号，在需要用到equals做比较的时候请重写equals</strong>（比如Java所提供的集合类中都会用到equals去做比较）</li>
-<li>如果运行下面这段代码会出现什么样的结果呢<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">String a = <span class="string">"字符串"</span>;</span><br><span class="line">String b = <span class="string">"字符串"</span>;</span><br><span class="line">System.out.println(a == b);</span><br><span class="line">System.out.println(a.equals(b));</span><br></pre></td></tr></table></figure>
-</li>
-</ul>
-<p><img src="..\images\字符串双等号.png" alt="image"><br>为什么这里用双等号又返回了true呢？</p>
-<blockquote>
-<p>因为String太过常用，Java类库的设计者在实现时做了个小小的变化，即采用了享元模式，每当生成一个新内容的字符串时，它们都被添加到一个共享池中，当第二次再次生成同样内容的字符串实例时，就共享此对象，而不是创建一个新对象，<strong>这样的做法仅仅适用于通过=符号进行的初始化</strong></p>
-</blockquote>
-<p>所以在这里String b实际上并没有创建一个新的对象，程序首先在String缓冲池中寻找到了相同值的对象，并将b引用a所引用的对象“字符串”。<br><strong>所以为了有效使用内存资源请尽量不要使用new String()的方式去创建一个字符串。</strong></p>
-<h2 id="动态扩容效率问题"><a href="#动态扩容效率问题" class="headerlink" title="动态扩容效率问题"></a>动态扩容效率问题</h2><p>在任务要求中要求了MyList实现类需要实现动态扩容的功能，那我们可能想这个数组不够了就创建一个size + 1大小的数组并复制过去就可以了嘛，如果每次都只增加一个元素的空间，虽然这样会更有效的利用内存，但每次添加元素都需要扩容这样会更影响程序的性能。</p>
-<p>在这里比较好的做法是一次扩容一部分空间，下一次添加的时候就不需要再次扩容，阅读ArrayList的源码后我们可以知道ArrayList是每次扩容的新容量是旧容量的1.5倍（在新容量足够的情况下）。</p>
-<h2 id="异常处理的问题"><a href="#异常处理的问题" class="headerlink" title="异常处理的问题"></a>异常处理的问题</h2><blockquote>
-<p>在Java中，运行时错误会作为异常抛出。异常就是一种对象，表示阻止正常进行程序执行的错误或者情况。</p>
-</blockquote>
-<p>之前说的空指针异常就是抛出的一个NullPointerException对象<br>异常类型<br><img src="..\images\异常.jpg" alt="image" title="异常类型"></p>
-<h2 id="复制数组和移动数组元素的效率问题"><a href="#复制数组和移动数组元素的效率问题" class="headerlink" title="复制数组和移动数组元素的效率问题"></a>复制数组和移动数组元素的效率问题</h2><h2 id="已删除的元素置空的问题"><a href="#已删除的元素置空的问题" class="headerlink" title="已删除的元素置空的问题"></a>已删除的元素置空的问题</h2><h2 id="代码设计与规范的问题"><a href="#代码设计与规范的问题" class="headerlink" title="代码设计与规范的问题"></a>代码设计与规范的问题</h2><h2 id="思考题"><a href="#思考题" class="headerlink" title="思考题"></a>思考题</h2><ul>
-<li>containsAll</li>
-<li>remove<br>==未完待续==</li>
-</ul>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/05/05/hello-world/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1057,7 +1733,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">4</span>
+                  <span class="site-state-item-count">7</span>
                   <span class="site-state-item-name">posts</span>
                 </a>
               </div>

@@ -79,18 +79,18 @@
 
 
 
-<meta name="description" content="IP的正式规范文件：RFC 791 所有TCP、UDP、ICMP及IGMP数据都以IP数据报格式传输。不可靠：不能保证IP数据报能够成功到达目的地。可靠性必须由上层提供。无连接：IP不维护后续数据报的状态信息。每个数据报的处理相互独立。IP数据报可以不按发送顺序接收。 传输次序：网络字节序/big endian（大端）字节序 IP首部字段   字段名 长度      版本 4位 4   首部长度">
+<meta name="description" content="007，Ping的工作原理Unix系统的实现 把ICMP报文中标识符字段设置成发送进程的ID号（识别多个Ping程序实例）。 序列号从0开始，每发送一次新的回显请求就 + 1。 Ping程序允许我们查看是否有分组丢失、失序或重复。  旧版本Ping程序 每秒发送一个回显请求。 打印返回的每个分组的每个回显应答。  新版本Ping程序 需要加上 - s 选项以旧版本模式运行。 Ping程序只发送一个">
 <meta name="keywords" content="计算机网络,TCP,IP">
 <meta property="og:type" content="article">
-<meta property="og:title" content="《TCP&#x2F;IP详解卷1》003阅读笔记">
-<meta property="og:url" content="http://yoursite.com/2018/06/02/《TCPIP详解卷1》003阅读笔记/index.html">
+<meta property="og:title" content="《TCPIP详解卷1》007、008、009阅读笔记">
+<meta property="og:url" content="http://yoursite.com/2018/06/12/《TCPIP详解卷1》007、008、009阅读笔记/index.html">
 <meta property="og:site_name" content="Ennis -Little Monster">
-<meta property="og:description" content="IP的正式规范文件：RFC 791 所有TCP、UDP、ICMP及IGMP数据都以IP数据报格式传输。不可靠：不能保证IP数据报能够成功到达目的地。可靠性必须由上层提供。无连接：IP不维护后续数据报的状态信息。每个数据报的处理相互独立。IP数据报可以不按发送顺序接收。 传输次序：网络字节序/big endian（大端）字节序 IP首部字段   字段名 长度      版本 4位 4   首部长度">
+<meta property="og:description" content="007，Ping的工作原理Unix系统的实现 把ICMP报文中标识符字段设置成发送进程的ID号（识别多个Ping程序实例）。 序列号从0开始，每发送一次新的回显请求就 + 1。 Ping程序允许我们查看是否有分组丢失、失序或重复。  旧版本Ping程序 每秒发送一个回显请求。 打印返回的每个分组的每个回显应答。  新版本Ping程序 需要加上 - s 选项以旧版本模式运行。 Ping程序只发送一个">
 <meta property="og:locale" content="default">
-<meta property="og:updated_time" content="2018-06-03T11:33:41.480Z">
+<meta property="og:updated_time" content="2018-07-20T02:14:10.023Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="《TCP&#x2F;IP详解卷1》003阅读笔记">
-<meta name="twitter:description" content="IP的正式规范文件：RFC 791 所有TCP、UDP、ICMP及IGMP数据都以IP数据报格式传输。不可靠：不能保证IP数据报能够成功到达目的地。可靠性必须由上层提供。无连接：IP不维护后续数据报的状态信息。每个数据报的处理相互独立。IP数据报可以不按发送顺序接收。 传输次序：网络字节序/big endian（大端）字节序 IP首部字段   字段名 长度      版本 4位 4   首部长度">
+<meta name="twitter:title" content="《TCPIP详解卷1》007、008、009阅读笔记">
+<meta name="twitter:description" content="007，Ping的工作原理Unix系统的实现 把ICMP报文中标识符字段设置成发送进程的ID号（识别多个Ping程序实例）。 序列号从0开始，每发送一次新的回显请求就 + 1。 Ping程序允许我们查看是否有分组丢失、失序或重复。  旧版本Ping程序 每秒发送一个回显请求。 打印返回的每个分组的每个回显应答。  新版本Ping程序 需要加上 - s 选项以旧版本模式运行。 Ping程序只发送一个">
 
 
 
@@ -120,13 +120,13 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/2018/06/02/《TCPIP详解卷1》003阅读笔记/"/>
+  <link rel="canonical" href="http://yoursite.com/2018/06/12/《TCPIP详解卷1》007、008、009阅读笔记/"/>
 
 
 
 
 
-  <title>《TCP/IP详解卷1》003阅读笔记 | Ennis -Little Monster</title>
+  <title>《TCPIP详解卷1》007、008、009阅读笔记 | Ennis -Little Monster</title>
   
 
 
@@ -233,7 +233,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/06/02/《TCPIP详解卷1》003阅读笔记/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/06/12/《TCPIP详解卷1》007、008、009阅读笔记/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Ennis L.M. Wu">
@@ -250,7 +250,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">《TCP/IP详解卷1》003阅读笔记</h1>
+          <h1 class="post-title" itemprop="name headline">《TCPIP详解卷1》007、008、009阅读笔记</h1>
         
 
         <div class="post-meta">
@@ -262,8 +262,8 @@
               
                 <span class="post-meta-item-text">Posted on</span>
               
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-06-02T15:07:17+08:00">
-                2018-06-02
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-06-12T20:32:56+08:00">
+                2018-06-12
               </time>
             
 
@@ -300,152 +300,69 @@
       
 
       
-        <p>IP的正式规范文件：RFC 791</p>
-<p>所有TCP、UDP、ICMP及IGMP数据都以IP数据报格式传输。<br>不可靠：不能保证IP数据报能够成功到达目的地。可靠性必须由上层提供。<br>无连接：IP不维护后续数据报的状态信息。每个数据报的处理相互独立。IP数据报可以不按发送顺序接收。</p>
-<p>传输次序：网络字节序/big endian（大端）字节序</p>
-<h4 id="IP首部字段"><a href="#IP首部字段" class="headerlink" title="IP首部字段"></a>IP首部字段</h4><table>
-<thead>
-<tr>
-<th>字段名</th>
-<th>长度</th>
-<th></th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>版本</td>
-<td>4位</td>
-<td>4</td>
-</tr>
-<tr>
-<td>首部长度</td>
-<td>4位</td>
-<td>首部占32bit字的数目，没有任何选项，值为5，首部最长60字节</td>
-</tr>
-<tr>
-<td>服务类型（TOS）</td>
-<td>8位</td>
-<td>3bit优先权子字段（已忽略），4bitTOS子字段，1bit未用位（置为0）</td>
-</tr>
-<tr>
-<td>总长度</td>
-<td>16位</td>
-<td>字节为单位，最长65535字节。<strong>必要内容</strong></td>
-</tr>
-<tr>
-<td>位标识</td>
-<td>16位</td>
-<td>唯一标识主机发送的每一份数据报</td>
-</tr>
-<tr>
-<td>位标志</td>
-<td>3位</td>
-<td></td>
-</tr>
-<tr>
-<td>位片偏移</td>
-<td>13位</td>
-<td></td>
-</tr>
-<tr>
-<td>生存时间（TTL）</td>
-<td>8位</td>
-<td>经过的最多路由器数，初始值通常为64或32，源主机设置。</td>
-</tr>
-<tr>
-<td>协议</td>
-<td>8位</td>
-<td></td>
-</tr>
-<tr>
-<td>首部校验和</td>
-<td>16位</td>
-<td>根据IP首部计算校验和码。</td>
-</tr>
-<tr>
-<td>选项</td>
-<td></td>
-<td>可选，可变长。32bit为界限，不够时插入值为0的填充字节。</td>
-</tr>
-</tbody>
-</table>
-<ul>
-<li>首部长度：从包头格式图看出，是以32bit为一行的，一行包括若干字段。首部长度的数值是以32bit为单位来描述的，比如四位全为1，十六进制本来是0X0F，也就是十进制的15但是，<strong>这个字段的1不是数值1，而是指1个单位即一个32bit。</strong>所以如果该字段是1111的话。就是15*32bit=60Byte了。 </li>
-<li>4bit的TOS代表：最小时延、最大吞吐量、最高可靠性、最小费用。</li>
-<li>首部长度、总长度计算数据内容的起始位置和长度。</li>
-<li>TTL为0时丢弃数据报，发送ICMP报文通知源主机。</li>
-<li>首部校验和：如果校验和错误，丢弃数据报，但不生成差错报文，由上层发现并重传。</li>
+        <h4 id="007，Ping的工作原理"><a href="#007，Ping的工作原理" class="headerlink" title="007，Ping的工作原理"></a>007，Ping的工作原理</h4><h6 id="Unix系统的实现"><a href="#Unix系统的实现" class="headerlink" title="Unix系统的实现"></a>Unix系统的实现</h6><ul>
+<li>把ICMP报文中标识符字段设置成发送进程的ID号（识别多个Ping程序实例）。</li>
+<li>序列号从0开始，每发送一次新的回显请求就 + 1。</li>
+<li>Ping程序允许我们查看是否有分组丢失、失序或重复。<br><br></li>
 </ul>
-<h4 id="IP路由选择"><a href="#IP路由选择" class="headerlink" title="IP路由选择"></a>IP路由选择</h4><p>目的主机与源主机直接相连，或都在一个共享网络上，IP数据报直接送到目的主机。<br>否则发往默认路由，由路由器转发。<br><br></p>
-<h6 id="IP层可以配置成路由器或主机"><a href="#IP层可以配置成路由器或主机" class="headerlink" title="IP层可以配置成路由器或主机"></a>IP层可以配置成路由器或主机</h6><p>主机：不转发<br>路由器：转发<br>内含路由器的主机：不转发<br><br></p>
-<h6 id="收到数据报来自网络接口时（即非本地生成的数据报）"><a href="#收到数据报来自网络接口时（即非本地生成的数据报）" class="headerlink" title="收到数据报来自网络接口时（即非本地生成的数据报）"></a>收到数据报来自网络接口时（即非本地生成的数据报）</h6><ul>
-<li>检查IP地址<ul>
-<li>是本机IP地址之一或IP广播地址：发送到指定协议模块<ul>
-<li>IP层设置为路由器：转发</li>
-<li>否则：丢弃<br><br></li>
+<h6 id="旧版本Ping程序"><a href="#旧版本Ping程序" class="headerlink" title="旧版本Ping程序"></a>旧版本Ping程序</h6><ul>
+<li>每秒发送一个回显请求。</li>
+<li>打印返回的每个分组的每个回显应答。<br><br></li>
 </ul>
-</li>
+<h6 id="新版本Ping程序"><a href="#新版本Ping程序" class="headerlink" title="新版本Ping程序"></a>新版本Ping程序</h6><ul>
+<li>需要加上 - s 选项以旧版本模式运行。</li>
+<li>Ping程序只发送一个回显请求。</li>
+<li>收到回显应答输出“host is alive”，20秒内没收到输出“no answer”。<br><br></li>
 </ul>
-</li>
+<h4 id="008，Traceroute的工作原理"><a href="#008，Traceroute的工作原理" class="headerlink" title="008，Traceroute的工作原理"></a>008，Traceroute的工作原理</h4><ul>
+<li>每个处理数据报的路由器都要把TTL的值减1或停留的秒数。</li>
+<li>大多数路由器转发数据报的时延都小于1秒，TTL最终成为一个跳站计数器。</li>
+<li>如果TTL字段是1，路由器将该数据报丢弃，并向信源机放一份ICMP“超时”信息。</li>
+<li>Traceroute程序发送一份TTL字段为1的IP数据报为目的主机，第一个路由器丢弃并发回超时ICMP报文，然后Traceroute程序发送一份TTL字段为2的数据报，得到第二个路由器的地址，以此类推。</li>
+<li>目的主机收到TTL值为1的IP数据报，不会丢弃并产生ICMP超时报文。</li>
+<li>Traceroute程序发送一份不可能值作为UDP端口号（大于30000）的UDP数据报给目的主机，目的主机产生一份“端口不可达”错误的ICMP报文。</li>
+<li>Traceroute程序区分收到的ICMP报文是超时还是端口不可达判断是否结束。<br><br></li>
 </ul>
-<h6 id="路由表"><a href="#路由表" class="headerlink" title="路由表"></a>路由表</h6><table>
-<thead>
-<tr>
-<th>项</th>
-<th>含义</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>目的IP地址</td>
-<td>表中标志字段指定类型。完整的主机地址：非0主机号。网络地址：主机号为0。</td>
-</tr>
-<tr>
-<td>下一跳路由器IP地址</td>
-<td>或者有直接连接的网络IP地址。</td>
-</tr>
-<tr>
-<td>标志</td>
-<td>一个指明目的IP地址类型，==<strong>一个标志下一站路由器时真下一站路由器还是直接相连的接口。</strong>看不懂这句==</td>
-</tr>
-<tr>
-<td>指定网络接口</td>
-</tr>
-</tbody>
-</table>
-<p>IP不知道目的的完整路径<br><br></p>
-<h6 id="IP路由选择主要功能"><a href="#IP路由选择主要功能" class="headerlink" title="IP路由选择主要功能"></a>IP路由选择主要功能</h6><p>搜索路由表</p>
-<ol>
-<li>寻找与目的IP完全匹配（网络号和主机号）的条目</li>
-<li>寻找与目的网络号相匹配的条目（必须考虑子网掩码）</li>
-<li>寻找“默认”的条目</li>
-</ol>
-<p>如果找到，报文发送指定的下一站路由器或直接相连的网络接口。<br>如果都未成功，则不能被传送，向应用返回错误<br><br></p>
-<h4 id="子网寻址"><a href="#子网寻址" class="headerlink" title="子网寻址"></a>子网寻址</h4><p>==看不懂图==</p>
-<ul>
-<li>所有主机都要求支持子网寻址。</li>
-<li>IP地址 = 网络号 + 子网号 + 主机号</li>
-<li>B类IP地址 = 网络号（16位）+ 子网号（8位）+ 主机号（8位）</li>
-<li>子网对外部路由器来说隐藏了内部网络组织。</li>
-<li>子网划分缩减了路由表的规模。</li>
-<li>子网对于子网内部的路由器不透明。==不懂==</li>
-</ul>
-<h4 id="子网掩码"><a href="#子网掩码" class="headerlink" title="子网掩码"></a>子网掩码</h4><ul>
-<li>标识多少bit用于子网号，多少bit用于主机号。</li>
-<li>掩码是32bit的值，值为1留给网络号和子网号，值为0留给主机号。</li>
-<li>给定IP地址和子网掩码后可以确定：</li>
+<h4 id="009，IP包选路的工作原理"><a href="#009，IP包选路的工作原理" class="headerlink" title="009，IP包选路的工作原理"></a>009，IP包选路的工作原理</h4><h6 id="选路的原理"><a href="#选路的原理" class="headerlink" title="选路的原理"></a>选路的原理</h6><ul>
+<li>IP搜索路由表的步骤：</li>
 <li><ol>
-<li>本子网上的主机。</li>
+<li>搜索匹配的主机地址。</li>
 </ol>
 </li>
 <li><ol start="2">
-<li>本网络中其他子网中的主机。</li>
+<li>搜索比配的网络地址。</li>
 </ol>
 </li>
 <li><ol start="3">
-<li>其他网络上的主机。</li>
+<li>搜索默认表项。</li>
 </ol>
 </li>
+<li>IP层进行的选路是一种选路机制，它搜索路由表并决定向哪个网络接口发送分组。</li>
+<li>选路策略决定把哪些路由放入路由表的规则，路由守护程序提供选路策略。<br><br></li>
+</ul>
+<h6 id="初始化路由表"><a href="#初始化路由表" class="headerlink" title="初始化路由表"></a>初始化路由表</h6><ul>
+<li>在系统引导时显示地的在初始化文件中运行route命令。<br><br></li>
+</ul>
+<h6 id="没有到达目的地的路由"><a href="#没有到达目的地的路由" class="headerlink" title="没有到达目的地的路由"></a>没有到达目的地的路由</h6><p>路由表中没有默认项，又没有找到匹配项。</p>
+<ul>
+<li>数据报由本地主机产生：向应用程序返回一个“主机不可达差错”或“网络不可达差错”。</li>
+<li>被转发的数据报：向原始发送端发送一份ICMP主机不可达差错报文。<br><br></li>
+</ul>
+<h6 id="ICMP重定向差错"><a href="#ICMP重定向差错" class="headerlink" title="ICMP重定向差错"></a>ICMP重定向差错</h6><ul>
+<li>当数据报应该被发送到另一个路由器时，收到数据报的路由器要发送ICMP重定向差错报文给IP数据报的发送端。</li>
+<li>重定向一般用来让具有很少选路信息的主机逐渐建立更完善的路由表。<br><br></li>
+</ul>
+<h6 id="ICMP重定向报文"><a href="#ICMP重定向报文" class="headerlink" title="ICMP重定向报文"></a>ICMP重定向报文</h6><ul>
+<li>重定向报文只能由路由器生成。</li>
+<li>重定向报文是为主机使用的。<br><br></li>
+</ul>
+<h6 id="ICMP路由器发现报文"><a href="#ICMP路由器发现报文" class="headerlink" title="ICMP路由器发现报文"></a>ICMP路由器发现报文</h6><ul>
+<li>一份报文可以通告多个地址。</li>
+<li>路由器启动时定期在所有广播或多播传送接口上发送通告报文。</li>
+<li>某个接口被关闭时，该接口上发送一份通告报文，生命周期值设为0。</li>
+<li>监听来自主机的请求报文，并发送通告报文以响应。</li>
+<li>主机在引导期间发送请求报文。</li>
+<li>监听来自相邻路由器的请求报文。</li>
 </ul>
 
       
@@ -477,8 +394,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2018/05/31/《TCPIP详解卷1》002阅读笔记/" rel="next" title="《TCPIP详解卷1》002阅读笔记">
-                <i class="fa fa-chevron-left"></i> 《TCPIP详解卷1》002阅读笔记
+              <a href="/2018/06/12/《TCPIP详解卷1》004阅读笔记/" rel="next" title="《TCPIP详解卷1》004阅读笔记">
+                <i class="fa fa-chevron-left"></i> 《TCPIP详解卷1》004阅读笔记
               </a>
             
           </div>
@@ -487,8 +404,8 @@
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2018/06/12/《TCPIP详解卷1》004阅读笔记/" rel="prev" title="《TCPIP详解卷1》004阅读笔记">
-                《TCPIP详解卷1》004阅读笔记 <i class="fa fa-chevron-right"></i>
+              <a href="/2018/06/13/《TCPIP详解卷1》010阅读笔记/" rel="prev" title="《TCPIP详解卷1》010阅读笔记">
+                《TCPIP详解卷1》010阅读笔记 <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
@@ -612,7 +529,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#IP首部字段"><span class="nav-number">1.</span> <span class="nav-text">IP首部字段</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#IP路由选择"><span class="nav-number">2.</span> <span class="nav-text">IP路由选择</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#IP层可以配置成路由器或主机"><span class="nav-number">2.0.1.</span> <span class="nav-text">IP层可以配置成路由器或主机</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#收到数据报来自网络接口时（即非本地生成的数据报）"><span class="nav-number">2.0.2.</span> <span class="nav-text">收到数据报来自网络接口时（即非本地生成的数据报）</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#路由表"><span class="nav-number">2.0.3.</span> <span class="nav-text">路由表</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#IP路由选择主要功能"><span class="nav-number">2.0.4.</span> <span class="nav-text">IP路由选择主要功能</span></a></li></ol></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#子网寻址"><span class="nav-number">3.</span> <span class="nav-text">子网寻址</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#子网掩码"><span class="nav-number">4.</span> <span class="nav-text">子网掩码</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#007，Ping的工作原理"><span class="nav-number">1.</span> <span class="nav-text">007，Ping的工作原理</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#Unix系统的实现"><span class="nav-number">1.0.1.</span> <span class="nav-text">Unix系统的实现</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#旧版本Ping程序"><span class="nav-number">1.0.2.</span> <span class="nav-text">旧版本Ping程序</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#新版本Ping程序"><span class="nav-number">1.0.3.</span> <span class="nav-text">新版本Ping程序</span></a></li></ol></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#008，Traceroute的工作原理"><span class="nav-number">2.</span> <span class="nav-text">008，Traceroute的工作原理</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#009，IP包选路的工作原理"><span class="nav-number">3.</span> <span class="nav-text">009，IP包选路的工作原理</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#选路的原理"><span class="nav-number">3.0.1.</span> <span class="nav-text">选路的原理</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#初始化路由表"><span class="nav-number">3.0.2.</span> <span class="nav-text">初始化路由表</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#没有到达目的地的路由"><span class="nav-number">3.0.3.</span> <span class="nav-text">没有到达目的地的路由</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#ICMP重定向差错"><span class="nav-number">3.0.4.</span> <span class="nav-text">ICMP重定向差错</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#ICMP重定向报文"><span class="nav-number">3.0.5.</span> <span class="nav-text">ICMP重定向报文</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#ICMP路由器发现报文"><span class="nav-number">3.0.6.</span> <span class="nav-text">ICMP路由器发现报文</span></a></li></ol></li></ol></li></ol></div>
             
 
           </div>
