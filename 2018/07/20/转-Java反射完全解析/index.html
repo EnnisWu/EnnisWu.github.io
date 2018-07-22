@@ -68,7 +68,7 @@
 
 
 
-  <meta name="keywords" content="Hexo, NexT" />
+  <meta name="keywords" content="Java,反射," />
 
 
 
@@ -79,13 +79,20 @@
 
 
 
-<meta property="og:type" content="website">
-<meta property="og:title" content="Ennis -Little Monster">
-<meta property="og:url" content="http://yoursite.com/index.html">
+<meta name="description" content="转载请注明出处：https://www.jianshu.com/p/607ff4e79a13  本文相关知识点大部分总结自Oracle官方文档，对于英文比较好的朋友，建议直接阅读原文档。 按例，首先描述一下定义：  Reflection enables Java code to discover information about the fields, methods and construc">
+<meta name="keywords" content="Java,反射">
+<meta property="og:type" content="article">
+<meta property="og:title" content="[转]Java反射完全解析">
+<meta property="og:url" content="http://yoursite.com/2018/07/20/转-Java反射完全解析/index.html">
 <meta property="og:site_name" content="Ennis -Little Monster">
+<meta property="og:description" content="转载请注明出处：https://www.jianshu.com/p/607ff4e79a13  本文相关知识点大部分总结自Oracle官方文档，对于英文比较好的朋友，建议直接阅读原文档。 按例，首先描述一下定义：  Reflection enables Java code to discover information about the fields, methods and construc">
 <meta property="og:locale" content="default">
+<meta property="og:image" content="https://mmbiz.qpic.cn/mmbiz_png/v1LbPPWiaSt5tL9GD0n77s3FwJiarzao9SKeiccYrAOy1qStMPfiadTQhuy4bmt3kx18tyf5zaq3ITOmRK3ib4Be6eA/640?wx_fmt=png&tp=webp&wxfrom=5&wx_lazy=1">
+<meta property="og:updated_time" content="2018-07-20T13:23:42.994Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Ennis -Little Monster">
+<meta name="twitter:title" content="[转]Java反射完全解析">
+<meta name="twitter:description" content="转载请注明出处：https://www.jianshu.com/p/607ff4e79a13  本文相关知识点大部分总结自Oracle官方文档，对于英文比较好的朋友，建议直接阅读原文档。 按例，首先描述一下定义：  Reflection enables Java code to discover information about the fields, methods and construc">
+<meta name="twitter:image" content="https://mmbiz.qpic.cn/mmbiz_png/v1LbPPWiaSt5tL9GD0n77s3FwJiarzao9SKeiccYrAOy1qStMPfiadTQhuy4bmt3kx18tyf5zaq3ITOmRK3ib4Be6eA/640?wx_fmt=png&tp=webp&wxfrom=5&wx_lazy=1">
 
 
 
@@ -115,13 +122,13 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/"/>
+  <link rel="canonical" href="http://yoursite.com/2018/07/20/转-Java反射完全解析/"/>
 
 
 
 
 
-  <title>Ennis -Little Monster</title>
+  <title>[转]Java反射完全解析 | Ennis -Little Monster</title>
   
 
 
@@ -140,8 +147,7 @@
     
   
 
-  <div class="container sidebar-position-left 
-  page-home">
+  <div class="container sidebar-position-left page-post-detail">
     <div class="headband"></div>
 
     <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
@@ -214,344 +220,9 @@
         <div class="content-wrap">
           <div id="content" class="content">
             
-  <section id="posts" class="posts-expand">
+
+  <div id="posts" class="posts-expand">
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/07/22/阅读列表/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Ennis L.M. Wu">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Ennis -Little Monster">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/07/22/阅读列表/" itemprop="url">阅读列表</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-07-22T10:24:57+08:00">
-                2018-07-22
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h1 id="View"><a href="#View" class="headerlink" title="View"></a>View</h1><p>Android View的工作流程<br><a href="https://mp.weixin.qq.com/s/3Av9dEuXkZsBLA0X295qYw" target="_blank" rel="noopener">https://mp.weixin.qq.com/s/3Av9dEuXkZsBLA0X295qYw</a></p>
-<p>自定义View之跑马灯效果<br><a href="https://mp.weixin.qq.com/s/9FGix16HMd_YeBM2KMNGyg" target="_blank" rel="noopener">https://mp.weixin.qq.com/s/9FGix16HMd_YeBM2KMNGyg</a></p>
-<p>一步步分析知乎中CoordinatorLayout的实现<br><a href="https://mp.weixin.qq.com/s/Kbv8e61L6i2N8JxHJo0lLA" target="_blank" rel="noopener">https://mp.weixin.qq.com/s/Kbv8e61L6i2N8JxHJo0lLA</a></p>
-<p>Android中的缓存艺术，对比RecyclerView与ListView的缓存机制<br><a href="https://mp.weixin.qq.com/s/LAm4m9klItuQpr4Sd2_mvQ" target="_blank" rel="noopener">https://mp.weixin.qq.com/s/LAm4m9klItuQpr4Sd2_mvQ</a></p>
-<h1 id="事件"><a href="#事件" class="headerlink" title="事件"></a>事件</h1><p>你不能错过的View事件分发机制分析<br><a href="https://mp.weixin.qq.com/s/-dS1M0eFKJEAA-7viMi8Vw" target="_blank" rel="noopener">https://mp.weixin.qq.com/s/-dS1M0eFKJEAA-7viMi8Vw</a></p>
-<p>Android View事件体系全面总结+实践分析<br><a href="https://mp.weixin.qq.com/s/rcUXiA4FXrdMYQYYEOJFiw" target="_blank" rel="noopener">https://mp.weixin.qq.com/s/rcUXiA4FXrdMYQYYEOJFiw</a></p>
-<p>触摸事件实践之路<br><a href="https://mp.weixin.qq.com/s?__biz=MzA5MzI3NjE2MA==&amp;mid=2650242914&amp;idx=1&amp;sn=87e0e66951a9c102053cab8551916dd9&amp;chksm=88638e0dbf14071b9ed1a8d0c935f0b0c66c96c348f667117d88cf4c29a13b8bed1e77c2f239&amp;mpshare=1&amp;scene=24&amp;srcid=0502B3zbXNFpp1bZsYoAWfoe#rd" target="_blank" rel="noopener">https://mp.weixin.qq.com/s?__biz=MzA5MzI3NjE2MA==&amp;mid=2650242914&amp;idx=1&amp;sn=87e0e66951a9c102053cab8551916dd9&amp;chksm=88638e0dbf14071b9ed1a8d0c935f0b0c66c96c348f667117d88cf4c29a13b8bed1e77c2f239&amp;mpshare=1&amp;scene=24&amp;srcid=0502B3zbXNFpp1bZsYoAWfoe#rd</a></p>
-<h1 id="动画"><a href="#动画" class="headerlink" title="动画"></a>动画</h1><p>自定义View之文字路径动画控件<br><a href="https://mp.weixin.qq.com/s/dnN9z1KFHaIxJgHiqTMyLA" target="_blank" rel="noopener">https://mp.weixin.qq.com/s/dnN9z1KFHaIxJgHiqTMyLA</a></p>
-<p>用四行代码来实现复杂动画<br><a href="https://mp.weixin.qq.com/s?__biz=MzAwODY4OTk2Mg==&amp;mid=2652046285&amp;idx=1&amp;sn=77dddbfea05c61e47303fd4bfb827e37&amp;chksm=808ca388b7fb2a9e0c4f1d1c2dc902b7f4b5b6a200962b9d8e2adc685ff6277182740dc498f7&amp;mpshare=1&amp;scene=24&amp;srcid=0522zyEQobtWO0046vI79vkE#rd" target="_blank" rel="noopener">https://mp.weixin.qq.com/s?__biz=MzAwODY4OTk2Mg==&amp;mid=2652046285&amp;idx=1&amp;sn=77dddbfea05c61e47303fd4bfb827e37&amp;chksm=808ca388b7fb2a9e0c4f1d1c2dc902b7f4b5b6a200962b9d8e2adc685ff6277182740dc498f7&amp;mpshare=1&amp;scene=24&amp;srcid=0522zyEQobtWO0046vI79vkE#rd</a></p>
-<p>Android自定义之圆弧滑动效果<br><a href="https://mp.weixin.qq.com/s?__biz=MzA5MzI3NjE2MA==&amp;mid=2650243493&amp;idx=1&amp;sn=96aeeb99d5e465c9f6583752d809ba94&amp;chksm=886370cabf14f9dcc9569c36001a4b0329d2e5707dd5a2647cf982e227922b507603c133677d&amp;mpshare=1&amp;scene=24&amp;srcid=0711HED57GdKGlqmV2Qv21WE#rd" target="_blank" rel="noopener">https://mp.weixin.qq.com/s?__biz=MzA5MzI3NjE2MA==&amp;mid=2650243493&amp;idx=1&amp;sn=96aeeb99d5e465c9f6583752d809ba94&amp;chksm=886370cabf14f9dcc9569c36001a4b0329d2e5707dd5a2647cf982e227922b507603c133677d&amp;mpshare=1&amp;scene=24&amp;srcid=0711HED57GdKGlqmV2Qv21WE#rd</a></p>
-<h1 id="控件"><a href="#控件" class="headerlink" title="控件"></a>控件</h1><p>【大揭秘】Android架构组件ViewModel来龙去脉<br><a href="https://mp.weixin.qq.com/s?srcid=0415o7Ok7xyv7c2KeH53uhCH&amp;scene=23&amp;mid=2247484312&amp;sn=aecdd31dd8d4edf8f43ad9f174b6cc98&amp;idx=1&amp;__biz=MzIxMTg5NjQyMA%3D%3D&amp;chksm=974f1293a0389b85cb6b15090ed12ea37ce43a0840739076a9d5a08e051961684105089262d2&amp;mpshare=1#rd" target="_blank" rel="noopener">https://mp.weixin.qq.com/s?srcid=0415o7Ok7xyv7c2KeH53uhCH&amp;scene=23&amp;mid=2247484312&amp;sn=aecdd31dd8d4edf8f43ad9f174b6cc98&amp;idx=1&amp;__biz=MzIxMTg5NjQyMA%3D%3D&amp;chksm=974f1293a0389b85cb6b15090ed12ea37ce43a0840739076a9d5a08e051961684105089262d2&amp;mpshare=1#rd</a></p>
-<p>【Android】Fragment懒加载和ViewPager的坑<br><a href="https://www.cnblogs.com/dasusu/p/5926731.html" target="_blank" rel="noopener">https://www.cnblogs.com/dasusu/p/5926731.html</a></p>
-<p>一起来学习Android 8.0系统的通知栏适配吧<br><a href="https://mp.weixin.qq.com/s/Ez-G_9hzUCOjU8rRnsW8SA" target="_blank" rel="noopener">https://mp.weixin.qq.com/s/Ez-G_9hzUCOjU8rRnsW8SA</a></p>
-<p>轻松掌握Notification的各种用法<br><a href="https://mp.weixin.qq.com/s/2TaWICQ4nWV3TuPG71CBGw" target="_blank" rel="noopener">https://mp.weixin.qq.com/s/2TaWICQ4nWV3TuPG71CBGw</a></p>
-<p>探讨View、Window和Activity的关系<br><a href="https://mp.weixin.qq.com/s/wNdRSs-U05LLK_ZT2p2SFg" target="_blank" rel="noopener">https://mp.weixin.qq.com/s/wNdRSs-U05LLK_ZT2p2SFg</a></p>
-<p>教你编写一个手势解锁控件<br><a href="https://mp.weixin.qq.com/s?__biz=MzA5MzI3NjE2MA==&amp;mid=2650243035&amp;idx=1&amp;sn=b7cb92927bfe3148b8936b5786f3a751&amp;chksm=88638eb4bf1407a2f89cbb68def8ab4068c5899b18ad1d34a36f3677493d0f7039e4bd40461a&amp;mpshare=1&amp;scene=24&amp;srcid=0517qRwLJ7QlBW0xAJHO3PEc#rd" target="_blank" rel="noopener">https://mp.weixin.qq.com/s?__biz=MzA5MzI3NjE2MA==&amp;mid=2650243035&amp;idx=1&amp;sn=b7cb92927bfe3148b8936b5786f3a751&amp;chksm=88638eb4bf1407a2f89cbb68def8ab4068c5899b18ad1d34a36f3677493d0f7039e4bd40461a&amp;mpshare=1&amp;scene=24&amp;srcid=0517qRwLJ7QlBW0xAJHO3PEc#rd</a></p>
-<p>从零实现灵活且可高度定制的Android图片选择架构<br><a href="https://mp.weixin.qq.com/s?__biz=MzA5MzI3NjE2MA==&amp;mid=2650243083&amp;idx=1&amp;sn=3ff3429479489791c32dc385b516ad1c&amp;chksm=88637164bf14f8727775e4156d2b2de565342e87ff1a44f4047b76410b3fdbe059b85516d968&amp;mpshare=1&amp;scene=24&amp;srcid=0524S5VFqz4WOw5TxDKotk0V#rd" target="_blank" rel="noopener">https://mp.weixin.qq.com/s?__biz=MzA5MzI3NjE2MA==&amp;mid=2650243083&amp;idx=1&amp;sn=3ff3429479489791c32dc385b516ad1c&amp;chksm=88637164bf14f8727775e4156d2b2de565342e87ff1a44f4047b76410b3fdbe059b85516d968&amp;mpshare=1&amp;scene=24&amp;srcid=0524S5VFqz4WOw5TxDKotk0V#rd</a></p>
-<h1 id="注解"><a href="#注解" class="headerlink" title="注解"></a>注解</h1><p>APT注解处理器，让你的代码变得更简单<br><a href="https://mp.weixin.qq.com/s?__biz=MzA5MzI3NjE2MA==&amp;mid=2650242955&amp;idx=1&amp;sn=11040755b0df385c5d1facccfc21e107&amp;chksm=88638ee4bf1407f23bb123e61d01e5a454223ce91c05e99a84ee38e9c6a870757d020b1f9f87&amp;mpshare=1&amp;scene=24&amp;srcid=0509tcRd99aWsM0iK0wrrKB8#rd" target="_blank" rel="noopener">https://mp.weixin.qq.com/s?__biz=MzA5MzI3NjE2MA==&amp;mid=2650242955&amp;idx=1&amp;sn=11040755b0df385c5d1facccfc21e107&amp;chksm=88638ee4bf1407f23bb123e61d01e5a454223ce91c05e99a84ee38e9c6a870757d020b1f9f87&amp;mpshare=1&amp;scene=24&amp;srcid=0509tcRd99aWsM0iK0wrrKB8#rd</a></p>
-<p>在Android中优雅地使用注解<br><a href="https://mp.weixin.qq.com/s/fJKAwpqn_hXRXRS4oh1dEw" target="_blank" rel="noopener">https://mp.weixin.qq.com/s/fJKAwpqn_hXRXRS4oh1dEw</a></p>
-<p>轻松打造一个自己的注解框架<br><a href="https://mp.weixin.qq.com/s?__biz=MzA5MzI3NjE2MA==&amp;mid=2650243038&amp;idx=1&amp;sn=b7bf615ba652ace8623e826926f24ea1&amp;chksm=88638eb1bf1407a71153101a2eb5a6d478fd1fbf129aac9f6c9b29af0084aed9c6c7ede15762&amp;mpshare=1&amp;scene=24&amp;srcid=0518u6VLLt7hWdoWG1ipnmtZ#rd" target="_blank" rel="noopener">https://mp.weixin.qq.com/s?__biz=MzA5MzI3NjE2MA==&amp;mid=2650243038&amp;idx=1&amp;sn=b7bf615ba652ace8623e826926f24ea1&amp;chksm=88638eb1bf1407a71153101a2eb5a6d478fd1fbf129aac9f6c9b29af0084aed9c6c7ede15762&amp;mpshare=1&amp;scene=24&amp;srcid=0518u6VLLt7hWdoWG1ipnmtZ#rd</a></p>
-<h1 id="优化"><a href="#优化" class="headerlink" title="优化"></a>优化</h1><p>大众点评App的短视频耗电量优化实战<br><a href="https://juejin.im/entry/5aa629846fb9a028d566c183" target="_blank" rel="noopener">https://juejin.im/entry/5aa629846fb9a028d566c183</a></p>
-<p>Android 优化二 Java内存分配机制及内存泄漏<br><a href="https://www.jianshu.com/p/85f49e1ff813" target="_blank" rel="noopener">https://www.jianshu.com/p/85f49e1ff813</a></p>
-<p>Android内存泄漏总结<br><a href="https://mp.weixin.qq.com/s/Ncm0JVc_j0WVWKHR-BxkyQ" target="_blank" rel="noopener">https://mp.weixin.qq.com/s/Ncm0JVc_j0WVWKHR-BxkyQ</a></p>
-<h1 id="组件化"><a href="#组件化" class="headerlink" title="组件化"></a>组件化</h1><p>教你打造一个Android组件化开发框架<br><a href="https://mp.weixin.qq.com/s/XQktvPbytMEljebFo9B_ww" target="_blank" rel="noopener">https://mp.weixin.qq.com/s/XQktvPbytMEljebFo9B_ww</a></p>
-<p>电商APP组件化探索<br><a href="https://mp.weixin.qq.com/s/hey2ZcsgucLVEGYJ2qfVWA" target="_blank" rel="noopener">https://mp.weixin.qq.com/s/hey2ZcsgucLVEGYJ2qfVWA</a></p>
-<p>组件化在项目中的使用姿势<br><a href="https://mp.weixin.qq.com/s?__biz=MzA5MzI3NjE2MA==&amp;mid=2650243065&amp;idx=1&amp;sn=013d54ab819fc239bb2bc0b9183e80ae&amp;chksm=88638e96bf140780dad45ee03eb65406a03d11c545969899aef5cd74189a6e402f976841bcac&amp;mpshare=1&amp;scene=24&amp;srcid=0523FW0ZQO2EHKLKwszs21mv#rd" target="_blank" rel="noopener">https://mp.weixin.qq.com/s?__biz=MzA5MzI3NjE2MA==&amp;mid=2650243065&amp;idx=1&amp;sn=013d54ab819fc239bb2bc0b9183e80ae&amp;chksm=88638e96bf140780dad45ee03eb65406a03d11c545969899aef5cd74189a6e402f976841bcac&amp;mpshare=1&amp;scene=24&amp;srcid=0523FW0ZQO2EHKLKwszs21mv#rd</a></p>
-<p>Android基于注解IOC组件化/模块化的架构实践<br><a href="https://mp.weixin.qq.com/s?__biz=MzA5MzI3NjE2MA==&amp;mid=2650243088&amp;idx=1&amp;sn=2b113144a6e9f792201b9ea505d78b52&amp;chksm=8863717fbf14f8692be8e0f00274f042d0d1291ef6bc6ba336483a8ee34a01b9bb2b6361521e&amp;mpshare=1&amp;scene=24&amp;srcid=0528sVDFTK2ZNGLLKgPSvQha#rd" target="_blank" rel="noopener">https://mp.weixin.qq.com/s?__biz=MzA5MzI3NjE2MA==&amp;mid=2650243088&amp;idx=1&amp;sn=2b113144a6e9f792201b9ea505d78b52&amp;chksm=8863717fbf14f8692be8e0f00274f042d0d1291ef6bc6ba336483a8ee34a01b9bb2b6361521e&amp;mpshare=1&amp;scene=24&amp;srcid=0528sVDFTK2ZNGLLKgPSvQha#rd</a></p>
-<p>MVPArms官方快速组件化方案开源，来自5K Star的信赖<br><a href="https://mp.weixin.qq.com/s?__biz=MzA5MzI3NjE2MA==&amp;mid=2650243120&amp;idx=1&amp;sn=5d107b487ca7c29ec74c739e9aedc868&amp;chksm=8863715fbf14f84947644451553183b70d6f31090c75e35aced0a0d44b00ca70cf584c08df57&amp;mpshare=1&amp;scene=24&amp;srcid=0530QEUdUHYk6XwCcHWCeVPe#rd" target="_blank" rel="noopener">https://mp.weixin.qq.com/s?__biz=MzA5MzI3NjE2MA==&amp;mid=2650243120&amp;idx=1&amp;sn=5d107b487ca7c29ec74c739e9aedc868&amp;chksm=8863715fbf14f84947644451553183b70d6f31090c75e35aced0a0d44b00ca70cf584c08df57&amp;mpshare=1&amp;scene=24&amp;srcid=0530QEUdUHYk6XwCcHWCeVPe#rd</a></p>
-<p>从零开始搭建Android组件化框架<br><a href="https://mp.weixin.qq.com/s?__biz=MzAxMTI4MTkwNQ==&amp;mid=2650825738&amp;idx=1&amp;sn=7d94a4fd7e87199c3353e74dd817829c&amp;chksm=80b7b094b7c039827ff7157b488be08adce7328f7ad4f3bbe578651a3e9d6657a819da16b7e9&amp;mpshare=1&amp;scene=24&amp;srcid=0704GmorrhTzmnGw7RzIlssg#rd" target="_blank" rel="noopener">https://mp.weixin.qq.com/s?__biz=MzAxMTI4MTkwNQ==&amp;mid=2650825738&amp;idx=1&amp;sn=7d94a4fd7e87199c3353e74dd817829c&amp;chksm=80b7b094b7c039827ff7157b488be08adce7328f7ad4f3bbe578651a3e9d6657a819da16b7e9&amp;mpshare=1&amp;scene=24&amp;srcid=0704GmorrhTzmnGw7RzIlssg#rd</a></p>
-<h1 id="其他"><a href="#其他" class="headerlink" title="其他"></a>其他</h1><p>APP接口开发的入门指南<br><a href="https://mp.weixin.qq.com/s/CFV5ucVdLXEoBx5r2vuCMw" target="_blank" rel="noopener">https://mp.weixin.qq.com/s/CFV5ucVdLXEoBx5r2vuCMw</a></p>
-<p>最火视频库FFmpeg在Android上的移植封装<br><a href="https://mp.weixin.qq.com/s/Z79a-kVyN8TS2a_iuheHPg" target="_blank" rel="noopener">https://mp.weixin.qq.com/s/Z79a-kVyN8TS2a_iuheHPg</a></p>
-<p>一起来动手做个 AS 插件，自动生成Java Bean文件<br><a href="https://mp.weixin.qq.com/s/SaB9l3pToFryGMBc6IN6MA" target="_blank" rel="noopener">https://mp.weixin.qq.com/s/SaB9l3pToFryGMBc6IN6MA</a></p>
-<h1 id="数据库"><a href="#数据库" class="headerlink" title="数据库"></a>数据库</h1><p>我所了解的Android数据库框架——DBFlow<br><a href="https://mp.weixin.qq.com/s/x4xLkbbN8o13oLGdDEAntw" target="_blank" rel="noopener">https://mp.weixin.qq.com/s/x4xLkbbN8o13oLGdDEAntw</a></p>
-<p>我所了解的 DBFlow<br><a href="https://mp.weixin.qq.com/s?__biz=MzA5MzI3NjE2MA==&amp;mid=2650243177&amp;idx=1&amp;sn=542c07c55758377e7e89b94ce34734bd&amp;chksm=88637106bf14f8109145b950fa5ef46fd3c3b8437dd1444b11d8fb1810c6ef13f5275eedd960&amp;mpshare=1&amp;scene=24&amp;srcid=0608mrsN5dlSw8JbZQXPH6zP#rd" target="_blank" rel="noopener">https://mp.weixin.qq.com/s?__biz=MzA5MzI3NjE2MA==&amp;mid=2650243177&amp;idx=1&amp;sn=542c07c55758377e7e89b94ce34734bd&amp;chksm=88637106bf14f8109145b950fa5ef46fd3c3b8437dd1444b11d8fb1810c6ef13f5275eedd960&amp;mpshare=1&amp;scene=24&amp;srcid=0608mrsN5dlSw8JbZQXPH6zP#rd</a></p>
-<h1 id="网络"><a href="#网络" class="headerlink" title="网络"></a>网络</h1><p>关于HTTPS的那些事<br><a href="https://mp.weixin.qq.com/s/E75toyRukUHEtt34-snEgQ" target="_blank" rel="noopener">https://mp.weixin.qq.com/s/E75toyRukUHEtt34-snEgQ</a></p>
-<p>Android持久化保存cookie<br><a href="https://blog.csdn.net/shimiso/article/details/39033353" target="_blank" rel="noopener">https://blog.csdn.net/shimiso/article/details/39033353</a></p>
-<p>使用OKHttp模拟登陆知乎，兼谈OKHttp中Cookie的使用！<br><a href="https://blog.csdn.net/u012702547/article/details/52156315" target="_blank" rel="noopener">https://blog.csdn.net/u012702547/article/details/52156315</a></p>
-<p>Retrofit2与服务端实例讲解<br><a href="https://mp.weixin.qq.com/s?__biz=MzA5MzI3NjE2MA==&amp;mid=2650243222&amp;idx=1&amp;sn=62545983dd4d62527b64b2a28ea103fe&amp;chksm=886371f9bf14f8efc89c79d863ee0394b424901cde2f75104aed3822057da3d13cbef3eea73e&amp;mpshare=1&amp;scene=24&amp;srcid=06221gMVq1zqi4k9CVNRqoep#rd" target="_blank" rel="noopener">https://mp.weixin.qq.com/s?__biz=MzA5MzI3NjE2MA==&amp;mid=2650243222&amp;idx=1&amp;sn=62545983dd4d62527b64b2a28ea103fe&amp;chksm=886371f9bf14f8efc89c79d863ee0394b424901cde2f75104aed3822057da3d13cbef3eea73e&amp;mpshare=1&amp;scene=24&amp;srcid=06221gMVq1zqi4k9CVNRqoep#rd</a></p>
-<p>HTTP 必知必会的那些<br><a href="https://mp.weixin.qq.com/s?__biz=MzIwMTAzMTMxMg==&amp;mid=2649492918&amp;idx=1&amp;sn=40030cd46cbba2bc639602aa341f3739&amp;chksm=8eec8649b99b0f5f09aedc590901f61e1729ff03e6381a3127890381841dfcdd14af282a13fc&amp;mpshare=1&amp;scene=24&amp;srcid=07114zp2ahQQs9qXzlstH08u#rd" target="_blank" rel="noopener">https://mp.weixin.qq.com/s?__biz=MzIwMTAzMTMxMg==&amp;mid=2649492918&amp;idx=1&amp;sn=40030cd46cbba2bc639602aa341f3739&amp;chksm=8eec8649b99b0f5f09aedc590901f61e1729ff03e6381a3127890381841dfcdd14af282a13fc&amp;mpshare=1&amp;scene=24&amp;srcid=07114zp2ahQQs9qXzlstH08u#rd</a></p>
-<h1 id="架构"><a href="#架构" class="headerlink" title="架构"></a>架构</h1><p>浅谈Android中的MVP与动态代理<br><a href="https://mp.weixin.qq.com/s/Bktzl66Twp3jsuYLZrQPfQ" target="_blank" rel="noopener">https://mp.weixin.qq.com/s/Bktzl66Twp3jsuYLZrQPfQ</a></p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/07/22/5种写法实现单例模式/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Ennis L.M. Wu">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Ennis -Little Monster">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/07/22/5种写法实现单例模式/" itemprop="url">5种写法实现单例模式</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-07-22T09:37:52+08:00">
-                2018-07-22
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h1 id="饿汉式"><a href="#饿汉式" class="headerlink" title="饿汉式"></a>饿汉式</h1><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Singleton</span> </span>&#123;  </span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> Singleton instance = <span class="keyword">new</span> Singleton();</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="title">Singleton</span> <span class="params">()</span></span>&#123;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> Singleton <span class="title">getInstance</span><span class="params">()</span> </span>&#123;  </span><br><span class="line">        <span class="keyword">return</span> instance;  </span><br><span class="line">    &#125;  </span><br><span class="line"> &#125;</span><br></pre></td></tr></table></figure>
-<p>饿汉式在类加载时初始化。</p>
-<p>优点：</p>
-<ul>
-<li>简单。</li>
-<li>天生线程安全。</li>
-</ul>
-<p>缺点：</p>
-<ul>
-<li>初始化时机不能由开发者控制，初始化太早造成资源的浪费。</li>
-<li>初始化依赖于其他数据，难以控制其他数据是否准备好。</li>
-</ul>
-<h1 id="懒汉式"><a href="#懒汉式" class="headerlink" title="懒汉式"></a>懒汉式</h1><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Singleton</span> </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">volatile</span> Singleton instance;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="title">Singleton</span><span class="params">()</span> </span>&#123;&#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> Singleton <span class="title">getInstance</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (instance == <span class="keyword">null</span>) &#123;</span><br><span class="line">            <span class="keyword">synchronized</span> (Singleton.class) &#123;</span><br><span class="line">                <span class="keyword">if</span> (instance == <span class="keyword">null</span>) &#123;</span><br><span class="line">                    instance = <span class="keyword">new</span> Singleton();</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> instance;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>EventBus使用的方式。</p>
-<p>优点：</p>
-<ul>
-<li>第一次使用时加载，避免了资源浪费。</li>
-</ul>
-<p>缺点：</p>
-<ul>
-<li>复杂。</li>
-<li>即使是双重检查有时也会失效（可能性极低）。</li>
-</ul>
-<h1 id="静态内部类模式"><a href="#静态内部类模式" class="headerlink" title="静态内部类模式"></a>静态内部类模式</h1><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Singleton</span> </span>&#123; </span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="title">Singleton</span><span class="params">()</span></span>&#123;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> Singleton <span class="title">getInstance</span><span class="params">()</span></span>&#123;  </span><br><span class="line">        <span class="keyword">return</span> SingletonHolder.sInstance;  </span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="class"><span class="keyword">class</span> <span class="title">SingletonHolder</span> </span>&#123;  </span><br><span class="line">        <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> Singleton sInstance = <span class="keyword">new</span> Singleton();  </span><br><span class="line">    &#125;  </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>《Effective Java》第一版中推荐的写法。<br>内部类加载时初始化，内部类在第一次被调用时类加载。</p>
-<p>优点：</p>
-<ul>
-<li>简单。</li>
-<li>巧妙的利用内部类实现线程安全。</li>
-</ul>
-<h1 id="枚举模式"><a href="#枚举模式" class="headerlink" title="枚举模式"></a>枚举模式</h1><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">enum</span> Singleton &#123;  </span><br><span class="line">     INSTANCE;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>《Effective Java》第二版中推荐的写法。</p>
-<p>优点：</p>
-<ul>
-<li>极简。</li>
-<li>线程安全。</li>
-<li><strong>绝对完美单例，可以抵御反序列化、反射。</strong></li>
-</ul>
-<p>缺点：</p>
-<ul>
-<li>降低可读性。</li>
-<li>无法被继承，降低扩展性。</li>
-</ul>
-<h1 id="容器模式"><a href="#容器模式" class="headerlink" title="容器模式"></a>容器模式</h1><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">SingletonManager</span> </span>&#123; </span><br><span class="line">　　<span class="keyword">private</span> <span class="keyword">static</span> Map&lt;String, Object&gt; objMap = <span class="keyword">new</span> HashMap&lt;String,Object&gt;();</span><br><span class="line">　　</span><br><span class="line">　　<span class="function"><span class="keyword">private</span> <span class="title">SingletonManager</span><span class="params">()</span> </span>&#123; </span><br><span class="line">　　&#125;</span><br><span class="line">　　</span><br><span class="line">　　<span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">registerService</span><span class="params">(String key, Object instance)</span> </span>&#123;</span><br><span class="line">　　　　<span class="keyword">if</span> (!objMap.containsKey(key) ) &#123;</span><br><span class="line">　　　　　　objMap.put(key, instance) ;</span><br><span class="line">　　　　&#125;</span><br><span class="line">　　&#125;</span><br><span class="line">　　</span><br><span class="line">　　<span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="title">ObjectgetService</span><span class="params">(String key)</span> </span>&#123;</span><br><span class="line">　　　　<span class="keyword">return</span> objMap.get(key) ;</span><br><span class="line">　　&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>使用单例管理器统一管理所有单例，可以使用统一接口实现操作，这里只是写了简单的实现，没有优化获取操作，没有优化线程。</p>
-<p>优点：</p>
-<ul>
-<li>方便统一管理。</li>
-<li>降低耦合。</li>
-</ul>
-<p>缺点：</p>
-<ul>
-<li>不能及时找到获取途径，增加开发者的学习成本。</li>
-<li>未得到广泛认可。</li>
-</ul>
-<h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><p>本文一共提供了5种单例模式的实现，最推荐使用静态内部类的方式。饿汉式虽然简单但是容易造成资源浪费，懒汉式过于复杂，即便是双重检查版本也有可能DCL失效，枚举虽然是完美单例但是扩展性低，容器模式需要大量代码优化线程安全和获取操作并且增加了开发者的学习成本。</p>
-<p>参考资料：<br><a href="https://www.cnblogs.com/dongyu666/p/6971783.html" target="_blank" rel="noopener">https://www.cnblogs.com/dongyu666/p/6971783.html</a><br><a href="https://blog.csdn.net/itachi85/article/details/50510124" target="_blank" rel="noopener">https://blog.csdn.net/itachi85/article/details/50510124</a></p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
 
   
 
@@ -581,9 +252,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/07/20/转-Java反射完全解析/" itemprop="url">[转]Java反射完全解析</a></h1>
+          <h1 class="post-title" itemprop="name headline">[转]Java反射完全解析</h1>
         
 
         <div class="post-meta">
@@ -633,9 +302,7 @@
       
 
       
-        
-          
-            <blockquote>
+        <blockquote>
 <p>转载请注明出处：<a href="https://www.jianshu.com/p/607ff4e79a13" target="_blank" rel="noopener">https://www.jianshu.com/p/607ff4e79a13</a></p>
 </blockquote>
 <p>本文相关知识点大部分总结自<a href="https://docs.oracle.com/javase/8/docs/technotes/guides/reflection/index.html" target="_blank" rel="noopener">Oracle官方文档</a>，对于英文比较好的朋友，建议直接阅读原文档。</p>
@@ -958,8 +625,6 @@
 <p>使用反射的一个原则：如果使用常规方法能够实现，那么就不要用反射。</p>
 </blockquote>
 
-          
-        
       
     </div>
     
@@ -974,466 +639,42 @@
 
     <footer class="post-footer">
       
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/06/13/《TCPIP详解卷1》010阅读笔记/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Ennis L.M. Wu">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Ennis -Little Monster">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/06/13/《TCPIP详解卷1》010阅读笔记/" itemprop="url">《TCPIP详解卷1》010阅读笔记</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-06-13T20:05:37+08:00">
-                2018-06-13
-              </time>
-            
-
-            
-
-            
-          </span>
-
+        <div class="post-tags">
           
-
+            <a href="/tags/Java/" rel="tag"># Java</a>
           
-            
+            <a href="/tags/反射/" rel="tag"># 反射</a>
           
-
-          
-          
-
-          
-
-          
-
-          
-
         </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h4 id="名词解释"><a href="#名词解释" class="headerlink" title="名词解释"></a>名词解释</h4><table>
-<thead>
-<tr>
-<th>缩写</th>
-<th>英文全称</th>
-<th>中文</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>AS</td>
-<td>Autonomous System</td>
-<td>自治系统</td>
-</tr>
-<tr>
-<td>IGP</td>
-<td>Interior Gateway Protocol</td>
-<td>内部网关协议/域内选路协议</td>
-</tr>
-<tr>
-<td>EGP</td>
-<td>Exterier Gateway Protocol</td>
-<td>外部网关协议/域内选路协议的分隔选路协议</td>
-</tr>
-<tr>
-<td>BGP</td>
-<td>Border Gateway Protocol</td>
-<td>边界网关协议</td>
-</tr>
-<tr>
-<td>RIP</td>
-<td>Routing Infomation Protocol</td>
-<td>选路信息协议</td>
-</tr>
-<tr>
-<td>OSPF</td>
-<td>Open Shortest Path First</td>
-<td>开放最短路径优先协议</td>
-</tr>
-<tr>
-<td>CIDR</td>
-<td>Classless Inter-Domain Routing</td>
-<td>无类别域间路由</td>
-</tr>
-</tbody>
-</table>
-<ul>
-<li>IGP用于自治系统内。</li>
-<li>EGP用于自治系统之间。</li>
-<li>BGP意在取代EGP。<br><br></li>
-</ul>
-<h4 id="动态选路"><a href="#动态选路" class="headerlink" title="动态选路"></a>动态选路</h4><ul>
-<li>相邻路由器之间进行通信，告知对方每个路由器当前所连接的网络。</li>
-<li>路由守护程序根据从相邻路由器收到的信息更新内核中的路由表。</li>
-<li>随时间变化时，路由是由路由守护程序动态地增加或删除。</li>
-<li>如果路由守护程序发现前往同一信宿存在多条路由，选择最佳路由加入内核路由表。</li>
-<li>如果路由守护程序发现一条链路已经断开，删除受影响的路由或增加一条路由绕过。</li>
-<li>每个自治系统由单个<strong>实体</strong>管理。==什么是实体？==<br><br></li>
-</ul>
-<h4 id="RIP：选路信息协议"><a href="#RIP：选路信息协议" class="headerlink" title="RIP：选路信息协议"></a>RIP：选路信息协议</h4><ul>
-<li>正式描述文件RFC 1058 [Hedrick 1988a]。</li>
-<li>RIP报文包含在UDP数据报中。</li>
-<li>RIP的度量是以跳计数的。</li>
-<li>最多携带25个路由。<br><br></li>
-</ul>
-<h6 id="度量"><a href="#度量" class="headerlink" title="度量"></a>度量</h6><ul>
-<li>直接连接接口的跳数为1。</li>
-<li>一个路由器到一个网络有多条路由，路由器选择跳数最小的路由。</li>
-<li>度量为16表示无路由到达该IP地址。<br><br></li>
-</ul>
-<h6 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h6><ul>
-<li>RIP没有子网地址的概念。</li>
-<li>路由器或链路发生故障后在稳定下来这段时间可能发生路由环路。</li>
-<li>度量最大值限制了可以使用RIP的网络的大小。<br><br></li>
-</ul>
-<h4 id="RIP版本2"><a href="#RIP版本2" class="headerlink" title="RIP版本2"></a>RIP版本2</h4><ul>
-<li>RFC 1388 [Malkin 1993a] 对RIP定义进行了扩充。</li>
-<li>路由域字段：数据报的所有者。</li>
-<li>选路标记字段：携带一个EGP和BGP的自治系统号。</li>
-<li>子网掩码字段：应用于相应的IP地址。</li>
-<li>下一站IP地址字段：指明发往目的IP地址的报文应该发往哪里。</li>
-<li>除了支持广播，还支持多播。<br><br></li>
-</ul>
-<h4 id="OSPF：开放最短路径优先"><a href="#OSPF：开放最短路径优先" class="headerlink" title="OSPF：开放最短路径优先"></a>OSPF：开放最短路径优先</h4><ul>
-<li>RFC 1247 [Moy 1991] 对第2版OSPF进行了描述。</li>
-<li>OSPF克服了RIP所有限制。</li>
-<li>路由器不与临站交换距离信息，主动测试与临站相连的链路状态。</li>
-<li>信息发给其他临站，临站将这些信息在自治系统中传播出去。</li>
-<li>路由器接收这些链路状态信息，建立完整的路由表。</li>
-<li>链路状态协议总是比距离向量协议稳定更快。</li>
-<li>OSPF直接使用IP，不使用UDP或TCP。</li>
-<li>优于RIP的特点：</li>
-<li><ol>
-<li>可以对每个IP服务类型计算各自的路由集。</li>
-</ol>
-</li>
-<li><ol start="2">
-<li>给每个接口指派一个无维数的费用。</li>
-</ol>
-</li>
-<li><ol start="3">
-<li>同一个目的地址存在多个相同费用的路由时，平均分配流量。</li>
-</ol>
-</li>
-<li><ol start="4">
-<li>支持子网，子网掩码与每个通告相连。</li>
-</ol>
-</li>
-<li><ol start="5">
-<li>无编号网络。</li>
-</ol>
-</li>
-<li><ol start="6">
-<li>简单鉴别机制。</li>
-</ol>
-</li>
-<li><ol start="7">
-<li>采用多播而不是广播形式，减少系统负载。<br><br></li>
-</ol>
-</li>
-</ul>
-<h4 id="BGP：边界网关协议"><a href="#BGP：边界网关协议" class="headerlink" title="BGP：边界网关协议"></a>BGP：边界网关协议</h4><ul>
-<li>RFC 1267 [Lougheed and Rekhter 1991] 对第3版BGP进行描述。</li>
-<li>BGP系统之间交换网络可到达信息，包括所必须经过的自治系统的所有路径。</li>
-<li>使用BGP的一个目的是减少通过流量。</li>
-<li>允许使用基于策略的选路。</li>
-<li>使用TCP作为其传输层协议。</li>
-<li>BGP是一个距离测量协议，列举了到每个目的地址的路由，排除了一些距离向量协议的问题。</li>
-<li>定期发送keepalive报文给临站来监测TCP连接对端的链路或主机失败。</li>
-<li>应用层的keepalive报文与TCP的keepalive报文选项相互独立。<br><br></li>
-</ul>
-<h4 id="CIDR：无类型域间选路"><a href="#CIDR：无类型域间选路" class="headerlink" title="CIDR：无类型域间选路"></a>CIDR：无类型域间选路</h4><ul>
-<li>RFC 1518 [Rekher and Li 1993], RFC 1519 [Fuller et al. 1993]对它描述。</li>
-<li>[Ford, Rekhter, and Braun 1993] 综述。</li>
-<li>一个防止路由表膨胀的方法，也成为超网。</li>
-<li>采用分配多个IP地址的方式，使许多表项总和成更少的数目</li>
-<li>必须满足3种特性：</li>
-<li><ol>
-<li>IP地址必须具有相同的高位地址比特。</li>
-</ol>
-</li>
-<li><ol start="2">
-<li>路由表和选路算法必须扩展成根据32 bit IP地址和32 bit 掩码做出选路决策。</li>
-</ol>
-</li>
-<li><ol start="3">
-<li>选路协议要有32 bit掩码。</li>
-</ol>
-</li>
-</ul>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
       
 
       
       
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
       
 
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/06/12/《TCPIP详解卷1》007、008、009阅读笔记/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Ennis L.M. Wu">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Ennis -Little Monster">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/06/12/《TCPIP详解卷1》007、008、009阅读笔记/" itemprop="url">《TCPIP详解卷1》007、008、009阅读笔记</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
             
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-06-12T20:32:56+08:00">
-                2018-06-12
-              </time>
+              <a href="/2018/06/13/《TCPIP详解卷1》010阅读笔记/" rel="next" title="《TCPIP详解卷1》010阅读笔记">
+                <i class="fa fa-chevron-left"></i> 《TCPIP详解卷1》010阅读笔记
+              </a>
             
+          </div>
 
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
             
-
+              <a href="/2018/07/22/5种写法实现单例模式/" rel="prev" title="5种写法实现单例模式">
+                5种写法实现单例模式 <i class="fa fa-chevron-right"></i>
+              </a>
             
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
+          </div>
         </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
       
 
       
-        
-          
-            <h4 id="007，Ping的工作原理"><a href="#007，Ping的工作原理" class="headerlink" title="007，Ping的工作原理"></a>007，Ping的工作原理</h4><h6 id="Unix系统的实现"><a href="#Unix系统的实现" class="headerlink" title="Unix系统的实现"></a>Unix系统的实现</h6><ul>
-<li>把ICMP报文中标识符字段设置成发送进程的ID号（识别多个Ping程序实例）。</li>
-<li>序列号从0开始，每发送一次新的回显请求就 + 1。</li>
-<li>Ping程序允许我们查看是否有分组丢失、失序或重复。<br><br></li>
-</ul>
-<h6 id="旧版本Ping程序"><a href="#旧版本Ping程序" class="headerlink" title="旧版本Ping程序"></a>旧版本Ping程序</h6><ul>
-<li>每秒发送一个回显请求。</li>
-<li>打印返回的每个分组的每个回显应答。<br><br></li>
-</ul>
-<h6 id="新版本Ping程序"><a href="#新版本Ping程序" class="headerlink" title="新版本Ping程序"></a>新版本Ping程序</h6><ul>
-<li>需要加上 - s 选项以旧版本模式运行。</li>
-<li>Ping程序只发送一个回显请求。</li>
-<li>收到回显应答输出“host is alive”，20秒内没收到输出“no answer”。<br><br></li>
-</ul>
-<h4 id="008，Traceroute的工作原理"><a href="#008，Traceroute的工作原理" class="headerlink" title="008，Traceroute的工作原理"></a>008，Traceroute的工作原理</h4><ul>
-<li>每个处理数据报的路由器都要把TTL的值减1或停留的秒数。</li>
-<li>大多数路由器转发数据报的时延都小于1秒，TTL最终成为一个跳站计数器。</li>
-<li>如果TTL字段是1，路由器将该数据报丢弃，并向信源机放一份ICMP“超时”信息。</li>
-<li>Traceroute程序发送一份TTL字段为1的IP数据报为目的主机，第一个路由器丢弃并发回超时ICMP报文，然后Traceroute程序发送一份TTL字段为2的数据报，得到第二个路由器的地址，以此类推。</li>
-<li>目的主机收到TTL值为1的IP数据报，不会丢弃并产生ICMP超时报文。</li>
-<li>Traceroute程序发送一份不可能值作为UDP端口号（大于30000）的UDP数据报给目的主机，目的主机产生一份“端口不可达”错误的ICMP报文。</li>
-<li>Traceroute程序区分收到的ICMP报文是超时还是端口不可达判断是否结束。<br><br></li>
-</ul>
-<h4 id="009，IP包选路的工作原理"><a href="#009，IP包选路的工作原理" class="headerlink" title="009，IP包选路的工作原理"></a>009，IP包选路的工作原理</h4><h6 id="选路的原理"><a href="#选路的原理" class="headerlink" title="选路的原理"></a>选路的原理</h6><ul>
-<li>IP搜索路由表的步骤：</li>
-<li><ol>
-<li>搜索匹配的主机地址。</li>
-</ol>
-</li>
-<li><ol start="2">
-<li>搜索比配的网络地址。</li>
-</ol>
-</li>
-<li><ol start="3">
-<li>搜索默认表项。</li>
-</ol>
-</li>
-<li>IP层进行的选路是一种选路机制，它搜索路由表并决定向哪个网络接口发送分组。</li>
-<li>选路策略决定把哪些路由放入路由表的规则，路由守护程序提供选路策略。<br><br></li>
-</ul>
-<h6 id="初始化路由表"><a href="#初始化路由表" class="headerlink" title="初始化路由表"></a>初始化路由表</h6><ul>
-<li>在系统引导时显示地的在初始化文件中运行route命令。<br><br></li>
-</ul>
-<h6 id="没有到达目的地的路由"><a href="#没有到达目的地的路由" class="headerlink" title="没有到达目的地的路由"></a>没有到达目的地的路由</h6><p>路由表中没有默认项，又没有找到匹配项。</p>
-<ul>
-<li>数据报由本地主机产生：向应用程序返回一个“主机不可达差错”或“网络不可达差错”。</li>
-<li>被转发的数据报：向原始发送端发送一份ICMP主机不可达差错报文。<br><br></li>
-</ul>
-<h6 id="ICMP重定向差错"><a href="#ICMP重定向差错" class="headerlink" title="ICMP重定向差错"></a>ICMP重定向差错</h6><ul>
-<li>当数据报应该被发送到另一个路由器时，收到数据报的路由器要发送ICMP重定向差错报文给IP数据报的发送端。</li>
-<li>重定向一般用来让具有很少选路信息的主机逐渐建立更完善的路由表。<br><br></li>
-</ul>
-<h6 id="ICMP重定向报文"><a href="#ICMP重定向报文" class="headerlink" title="ICMP重定向报文"></a>ICMP重定向报文</h6><ul>
-<li>重定向报文只能由路由器生成。</li>
-<li>重定向报文是为主机使用的。<br><br></li>
-</ul>
-<h6 id="ICMP路由器发现报文"><a href="#ICMP路由器发现报文" class="headerlink" title="ICMP路由器发现报文"></a>ICMP路由器发现报文</h6><ul>
-<li>一份报文可以通告多个地址。</li>
-<li>路由器启动时定期在所有广播或多播传送接口上发送通告报文。</li>
-<li>某个接口被关闭时，该接口上发送一份通告报文，生命周期值设为0。</li>
-<li>监听来自主机的请求报文，并发送通告报文以响应。</li>
-<li>主机在引导期间发送请求报文。</li>
-<li>监听来自相邻路由器的请求报文。</li>
-</ul>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
       
     </footer>
   </div>
@@ -1443,1029 +684,11 @@
   </article>
 
 
-    
-      
 
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/06/12/《TCPIP详解卷1》006阅读笔记/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Ennis L.M. Wu">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Ennis -Little Monster">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/06/12/《TCPIP详解卷1》006阅读笔记/" itemprop="url">《TCPIP详解卷1》006阅读笔记</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-06-12T16:34:53+08:00">
-                2018-06-12
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>ICMP的正式规范参见 RFC 792<br><br></p>
-<p>ICMP是IP层的一个组成部分，传递差错报文和其他需要注意的信息。<br>通常被IP层或更高层协议使用。<br><br></p>
-<p><img src="../images/《TCPIP详解卷1》006阅读笔记/ICMP报文.png" alt="image"></p>
-<ul>
-<li>校验和覆盖整个ICMP报文，算法与IP首部相同</li>
-<li>不同类型和代码有不同的内容<br><br></li>
-</ul>
-<h4 id="ICMP报文的类型"><a href="#ICMP报文的类型" class="headerlink" title="ICMP报文的类型"></a>ICMP报文的类型</h4><ul>
-<li>类型字段和代码字段共同决定。</li>
-<li><p>ICMO差错报文始终包含IP首部和产生差错的IP数据报的前8个字节。<br>接收ICMP差错报文的模块可以与某个协议和用户进程联系起来。</p>
-</li>
-<li><p>下面情况不产生差错报文：</p>
-</li>
-<li><ol>
-<li>ICMP差错报文</li>
-</ol>
-</li>
-<li><ol start="2">
-<li>目的地址是广播或多播地址</li>
-</ol>
-</li>
-<li><ol start="3">
-<li>作为链路层广播的数据报</li>
-</ol>
-</li>
-<li><ol start="4">
-<li>不是IP分片的第一片</li>
-</ol>
-</li>
-<li><ol start="5">
-<li>源地址不是单个主机的数据报<br><br></li>
-</ol>
-</li>
-</ul>
-<h4 id="ICMP地址掩码请求与应答"><a href="#ICMP地址掩码请求与应答" class="headerlink" title="ICMP地址掩码请求与应答"></a>ICMP地址掩码请求与应答</h4><p><img src="../images/《TCPIP详解卷1》006阅读笔记/掩码请求和应答.png" alt="iamge"></p>
-<ul>
-<li>用于无盘系统在引导过程中获取自己的子网掩码。</li>
-<li>系统广播他的ICMP请求报文（类似RARP获取IP地址）。</li>
-<li>标识符和序列号由发送端任意设定，在应答中返回进行匹配。<br><br></li>
-</ul>
-<h4 id="ICMP时间戳请求与应答"><a href="#ICMP时间戳请求与应答" class="headerlink" title="ICMP时间戳请求与应答"></a>ICMP时间戳请求与应答</h4><p><img src="../images/《TCPIP详解卷1》006阅读笔记/时间戳请求和应答.png" alt="image"></p>
-<ul>
-<li>请求允许系统向另一个系统查询当前时间。</li>
-<li>返回的建议值是自午夜计算的毫秒数，协调的统一时间。</li>
-<li>缺陷：必须通过其他方法获知当时的日期。</li>
-<li>请求端填写发起时间戳，应答系统收到时填写接收时间戳，发送时填写传送时间戳。<br><img src="../images/《TCPIP详解卷1》006阅读笔记/时间戳请求.png" alt="image"><br><img src="../images/《TCPIP详解卷1》006阅读笔记/值关系.png" alt="image"></li>
-<li>调整值是difference - RTT / 2。<br><br></li>
-</ul>
-<h4 id="ICMP端口不可达差错"><a href="#ICMP端口不可达差错" class="headerlink" title="ICMP端口不可达差错"></a>ICMP端口不可达差错</h4><p>以UDP端口不可达为例。<br><img src="../images/《TCPIP详解卷1》006阅读笔记/例子返回报文.png" alt="image"></p>
-<ul>
-<li>IP首部后面前8个字节是UDP首部（源端口号和目的端口号）。<br><img src="../images/《TCPIP详解卷1》006阅读笔记/不可达报文.png" alt="image"></li>
-</ul>
-
-          
-        
+    <div class="post-spread">
       
     </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
   </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/06/12/《TCPIP详解卷1》004阅读笔记/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Ennis L.M. Wu">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Ennis -Little Monster">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/06/12/《TCPIP详解卷1》004阅读笔记/" itemprop="url">《TCPIP详解卷1》004阅读笔记</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-06-12T15:38:11+08:00">
-                2018-06-12
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>RFC 826 [Plummer 1982] 是ARP规范描述文档。<br>ARP（地址解析协议）<br>RARP（逆地址解析协议）<br><br></p>
-<p>ARP为IP地址到对应硬件地址之间提供动态映射，因为是自动完成的。<br>RARP被没有磁盘驱动器的系统使用，需要系统管理员手工设置。<br><br></p>
-<p>ARP发送一份称作ARP请求的以太网数据帧给以太网上的每个主机。称作广播。<br><br></p>
-<p>点对点链路不使用ARP。设置这些链路时，必须告知内核链路每一端的IP地址，而不需要硬件地址。<br><br></p>
-<p>ARP高效运行因为每个主机上都有一个ARP高速缓存<br><br></p>
-<h4 id="ARP的分组格式"><a href="#ARP的分组格式" class="headerlink" title="ARP的分组格式"></a>ARP的分组格式</h4><table>
-<thead>
-<tr>
-<th>以太网目的地址</th>
-<th>以太网源地址</th>
-<th>帧类型</th>
-<th>硬件类型</th>
-<th>协议类型</th>
-<th>硬件地址长度</th>
-<th>协议地址长度</th>
-<th>op</th>
-<th>发送端以太网地址</th>
-<th>发送端IP地址</th>
-<th>目的以太网地址</th>
-<th>目的IP地址</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>6</td>
-<td>6</td>
-<td>2</td>
-<td>2</td>
-<td>2</td>
-<td>1</td>
-<td>1</td>
-<td>2</td>
-<td>6</td>
-<td>4</td>
-<td>6</td>
-<td>4</td>
-</tr>
-<tr>
-<td>全1</td>
-<td></td>
-<td>0x0806</td>
-<td>1</td>
-<td>0x0800</td>
-<td>6 bytes</td>
-<td>4 bytes</td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-</tr>
-<tr>
-<td>广播地址</td>
-<td></td>
-<td>ARP请求或应答</td>
-<td>表示以太网地址</td>
-<td>表示IP地址</td>
-<td>MAC地址长度</td>
-<td>IP地址长度</td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-</tr>
-</tbody>
-</table>
-<ul>
-<li>目的地址：全1的特殊地址是广播地址，电缆上的所有以太网接口都要接收广播的数据帧。</li>
-<li>操作字段（OP）：ARP请求（1）、ARP应答（2）、RARP请求（3）、RARP应答（4），必须字段，因为ARP请求和应答的帧类型字段相同。<br><br></li>
-</ul>
-<h4 id="ARP高速缓存超时设置"><a href="#ARP高速缓存超时设置" class="headerlink" title="ARP高速缓存超时设置"></a>ARP高速缓存超时设置</h4><ul>
-<li>BSD演变来的系统一般设置完整表项超时20分钟，不完整表项超时3分钟。</li>
-<li>表项再次使用时，超时值重设为20分钟。<br><br></li>
-</ul>
-<h4 id="ARP代理"><a href="#ARP代理" class="headerlink" title="ARP代理"></a>ARP代理</h4><ul>
-<li>路由器相当于目的主机的代理，把分组从其他主机转发给它。<br><br></li>
-</ul>
-<h4 id="免费ARP"><a href="#免费ARP" class="headerlink" title="免费ARP"></a>免费ARP</h4><ul>
-<li>是指发送ARP查找自己的IP地址。</li>
-<li>两方面作用：</li>
-<li><ol>
-<li>验证IP是否冲突，一个主机能够通过它来确定是否还有一个主机设置了相同的IP地址。</li>
-</ol>
-</li>
-<li><ol>
-<li>更换物理网卡，假设发送ARP的主机正好改变了物理地址，能够使用此方法通知网络中其他主机及时更新ARP缓存。<br><br></li>
-</ol>
-</li>
-</ul>
-<h4 id="ARP命令"><a href="#ARP命令" class="headerlink" title="ARP命令"></a>ARP命令</h4><ul>
-<li>arp -a 显示ARP高速缓存。</li>
-<li>arp -d 删除ARP高速缓存中某一项。</li>
-<li>arp -s 增加高速缓存中的内容，是永久性的，除非末尾加上关键字temp。</li>
-</ul>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/06/02/《TCPIP详解卷1》003阅读笔记/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Ennis L.M. Wu">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Ennis -Little Monster">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/06/02/《TCPIP详解卷1》003阅读笔记/" itemprop="url">《TCP/IP详解卷1》003阅读笔记</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-06-02T15:07:17+08:00">
-                2018-06-02
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>IP的正式规范文件：RFC 791</p>
-<p>所有TCP、UDP、ICMP及IGMP数据都以IP数据报格式传输。<br>不可靠：不能保证IP数据报能够成功到达目的地。可靠性必须由上层提供。<br>无连接：IP不维护后续数据报的状态信息。每个数据报的处理相互独立。IP数据报可以不按发送顺序接收。</p>
-<p>传输次序：网络字节序/big endian（大端）字节序</p>
-<h4 id="IP首部字段"><a href="#IP首部字段" class="headerlink" title="IP首部字段"></a>IP首部字段</h4><table>
-<thead>
-<tr>
-<th>字段名</th>
-<th>长度</th>
-<th></th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>版本</td>
-<td>4位</td>
-<td>4</td>
-</tr>
-<tr>
-<td>首部长度</td>
-<td>4位</td>
-<td>首部占32bit字的数目，没有任何选项，值为5，首部最长60字节</td>
-</tr>
-<tr>
-<td>服务类型（TOS）</td>
-<td>8位</td>
-<td>3bit优先权子字段（已忽略），4bitTOS子字段，1bit未用位（置为0）</td>
-</tr>
-<tr>
-<td>总长度</td>
-<td>16位</td>
-<td>字节为单位，最长65535字节。<strong>必要内容</strong></td>
-</tr>
-<tr>
-<td>位标识</td>
-<td>16位</td>
-<td>唯一标识主机发送的每一份数据报</td>
-</tr>
-<tr>
-<td>位标志</td>
-<td>3位</td>
-<td></td>
-</tr>
-<tr>
-<td>位片偏移</td>
-<td>13位</td>
-<td></td>
-</tr>
-<tr>
-<td>生存时间（TTL）</td>
-<td>8位</td>
-<td>经过的最多路由器数，初始值通常为64或32，源主机设置。</td>
-</tr>
-<tr>
-<td>协议</td>
-<td>8位</td>
-<td></td>
-</tr>
-<tr>
-<td>首部校验和</td>
-<td>16位</td>
-<td>根据IP首部计算校验和码。</td>
-</tr>
-<tr>
-<td>选项</td>
-<td></td>
-<td>可选，可变长。32bit为界限，不够时插入值为0的填充字节。</td>
-</tr>
-</tbody>
-</table>
-<ul>
-<li>首部长度：从包头格式图看出，是以32bit为一行的，一行包括若干字段。首部长度的数值是以32bit为单位来描述的，比如四位全为1，十六进制本来是0X0F，也就是十进制的15但是，<strong>这个字段的1不是数值1，而是指1个单位即一个32bit。</strong>所以如果该字段是1111的话。就是15*32bit=60Byte了。 </li>
-<li>4bit的TOS代表：最小时延、最大吞吐量、最高可靠性、最小费用。</li>
-<li>首部长度、总长度计算数据内容的起始位置和长度。</li>
-<li>TTL为0时丢弃数据报，发送ICMP报文通知源主机。</li>
-<li>首部校验和：如果校验和错误，丢弃数据报，但不生成差错报文，由上层发现并重传。</li>
-</ul>
-<h4 id="IP路由选择"><a href="#IP路由选择" class="headerlink" title="IP路由选择"></a>IP路由选择</h4><p>目的主机与源主机直接相连，或都在一个共享网络上，IP数据报直接送到目的主机。<br>否则发往默认路由，由路由器转发。<br><br></p>
-<h6 id="IP层可以配置成路由器或主机"><a href="#IP层可以配置成路由器或主机" class="headerlink" title="IP层可以配置成路由器或主机"></a>IP层可以配置成路由器或主机</h6><p>主机：不转发<br>路由器：转发<br>内含路由器的主机：不转发<br><br></p>
-<h6 id="收到数据报来自网络接口时（即非本地生成的数据报）"><a href="#收到数据报来自网络接口时（即非本地生成的数据报）" class="headerlink" title="收到数据报来自网络接口时（即非本地生成的数据报）"></a>收到数据报来自网络接口时（即非本地生成的数据报）</h6><ul>
-<li>检查IP地址<ul>
-<li>是本机IP地址之一或IP广播地址：发送到指定协议模块<ul>
-<li>IP层设置为路由器：转发</li>
-<li>否则：丢弃<br><br></li>
-</ul>
-</li>
-</ul>
-</li>
-</ul>
-<h6 id="路由表"><a href="#路由表" class="headerlink" title="路由表"></a>路由表</h6><table>
-<thead>
-<tr>
-<th>项</th>
-<th>含义</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>目的IP地址</td>
-<td>表中标志字段指定类型。完整的主机地址：非0主机号。网络地址：主机号为0。</td>
-</tr>
-<tr>
-<td>下一跳路由器IP地址</td>
-<td>或者有直接连接的网络IP地址。</td>
-</tr>
-<tr>
-<td>标志</td>
-<td>一个指明目的IP地址类型，==<strong>一个标志下一站路由器时真下一站路由器还是直接相连的接口。</strong>看不懂这句==</td>
-</tr>
-<tr>
-<td>指定网络接口</td>
-</tr>
-</tbody>
-</table>
-<p>IP不知道目的的完整路径<br><br></p>
-<h6 id="IP路由选择主要功能"><a href="#IP路由选择主要功能" class="headerlink" title="IP路由选择主要功能"></a>IP路由选择主要功能</h6><p>搜索路由表</p>
-<ol>
-<li>寻找与目的IP完全匹配（网络号和主机号）的条目</li>
-<li>寻找与目的网络号相匹配的条目（必须考虑子网掩码）</li>
-<li>寻找“默认”的条目</li>
-</ol>
-<p>如果找到，报文发送指定的下一站路由器或直接相连的网络接口。<br>如果都未成功，则不能被传送，向应用返回错误<br><br></p>
-<h4 id="子网寻址"><a href="#子网寻址" class="headerlink" title="子网寻址"></a>子网寻址</h4><p>==看不懂图==</p>
-<ul>
-<li>所有主机都要求支持子网寻址。</li>
-<li>IP地址 = 网络号 + 子网号 + 主机号</li>
-<li>B类IP地址 = 网络号（16位）+ 子网号（8位）+ 主机号（8位）</li>
-<li>子网对外部路由器来说隐藏了内部网络组织。</li>
-<li>子网划分缩减了路由表的规模。</li>
-<li>子网对于子网内部的路由器不透明。==不懂==</li>
-</ul>
-<h4 id="子网掩码"><a href="#子网掩码" class="headerlink" title="子网掩码"></a>子网掩码</h4><ul>
-<li>标识多少bit用于子网号，多少bit用于主机号。</li>
-<li>掩码是32bit的值，值为1留给网络号和子网号，值为0留给主机号。</li>
-<li>给定IP地址和子网掩码后可以确定：</li>
-<li><ol>
-<li>本子网上的主机。</li>
-</ol>
-</li>
-<li><ol start="2">
-<li>本网络中其他子网中的主机。</li>
-</ol>
-</li>
-<li><ol start="3">
-<li>其他网络上的主机。</li>
-</ol>
-</li>
-</ul>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/05/31/《TCPIP详解卷1》002阅读笔记/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Ennis L.M. Wu">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Ennis -Little Monster">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/05/31/《TCPIP详解卷1》002阅读笔记/" itemprop="url">《TCPIP详解卷1》002阅读笔记</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-05-31T11:45:10+08:00">
-                2018-05-31
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h4 id="名词解释"><a href="#名词解释" class="headerlink" title="名词解释"></a>名词解释</h4><ul>
-<li>LLC：逻辑链路控制（Logic Link Control）</li>
-<li>SNAPL：自网络访问协议（SubNetwork Access Protocol）</li>
-<li>IEEE：电子电气工程师协会</li>
-<li>CRC：循环冗余校验（Cyclic Redundancy Check ）</li>
-<li>pad字节：padding byte，填充字节</li>
-<li>RS-232：异步传输标准接口</li>
-<li>BSD：Berkeley Software Distribution，Unix的衍生系统<br><br></li>
-</ul>
-<h4 id="链路层主要三个目的"><a href="#链路层主要三个目的" class="headerlink" title="链路层主要三个目的"></a>链路层主要三个目的</h4><ol>
-<li>为IP模块发送接受IP数据报。</li>
-<li>为ARP模块发送ARP请求和接受ARP应答。</li>
-<li>为RARP发送RARP请求和接受RARP应答。<br><br></li>
-</ol>
-<h4 id="以太网与IEEE-802封装对比"><a href="#以太网与IEEE-802封装对比" class="headerlink" title="以太网与IEEE 802封装对比"></a>以太网与IEEE 802封装对比</h4><table>
-<thead>
-<tr>
-<th></th>
-<th>以太网</th>
-<th>IEEE 802</th>
-<th>备注</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>数据报封装</td>
-<td>RFC 894中定义</td>
-<td>RFC 1042中定义</td>
-<td></td>
-</tr>
-<tr>
-<td>长度字段</td>
-<td></td>
-<td>后续数据的长度字段（不包括CRC）</td>
-<td></td>
-</tr>
-<tr>
-<td>类型字段</td>
-<td>后续数据的类型</td>
-<td>由后续子网接入协议的首部给出</td>
-<td>格式相同</td>
-</tr>
-<tr>
-<td>最小长度</td>
-<td>46字节</td>
-<td>38字节</td>
-<td>不足空间填充pad字节</td>
-</tr>
-</tbody>
-</table>
-<p>有效类型值都不相同，可以对两种帧格式进行区分。<br>以太网：类型字段后是数据。<br>IEEE 802：长度字段后是802.2LLC、802.2SNAP。<br>CRC字段（FCS/帧校验序列）：后续字节差错的循环冗余码校验。<br><br></p>
-<h4 id="尾部封装"><a href="#尾部封装" class="headerlink" title="尾部封装"></a>尾部封装</h4><ul>
-<li>在RFC 89C被描述。</li>
-<li>通过调整IP数据报中字段次序提高性能。</li>
-<li>将IP首部和TCP首部移到尾部CRC之前。</li>
-<li>==<strong>当把数据复制到内核是，可以绑数据帧中的数据部分映射到一个硬件页面，节省到内存的复制过程。</strong>看不懂？？？==</li>
-<li><strong>尾部封装已遭到反对。</strong><br><br></li>
-</ul>
-<h4 id="SLIP：串行线路IP"><a href="#SLIP：串行线路IP" class="headerlink" title="SLIP：串行线路IP"></a>SLIP：串行线路IP</h4><ul>
-<li>串行线路上对IP数据报封装的简单形式。</li>
-<li>适用于RS-232串行端口、高速调制解调器接入网络。</li>
-<li>以END(0XC0)的特殊字符结束。</li>
-<li>如果有线路噪声，开始也传一个END(0XC0)字符。</li>
-<li>IP报文中END用0XDB和0XDC取代（称为ESC字符）。</li>
-<li>IP报文中ESC用0XDB和0XDD取代。</li>
-<li>缺陷：</li>
-<li><ol>
-<li>每一端必须知道对方的IP地址。</li>
-</ol>
-</li>
-<li><ol start="2">
-<li>没有类型字段，不能和其他协议同时使用。</li>
-</ol>
-</li>
-<li><ol start="3">
-<li>没有校验和。<br><br></li>
-</ol>
-</li>
-</ul>
-<h4 id="压缩的SLIP（CSLIP）"><a href="#压缩的SLIP（CSLIP）" class="headerlink" title="压缩的SLIP（CSLIP）"></a>压缩的SLIP（CSLIP）</h4><ul>
-<li>在RFC 1144中被描述。</li>
-<li>为了在SLIP上传输1个字节总共需要40字节，CSLIP能把它们压缩到3或5个字节。</li>
-<li>每一端维持多达16个TCP连接。</li>
-<li>知道每个连接的首部哪些字段一般不会发生变化。</li>
-<li>被压缩的首部大大缩短了交互响应时间。<br><br></li>
-</ul>
-<h4 id="PPP点对点协议"><a href="#PPP点对点协议" class="headerlink" title="PPP点对点协议"></a>PPP点对点协议</h4><p><strong>修改了SLIP协议中的所有缺陷，最终应该取代SLIP。</strong><br><br></p>
-<h6 id="PPP包括三个部分："><a href="#PPP包括三个部分：" class="headerlink" title="PPP包括三个部分："></a>PPP包括三个部分：</h6><ol>
-<li>在串行链路上封装IP数据报的方法。</li>
-<li>建立、配置及测试数据链路的链路控制协议。</li>
-<li>针对不同网络层协议的网络控制协议体系。<br><br><h6 id="数据报帧的格式："><a href="#数据报帧的格式：" class="headerlink" title="数据报帧的格式："></a>数据报帧的格式：</h6></li>
-</ol>
-<ul>
-<li>以0X7E开始和结束。</li>
-<li>地址字节值始终为0XFF。</li>
-<li>协议字段（类似以太网类型字段）：<br>| 协议字段的值 | 标识信息字段的类型 |<br>| ———- | —————-|<br>| 0X0021 | IP数据报 |<br>| 0XC021 | 链路控制数据 |<br>| 0X8021 | 网络控制数据 |<br>信息字段出现0X7E时需要转义。<br><br><br>利用链路控制协议，大多数可以省略标识符和地址字段。<br>使用IP网络控制协议，大多数可以采用Van Jacobson报文首部压缩方法。不懂？？？<br><br><br>对比SLIP具有的优点</li>
-</ul>
-<ol>
-<li>PPP支持在单根串行线路上运行多种协议。</li>
-<li>每一帧都有循环冗余校验。</li>
-<li>通信双方可以进行IP地址的动态协商。</li>
-<li>与CSLIP类似，对TCP和IP报文首部压缩。</li>
-<li>链路控制协议可以对多个数据链路选项进行设置。<br><br></li>
-</ol>
-<h4 id="环回接口（localhost）"><a href="#环回接口（localhost）" class="headerlink" title="环回接口（localhost）"></a>环回接口（localhost）</h4><ul>
-<li>大多数系统把IP地址127.0.0.1分配给这个接口。</li>
-<li>一个传给环回接口的IP数据报不能在任何网络上出现。<br><br></li>
-</ul>
-<h4 id="最大传输单元MTU"><a href="#最大传输单元MTU" class="headerlink" title="最大传输单元MTU"></a>最大传输单元MTU</h4><ul>
-<li>如果IP层有一个长度大于链路层的MTU的数据报要传，需要进行分片。</li>
-<li>MTU不是物理特性，它是一个逻辑限制。</li>
-<li>目的：为交互使用提供足够快的响应时间。<br><br></li>
-</ul>
-<h4 id="路径MTU"><a href="#路径MTU" class="headerlink" title="路径MTU"></a>路径MTU</h4><p>==<strong>两台主机路径中的最小MTU被称作路径MTU（不一定是个常数）。</strong>看不懂这句话==<br><br></p>
-<h4 id="串行线路吞吐量计算"><a href="#串行线路吞吐量计算" class="headerlink" title="串行线路吞吐量计算"></a>串行线路吞吐量计算</h4><blockquote>
-<p>如果线路速率是9600b/s，而一个字节有8bit，加上一个起始比特和一个停止比特，那么线路的速率就是960B/s（字节/秒）。</p>
-</blockquote>
-<ul>
-<li>这句话是指每个bit加一个起始一个停止，所有9600 / (8 + 2) = 960 B/s。</li>
-<li>如果把SLIP的MTU降到256以下，将降低传输大块数据的最大吞吐量。</li>
-<li>平均等待时间的计算（传输大数据帧所需时间的一半）只适用于SLIP或PPP链路。<br>==为什么要等一半的时间？？==<br><br></li>
-</ul>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/05/05/hello-world/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Ennis L.M. Wu">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Ennis -Little Monster">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/05/05/hello-world/" itemprop="url">Hello World</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-05-05T16:43:15+08:00">
-                2018-05-05
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>Welcome to <a href="https://hexo.io/" target="_blank" rel="noopener">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/" target="_blank" rel="noopener">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html" target="_blank" rel="noopener">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues" target="_blank" rel="noopener">GitHub</a>.</p>
-<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo new <span class="string">"My New Post"</span></span><br></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/writing.html" target="_blank" rel="noopener">Writing</a></p>
-<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/server.html" target="_blank" rel="noopener">Server</a></p>
-<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/generating.html" target="_blank" rel="noopener">Generating</a></p>
-<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/deployment.html" target="_blank" rel="noopener">Deployment</a></p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-  </section>
-
-  
 
 
           </div>
@@ -2473,6 +696,10 @@
 
 
           
+
+  
+
+
 
         </div>
         
@@ -2493,8 +720,17 @@
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
 
-      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
+      <section class="site-overview-wrap sidebar-panel">
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
             
@@ -2545,6 +781,22 @@
         </div>
       </section>
 
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Class"><span class="nav-number">1.</span> <span class="nav-text">Class</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#如何获取Class"><span class="nav-number">1.1.</span> <span class="nav-text">如何获取Class</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#通过Class获取类修饰符和类型"><span class="nav-number">1.2.</span> <span class="nav-text">通过Class获取类修饰符和类型</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Member"><span class="nav-number">2.</span> <span class="nav-text">Member</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Field"><span class="nav-number">2.1.</span> <span class="nav-text">Field</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#获取-Field"><span class="nav-number">2.1.1.</span> <span class="nav-text">获取 Field</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#获取变量类型、修饰符、注解"><span class="nav-number">2.1.2.</span> <span class="nav-text">获取变量类型、修饰符、注解</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#获取、设置变量值"><span class="nav-number">2.1.3.</span> <span class="nav-text">获取、设置变量值</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Method"><span class="nav-number">2.2.</span> <span class="nav-text">Method</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#获取-Method"><span class="nav-number">2.2.1.</span> <span class="nav-text">获取 Method</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#获取方法返回类型"><span class="nav-number">2.2.2.</span> <span class="nav-text">获取方法返回类型</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#获取方法参数类型"><span class="nav-number">2.2.3.</span> <span class="nav-text">获取方法参数类型</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#获取方法声明抛出的异常的类型"><span class="nav-number">2.2.4.</span> <span class="nav-text">获取方法声明抛出的异常的类型</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#获取方法参数名称"><span class="nav-number">2.2.5.</span> <span class="nav-text">获取方法参数名称</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#获取方法修饰符"><span class="nav-number">2.2.6.</span> <span class="nav-text">获取方法修饰符</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#通过反射调用方法"><span class="nav-number">2.2.7.</span> <span class="nav-text">通过反射调用方法</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Constructor"><span class="nav-number">2.3.</span> <span class="nav-text">Constructor</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#获取构造方法"><span class="nav-number">2.3.1.</span> <span class="nav-text">获取构造方法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#创建对象"><span class="nav-number">2.3.2.</span> <span class="nav-text">创建对象</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#数组和枚举"><span class="nav-number">2.4.</span> <span class="nav-text">数组和枚举</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#数组"><span class="nav-number">2.4.1.</span> <span class="nav-text">数组</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#数组类型"><span class="nav-number">2.4.1.1.</span> <span class="nav-text">数组类型</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#创建和初始化数组"><span class="nav-number">2.4.1.2.</span> <span class="nav-text">创建和初始化数组</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#多维数组"><span class="nav-number">2.4.1.3.</span> <span class="nav-text">多维数组</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#枚举"><span class="nav-number">2.5.</span> <span class="nav-text">枚举</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#反射的缺点"><span class="nav-number">3.</span> <span class="nav-text">反射的缺点</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
       
 
       
@@ -2685,6 +937,10 @@
 
 
   
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
 
   
 
