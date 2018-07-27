@@ -1,0 +1,746 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="JVM," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="为什么Java要在虚拟机里运行？ Java作为一门高级程序语言，语法复杂，抽象程度高，直接在硬件上运行这种复杂的程序不现实。 Java虚拟机既可以硬件实现也可以软件实现，常见平台上都是软件实现，意义：“一次编写，到处运行”。 虚拟机提供了托管环境。能代替我们处理一些代码中冗长而且容易出错的部分。如：自动内存管理，垃圾回收，提供如数组越界、动态类型、安全权限等的动态检测。  Java虚拟机具体怎样运">
+<meta name="keywords" content="JVM">
+<meta property="og:type" content="article">
+<meta property="og:title" content="笔记-深入拆解Java虚拟机-01Java代码是怎么运行的？">
+<meta property="og:url" content="http://yoursite.com/2018/07/27/笔记-深入拆解Java虚拟机-01Java代码是怎么运行的？/index.html">
+<meta property="og:site_name" content="Ennis -Little Monster">
+<meta property="og:description" content="为什么Java要在虚拟机里运行？ Java作为一门高级程序语言，语法复杂，抽象程度高，直接在硬件上运行这种复杂的程序不现实。 Java虚拟机既可以硬件实现也可以软件实现，常见平台上都是软件实现，意义：“一次编写，到处运行”。 虚拟机提供了托管环境。能代替我们处理一些代码中冗长而且容易出错的部分。如：自动内存管理，垃圾回收，提供如数组越界、动态类型、安全权限等的动态检测。  Java虚拟机具体怎样运">
+<meta property="og:locale" content="default">
+<meta property="og:image" content="http://yoursite.com/2018/07/27/images/笔记-深入拆解Java虚拟机-01Java代码是怎么运行的？/JVM内存划分.png">
+<meta property="og:image" content="http://yoursite.com/2018/07/27/images/笔记-深入拆解Java虚拟机-01Java代码是怎么运行的？/JVM执行Java代码.png">
+<meta property="og:updated_time" content="2018-07-27T08:15:44.827Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="笔记-深入拆解Java虚拟机-01Java代码是怎么运行的？">
+<meta name="twitter:description" content="为什么Java要在虚拟机里运行？ Java作为一门高级程序语言，语法复杂，抽象程度高，直接在硬件上运行这种复杂的程序不现实。 Java虚拟机既可以硬件实现也可以软件实现，常见平台上都是软件实现，意义：“一次编写，到处运行”。 虚拟机提供了托管环境。能代替我们处理一些代码中冗长而且容易出错的部分。如：自动内存管理，垃圾回收，提供如数组越界、动态类型、安全权限等的动态检测。  Java虚拟机具体怎样运">
+<meta name="twitter:image" content="http://yoursite.com/2018/07/27/images/笔记-深入拆解Java虚拟机-01Java代码是怎么运行的？/JVM内存划分.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: 'Author'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2018/07/27/笔记-深入拆解Java虚拟机-01Java代码是怎么运行的？/"/>
+
+
+
+
+
+  <title>笔记-深入拆解Java虚拟机-01Java代码是怎么运行的？ | Ennis -Little Monster</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="default">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Ennis -Little Monster</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            Home
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            Archives
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/07/27/笔记-深入拆解Java虚拟机-01Java代码是怎么运行的？/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Ennis L.M. Wu">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Ennis -Little Monster">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">笔记-深入拆解Java虚拟机-01Java代码是怎么运行的？</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-07-27T15:04:15+08:00">
+                2018-07-27
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="为什么Java要在虚拟机里运行？"><a href="#为什么Java要在虚拟机里运行？" class="headerlink" title="为什么Java要在虚拟机里运行？"></a>为什么Java要在虚拟机里运行？</h1><ol>
+<li>Java作为一门高级程序语言，<strong>语法复杂，抽象程度高</strong>，直接在硬件上运行这种复杂的程序不现实。</li>
+<li>Java虚拟机既可以硬件实现也可以软件实现，常见平台上都是软件实现，意义：“<strong>一次编写，到处运行</strong>”。</li>
+<li>虚拟机<strong>提供了托管环境</strong>。能代替我们处理一些代码中冗长而且容易出错的部分。如：自动内存管理，垃圾回收，提供如数组越界、动态类型、安全权限等的动态检测。</li>
+</ol>
+<h1 id="Java虚拟机具体怎样运行Java字节码的？"><a href="#Java虚拟机具体怎样运行Java字节码的？" class="headerlink" title="Java虚拟机具体怎样运行Java字节码的？"></a>Java虚拟机具体怎样运行Java字节码的？</h1><p>下面以标准JDK中的HotSpot虚拟机为例。</p>
+<p>Java虚拟机会在<strong>内存中划分出堆（stack）、栈（heap）和方法区（method）</strong></p>
+<p>其中<strong>栈</strong>细分为：</p>
+<ol>
+<li>面向Java方法的<strong>Java方法栈</strong></li>
+<li>面向本地方法的<strong>本地方法栈</strong></li>
+<li>各个线程执行位置的<strong>PC寄存器</strong></li>
+</ol>
+<p>class文件加载后存放于方法区，运行时执行方法区内的代码。</p>
+<p><img src="../images/笔记-深入拆解Java虚拟机-01Java代码是怎么运行的？/JVM内存划分.png" alt="image"></p>
+<h2 id="堆区"><a href="#堆区" class="headerlink" title="堆区"></a>堆区</h2><ul>
+<li>提供所有<strong>类实例</strong>和<strong>数组对象</strong>存储区域。</li>
+<li>JVM只有一个堆区(heap)被所有<strong>线程共享</strong>，堆中不存放基本类型和对象引用，只存放对象本身。</li>
+</ul>
+<h2 id="栈区"><a href="#栈区" class="headerlink" title="栈区"></a>栈区</h2><ul>
+<li>每个线程包含一个栈区，栈中只保存<strong>基础数据类型</strong>的对象和自定义对象的<strong>引用</strong>(不是对象)，对象都存放在堆区中。</li>
+<li>每个栈中的数据（原始类型和对象引用）都是私有的，<strong>其他栈不能访问</strong>。</li>
+</ul>
+<h2 id="方法区"><a href="#方法区" class="headerlink" title="方法区"></a>方法区</h2><ul>
+<li>又叫静态区，跟堆一样，被所有的<strong>线程共享</strong>。方法区包含<strong>所有的class和static变量</strong>。</li>
+<li>方法区中包含的都是在整个程序中永远唯一的元素，如class，static变量。</li>
+<li>运行时<strong>常量池</strong>都分配在 Java 虚拟机的方法区之中。</li>
+</ul>
+<h2 id="Java方法调用过程"><a href="#Java方法调用过程" class="headerlink" title="Java方法调用过程"></a>Java方法调用过程</h2><ul>
+<li><p>进入一个Java方法，在当前线程的Java方法栈中生成一个栈帧。<br>栈帧的大小提前计算好。<br>存放局部变量和字节码的操作数。<br>不要求栈帧在内存中连续分布。</p>
+</li>
+<li><p>退出方法（正常或异常），弹出当前线程的当前栈帧，并舍弃。</p>
+</li>
+</ul>
+<p>Java字节码无法直接执行，要翻译成机器码。</p>
+<h2 id="HotSpot翻译字节码的两种形式"><a href="#HotSpot翻译字节码的两种形式" class="headerlink" title="HotSpot翻译字节码的两种形式"></a>HotSpot翻译字节码的两种形式</h2><h3 id="解释执行"><a href="#解释执行" class="headerlink" title="解释执行"></a>解释执行</h3><p>逐条将字节码翻译成机器码并执行。<br>无需等待编译。</p>
+<h3 id="即时编译"><a href="#即时编译" class="headerlink" title="即时编译"></a>即时编译</h3><p>Just-In-Time compilation, JIT<br>将方法中包含的所有字节码编译成机器码后再执行。<br>实际运行速度更快。</p>
+<p><img src="../images/笔记-深入拆解Java虚拟机-01Java代码是怎么运行的？/JVM执行Java代码.png" alt="image"></p>
+<p>HotSpot默认采用<strong>混合模式</strong>。先解释执行，热点代码以方法为单位即时编译。</p>
+<h1 id="Java虚拟机的运行效率究竟是怎样的？"><a href="#Java虚拟机的运行效率究竟是怎样的？" class="headerlink" title="Java虚拟机的运行效率究竟是怎样的？"></a>Java虚拟机的运行效率究竟是怎样的？</h1><p><strong>即时编译</strong>建立再程序符合<strong>二八定律</strong>的假设上。</p>
+<p>HotSpot内置了多个即时编译器：C1、C2和Graal。</p>
+<h2 id="Graal"><a href="#Graal" class="headerlink" title="Graal"></a>Graal</h2><p>Java 10正式引入的实验性编译器。</p>
+<h2 id="C1（Client编译器）"><a href="#C1（Client编译器）" class="headerlink" title="C1（Client编译器）"></a>C1（Client编译器）</h2><ul>
+<li>面向客户端GUI程序。</li>
+<li>对启动性能有要求。</li>
+<li>优化手段相对简单。</li>
+<li>编译时间短。</li>
+</ul>
+<h2 id="C2（Server编译器）"><a href="#C2（Server编译器）" class="headerlink" title="C2（Server编译器）"></a>C2（Server编译器）</h2><ul>
+<li>面向服务端程序。</li>
+<li>对峰值性能有要求。</li>
+<li>优化手段相对复杂。</li>
+<li>编译时间较长。</li>
+<li>生成代码执行效率较高。</li>
+</ul>
+<p>Java 7 开始，HotSpot默认采用<strong>分层编译</strong>：</p>
+<ul>
+<li>热点方法被C1编译。</li>
+<li>热点方法中的热点进一步被C2编译。</li>
+</ul>
+<p>HotSpot的即时编译放在额外的<strong>编译线程</strong>中。<br>HotSpot根据CPU数量设置编译线程数目。<br>1:2的比例配置C1和C2。</p>
+<p>资源充足的情况下，<strong>解释执行和即时编译可同行进行</strong>。</p>
+<h1 id="Java-语言和-Java-虚拟机看待-boolean-类型的方式是否不同？"><a href="#Java-语言和-Java-虚拟机看待-boolean-类型的方式是否不同？" class="headerlink" title="Java 语言和 Java 虚拟机看待 boolean 类型的方式是否不同？"></a>Java 语言和 Java 虚拟机看待 boolean 类型的方式是否不同？</h1><p>$ echo ‘<br>public class Foo {<br> public static void main(String[] args) {<br>  boolean flag = true;<br>  if (flag) System.out.println(“Hello, Java!”);<br>  if (flag == true) System.out.println(“Hello, JVM!”);<br> }<br>}’ &gt; Foo.java<br>$ javac Foo.java<br>$ java Foo<br>$ java -cp /path/to/asmtools.jar org.openjdk.asmtools.jdis.Main Foo.class &gt; Foo.jasm.1<br>$ awk ‘NR==1,/iconst_1/{sub(/iconst_1/, “iconst_2”)} 1’ Foo.jasm.1 &gt; Foo.jasm<br>$ java -cp /path/to/asmtools.jar org.openjdk.asmtools.jasm.Main Foo.jasm<br>$ java Foo</p>
+<p><strong>JVM把boolean当做int来处理</strong><br>flag = iconst_1 = true<br>awk把stackframe中的flag改为iconst_2<br>if（flag）比较时ifeq指令做是否为零判断，常数2仍为true，打印输出<br>if（true == flag）比较时if_cmpne做整数比较，iconst_1是否等于flag，比较失败，不再打印输出</p>
+<h1 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h1><p>Q：对于服务端，很多服务端应用发布频率不会太频繁，但是对运行时的性能和吞吐量要求较高。<strong>为什么不把java代码全部编译成机器码</strong>？如果发布或启动时多花点时间编译，能够带来运行时的持久性能收益。<br>A：对于这种发布频率不频繁(也就是长时间运行吧？)的程序，其实选择线下编译和即时编译都一样，因为至多一两个小时后该即时编译的都已经编译完成了。另外，<strong>即时编译器因为有程序的运行时信息，优化效果更好，也就是说峰值性能更好</strong>。<br>A：解释执行，执行时才翻译成机器指令，无需保存不占内存。但即时编译类似预编译，<strong>编译之后的指令需要保存在内存中，这种方式吃内存</strong>，按照二八原则这种混合模式最恰当的，热点代码编译之后放入内存避免重复编译，而其他运行次数较少代码则解释执行，避免占用过多内存。</p>
+<p>Q：什么时候使用C1，什么时候使用C2，他是怎么区分热点方法的呢？<br>A：JVM会统计每个方法被调用了多少次，超过多少次，那就是热点方法。(还有个循环回边计数器，用来编译热循环的。)<br>默认的分层编译应该是达到两千调C1，达到一万五调C2。</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/JVM/" rel="tag"># JVM</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/07/23/Android架构——Clean/" rel="next" title="Android架构——Clean">
+                <i class="fa fa-chevron-left"></i> Android架构——Clean
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">Ennis L.M. Wu</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">12</span>
+                  <span class="site-state-item-name">posts</span>
+                </a>
+              </div>
+            
+
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                
+                  <span class="site-state-item-count">10</span>
+                  <span class="site-state-item-name">tags</span>
+                
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#为什么Java要在虚拟机里运行？"><span class="nav-number">1.</span> <span class="nav-text">为什么Java要在虚拟机里运行？</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Java虚拟机具体怎样运行Java字节码的？"><span class="nav-number">2.</span> <span class="nav-text">Java虚拟机具体怎样运行Java字节码的？</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#堆区"><span class="nav-number">2.1.</span> <span class="nav-text">堆区</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#栈区"><span class="nav-number">2.2.</span> <span class="nav-text">栈区</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#方法区"><span class="nav-number">2.3.</span> <span class="nav-text">方法区</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Java方法调用过程"><span class="nav-number">2.4.</span> <span class="nav-text">Java方法调用过程</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#HotSpot翻译字节码的两种形式"><span class="nav-number">2.5.</span> <span class="nav-text">HotSpot翻译字节码的两种形式</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#解释执行"><span class="nav-number">2.5.1.</span> <span class="nav-text">解释执行</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#即时编译"><span class="nav-number">2.5.2.</span> <span class="nav-text">即时编译</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Java虚拟机的运行效率究竟是怎样的？"><span class="nav-number">3.</span> <span class="nav-text">Java虚拟机的运行效率究竟是怎样的？</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Graal"><span class="nav-number">3.1.</span> <span class="nav-text">Graal</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#C1（Client编译器）"><span class="nav-number">3.2.</span> <span class="nav-text">C1（Client编译器）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#C2（Server编译器）"><span class="nav-number">3.3.</span> <span class="nav-text">C2（Server编译器）</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Java-语言和-Java-虚拟机看待-boolean-类型的方式是否不同？"><span class="nav-number">4.</span> <span class="nav-text">Java 语言和 Java 虚拟机看待 boolean 类型的方式是否不同？</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#问题"><span class="nav-number">5.</span> <span class="nav-text">问题</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Ennis L.M. Wu</span>
+
+  
+</div>
+
+
+  <div class="powered-by">Powered by <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a></div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">Theme &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Pisces</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
