@@ -89,7 +89,7 @@
 <meta property="og:locale" content="default">
 <meta property="og:image" content="http://yoursite.com/2018/07/27/images/笔记-深入拆解Java虚拟机-01Java代码是怎么运行的？/JVM内存划分.png">
 <meta property="og:image" content="http://yoursite.com/2018/07/27/images/笔记-深入拆解Java虚拟机-01Java代码是怎么运行的？/JVM执行Java代码.png">
-<meta property="og:updated_time" content="2018-07-27T08:26:13.839Z">
+<meta property="og:updated_time" content="2018-07-28T08:06:45.933Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="笔记-深入拆解Java虚拟机-01Java代码是怎么运行的？">
 <meta name="twitter:description" content="为什么Java要在虚拟机里运行？ Java作为一门高级程序语言，语法复杂，抽象程度高，直接在硬件上运行这种复杂的程序不现实。 Java虚拟机既可以硬件实现也可以软件实现，常见平台上都是软件实现，意义：“一次编写，到处运行”。 虚拟机提供了托管环境。能代替我们处理一些代码中冗长而且容易出错的部分。如：自动内存管理，垃圾回收，提供如数组越界、动态类型、安全权限等的动态检测。  Java虚拟机具体怎样运">
@@ -367,8 +367,12 @@
 <p>资源充足的情况下，<strong>解释执行和即时编译可同行进行</strong>。</p>
 <h1 id="Java-语言和-Java-虚拟机看待-boolean-类型的方式是否不同？"><a href="#Java-语言和-Java-虚拟机看待-boolean-类型的方式是否不同？" class="headerlink" title="Java 语言和 Java 虚拟机看待 boolean 类型的方式是否不同？"></a>Java 语言和 Java 虚拟机看待 boolean 类型的方式是否不同？</h1><p>$ echo ‘<br>public class Foo {<br> public static void main(String[] args) {<br>  boolean flag = true;<br>  if (flag) System.out.println(“Hello, Java!”);<br>  if (flag == true) System.out.println(“Hello, JVM!”);<br> }<br>}’ &gt; Foo.java<br>$ javac Foo.java<br>$ java Foo<br>$ java -cp /path/to/asmtools.jar org.openjdk.asmtools.jdis.Main Foo.class &gt; Foo.jasm.1<br>$ awk ‘NR==1,/iconst_1/{sub(/iconst_1/, “iconst_2”)} 1’ Foo.jasm.1 &gt; Foo.jasm<br>$ java -cp /path/to/asmtools.jar org.openjdk.asmtools.jasm.Main Foo.jasm<br>$ java Foo</p>
 <p><strong>JVM把boolean当做int来处理</strong><br>flag = iconst_1 = true<br>awk把stackframe中的flag改为iconst_2<br>if（flag）比较时ifeq指令做是否为零判断，常数2仍为true，打印输出<br>if（true == flag）比较时if_cmpne做整数比较，iconst_1是否等于flag，比较失败，不再打印输出</p>
-<h1 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h1><p>Q：对于服务端，很多服务端应用发布频率不会太频繁，但是对运行时的性能和吞吐量要求较高。<strong>为什么不把java代码全部编译成机器码</strong>？如果发布或启动时多花点时间编译，能够带来运行时的持久性能收益。<br>A：对于这种发布频率不频繁(也就是长时间运行吧？)的程序，其实选择线下编译和即时编译都一样，因为至多一两个小时后该即时编译的都已经编译完成了。另外，<strong>即时编译器因为有程序的运行时信息，优化效果更好，也就是说峰值性能更好</strong>。<br>A：解释执行，执行时才翻译成机器指令，无需保存不占内存。但即时编译类似预编译，<strong>编译之后的指令需要保存在内存中，这种方式吃内存</strong>，按照二八原则这种混合模式最恰当的，热点代码编译之后放入内存避免重复编译，而其他运行次数较少代码则解释执行，避免占用过多内存。</p>
-<p>Q：什么时候使用C1，什么时候使用C2，他是怎么区分热点方法的呢？<br>A：JVM会统计每个方法被调用了多少次，超过多少次，那就是热点方法。(还有个循环回边计数器，用来编译热循环的。)<br>默认的分层编译应该是达到两千调C1，达到一万五调C2。</p>
+<h1 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h1><p>Q：对于服务端，很多服务端应用发布频率不会太频繁，但是对运行时的性能和吞吐量要求较高。<strong>为什么不把java代码全部编译成机器码</strong>？如果发布或启动时多花点时间编译，能够带来运行时的持久性能收益。</p>
+<p>A：对于这种发布频率不频繁(也就是长时间运行吧？)的程序，其实选择线下编译和即时编译都一样，因为至多一两个小时后该即时编译的都已经编译完成了。另外，<strong>即时编译器因为有程序的运行时信息，优化效果更好，也就是说峰值性能更好</strong>。</p>
+<p>A：解释执行，执行时才翻译成机器指令，无需保存不占内存。但即时编译类似预编译，<strong>编译之后的指令需要保存在内存中，这种方式吃内存</strong>，按照二八原则这种混合模式最恰当的，热点代码编译之后放入内存避免重复编译，而其他运行次数较少代码则解释执行，避免占用过多内存。</p>
+<hr>
+<p>Q：什么时候使用C1，什么时候使用C2，他是怎么区分热点方法的呢？</p>
+<p>A：JVM会统计每个方法被调用了多少次，超过多少次，那就是热点方法。(还有个循环回边计数器，用来编译热循环的。)<br>默认的分层编译应该是达到两千调C1，达到一万五调C2。</p>
 <h1 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h1><blockquote>
 <p><a href="https://time.geekbang.org/column/article/11289" target="_blank" rel="noopener">https://time.geekbang.org/column/article/11289</a><br><a href="https://blog.csdn.net/zly921112/article/details/61192747" target="_blank" rel="noopener">https://blog.csdn.net/zly921112/article/details/61192747</a></p>
 </blockquote>
@@ -411,6 +415,10 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/07/28/笔记-深入拆解Java虚拟机-02Java的基本类型/" rel="prev" title="笔记-深入拆解Java虚拟机-02Java的基本类型">
+                笔记-深入拆解Java虚拟机-02Java的基本类型 <i class="fa fa-chevron-right"></i>
+              </a>
             
           </div>
         </div>
@@ -487,7 +495,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">12</span>
+                  <span class="site-state-item-count">13</span>
                   <span class="site-state-item-name">posts</span>
                 </a>
               </div>
