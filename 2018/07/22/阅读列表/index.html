@@ -1,0 +1,811 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/portrait.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/portrait.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/portrait.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/portrait.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Hexo, NexT" />
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="Ennis -Little Monster" type="application/atom+xml" />
+
+
+
+
+
+
+<meta name="description" content="最近一步步带你深入了解神秘的Java反射机制https://mp.weixin.qq.com/s?__biz=MzAxMTI4MTkwNQ==&amp;amp;mid=2650825931&amp;amp;idx=1&amp;amp;sn=b61ed2ad2665cbc3a89351b161223769&amp;amp;chksm=80b7b055b7c03943f10f1e8b3697d3d33bbfc98d38e40c9ec">
+<meta property="og:type" content="article">
+<meta property="og:title" content="阅读列表">
+<meta property="og:url" content="http://yoursite.com/2018/07/22/阅读列表/index.html">
+<meta property="og:site_name" content="Ennis -Little Monster">
+<meta property="og:description" content="最近一步步带你深入了解神秘的Java反射机制https://mp.weixin.qq.com/s?__biz=MzAxMTI4MTkwNQ==&amp;amp;mid=2650825931&amp;amp;idx=1&amp;amp;sn=b61ed2ad2665cbc3a89351b161223769&amp;amp;chksm=80b7b055b7c03943f10f1e8b3697d3d33bbfc98d38e40c9ec">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2018-07-29T09:18:11.586Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="阅读列表">
+<meta name="twitter:description" content="最近一步步带你深入了解神秘的Java反射机制https://mp.weixin.qq.com/s?__biz=MzAxMTI4MTkwNQ==&amp;amp;mid=2650825931&amp;amp;idx=1&amp;amp;sn=b61ed2ad2665cbc3a89351b161223769&amp;amp;chksm=80b7b055b7c03943f10f1e8b3697d3d33bbfc98d38e40c9ec">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2018/07/22/阅读列表/"/>
+
+
+
+
+
+  <title>阅读列表 | Ennis -Little Monster</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Ennis -Little Monster</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">ARTPOP = artistic revolution through the potential of pop</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            所有
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/07/22/阅读列表/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Ennis L.M. Wu">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/portrait.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Ennis -Little Monster">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">阅读列表</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-07-22T10:24:57+08:00">
+                2018-07-22
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="最近"><a href="#最近" class="headerlink" title="最近"></a>最近</h1><p>一步步带你深入了解神秘的Java反射机制<br><a href="https://mp.weixin.qq.com/s?__biz=MzAxMTI4MTkwNQ==&amp;mid=2650825931&amp;idx=1&amp;sn=b61ed2ad2665cbc3a89351b161223769&amp;chksm=80b7b055b7c03943f10f1e8b3697d3d33bbfc98d38e40c9ecbc6a3ab34f700a065858f8c8ce9&amp;mpshare=1&amp;scene=24&amp;srcid=0725l7efM9uiVCnqubGXAtBc#rd" target="_blank" rel="noopener">https://mp.weixin.qq.com/s?__biz=MzAxMTI4MTkwNQ==&amp;mid=2650825931&amp;idx=1&amp;sn=b61ed2ad2665cbc3a89351b161223769&amp;chksm=80b7b055b7c03943f10f1e8b3697d3d33bbfc98d38e40c9ecbc6a3ab34f700a065858f8c8ce9&amp;mpshare=1&amp;scene=24&amp;srcid=0725l7efM9uiVCnqubGXAtBc#rd</a></p>
+<p>我的杭州面试之旅<br><a href="https://mp.weixin.qq.com/s?__biz=MzAxMTI4MTkwNQ==&amp;mid=2650825928&amp;idx=1&amp;sn=4891b8969e387223f8a17ff292788ed1&amp;chksm=80b7b056b7c03940eb1325c724fec6f95d047c70c220701d97c2f4ad15113956877a2f6af991&amp;mpshare=1&amp;scene=24&amp;srcid=07258CGkMQ9yVZgQUVQCmLM3#rd" target="_blank" rel="noopener">https://mp.weixin.qq.com/s?__biz=MzAxMTI4MTkwNQ==&amp;mid=2650825928&amp;idx=1&amp;sn=4891b8969e387223f8a17ff292788ed1&amp;chksm=80b7b056b7c03940eb1325c724fec6f95d047c70c220701d97c2f4ad15113956877a2f6af991&amp;mpshare=1&amp;scene=24&amp;srcid=07258CGkMQ9yVZgQUVQCmLM3#rd</a></p>
+<h1 id="View"><a href="#View" class="headerlink" title="View"></a>View</h1><p>Android View的工作流程<br><a href="https://mp.weixin.qq.com/s/3Av9dEuXkZsBLA0X295qYw" target="_blank" rel="noopener">https://mp.weixin.qq.com/s/3Av9dEuXkZsBLA0X295qYw</a></p>
+<p>基于Android 8.0的源码分析(View的绘制流程)<br><a href="https://mp.weixin.qq.com/s?__biz=MzA5MzI3NjE2MA==&amp;mid=2650243397&amp;idx=1&amp;sn=e50ac7703832f723922c1fd4b2f733d0&amp;chksm=8863702abf14f93c5a672ef8083b413b2abcb77a29c2ffc24198c43d78bd62c98e902dc438d4&amp;mpshare=1&amp;scene=24&amp;srcid=0703olc6EjioraMbYZsZbGwz#rd" target="_blank" rel="noopener">https://mp.weixin.qq.com/s?__biz=MzA5MzI3NjE2MA==&amp;mid=2650243397&amp;idx=1&amp;sn=e50ac7703832f723922c1fd4b2f733d0&amp;chksm=8863702abf14f93c5a672ef8083b413b2abcb77a29c2ffc24198c43d78bd62c98e902dc438d4&amp;mpshare=1&amp;scene=24&amp;srcid=0703olc6EjioraMbYZsZbGwz#rd</a></p>
+<p>自定义View之跑马灯效果<br><a href="https://mp.weixin.qq.com/s/9FGix16HMd_YeBM2KMNGyg" target="_blank" rel="noopener">https://mp.weixin.qq.com/s/9FGix16HMd_YeBM2KMNGyg</a></p>
+<p>一步步分析知乎中CoordinatorLayout的实现<br><a href="https://mp.weixin.qq.com/s/Kbv8e61L6i2N8JxHJo0lLA" target="_blank" rel="noopener">https://mp.weixin.qq.com/s/Kbv8e61L6i2N8JxHJo0lLA</a></p>
+<p>Android中的缓存艺术，对比RecyclerView与ListView的缓存机制<br><a href="https://mp.weixin.qq.com/s/LAm4m9klItuQpr4Sd2_mvQ" target="_blank" rel="noopener">https://mp.weixin.qq.com/s/LAm4m9klItuQpr4Sd2_mvQ</a></p>
+<h1 id="事件"><a href="#事件" class="headerlink" title="事件"></a>事件</h1><p>你不能错过的View事件分发机制分析<br><a href="https://mp.weixin.qq.com/s/-dS1M0eFKJEAA-7viMi8Vw" target="_blank" rel="noopener">https://mp.weixin.qq.com/s/-dS1M0eFKJEAA-7viMi8Vw</a></p>
+<p>Android View事件体系全面总结+实践分析<br><a href="https://mp.weixin.qq.com/s/rcUXiA4FXrdMYQYYEOJFiw" target="_blank" rel="noopener">https://mp.weixin.qq.com/s/rcUXiA4FXrdMYQYYEOJFiw</a></p>
+<p>触摸事件实践之路<br><a href="https://mp.weixin.qq.com/s?__biz=MzA5MzI3NjE2MA==&amp;mid=2650242914&amp;idx=1&amp;sn=87e0e66951a9c102053cab8551916dd9&amp;chksm=88638e0dbf14071b9ed1a8d0c935f0b0c66c96c348f667117d88cf4c29a13b8bed1e77c2f239&amp;mpshare=1&amp;scene=24&amp;srcid=0502B3zbXNFpp1bZsYoAWfoe#rd" target="_blank" rel="noopener">https://mp.weixin.qq.com/s?__biz=MzA5MzI3NjE2MA==&amp;mid=2650242914&amp;idx=1&amp;sn=87e0e66951a9c102053cab8551916dd9&amp;chksm=88638e0dbf14071b9ed1a8d0c935f0b0c66c96c348f667117d88cf4c29a13b8bed1e77c2f239&amp;mpshare=1&amp;scene=24&amp;srcid=0502B3zbXNFpp1bZsYoAWfoe#rd</a></p>
+<h1 id="动画"><a href="#动画" class="headerlink" title="动画"></a>动画</h1><p>自定义View之文字路径动画控件<br><a href="https://mp.weixin.qq.com/s/dnN9z1KFHaIxJgHiqTMyLA" target="_blank" rel="noopener">https://mp.weixin.qq.com/s/dnN9z1KFHaIxJgHiqTMyLA</a></p>
+<p>用四行代码来实现复杂动画<br><a href="https://mp.weixin.qq.com/s?__biz=MzAwODY4OTk2Mg==&amp;mid=2652046285&amp;idx=1&amp;sn=77dddbfea05c61e47303fd4bfb827e37&amp;chksm=808ca388b7fb2a9e0c4f1d1c2dc902b7f4b5b6a200962b9d8e2adc685ff6277182740dc498f7&amp;mpshare=1&amp;scene=24&amp;srcid=0522zyEQobtWO0046vI79vkE#rd" target="_blank" rel="noopener">https://mp.weixin.qq.com/s?__biz=MzAwODY4OTk2Mg==&amp;mid=2652046285&amp;idx=1&amp;sn=77dddbfea05c61e47303fd4bfb827e37&amp;chksm=808ca388b7fb2a9e0c4f1d1c2dc902b7f4b5b6a200962b9d8e2adc685ff6277182740dc498f7&amp;mpshare=1&amp;scene=24&amp;srcid=0522zyEQobtWO0046vI79vkE#rd</a></p>
+<p>Android自定义之圆弧滑动效果<br><a href="https://mp.weixin.qq.com/s?__biz=MzA5MzI3NjE2MA==&amp;mid=2650243493&amp;idx=1&amp;sn=96aeeb99d5e465c9f6583752d809ba94&amp;chksm=886370cabf14f9dcc9569c36001a4b0329d2e5707dd5a2647cf982e227922b507603c133677d&amp;mpshare=1&amp;scene=24&amp;srcid=0711HED57GdKGlqmV2Qv21WE#rd" target="_blank" rel="noopener">https://mp.weixin.qq.com/s?__biz=MzA5MzI3NjE2MA==&amp;mid=2650243493&amp;idx=1&amp;sn=96aeeb99d5e465c9f6583752d809ba94&amp;chksm=886370cabf14f9dcc9569c36001a4b0329d2e5707dd5a2647cf982e227922b507603c133677d&amp;mpshare=1&amp;scene=24&amp;srcid=0711HED57GdKGlqmV2Qv21WE#rd</a></p>
+<p>Android实现圆弧滑动效果之FanLayout篇<br><a href="https://mp.weixin.qq.com/s?__biz=MzA5MzI3NjE2MA==&amp;mid=2650243582&amp;idx=1&amp;sn=bb8d0a8f850cc0de91b4bfc420cdcc59&amp;chksm=88637091bf14f9876b09f319772668d5969806d06c4c600c81f54c2819c4827b173b752869ff&amp;mpshare=1&amp;scene=24&amp;srcid=07186BypWWdDu8Ypp0xjJVzH#rd" target="_blank" rel="noopener">https://mp.weixin.qq.com/s?__biz=MzA5MzI3NjE2MA==&amp;mid=2650243582&amp;idx=1&amp;sn=bb8d0a8f850cc0de91b4bfc420cdcc59&amp;chksm=88637091bf14f9876b09f319772668d5969806d06c4c600c81f54c2819c4827b173b752869ff&amp;mpshare=1&amp;scene=24&amp;srcid=07186BypWWdDu8Ypp0xjJVzH#rd</a></p>
+<p>仿炫酷头条小视频拖拽动画<br><a href="https://mp.weixin.qq.com/s?__biz=MzA5MzI3NjE2MA==&amp;mid=2650243546&amp;idx=1&amp;sn=0b4e2723558fc5e584c43c44b0eb8350&amp;chksm=886370b5bf14f9a3cdd4f9e8dd42a8ded97ba649223ef17f913de182396561d0bbee84428b67&amp;mpshare=1&amp;scene=24&amp;srcid=0717urmJU7gbjIYORkMuvmmm#rd" target="_blank" rel="noopener">https://mp.weixin.qq.com/s?__biz=MzA5MzI3NjE2MA==&amp;mid=2650243546&amp;idx=1&amp;sn=0b4e2723558fc5e584c43c44b0eb8350&amp;chksm=886370b5bf14f9a3cdd4f9e8dd42a8ded97ba649223ef17f913de182396561d0bbee84428b67&amp;mpshare=1&amp;scene=24&amp;srcid=0717urmJU7gbjIYORkMuvmmm#rd</a></p>
+<h1 id="控件"><a href="#控件" class="headerlink" title="控件"></a>控件</h1><p>【大揭秘】Android架构组件ViewModel来龙去脉<br><a href="https://mp.weixin.qq.com/s?srcid=0415o7Ok7xyv7c2KeH53uhCH&amp;scene=23&amp;mid=2247484312&amp;sn=aecdd31dd8d4edf8f43ad9f174b6cc98&amp;idx=1&amp;__biz=MzIxMTg5NjQyMA%3D%3D&amp;chksm=974f1293a0389b85cb6b15090ed12ea37ce43a0840739076a9d5a08e051961684105089262d2&amp;mpshare=1#rd" target="_blank" rel="noopener">https://mp.weixin.qq.com/s?srcid=0415o7Ok7xyv7c2KeH53uhCH&amp;scene=23&amp;mid=2247484312&amp;sn=aecdd31dd8d4edf8f43ad9f174b6cc98&amp;idx=1&amp;__biz=MzIxMTg5NjQyMA%3D%3D&amp;chksm=974f1293a0389b85cb6b15090ed12ea37ce43a0840739076a9d5a08e051961684105089262d2&amp;mpshare=1#rd</a></p>
+<p>【Android】Fragment懒加载和ViewPager的坑<br><a href="https://www.cnblogs.com/dasusu/p/5926731.html" target="_blank" rel="noopener">https://www.cnblogs.com/dasusu/p/5926731.html</a></p>
+<p>一起来学习Android 8.0系统的通知栏适配吧<br><a href="https://mp.weixin.qq.com/s/Ez-G_9hzUCOjU8rRnsW8SA" target="_blank" rel="noopener">https://mp.weixin.qq.com/s/Ez-G_9hzUCOjU8rRnsW8SA</a></p>
+<p>轻松掌握Notification的各种用法<br><a href="https://mp.weixin.qq.com/s/2TaWICQ4nWV3TuPG71CBGw" target="_blank" rel="noopener">https://mp.weixin.qq.com/s/2TaWICQ4nWV3TuPG71CBGw</a></p>
+<p>探讨View、Window和Activity的关系<br><a href="https://mp.weixin.qq.com/s/wNdRSs-U05LLK_ZT2p2SFg" target="_blank" rel="noopener">https://mp.weixin.qq.com/s/wNdRSs-U05LLK_ZT2p2SFg</a></p>
+<p>教你编写一个手势解锁控件<br><a href="https://mp.weixin.qq.com/s?__biz=MzA5MzI3NjE2MA==&amp;mid=2650243035&amp;idx=1&amp;sn=b7cb92927bfe3148b8936b5786f3a751&amp;chksm=88638eb4bf1407a2f89cbb68def8ab4068c5899b18ad1d34a36f3677493d0f7039e4bd40461a&amp;mpshare=1&amp;scene=24&amp;srcid=0517qRwLJ7QlBW0xAJHO3PEc#rd" target="_blank" rel="noopener">https://mp.weixin.qq.com/s?__biz=MzA5MzI3NjE2MA==&amp;mid=2650243035&amp;idx=1&amp;sn=b7cb92927bfe3148b8936b5786f3a751&amp;chksm=88638eb4bf1407a2f89cbb68def8ab4068c5899b18ad1d34a36f3677493d0f7039e4bd40461a&amp;mpshare=1&amp;scene=24&amp;srcid=0517qRwLJ7QlBW0xAJHO3PEc#rd</a></p>
+<p>从零实现灵活且可高度定制的Android图片选择架构<br><a href="https://mp.weixin.qq.com/s?__biz=MzA5MzI3NjE2MA==&amp;mid=2650243083&amp;idx=1&amp;sn=3ff3429479489791c32dc385b516ad1c&amp;chksm=88637164bf14f8727775e4156d2b2de565342e87ff1a44f4047b76410b3fdbe059b85516d968&amp;mpshare=1&amp;scene=24&amp;srcid=0524S5VFqz4WOw5TxDKotk0V#rd" target="_blank" rel="noopener">https://mp.weixin.qq.com/s?__biz=MzA5MzI3NjE2MA==&amp;mid=2650243083&amp;idx=1&amp;sn=3ff3429479489791c32dc385b516ad1c&amp;chksm=88637164bf14f8727775e4156d2b2de565342e87ff1a44f4047b76410b3fdbe059b85516d968&amp;mpshare=1&amp;scene=24&amp;srcid=0524S5VFqz4WOw5TxDKotk0V#rd</a></p>
+<p>Activity生命周期回调是如何被回调的？<br><a href="https://mp.weixin.qq.com/s?__biz=MzAxMTI4MTkwNQ==&amp;mid=2650825792&amp;idx=1&amp;sn=27600bd57a33a8e4d3c1e02fdc49fe7a&amp;chksm=80b7b0deb7c039c8697fbfd64160f62ec9e2c289baaf1c4f1bbfb602c502831c0595f8f8b00d&amp;mpshare=1&amp;scene=24&amp;srcid=0713tEiQ6WuvMGukrMm0lCr4#rd" target="_blank" rel="noopener">https://mp.weixin.qq.com/s?__biz=MzAxMTI4MTkwNQ==&amp;mid=2650825792&amp;idx=1&amp;sn=27600bd57a33a8e4d3c1e02fdc49fe7a&amp;chksm=80b7b0deb7c039c8697fbfd64160f62ec9e2c289baaf1c4f1bbfb602c502831c0595f8f8b00d&amp;mpshare=1&amp;scene=24&amp;srcid=0713tEiQ6WuvMGukrMm0lCr4#rd</a></p>
+<h1 id="注解"><a href="#注解" class="headerlink" title="注解"></a>注解</h1><p>APT注解处理器，让你的代码变得更简单<br><a href="https://mp.weixin.qq.com/s?__biz=MzA5MzI3NjE2MA==&amp;mid=2650242955&amp;idx=1&amp;sn=11040755b0df385c5d1facccfc21e107&amp;chksm=88638ee4bf1407f23bb123e61d01e5a454223ce91c05e99a84ee38e9c6a870757d020b1f9f87&amp;mpshare=1&amp;scene=24&amp;srcid=0509tcRd99aWsM0iK0wrrKB8#rd" target="_blank" rel="noopener">https://mp.weixin.qq.com/s?__biz=MzA5MzI3NjE2MA==&amp;mid=2650242955&amp;idx=1&amp;sn=11040755b0df385c5d1facccfc21e107&amp;chksm=88638ee4bf1407f23bb123e61d01e5a454223ce91c05e99a84ee38e9c6a870757d020b1f9f87&amp;mpshare=1&amp;scene=24&amp;srcid=0509tcRd99aWsM0iK0wrrKB8#rd</a></p>
+<p>在Android中优雅地使用注解<br><a href="https://mp.weixin.qq.com/s/fJKAwpqn_hXRXRS4oh1dEw" target="_blank" rel="noopener">https://mp.weixin.qq.com/s/fJKAwpqn_hXRXRS4oh1dEw</a></p>
+<p>轻松打造一个自己的注解框架<br><a href="https://mp.weixin.qq.com/s?__biz=MzA5MzI3NjE2MA==&amp;mid=2650243038&amp;idx=1&amp;sn=b7bf615ba652ace8623e826926f24ea1&amp;chksm=88638eb1bf1407a71153101a2eb5a6d478fd1fbf129aac9f6c9b29af0084aed9c6c7ede15762&amp;mpshare=1&amp;scene=24&amp;srcid=0518u6VLLt7hWdoWG1ipnmtZ#rd" target="_blank" rel="noopener">https://mp.weixin.qq.com/s?__biz=MzA5MzI3NjE2MA==&amp;mid=2650243038&amp;idx=1&amp;sn=b7bf615ba652ace8623e826926f24ea1&amp;chksm=88638eb1bf1407a71153101a2eb5a6d478fd1fbf129aac9f6c9b29af0084aed9c6c7ede15762&amp;mpshare=1&amp;scene=24&amp;srcid=0518u6VLLt7hWdoWG1ipnmtZ#rd</a></p>
+<h1 id="优化"><a href="#优化" class="headerlink" title="优化"></a>优化</h1><p>大众点评App的短视频耗电量优化实战<br><a href="https://juejin.im/entry/5aa629846fb9a028d566c183" target="_blank" rel="noopener">https://juejin.im/entry/5aa629846fb9a028d566c183</a></p>
+<p>Android 优化二 Java内存分配机制及内存泄漏<br><a href="https://www.jianshu.com/p/85f49e1ff813" target="_blank" rel="noopener">https://www.jianshu.com/p/85f49e1ff813</a></p>
+<p>Android内存泄漏总结<br><a href="https://mp.weixin.qq.com/s/Ncm0JVc_j0WVWKHR-BxkyQ" target="_blank" rel="noopener">https://mp.weixin.qq.com/s/Ncm0JVc_j0WVWKHR-BxkyQ</a></p>
+<p>实践App内存优化：如何有序地做内存分析与优化<br><a href="https://mp.weixin.qq.com/s?__biz=MzAxMTI4MTkwNQ==&amp;mid=2650825714&amp;idx=1&amp;sn=bc44930c20143c3d5228575a7c20f14f&amp;chksm=80b7b76cb7c03e7a3698839d9fb79a65e372a06b7a51e168d857951fd325266ca5498d239aac&amp;mpshare=1&amp;scene=24&amp;srcid=0628o26uR6HAi0crmOZAquQj#rd" target="_blank" rel="noopener">https://mp.weixin.qq.com/s?__biz=MzAxMTI4MTkwNQ==&amp;mid=2650825714&amp;idx=1&amp;sn=bc44930c20143c3d5228575a7c20f14f&amp;chksm=80b7b76cb7c03e7a3698839d9fb79a65e372a06b7a51e168d857951fd325266ca5498d239aac&amp;mpshare=1&amp;scene=24&amp;srcid=0628o26uR6HAi0crmOZAquQj#rd</a></p>
+<p>如何排查列表卡顿问题 | 性能优化技巧知识梳理<br><a href="https://mp.weixin.qq.com/s?__biz=MzAxMTI4MTkwNQ==&amp;mid=2650825772&amp;idx=1&amp;sn=09a75adf73449891931c80692cd2fb43&amp;chksm=80b7b0b2b7c039a44eb862c0096eaa8c7935e7764d4d388f9854a288389a2adcf58e3b8dbf93&amp;mpshare=1&amp;scene=24&amp;srcid=0710sC48tyjZT5rRHd6NwzKG#rd" target="_blank" rel="noopener">https://mp.weixin.qq.com/s?__biz=MzAxMTI4MTkwNQ==&amp;mid=2650825772&amp;idx=1&amp;sn=09a75adf73449891931c80692cd2fb43&amp;chksm=80b7b0b2b7c039a44eb862c0096eaa8c7935e7764d4d388f9854a288389a2adcf58e3b8dbf93&amp;mpshare=1&amp;scene=24&amp;srcid=0710sC48tyjZT5rRHd6NwzKG#rd</a></p>
+<p>Android 性能优化最佳实践<br><a href="https://mp.weixin.qq.com/s?__biz=MzIwMTAzMTMxMg==&amp;mid=2649492955&amp;idx=1&amp;sn=fea32aad2214cd448b584b74a06f7934&amp;chksm=8eec8624b99b0f321315e8bd73665cdee6467b5801a027b36548407b7fe4c844fd92bab6040b&amp;mpshare=1&amp;scene=24&amp;srcid=0720ysEyg85pzD6YzTNM44Et#rd" target="_blank" rel="noopener">https://mp.weixin.qq.com/s?__biz=MzIwMTAzMTMxMg==&amp;mid=2649492955&amp;idx=1&amp;sn=fea32aad2214cd448b584b74a06f7934&amp;chksm=8eec8624b99b0f321315e8bd73665cdee6467b5801a027b36548407b7fe4c844fd92bab6040b&amp;mpshare=1&amp;scene=24&amp;srcid=0720ysEyg85pzD6YzTNM44Et#rd</a></p>
+<p>记一次Activity的内存泄漏和分析过程<br><a href="https://mp.weixin.qq.com/s?__biz=MzA5MzI3NjE2MA==&amp;mid=2650243606&amp;idx=1&amp;sn=5e0fbea09b650bc3a6063904742113d2&amp;chksm=88637379bf14fa6f03e4548ba016b4c5167a980863be139b3cc7c3c9f1bf454c803ac840c67a&amp;mpshare=1&amp;scene=24&amp;srcid=0725SSYypMiGbjti2E4iabde#rd" target="_blank" rel="noopener">https://mp.weixin.qq.com/s?__biz=MzA5MzI3NjE2MA==&amp;mid=2650243606&amp;idx=1&amp;sn=5e0fbea09b650bc3a6063904742113d2&amp;chksm=88637379bf14fa6f03e4548ba016b4c5167a980863be139b3cc7c3c9f1bf454c803ac840c67a&amp;mpshare=1&amp;scene=24&amp;srcid=0725SSYypMiGbjti2E4iabde#rd</a></p>
+<p>Android vitals 帮您解决应用质量问题<br><a href="https://mp.weixin.qq.com/s?__biz=MzAwODY4OTk2Mg==&amp;mid=2652046741&amp;idx=1&amp;sn=bc20065d84bf6d2d52cd4d5b563396bd&amp;chksm=808ca5d0b7fb2cc643c5852a0643b5866f1f5b96fc5e2e838b67973a98977960d102b17fd320&amp;mpshare=1&amp;scene=24&amp;srcid=0725bNa7F0qzIDGzOuURXL4k#rd" target="_blank" rel="noopener">https://mp.weixin.qq.com/s?__biz=MzAwODY4OTk2Mg==&amp;mid=2652046741&amp;idx=1&amp;sn=bc20065d84bf6d2d52cd4d5b563396bd&amp;chksm=808ca5d0b7fb2cc643c5852a0643b5866f1f5b96fc5e2e838b67973a98977960d102b17fd320&amp;mpshare=1&amp;scene=24&amp;srcid=0725bNa7F0qzIDGzOuURXL4k#rd</a></p>
+<h1 id="组件化"><a href="#组件化" class="headerlink" title="组件化"></a>组件化</h1><p>教你打造一个Android组件化开发框架<br><a href="https://mp.weixin.qq.com/s/XQktvPbytMEljebFo9B_ww" target="_blank" rel="noopener">https://mp.weixin.qq.com/s/XQktvPbytMEljebFo9B_ww</a></p>
+<p>电商APP组件化探索<br><a href="https://mp.weixin.qq.com/s/hey2ZcsgucLVEGYJ2qfVWA" target="_blank" rel="noopener">https://mp.weixin.qq.com/s/hey2ZcsgucLVEGYJ2qfVWA</a></p>
+<p>组件化在项目中的使用姿势<br><a href="https://mp.weixin.qq.com/s?__biz=MzA5MzI3NjE2MA==&amp;mid=2650243065&amp;idx=1&amp;sn=013d54ab819fc239bb2bc0b9183e80ae&amp;chksm=88638e96bf140780dad45ee03eb65406a03d11c545969899aef5cd74189a6e402f976841bcac&amp;mpshare=1&amp;scene=24&amp;srcid=0523FW0ZQO2EHKLKwszs21mv#rd" target="_blank" rel="noopener">https://mp.weixin.qq.com/s?__biz=MzA5MzI3NjE2MA==&amp;mid=2650243065&amp;idx=1&amp;sn=013d54ab819fc239bb2bc0b9183e80ae&amp;chksm=88638e96bf140780dad45ee03eb65406a03d11c545969899aef5cd74189a6e402f976841bcac&amp;mpshare=1&amp;scene=24&amp;srcid=0523FW0ZQO2EHKLKwszs21mv#rd</a></p>
+<p>Android基于注解IOC组件化/模块化的架构实践<br><a href="https://mp.weixin.qq.com/s?__biz=MzA5MzI3NjE2MA==&amp;mid=2650243088&amp;idx=1&amp;sn=2b113144a6e9f792201b9ea505d78b52&amp;chksm=8863717fbf14f8692be8e0f00274f042d0d1291ef6bc6ba336483a8ee34a01b9bb2b6361521e&amp;mpshare=1&amp;scene=24&amp;srcid=0528sVDFTK2ZNGLLKgPSvQha#rd" target="_blank" rel="noopener">https://mp.weixin.qq.com/s?__biz=MzA5MzI3NjE2MA==&amp;mid=2650243088&amp;idx=1&amp;sn=2b113144a6e9f792201b9ea505d78b52&amp;chksm=8863717fbf14f8692be8e0f00274f042d0d1291ef6bc6ba336483a8ee34a01b9bb2b6361521e&amp;mpshare=1&amp;scene=24&amp;srcid=0528sVDFTK2ZNGLLKgPSvQha#rd</a></p>
+<p>MVPArms官方快速组件化方案开源，来自5K Star的信赖<br><a href="https://mp.weixin.qq.com/s?__biz=MzA5MzI3NjE2MA==&amp;mid=2650243120&amp;idx=1&amp;sn=5d107b487ca7c29ec74c739e9aedc868&amp;chksm=8863715fbf14f84947644451553183b70d6f31090c75e35aced0a0d44b00ca70cf584c08df57&amp;mpshare=1&amp;scene=24&amp;srcid=0530QEUdUHYk6XwCcHWCeVPe#rd" target="_blank" rel="noopener">https://mp.weixin.qq.com/s?__biz=MzA5MzI3NjE2MA==&amp;mid=2650243120&amp;idx=1&amp;sn=5d107b487ca7c29ec74c739e9aedc868&amp;chksm=8863715fbf14f84947644451553183b70d6f31090c75e35aced0a0d44b00ca70cf584c08df57&amp;mpshare=1&amp;scene=24&amp;srcid=0530QEUdUHYk6XwCcHWCeVPe#rd</a></p>
+<p>从零开始搭建Android组件化框架<br><a href="https://mp.weixin.qq.com/s?__biz=MzAxMTI4MTkwNQ==&amp;mid=2650825738&amp;idx=1&amp;sn=7d94a4fd7e87199c3353e74dd817829c&amp;chksm=80b7b094b7c039827ff7157b488be08adce7328f7ad4f3bbe578651a3e9d6657a819da16b7e9&amp;mpshare=1&amp;scene=24&amp;srcid=0704GmorrhTzmnGw7RzIlssg#rd" target="_blank" rel="noopener">https://mp.weixin.qq.com/s?__biz=MzAxMTI4MTkwNQ==&amp;mid=2650825738&amp;idx=1&amp;sn=7d94a4fd7e87199c3353e74dd817829c&amp;chksm=80b7b094b7c039827ff7157b488be08adce7328f7ad4f3bbe578651a3e9d6657a819da16b7e9&amp;mpshare=1&amp;scene=24&amp;srcid=0704GmorrhTzmnGw7RzIlssg#rd</a></p>
+<p>业内首个支持渐进式组件化的开源框架<br><a href="https://mp.weixin.qq.com/s?__biz=MzAxMTI4MTkwNQ==&amp;mid=2650825886&amp;idx=1&amp;sn=2545efbb9268dbe2978adea3168fd1e6&amp;chksm=80b7b000b7c03916ecbd0e34fe19465540cd28dc6d1eb1d7e5f9a280bdf930720c212014bac9&amp;mpshare=1&amp;scene=24&amp;srcid=0719j97wHEKJn2ZU0R9Oi2W9#rd" target="_blank" rel="noopener">https://mp.weixin.qq.com/s?__biz=MzAxMTI4MTkwNQ==&amp;mid=2650825886&amp;idx=1&amp;sn=2545efbb9268dbe2978adea3168fd1e6&amp;chksm=80b7b000b7c03916ecbd0e34fe19465540cd28dc6d1eb1d7e5f9a280bdf930720c212014bac9&amp;mpshare=1&amp;scene=24&amp;srcid=0719j97wHEKJn2ZU0R9Oi2W9#rd</a></p>
+<p>Android新组件Lifecycle详解<br><a href="https://mp.weixin.qq.com/s?__biz=MzA5MzI3NjE2MA==&amp;mid=2650243273&amp;idx=1&amp;sn=b89696c4a009638c087fbca5b6d76cd3&amp;chksm=886371a6bf14f8b0a828855055f54c7e7fa063a57dea2c2fe69b8b5d24a03aef73f450fc5af4&amp;mpshare=1&amp;scene=24&amp;srcid=0629cVz7HqAanApllVepn9iz#rd" target="_blank" rel="noopener">https://mp.weixin.qq.com/s?__biz=MzA5MzI3NjE2MA==&amp;mid=2650243273&amp;idx=1&amp;sn=b89696c4a009638c087fbca5b6d76cd3&amp;chksm=886371a6bf14f8b0a828855055f54c7e7fa063a57dea2c2fe69b8b5d24a03aef73f450fc5af4&amp;mpshare=1&amp;scene=24&amp;srcid=0629cVz7HqAanApllVepn9iz#rd</a></p>
+<h1 id="其他"><a href="#其他" class="headerlink" title="其他"></a>其他</h1><p>APP接口开发的入门指南<br><a href="https://mp.weixin.qq.com/s/CFV5ucVdLXEoBx5r2vuCMw" target="_blank" rel="noopener">https://mp.weixin.qq.com/s/CFV5ucVdLXEoBx5r2vuCMw</a></p>
+<p>最火视频库FFmpeg在Android上的移植封装<br><a href="https://mp.weixin.qq.com/s/Z79a-kVyN8TS2a_iuheHPg" target="_blank" rel="noopener">https://mp.weixin.qq.com/s/Z79a-kVyN8TS2a_iuheHPg</a></p>
+<p>详细讲解Android Studio中使用Git<br><a href="https://mp.weixin.qq.com/s?__biz=MzAxMTI4MTkwNQ==&amp;mid=2650825717&amp;idx=1&amp;sn=c530dfb9cd5419aed439b71941393711&amp;chksm=80b7b76bb7c03e7dda8fb492f280aaae386ca042a2510b2faf3904e76c5695b6e32b68337a11&amp;mpshare=1&amp;scene=24&amp;srcid=0629qBHRRYAuzjtfZnxc0uTs#rd" target="_blank" rel="noopener">https://mp.weixin.qq.com/s?__biz=MzAxMTI4MTkwNQ==&amp;mid=2650825717&amp;idx=1&amp;sn=c530dfb9cd5419aed439b71941393711&amp;chksm=80b7b76bb7c03e7dda8fb492f280aaae386ca042a2510b2faf3904e76c5695b6e32b68337a11&amp;mpshare=1&amp;scene=24&amp;srcid=0629qBHRRYAuzjtfZnxc0uTs#rd</a></p>
+<h1 id="数据库"><a href="#数据库" class="headerlink" title="数据库"></a>数据库</h1><p>我所了解的Android数据库框架——DBFlow<br><a href="https://mp.weixin.qq.com/s/x4xLkbbN8o13oLGdDEAntw" target="_blank" rel="noopener">https://mp.weixin.qq.com/s/x4xLkbbN8o13oLGdDEAntw</a></p>
+<p>我所了解的 DBFlow<br><a href="https://mp.weixin.qq.com/s?__biz=MzA5MzI3NjE2MA==&amp;mid=2650243177&amp;idx=1&amp;sn=542c07c55758377e7e89b94ce34734bd&amp;chksm=88637106bf14f8109145b950fa5ef46fd3c3b8437dd1444b11d8fb1810c6ef13f5275eedd960&amp;mpshare=1&amp;scene=24&amp;srcid=0608mrsN5dlSw8JbZQXPH6zP#rd" target="_blank" rel="noopener">https://mp.weixin.qq.com/s?__biz=MzA5MzI3NjE2MA==&amp;mid=2650243177&amp;idx=1&amp;sn=542c07c55758377e7e89b94ce34734bd&amp;chksm=88637106bf14f8109145b950fa5ef46fd3c3b8437dd1444b11d8fb1810c6ef13f5275eedd960&amp;mpshare=1&amp;scene=24&amp;srcid=0608mrsN5dlSw8JbZQXPH6zP#rd</a></p>
+<h1 id="网络"><a href="#网络" class="headerlink" title="网络"></a>网络</h1><p>关于HTTPS的那些事<br><a href="https://mp.weixin.qq.com/s/E75toyRukUHEtt34-snEgQ" target="_blank" rel="noopener">https://mp.weixin.qq.com/s/E75toyRukUHEtt34-snEgQ</a></p>
+<p>Android持久化保存cookie<br><a href="https://blog.csdn.net/shimiso/article/details/39033353" target="_blank" rel="noopener">https://blog.csdn.net/shimiso/article/details/39033353</a></p>
+<p>使用OKHttp模拟登陆知乎，兼谈OKHttp中Cookie的使用！<br><a href="https://blog.csdn.net/u012702547/article/details/52156315" target="_blank" rel="noopener">https://blog.csdn.net/u012702547/article/details/52156315</a></p>
+<p>Retrofit2与服务端实例讲解<br><a href="https://mp.weixin.qq.com/s?__biz=MzA5MzI3NjE2MA==&amp;mid=2650243222&amp;idx=1&amp;sn=62545983dd4d62527b64b2a28ea103fe&amp;chksm=886371f9bf14f8efc89c79d863ee0394b424901cde2f75104aed3822057da3d13cbef3eea73e&amp;mpshare=1&amp;scene=24&amp;srcid=06221gMVq1zqi4k9CVNRqoep#rd" target="_blank" rel="noopener">https://mp.weixin.qq.com/s?__biz=MzA5MzI3NjE2MA==&amp;mid=2650243222&amp;idx=1&amp;sn=62545983dd4d62527b64b2a28ea103fe&amp;chksm=886371f9bf14f8efc89c79d863ee0394b424901cde2f75104aed3822057da3d13cbef3eea73e&amp;mpshare=1&amp;scene=24&amp;srcid=06221gMVq1zqi4k9CVNRqoep#rd</a></p>
+<p>HTTP 必知必会的那些<br><a href="https://mp.weixin.qq.com/s?__biz=MzIwMTAzMTMxMg==&amp;mid=2649492918&amp;idx=1&amp;sn=40030cd46cbba2bc639602aa341f3739&amp;chksm=8eec8649b99b0f5f09aedc590901f61e1729ff03e6381a3127890381841dfcdd14af282a13fc&amp;mpshare=1&amp;scene=24&amp;srcid=07114zp2ahQQs9qXzlstH08u#rd" target="_blank" rel="noopener">https://mp.weixin.qq.com/s?__biz=MzIwMTAzMTMxMg==&amp;mid=2649492918&amp;idx=1&amp;sn=40030cd46cbba2bc639602aa341f3739&amp;chksm=8eec8649b99b0f5f09aedc590901f61e1729ff03e6381a3127890381841dfcdd14af282a13fc&amp;mpshare=1&amp;scene=24&amp;srcid=07114zp2ahQQs9qXzlstH08u#rd</a></p>
+<p>Android Gson使用详解<br><a href="https://mp.weixin.qq.com/s?__biz=MzA5MzI3NjE2MA==&amp;mid=2650243206&amp;idx=1&amp;sn=28c1d807ae3a8a5ef32c91095f264ab1&amp;chksm=886371e9bf14f8ffdd8507252315c96e371fc4f916c854bce85a178222104b1d9684e9ab4bae&amp;mpshare=1&amp;scene=24&amp;srcid=06135ehU2SGSvL4wR7nzq3EQ#rd" target="_blank" rel="noopener">https://mp.weixin.qq.com/s?__biz=MzA5MzI3NjE2MA==&amp;mid=2650243206&amp;idx=1&amp;sn=28c1d807ae3a8a5ef32c91095f264ab1&amp;chksm=886371e9bf14f8ffdd8507252315c96e371fc4f916c854bce85a178222104b1d9684e9ab4bae&amp;mpshare=1&amp;scene=24&amp;srcid=06135ehU2SGSvL4wR7nzq3EQ#rd</a></p>
+<h1 id="架构"><a href="#架构" class="headerlink" title="架构"></a>架构</h1><p>浅谈Android中的MVP与动态代理<br><a href="https://mp.weixin.qq.com/s/Bktzl66Twp3jsuYLZrQPfQ" target="_blank" rel="noopener">https://mp.weixin.qq.com/s/Bktzl66Twp3jsuYLZrQPfQ</a></p>
+<p>Java 动态代理<br><a href="http://wiki.jikexueyuan.com/project/java-reflection/java-dynamic.html" target="_blank" rel="noopener">http://wiki.jikexueyuan.com/project/java-reflection/java-dynamic.html</a></p>
+<p>3分钟理解android-architecture 之 todo-mvp-clean<br><a href="https://www.jianshu.com/p/e0258ce7d392" target="_blank" rel="noopener">https://www.jianshu.com/p/e0258ce7d392</a></p>
+<h1 id="线程"><a href="#线程" class="headerlink" title="线程"></a>线程</h1><p>Java线程池线程复用的秘密<br><a href="https://mp.weixin.qq.com/s?__biz=MzA5MzI3NjE2MA==&amp;mid=2650243061&amp;idx=1&amp;sn=89013ccef91c82edc844a57889da95ca&amp;chksm=88638e9abf14078c881dc41ab67ddd9bb41d61291ea335a474b63d99129e9133b9f857f2a863&amp;mpshare=1&amp;scene=24&amp;srcid=05227AG1S00EDsDqLiTkTG2w#rd" target="_blank" rel="noopener">https://mp.weixin.qq.com/s?__biz=MzA5MzI3NjE2MA==&amp;mid=2650243061&amp;idx=1&amp;sn=89013ccef91c82edc844a57889da95ca&amp;chksm=88638e9abf14078c881dc41ab67ddd9bb41d61291ea335a474b63d99129e9133b9f857f2a863&amp;mpshare=1&amp;scene=24&amp;srcid=05227AG1S00EDsDqLiTkTG2w#rd</a></p>
+<h1 id="Kotlin"><a href="#Kotlin" class="headerlink" title="Kotlin"></a>Kotlin</h1><p>31 天，从浅到深轻松学习 Kotlin<br><a href="https://mp.weixin.qq.com/s?__biz=MzAwODY4OTk2Mg==&amp;mid=2652046391&amp;idx=1&amp;sn=46efa48076a4533f355af6351b76c012&amp;chksm=808ca472b7fb2d64afc89edf6beba1540e5a6ff49ad6346bd5d72b3957fa5f9323e07b8aab03&amp;mpshare=1&amp;scene=24&amp;srcid=0530wg2L5DyZCmcUzPoa7UNy#rd" target="_blank" rel="noopener">https://mp.weixin.qq.com/s?__biz=MzAwODY4OTk2Mg==&amp;mid=2652046391&amp;idx=1&amp;sn=46efa48076a4533f355af6351b76c012&amp;chksm=808ca472b7fb2d64afc89edf6beba1540e5a6ff49ad6346bd5d72b3957fa5f9323e07b8aab03&amp;mpshare=1&amp;scene=24&amp;srcid=0530wg2L5DyZCmcUzPoa7UNy#rd</a></p>
+<p>快速高效学习 Kotlin | Kotlin Bootcamp 课程介绍<br><a href="https://mp.weixin.qq.com/s?__biz=MzAwODY4OTk2Mg==&amp;mid=2652046397&amp;idx=1&amp;sn=4346017b0b6494beb6c7f85d127802f8&amp;chksm=808ca478b7fb2d6e93bc2521db30bdc14db4a9841fd6051030231181f35680e9120d8353b61a&amp;mpshare=1&amp;scene=24&amp;srcid=0530aGxOV6X0MBl3CLEqZdiv#rd" target="_blank" rel="noopener">https://mp.weixin.qq.com/s?__biz=MzAwODY4OTk2Mg==&amp;mid=2652046397&amp;idx=1&amp;sn=4346017b0b6494beb6c7f85d127802f8&amp;chksm=808ca478b7fb2d6e93bc2521db30bdc14db4a9841fd6051030231181f35680e9120d8353b61a&amp;mpshare=1&amp;scene=24&amp;srcid=0530aGxOV6X0MBl3CLEqZdiv#rd</a></p>
+<h1 id="Gradle"><a href="#Gradle" class="headerlink" title="Gradle"></a>Gradle</h1><p>一篇文章带你了解Gradle插件的所有创建方式<br><a href="https://mp.weixin.qq.com/s?__biz=MzIwMTAzMTMxMg==&amp;mid=2649492683&amp;idx=1&amp;sn=834c7dd084af2d446e84a2865a5c2b9c&amp;chksm=8eec8734b99b0e221407fbf95004fd1a0abc5a2bb2a78a5a66edb1841fda6149874cbebc0295&amp;mpshare=1&amp;scene=24&amp;srcid=0530SjyhdEWapyQwXNm60pTz#rd" target="_blank" rel="noopener">https://mp.weixin.qq.com/s?__biz=MzIwMTAzMTMxMg==&amp;mid=2649492683&amp;idx=1&amp;sn=834c7dd084af2d446e84a2865a5c2b9c&amp;chksm=8eec8734b99b0e221407fbf95004fd1a0abc5a2bb2a78a5a66edb1841fda6149874cbebc0295&amp;mpshare=1&amp;scene=24&amp;srcid=0530SjyhdEWapyQwXNm60pTz#rd</a></p>
+<p>为什么我们需要掌握Gradle的这些知识？<br><a href="https://mp.weixin.qq.com/s?__biz=MzA5MzI3NjE2MA==&amp;mid=2650243271&amp;idx=1&amp;sn=60aae09cb53bebc89dad3906c83cf594&amp;chksm=886371a8bf14f8bee7d6ecad6c708608f05c0d2566d7b1683484613f6f2be599a78e76c6cb68&amp;mpshare=1&amp;scene=24&amp;srcid=0628YVAvjfmNkSeWLF6Dd5UJ#rd" target="_blank" rel="noopener">https://mp.weixin.qq.com/s?__biz=MzA5MzI3NjE2MA==&amp;mid=2650243271&amp;idx=1&amp;sn=60aae09cb53bebc89dad3906c83cf594&amp;chksm=886371a8bf14f8bee7d6ecad6c708608f05c0d2566d7b1683484613f6f2be599a78e76c6cb68&amp;mpshare=1&amp;scene=24&amp;srcid=0628YVAvjfmNkSeWLF6Dd5UJ#rd</a></p>
+<p>Android Studio项目模板全面解析<br><a href="https://mp.weixin.qq.com/s?__biz=MzA5MzI3NjE2MA==&amp;mid=2650243486&amp;idx=1&amp;sn=096cacf159eef9ff531ca4c905dfeb9b&amp;chksm=886370f1bf14f9e797b27941b9568162afd5ed90ef615b0980527d9ecd4ee9e5da653c435db0&amp;mpshare=1&amp;scene=24&amp;srcid=0710aY57WChAgUGESyATymeM#rd" target="_blank" rel="noopener">https://mp.weixin.qq.com/s?__biz=MzA5MzI3NjE2MA==&amp;mid=2650243486&amp;idx=1&amp;sn=096cacf159eef9ff531ca4c905dfeb9b&amp;chksm=886370f1bf14f9e797b27941b9568162afd5ed90ef615b0980527d9ecd4ee9e5da653c435db0&amp;mpshare=1&amp;scene=24&amp;srcid=0710aY57WChAgUGESyATymeM#rd</a></p>
+<h1 id="多媒体"><a href="#多媒体" class="headerlink" title="多媒体"></a>多媒体</h1><p>Android音频管理之AudioManager<br><a href="https://mp.weixin.qq.com/s?__biz=MzA5MzI3NjE2MA==&amp;mid=2650243609&amp;idx=1&amp;sn=9420ef29a0aa2bdd56c55076e686524c&amp;chksm=88637376bf14fa60b0b7e8530e88ced32f2c481161d34a907185e100f0cd42e7b6be83423ccf&amp;mpshare=1&amp;scene=24&amp;srcid=0725VfT0yIGfO8ZgczaVne9M#rd" target="_blank" rel="noopener">https://mp.weixin.qq.com/s?__biz=MzA5MzI3NjE2MA==&amp;mid=2650243609&amp;idx=1&amp;sn=9420ef29a0aa2bdd56c55076e686524c&amp;chksm=88637376bf14fa60b0b7e8530e88ced32f2c481161d34a907185e100f0cd42e7b6be83423ccf&amp;mpshare=1&amp;scene=24&amp;srcid=0725VfT0yIGfO8ZgczaVne9M#rd</a></p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/07/22/5种写法实现单例模式/" rel="next" title="5种写法实现单例模式">
+                <i class="fa fa-chevron-left"></i> 5种写法实现单例模式
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/07/23/Android架构——Clean/" rel="prev" title="Android架构——Clean">
+                Android架构——Clean <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/images/portrait.png"
+                alt="Ennis L.M. Wu" />
+            
+              <p class="site-author-name" itemprop="name">Ennis L.M. Wu</p>
+              <p class="site-description motion-element" itemprop="description">We could belong togeter, ARTPOP .</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">23</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">15</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+            <div class="feed-link motion-element">
+              <a href="/atom.xml" rel="alternate">
+                <i class="fa fa-rss"></i>
+                RSS
+              </a>
+            </div>
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/EnnisWu" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="https://gitee.com/EnnisLM" target="_blank" title="Gitee">
+                      
+                        <i class="fa fa-fw fa-globe"></i>Gitee</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="https://twitter.com/wkf1997" target="_blank" title="Twitter">
+                      
+                        <i class="fa fa-fw fa-twitter"></i>Twitter</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="https://instagram.com/ennis_lm" target="_blank" title="Instagram">
+                      
+                        <i class="fa fa-fw fa-instagram"></i>Instagram</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="https://www.weibo.com/u/3660210774" target="_blank" title="微博">
+                      
+                        <i class="fa fa-fw fa-weibo"></i>微博</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="mailto:wkf1997@gmail.com" target="_blank" title="E-Mail">
+                      
+                        <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#最近"><span class="nav-number">1.</span> <span class="nav-text">最近</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#View"><span class="nav-number">2.</span> <span class="nav-text">View</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#事件"><span class="nav-number">3.</span> <span class="nav-text">事件</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#动画"><span class="nav-number">4.</span> <span class="nav-text">动画</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#控件"><span class="nav-number">5.</span> <span class="nav-text">控件</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#注解"><span class="nav-number">6.</span> <span class="nav-text">注解</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#优化"><span class="nav-number">7.</span> <span class="nav-text">优化</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#组件化"><span class="nav-number">8.</span> <span class="nav-text">组件化</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#其他"><span class="nav-number">9.</span> <span class="nav-text">其他</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#数据库"><span class="nav-number">10.</span> <span class="nav-text">数据库</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#网络"><span class="nav-number">11.</span> <span class="nav-text">网络</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#架构"><span class="nav-number">12.</span> <span class="nav-text">架构</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#线程"><span class="nav-number">13.</span> <span class="nav-text">线程</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Kotlin"><span class="nav-number">14.</span> <span class="nav-text">Kotlin</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Gradle"><span class="nav-number">15.</span> <span class="nav-text">Gradle</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#多媒体"><span class="nav-number">16.</span> <span class="nav-text">多媒体</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; 2017 &mdash; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Ennis L.M. Wu</span>
+
+  
+</div>
+
+
+
+
+
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/canvas-nest/canvas-nest.min.js"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+<script src="/live2dw/lib/L2Dwidget.min.js?0c58a1486de42ac6cc1c59c7d98ae887"></script><script>L2Dwidget.init({"pluginModelPath":"assets/","model":{"jsonPath":"/live2dw/assets/assets/haruto.model.json"},"scale":0.5,"hHeadPos":0.5,"vHeadPos":0.618,"display":{"superSample":2,"width":150,"height":300,"position":"right","hOffset":0,"vOffset":-20},"mobile":{"show":true,"scale":0.2},"react":{"opacityDefault":0.7,"opacityOnHover":0.2},"log":false,"pluginJsPath":"lib/","pluginRootPath":"live2dw/","tagMode":false});</script></body>
+</html>
