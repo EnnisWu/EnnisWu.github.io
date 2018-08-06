@@ -254,6 +254,219 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/06/12/《TCPIP详解卷1》004阅读笔记/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Ennis L.M. Wu">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/portrait.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Ennis -Little Monster">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/06/12/《TCPIP详解卷1》004阅读笔记/" itemprop="url">《TCPIP详解卷1》004阅读笔记</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-06-12T15:38:11+08:00">
+                2018-06-12
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>RFC 826 [Plummer 1982] 是ARP规范描述文档。<br>ARP（地址解析协议）<br>RARP（逆地址解析协议）<br><br></p>
+<p>ARP为IP地址到对应硬件地址之间提供动态映射，因为是自动完成的。<br>RARP被没有磁盘驱动器的系统使用，需要系统管理员手工设置。<br><br></p>
+<p>ARP发送一份称作ARP请求的以太网数据帧给以太网上的每个主机。称作广播。<br><br></p>
+<p>点对点链路不使用ARP。设置这些链路时，必须告知内核链路每一端的IP地址，而不需要硬件地址。<br><br></p>
+<p>ARP高效运行因为每个主机上都有一个ARP高速缓存<br><br></p>
+<h4 id="ARP的分组格式"><a href="#ARP的分组格式" class="headerlink" title="ARP的分组格式"></a>ARP的分组格式</h4><table>
+<thead>
+<tr>
+<th>以太网目的地址</th>
+<th>以太网源地址</th>
+<th>帧类型</th>
+<th>硬件类型</th>
+<th>协议类型</th>
+<th>硬件地址长度</th>
+<th>协议地址长度</th>
+<th>op</th>
+<th>发送端以太网地址</th>
+<th>发送端IP地址</th>
+<th>目的以太网地址</th>
+<th>目的IP地址</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>6</td>
+<td>6</td>
+<td>2</td>
+<td>2</td>
+<td>2</td>
+<td>1</td>
+<td>1</td>
+<td>2</td>
+<td>6</td>
+<td>4</td>
+<td>6</td>
+<td>4</td>
+</tr>
+<tr>
+<td>全1</td>
+<td></td>
+<td>0x0806</td>
+<td>1</td>
+<td>0x0800</td>
+<td>6 bytes</td>
+<td>4 bytes</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>广播地址</td>
+<td></td>
+<td>ARP请求或应答</td>
+<td>表示以太网地址</td>
+<td>表示IP地址</td>
+<td>MAC地址长度</td>
+<td>IP地址长度</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>目的地址：全1的特殊地址是广播地址，电缆上的所有以太网接口都要接收广播的数据帧。</li>
+<li>操作字段（OP）：ARP请求（1）、ARP应答（2）、RARP请求（3）、RARP应答（4），必须字段，因为ARP请求和应答的帧类型字段相同。<br><br></li>
+</ul>
+<h4 id="ARP高速缓存超时设置"><a href="#ARP高速缓存超时设置" class="headerlink" title="ARP高速缓存超时设置"></a>ARP高速缓存超时设置</h4><ul>
+<li>BSD演变来的系统一般设置完整表项超时20分钟，不完整表项超时3分钟。</li>
+<li>表项再次使用时，超时值重设为20分钟。<br><br></li>
+</ul>
+<h4 id="ARP代理"><a href="#ARP代理" class="headerlink" title="ARP代理"></a>ARP代理</h4><ul>
+<li>路由器相当于目的主机的代理，把分组从其他主机转发给它。<br><br></li>
+</ul>
+<h4 id="免费ARP"><a href="#免费ARP" class="headerlink" title="免费ARP"></a>免费ARP</h4><ul>
+<li>是指发送ARP查找自己的IP地址。</li>
+<li>两方面作用：</li>
+<li><ol>
+<li>验证IP是否冲突，一个主机能够通过它来确定是否还有一个主机设置了相同的IP地址。</li>
+</ol>
+</li>
+<li><ol>
+<li>更换物理网卡，假设发送ARP的主机正好改变了物理地址，能够使用此方法通知网络中其他主机及时更新ARP缓存。<br><br></li>
+</ol>
+</li>
+</ul>
+<h4 id="ARP命令"><a href="#ARP命令" class="headerlink" title="ARP命令"></a>ARP命令</h4><ul>
+<li>arp -a 显示ARP高速缓存。</li>
+<li>arp -d 删除ARP高速缓存中某一项。</li>
+<li>arp -s 增加高速缓存中的内容，是永久性的，除非末尾加上关键字temp。</li>
+</ul>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/06/02/《TCPIP详解卷1》003阅读笔记/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -876,6 +1089,252 @@
 
 
     
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/04/09/Toolbar的setTitle问题/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Ennis L.M. Wu">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/portrait.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Ennis -Little Monster">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/04/09/Toolbar的setTitle问题/" itemprop="url">Toolbar的setTitle问题</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-04-09T23:28:53+08:00">
+                2018-04-09
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>在setSupportActionBar(toolbar)之后调用toolbar.setTitle()，<br>在onCreate()中调用无效，<br>在onStart()中调用无效。</p>
+<p>解决方案：</p>
+<ol>
+<li>在onResume()中调用有效。</li>
+<li>getSupportActionBar.setTitle()有效</li>
+</ol>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/02/22/转-Android生成验证码/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Ennis L.M. Wu">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/portrait.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Ennis -Little Monster">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/02/22/转-Android生成验证码/" itemprop="url">[转]Android生成验证码</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-02-22T20:51:36+08:00">
+                2018-02-22
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Code</span> </span>&#123;  </span><br><span class="line">  </span><br><span class="line">    <span class="comment">//随机数数组  </span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">char</span>[] CHARS = &#123;  </span><br><span class="line">            <span class="string">'2'</span>, <span class="string">'3'</span>, <span class="string">'4'</span>, <span class="string">'5'</span>, <span class="string">'6'</span>, <span class="string">'7'</span>, <span class="string">'8'</span>, <span class="string">'9'</span>,  </span><br><span class="line">            <span class="string">'a'</span>, <span class="string">'b'</span>, <span class="string">'c'</span>, <span class="string">'d'</span>, <span class="string">'e'</span>, <span class="string">'f'</span>, <span class="string">'g'</span>, <span class="string">'h'</span>, <span class="string">'j'</span>, <span class="string">'k'</span>, <span class="string">'m'</span>,  </span><br><span class="line">            <span class="string">'n'</span>, <span class="string">'p'</span>, <span class="string">'q'</span>, <span class="string">'r'</span>, <span class="string">'s'</span>, <span class="string">'t'</span>, <span class="string">'u'</span>, <span class="string">'v'</span>, <span class="string">'w'</span>, <span class="string">'x'</span>, <span class="string">'y'</span>, <span class="string">'z'</span>,  </span><br><span class="line">            <span class="string">'A'</span>, <span class="string">'B'</span>, <span class="string">'C'</span>, <span class="string">'D'</span>, <span class="string">'E'</span>, <span class="string">'F'</span>, <span class="string">'G'</span>, <span class="string">'H'</span>, <span class="string">'I'</span>, <span class="string">'J'</span>, <span class="string">'K'</span>, <span class="string">'L'</span>, <span class="string">'M'</span>,  </span><br><span class="line">            <span class="string">'N'</span>, <span class="string">'P'</span>, <span class="string">'Q'</span>, <span class="string">'R'</span>, <span class="string">'S'</span>, <span class="string">'T'</span>, <span class="string">'U'</span>, <span class="string">'V'</span>, <span class="string">'W'</span>, <span class="string">'X'</span>, <span class="string">'Y'</span>, <span class="string">'Z'</span>  </span><br><span class="line">    &#125;;  </span><br><span class="line">  </span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> Code bmpCode;  </span><br><span class="line">  </span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> Code <span class="title">getInstance</span><span class="params">()</span> </span>&#123;  </span><br><span class="line">        <span class="keyword">if</span>(bmpCode == <span class="keyword">null</span>)  </span><br><span class="line">            bmpCode = <span class="keyword">new</span> Code();  </span><br><span class="line">        <span class="keyword">return</span> bmpCode;  </span><br><span class="line">    &#125;  </span><br><span class="line">  </span><br><span class="line">    <span class="comment">//default settings  </span></span><br><span class="line">    <span class="comment">//验证码默认随机数的个数  </span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">int</span> DEFAULT_CODE_LENGTH = <span class="number">4</span>;  </span><br><span class="line">    <span class="comment">//默认字体大小  </span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">int</span> DEFAULT_FONT_SIZE = <span class="number">25</span>;  </span><br><span class="line">    <span class="comment">//默认线条的条数  </span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">int</span> DEFAULT_LINE_NUMBER = <span class="number">5</span>;  </span><br><span class="line">    <span class="comment">//padding值  </span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">int</span> BASE_PADDING_LEFT = <span class="number">10</span>, RANGE_PADDING_LEFT = <span class="number">15</span>, BASE_PADDING_TOP = <span class="number">15</span>, RANGE_PADDING_TOP = <span class="number">20</span>;  </span><br><span class="line">    <span class="comment">//验证码的默认宽高  </span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">int</span> DEFAULT_WIDTH = <span class="number">100</span>, DEFAULT_HEIGHT = <span class="number">40</span>;  </span><br><span class="line">  </span><br><span class="line">    <span class="comment">//settings decided by the layout xml  </span></span><br><span class="line">    <span class="comment">//canvas width and height  </span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">int</span> width = DEFAULT_WIDTH, height = DEFAULT_HEIGHT;  </span><br><span class="line">  </span><br><span class="line">    <span class="comment">//random word space and pading_top  </span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">int</span> base_padding_left = BASE_PADDING_LEFT, range_padding_left = RANGE_PADDING_LEFT,  </span><br><span class="line">            base_padding_top = BASE_PADDING_TOP, range_padding_top = RANGE_PADDING_TOP;  </span><br><span class="line">  </span><br><span class="line">    <span class="comment">//number of chars, lines; font size  </span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">int</span> codeLength = DEFAULT_CODE_LENGTH, line_number = DEFAULT_LINE_NUMBER, font_size = DEFAULT_FONT_SIZE;  </span><br><span class="line">  </span><br><span class="line">    <span class="comment">//variables  </span></span><br><span class="line">    <span class="keyword">private</span> String code;  </span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">int</span> padding_left, padding_top;  </span><br><span class="line">    <span class="keyword">private</span> Random random = <span class="keyword">new</span> Random();  </span><br><span class="line">    <span class="comment">//验证码图片  </span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> Bitmap <span class="title">createBitmap</span><span class="params">()</span> </span>&#123;  </span><br><span class="line">        padding_left = <span class="number">0</span>;  </span><br><span class="line">  </span><br><span class="line">        Bitmap bp = Bitmap.createBitmap(width, height, Config.ARGB_8888);  </span><br><span class="line">        Canvas c = <span class="keyword">new</span> Canvas(bp);  </span><br><span class="line">  </span><br><span class="line">        code = createCode();  </span><br><span class="line">  </span><br><span class="line">        c.drawColor(Color.WHITE);  </span><br><span class="line">        Paint paint = <span class="keyword">new</span> Paint();  </span><br><span class="line">        paint.setAntiAlias(<span class="keyword">true</span>);  </span><br><span class="line">        paint.setTextSize(font_size);  </span><br><span class="line">        <span class="comment">//画验证码  </span></span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; code.length(); i++) &#123;  </span><br><span class="line">            randomTextStyle(paint);  </span><br><span class="line">            randomPadding();  </span><br><span class="line">            c.drawText(code.charAt(i) + <span class="string">""</span>, padding_left, padding_top, paint);  </span><br><span class="line">        &#125;  </span><br><span class="line">        <span class="comment">//画线条  </span></span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; line_number; i++) &#123;  </span><br><span class="line">            drawLine(c, paint);  </span><br><span class="line">        &#125;  </span><br><span class="line">  </span><br><span class="line">        c.save( Canvas.ALL_SAVE_FLAG );<span class="comment">//保存  </span></span><br><span class="line">        c.restore();<span class="comment">//  </span></span><br><span class="line">        <span class="keyword">return</span> bp;  </span><br><span class="line">    &#125;  </span><br><span class="line">  </span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">getCode</span><span class="params">()</span> </span>&#123;  </span><br><span class="line">        <span class="keyword">return</span> code;  </span><br><span class="line">    &#125;  </span><br><span class="line">  </span><br><span class="line">    <span class="comment">//生成验证码  </span></span><br><span class="line">    <span class="function"><span class="keyword">private</span> String <span class="title">createCode</span><span class="params">()</span> </span>&#123;  </span><br><span class="line">        StringBuilder buffer = <span class="keyword">new</span> StringBuilder();  </span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; codeLength; i++) &#123;  </span><br><span class="line">            buffer.append(CHARS[random.nextInt(CHARS.length)]);  </span><br><span class="line">        &#125;  </span><br><span class="line">        <span class="keyword">return</span> buffer.toString();  </span><br><span class="line">    &#125;  </span><br><span class="line">    <span class="comment">//画干扰线  </span></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">drawLine</span><span class="params">(Canvas canvas, Paint paint)</span> </span>&#123;  </span><br><span class="line">        <span class="keyword">int</span> color = randomColor();  </span><br><span class="line">        <span class="keyword">int</span> startX = random.nextInt(width);  </span><br><span class="line">        <span class="keyword">int</span> startY = random.nextInt(height);  </span><br><span class="line">        <span class="keyword">int</span> stopX = random.nextInt(width);  </span><br><span class="line">        <span class="keyword">int</span> stopY = random.nextInt(height);  </span><br><span class="line">        paint.setStrokeWidth(<span class="number">1</span>);  </span><br><span class="line">        paint.setColor(color);  </span><br><span class="line">        canvas.drawLine(startX, startY, stopX, stopY, paint);  </span><br><span class="line">    &#125;  </span><br><span class="line">    <span class="comment">//生成随机颜色  </span></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">int</span> <span class="title">randomColor</span><span class="params">()</span> </span>&#123;  </span><br><span class="line">        <span class="keyword">return</span> randomColor(<span class="number">1</span>);  </span><br><span class="line">    &#125;  </span><br><span class="line">  </span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">int</span> <span class="title">randomColor</span><span class="params">(<span class="keyword">int</span> rate)</span> </span>&#123;  </span><br><span class="line">        <span class="keyword">int</span> red = random.nextInt(<span class="number">256</span>) / rate;  </span><br><span class="line">        <span class="keyword">int</span> green = random.nextInt(<span class="number">256</span>) / rate;  </span><br><span class="line">        <span class="keyword">int</span> blue = random.nextInt(<span class="number">256</span>) / rate;  </span><br><span class="line">        <span class="keyword">return</span> Color.rgb(red, green, blue);  </span><br><span class="line">    &#125;  </span><br><span class="line">    <span class="comment">//随机生成文字样式，颜色，粗细，倾斜度  </span></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">randomTextStyle</span><span class="params">(Paint paint)</span> </span>&#123;  </span><br><span class="line">        <span class="keyword">int</span> color = randomColor();  </span><br><span class="line">        paint.setColor(color);  </span><br><span class="line">        paint.setFakeBoldText(random.nextBoolean());  <span class="comment">//true为粗体，false为非粗体  </span></span><br><span class="line">        <span class="keyword">float</span> skewX = random.nextInt(<span class="number">11</span>) / <span class="number">10</span>;  </span><br><span class="line">        skewX = random.nextBoolean() ? skewX : -skewX;  </span><br><span class="line">        paint.setTextSkewX(skewX); <span class="comment">//float类型参数，负数表示右斜，整数左斜  </span></span><br><span class="line">        <span class="comment">//paint.setUnderlineText(true); //true为下划线，false为非下划线  </span></span><br><span class="line">        <span class="comment">//paint.setStrikeThruText(true); //true为删除线，false为非删除线  </span></span><br><span class="line">    &#125;  </span><br><span class="line">    <span class="comment">//随机生成padding值  </span></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">randomPadding</span><span class="params">()</span> </span>&#123;  </span><br><span class="line">        padding_left += base_padding_left + random.nextInt(range_padding_left);  </span><br><span class="line">        padding_top = base_padding_top + random.nextInt(range_padding_top);  </span><br><span class="line">    &#125;  </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>调用方法：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">ivCode.setImageBitmap(Code.getInstance().createBitmap());<span class="comment">//将验证码图片显示到ImageView  </span></span><br><span class="line">String code = Code.getInstance().getCode().toLowerCase();<span class="comment">//用一个变量保存验证码，并转为小写，获取输入的验证也转为小写，这样就实现了不区分大小写</span></span><br></pre></td></tr></table></figure>
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
   </section>
 
   
@@ -930,7 +1389,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">23</span>
+                  <span class="site-state-item-count">26</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -943,7 +1402,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">15</span>
+                  <span class="site-state-item-count">17</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>
