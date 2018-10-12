@@ -53,16 +53,16 @@
 <link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
 
 
-  <link rel="apple-touch-icon" sizes="180x180" href="/images/portrait.png?v=5.1.4">
+  <link rel="apple-touch-icon" sizes="180x180" href="http://pcrioz2ch.bkt.clouddn.com/portrait.png?v=5.1.4">
 
 
-  <link rel="icon" type="image/png" sizes="32x32" href="/images/portrait.png?v=5.1.4">
+  <link rel="icon" type="image/png" sizes="32x32" href="http://pcrioz2ch.bkt.clouddn.com/portrait.png?v=5.1.4">
 
 
-  <link rel="icon" type="image/png" sizes="16x16" href="/images/portrait.png?v=5.1.4">
+  <link rel="icon" type="image/png" sizes="16x16" href="http://pcrioz2ch.bkt.clouddn.com/portrait.png?v=5.1.4">
 
 
-  <link rel="mask-icon" href="/images/portrait.svg?v=5.1.4" color="#222">
+  <link rel="mask-icon" href="http://pcrioz2ch.bkt.clouddn.com/portrait.svg?v=5.1.4" color="#222">
 
 
 
@@ -81,18 +81,18 @@
 
 
 
-<meta name="description" content="We could, we could belong togeter, ARTPOP .">
+<meta name="description" content="invokedynamic Java 7 引入的新指令 调用机制抽象出调用点的概念 允许将调用点链接至任意符合条件的方法上  MethodHandle（方法句柄） Java 7 引入 是一个强类型的，能被直接执行的引用 可以指向静态方法、实例方法、构造器、字段  方法句柄的类型（MethodType） 由参数类型、返回类型组成 确认方法句柄是否适配的唯一关键 不关心方法的类名或方法名  方法句柄的">
 <meta name="keywords" content="JVM">
 <meta property="og:type" content="article">
 <meta property="og:title" content="笔记-深入拆解Java虚拟机-0809JVM是怎么实现invokedynamic的？">
 <meta property="og:url" content="http://yoursite.com/2018/08/10/笔记-深入拆解Java虚拟机-0809JVM是怎么实现invokedynamic的？/index.html">
 <meta property="og:site_name" content="Ennis -Little Monster">
-<meta property="og:description" content="We could, we could belong togeter, ARTPOP .">
+<meta property="og:description" content="invokedynamic Java 7 引入的新指令 调用机制抽象出调用点的概念 允许将调用点链接至任意符合条件的方法上  MethodHandle（方法句柄） Java 7 引入 是一个强类型的，能被直接执行的引用 可以指向静态方法、实例方法、构造器、字段  方法句柄的类型（MethodType） 由参数类型、返回类型组成 确认方法句柄是否适配的唯一关键 不关心方法的类名或方法名  方法句柄的">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-08-15T12:43:59.260Z">
+<meta property="og:updated_time" content="2018-08-29T01:14:06.917Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="笔记-深入拆解Java虚拟机-0809JVM是怎么实现invokedynamic的？">
-<meta name="twitter:description" content="We could, we could belong togeter, ARTPOP .">
+<meta name="twitter:description" content="invokedynamic Java 7 引入的新指令 调用机制抽象出调用点的概念 允许将调用点链接至任意符合条件的方法上  MethodHandle（方法句柄） Java 7 引入 是一个强类型的，能被直接执行的引用 可以指向静态方法、实例方法、构造器、字段  方法句柄的类型（MethodType） 由参数类型、返回类型组成 确认方法句柄是否适配的唯一关键 不关心方法的类名或方法名  方法句柄的">
 
 
 
@@ -388,7 +388,55 @@
       
 
       
-        
+        <h1 id="invokedynamic"><a href="#invokedynamic" class="headerlink" title="invokedynamic"></a>invokedynamic</h1><ul>
+<li>Java 7 引入的新指令</li>
+<li>调用机制抽象出调用点的概念</li>
+<li>允许将调用点链接至任意符合条件的方法上</li>
+</ul>
+<h1 id="MethodHandle（方法句柄）"><a href="#MethodHandle（方法句柄）" class="headerlink" title="MethodHandle（方法句柄）"></a>MethodHandle（方法句柄）</h1><ul>
+<li>Java 7 引入</li>
+<li>是一个强类型的，能被直接执行的引用</li>
+<li>可以指向静态方法、实例方法、构造器、字段</li>
+</ul>
+<h2 id="方法句柄的类型（MethodType）"><a href="#方法句柄的类型（MethodType）" class="headerlink" title="方法句柄的类型（MethodType）"></a>方法句柄的类型（MethodType）</h2><ul>
+<li>由参数类型、返回类型组成</li>
+<li>确认方法句柄是否适配的唯一关键</li>
+<li>不关心方法的类名或方法名</li>
+</ul>
+<h2 id="方法句柄的创建"><a href="#方法句柄的创建" class="headerlink" title="方法句柄的创建"></a>方法句柄的创建</h2><p>通过 MethodHandles.Lookup 类</p>
+<ul>
+<li>使用反射的 Method 类查找</li>
+<li>Lookup.findStatic 查找调用 invokestatic 的方法</li>
+<li>Lookup.findVirtual 查找调用 invokevirtual 和 invokeinterface 的方法</li>
+<li>Lookup.findSpecial 查找调用 invokespecial 的方法</li>
+</ul>
+<h2 id="方法句柄的权限"><a href="#方法句柄的权限" class="headerlink" title="方法句柄的权限"></a>方法句柄的权限</h2><ul>
+<li>权限检查在创建阶段完成</li>
+<li>实际调用过程中不检查</li>
+<li>取决于 Lookup 对象创建位置（不是方法句柄创建位置）</li>
+</ul>
+<h2 id="方法句柄的操作"><a href="#方法句柄的操作" class="headerlink" title="方法句柄的操作"></a>方法句柄的操作</h2><h3 id="invokeExact"><a href="#invokeExact" class="headerlink" title="invokeExact"></a>invokeExact</h3><ul>
+<li>严格匹配参数类型（需要显示向上转型）</li>
+<li>@PolymorphicSignature 根据传入参数的声明类型来生成方法描述符（而不是目标方法）</li>
+</ul>
+<h3 id="invoke"><a href="#invoke" class="headerlink" title="invoke"></a>invoke</h3><ul>
+<li>自动适配参数类型</li>
+<li>会调用 MethodHandle.asType 方法生成一个适配器方法句柄</li>
+</ul>
+<h3 id="增删改"><a href="#增删改" class="headerlink" title="增删改"></a>增删改</h3><p>通过生成另一个充当适配器的方法句柄来实现</p>
+<p>捕获类型的 Lambda 表达式用增操作实现</p>
+<p>增操作可以实现方法的柯里化</p>
+<h2 id="方法句柄的实现"><a href="#方法句柄的实现" class="headerlink" title="方法句柄的实现"></a>方法句柄的实现</h2><p>HotSpot 虚拟机中方法句柄调用的具体实现，只讨论DirectMethodHandle</p>
+<h3 id="invokeExact-1"><a href="#invokeExact-1" class="headerlink" title="invokeExact"></a>invokeExact</h3><ul>
+<li>调用至一个共享的、与方法句柄类型相关的特殊适配器中</li>
+<li>适配器是一个 LambdaForm</li>
+</ul>
+<h2 id="方法句柄的缺点"><a href="#方法句柄的缺点" class="headerlink" title="方法句柄的缺点"></a>方法句柄的缺点</h2><ul>
+<li>与反射一样是简介调用</li>
+<li>无法内联</li>
+</ul>
+<p><strong>未更新09</strong></p>
+
       
     </div>
     
@@ -457,6 +505,10 @@
 
           <div class="post-nav-prev post-nav-item">
             
+              <a href="/2018/08/27/暑假、日剧、独身者、改变、目标/" rel="prev" title="暑假、日剧、独身者、改变、目标">
+                暑假、日剧、独身者、改变、目标 <i class="fa fa-chevron-right"></i>
+              </a>
+            
           </div>
         </div>
       
@@ -507,8 +559,17 @@
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
 
-      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
+      <section class="site-overview-wrap sidebar-panel">
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
             
@@ -527,7 +588,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">27</span>
+                  <span class="site-state-item-count">32</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -538,7 +599,7 @@
               
               <div class="site-state-item site-state-categories">
                 <a href="/categories/index.html">
-                  <span class="site-state-item-count">8</span>
+                  <span class="site-state-item-count">9</span>
                   <span class="site-state-item-name">分类</span>
                 </a>
               </div>
@@ -549,7 +610,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">16</span>
+                  <span class="site-state-item-count">17</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>
@@ -576,27 +637,21 @@
                   </span>
                 
                   <span class="links-of-author-item">
-                    <a href="https://gitee.com/EnnisLM" target="_blank" title="Gitee">
+                    <a href="https://gitee.com/EnnisWu" target="_blank" title="Gitee">
                       
                         <i class="fa fa-fw fa-globe"></i>Gitee</a>
                   </span>
                 
                   <span class="links-of-author-item">
-                    <a href="https://twitter.com/wkf1997" target="_blank" title="Twitter">
+                    <a href="https://twitter.com/EnnisWu" target="_blank" title="Twitter">
                       
                         <i class="fa fa-fw fa-twitter"></i>Twitter</a>
                   </span>
                 
                   <span class="links-of-author-item">
-                    <a href="https://instagram.com/ennis_lm" target="_blank" title="Instagram">
+                    <a href="https://instagram.com/ennis_wu" target="_blank" title="Instagram">
                       
                         <i class="fa fa-fw fa-instagram"></i>Instagram</a>
-                  </span>
-                
-                  <span class="links-of-author-item">
-                    <a href="https://www.weibo.com/u/3660210774" target="_blank" title="微博">
-                      
-                        <i class="fa fa-fw fa-weibo"></i>微博</a>
                   </span>
                 
                   <span class="links-of-author-item">
@@ -619,6 +674,22 @@
         </div>
       </section>
 
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#invokedynamic"><span class="nav-number">1.</span> <span class="nav-text">invokedynamic</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#MethodHandle（方法句柄）"><span class="nav-number">2.</span> <span class="nav-text">MethodHandle（方法句柄）</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#方法句柄的类型（MethodType）"><span class="nav-number">2.1.</span> <span class="nav-text">方法句柄的类型（MethodType）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#方法句柄的创建"><span class="nav-number">2.2.</span> <span class="nav-text">方法句柄的创建</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#方法句柄的权限"><span class="nav-number">2.3.</span> <span class="nav-text">方法句柄的权限</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#方法句柄的操作"><span class="nav-number">2.4.</span> <span class="nav-text">方法句柄的操作</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#invokeExact"><span class="nav-number">2.4.1.</span> <span class="nav-text">invokeExact</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#invoke"><span class="nav-number">2.4.2.</span> <span class="nav-text">invoke</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#增删改"><span class="nav-number">2.4.3.</span> <span class="nav-text">增删改</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#方法句柄的实现"><span class="nav-number">2.5.</span> <span class="nav-text">方法句柄的实现</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#invokeExact-1"><span class="nav-number">2.5.1.</span> <span class="nav-text">invokeExact</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#方法句柄的缺点"><span class="nav-number">2.6.</span> <span class="nav-text">方法句柄的缺点</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
       
 
       

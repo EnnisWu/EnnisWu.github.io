@@ -53,16 +53,16 @@
 <link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
 
 
-  <link rel="apple-touch-icon" sizes="180x180" href="/images/portrait.png?v=5.1.4">
+  <link rel="apple-touch-icon" sizes="180x180" href="http://pcrioz2ch.bkt.clouddn.com/portrait.png?v=5.1.4">
 
 
-  <link rel="icon" type="image/png" sizes="32x32" href="/images/portrait.png?v=5.1.4">
+  <link rel="icon" type="image/png" sizes="32x32" href="http://pcrioz2ch.bkt.clouddn.com/portrait.png?v=5.1.4">
 
 
-  <link rel="icon" type="image/png" sizes="16x16" href="/images/portrait.png?v=5.1.4">
+  <link rel="icon" type="image/png" sizes="16x16" href="http://pcrioz2ch.bkt.clouddn.com/portrait.png?v=5.1.4">
 
 
-  <link rel="mask-icon" href="/images/portrait.svg?v=5.1.4" color="#222">
+  <link rel="mask-icon" href="http://pcrioz2ch.bkt.clouddn.com/portrait.svg?v=5.1.4" color="#222">
 
 
 
@@ -298,6 +298,691 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/08/31/笔记-深入拆解Java虚拟机-13Java内存模型/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Ennis L.M. Wu">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/portrait.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Ennis -Little Monster">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/08/31/笔记-深入拆解Java虚拟机-13Java内存模型/" itemprop="url">笔记-深入拆解Java虚拟机-13Java内存模型</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-08-31T14:44:23+08:00">
+                2018-08-31
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Java虚拟机/" itemprop="url" rel="index">
+                    <span itemprop="name">Java虚拟机</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h1 id="编译器优化的重排序"><a href="#编译器优化的重排序" class="headerlink" title="编译器优化的重排序"></a>编译器优化的重排序</h1><ul>
+<li>保证遵守 as-if-serial 属性。</li>
+<li>操作之间存在数据依赖，不能调整顺序。</li>
+</ul>
+<h1 id="Java-内存模型与-happens-before-关系"><a href="#Java-内存模型与-happens-before-关系" class="headerlink" title="Java 内存模型与 happens-before 关系"></a>Java 内存模型与 happens-before 关系</h1><ul>
+<li>用来描述两个操作的内存可见性。</li>
+<li>操作 X happens-before 操作 Y，X 的结果对于 Y 可见。</li>
+<li>happens-before 关系具有传递性。</li>
+<li>解决这种数据竞争的关键：构造一个跨线程的 happens-before 关系。</li>
+</ul>
+<p>线程间的 happens-before 关系：</p>
+<ol>
+<li>解锁操作 happens-before 之后（时钟顺序）对同一把锁的加锁操作。</li>
+<li>volatile 字段的写操作 happens-before 之后（时钟顺序）对同一字段的读操作。</li>
+<li>线程的启动操作（Thread.starts()） happens-before 该线程的第一个操作。</li>
+<li>线程的最后一个操作 happens-before 它的终止事件（Thread.isAlive() 或 Thread.join()）。</li>
+<li>线程对其他线程的中断操作 happens-before 被中断线程所收到的中断事件（即被中断线程的 InterruptedException 异常，或者第三个线程针对被中断线程的 Thread.interrupted 或者 Thread.isInterrupted 调用）。</li>
+<li>构造器中的最后一个操作 happens-before 析构器的第一个操作。</li>
+</ol>
+<h1 id="Java-内存模型的底层实现"><a href="#Java-内存模型的底层实现" class="headerlink" title="Java 内存模型的底层实现"></a>Java 内存模型的底层实现</h1><ul>
+<li>通过内存屏障（memory barrier）禁止重排序。</li>
+</ul>
+<p>开不太懂，之后再看</p>
+<h1 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h1><h1 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h1><blockquote>
+<p><a href="https://time.geekbang.org/column/article/13484" target="_blank" rel="noopener">https://time.geekbang.org/column/article/13484</a></p>
+</blockquote>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/08/29/笔记-深入拆解Java虚拟机-1112垃圾回收/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Ennis L.M. Wu">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/portrait.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Ennis -Little Monster">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/08/29/笔记-深入拆解Java虚拟机-1112垃圾回收/" itemprop="url">笔记-深入拆解Java虚拟机-1112垃圾回收</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-08-29T15:50:47+08:00">
+                2018-08-29
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Java虚拟机/" itemprop="url" rel="index">
+                    <span itemprop="name">Java虚拟机</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h1 id="如何辨别对象是否死亡"><a href="#如何辨别对象是否死亡" class="headerlink" title="如何辨别对象是否死亡"></a>如何辨别对象是否死亡</h1><h2 id="引用计数法（reference-counting）"><a href="#引用计数法（reference-counting）" class="headerlink" title="引用计数法（reference counting）"></a>引用计数法（reference counting）</h2><ul>
+<li>为每个对象添加一个引用计数器。</li>
+<li>为 0 时死亡。</li>
+</ul>
+<p>缺点：</p>
+<ol>
+<li>需要<strong>额外的空间</strong>。</li>
+<li>更新操作<strong>繁琐</strong>。</li>
+<li><strong>无法处理循环引用对象</strong>（a 与 b 相互引用）。</li>
+</ol>
+<h2 id="可达性分析"><a href="#可达性分析" class="headerlink" title="可达性分析"></a>可达性分析</h2><p>GC Roots（由堆外指向堆内的引用）包括不限于：</p>
+<ol>
+<li>Java 方法栈桢中的局部变量。</li>
+<li>已加载类的静态变量。</li>
+<li>JNI handles。<strong>不懂</strong></li>
+<li>已启动且未停止的 Java 线程。</li>
+</ol>
+<p>可达性分析算法：</p>
+<ol>
+<li>将一系列 GC Roots 作为初始的存活对象合集（live set）。</li>
+<li>标记（mark）：从该合集出发，探索所有能够被该集合引用到的对象，将其加入到该集合中。</li>
+<li>未被探索到的对象是死亡的，是可以回收的。</li>
+</ol>
+<p>需要解决的问题：</p>
+<p>在多线程环境下，其他线程可能会更新已经访问过的对象中的引用，从而造成误报（将引用设置为 null）或者漏报（将引用设置为未被访问过的对象）。</p>
+<h1 id="Stop-the-world"><a href="#Stop-the-world" class="headerlink" title="Stop-the-world"></a>Stop-the-world</h1><ul>
+<li>停止其他非垃圾回收线程的工作，直到完成垃圾回收。</li>
+<li>暂停时间（GC pause）。</li>
+</ul>
+<h1 id="安全点（safepoint）"><a href="#安全点（safepoint）" class="headerlink" title="安全点（safepoint）"></a>安全点（safepoint）</h1><blockquote>
+<p>当 Java 虚拟机收到 Stop-the-world 请求，它便会等待所有的线程都到达安全点，才允许请求 Stop-the-world 的线程进行独占的工作。</p>
+</blockquote>
+<h2 id="本地代码的安全点"><a href="#本地代码的安全点" class="headerlink" title="本地代码的安全点"></a>本地代码的安全点</h2><ul>
+<li>Java 程序通过 JNI 执行<strong>本地代码</strong>时，这段代码<strong>不访问 Java 对象、调用 Java 方法或者返回至原 Java 方法</strong>。</li>
+<li><strong>API 入口处进行安全点检测</strong>（safepoint poll）。</li>
+</ul>
+<h2 id="解释执行字节码的安全点"><a href="#解释执行字节码的安全点" class="headerlink" title="解释执行字节码的安全点"></a>解释执行字节码的安全点</h2><ul>
+<li><strong>字节码与字节码之间</strong>。</li>
+<li>有安全点请求时，<strong>执行一条字节码进行一次安全点检测</strong>。</li>
+</ul>
+<h2 id="执行即时编译器生成的机器码"><a href="#执行即时编译器生成的机器码" class="headerlink" title="执行即时编译器生成的机器码"></a>执行即时编译器生成的机器码</h2><ul>
+<li>生成机器码时，<strong>即时编译器插入安全点检测</strong>。</li>
+<li>HotSpot 虚拟机：在生成代码的方法出口、非计数循环的循环回边（back-edge）处插入。</li>
+</ul>
+<h2 id="阻塞的线程属于安全点。"><a href="#阻塞的线程属于安全点。" class="headerlink" title="阻塞的线程属于安全点。"></a>阻塞的线程属于安全点。</h2><h1 id="垃圾回收的三种方式"><a href="#垃圾回收的三种方式" class="headerlink" title="垃圾回收的三种方式"></a>垃圾回收的三种方式</h1><h2 id="清除（sweep）"><a href="#清除（sweep）" class="headerlink" title="清除（sweep）"></a>清除（sweep）</h2><blockquote>
+<p>把死亡对象所占据的内存标记为空闲内存，记录在一个空闲列表（free list）中。</p>
+</blockquote>
+<p><img src="http://pcrioz2ch.bkt.clouddn.com/JVM/11/sweep.png" alt="image"></p>
+<p>缺点：</p>
+<ol>
+<li>造成<strong>内存碎片</strong>。</li>
+<li>堆中对象必须是连续分布的，可能出现总空闲内存足够，无法分配的极端情况。</li>
+<li>分配<strong>效率较低</strong>。</li>
+</ol>
+<h2 id="压缩（compact）"><a href="#压缩（compact）" class="headerlink" title="压缩（compact）"></a>压缩（compact）</h2><blockquote>
+<p>把存活的对象聚集到内存区域的起始位置，留下一段连续的内存空间。</p>
+</blockquote>
+<p><img src="http://pcrioz2ch.bkt.clouddn.com/JVM/11/compact.png" alt="image"></p>
+<p>缺点：</p>
+<ol>
+<li>压缩算法有<strong>性能开销</strong>。</li>
+</ol>
+<h2 id="复制（copy）"><a href="#复制（copy）" class="headerlink" title="复制（copy）"></a>复制（copy）</h2><blockquote>
+<p>把内存区域分为两等分，分别用两个指针 from 和 to 来维护，只是用 from 指针指向的内存区域来分配内存。当发生垃圾回收时，把存活的对象复制到 to 指针指向的内存区域中，交换 from 指针和 to 指针的内容。</p>
+</blockquote>
+<p><img src="http://pcrioz2ch.bkt.clouddn.com/JVM/11/copy.png" alt="image"></p>
+<p>缺点：</p>
+<p>1.堆空间的使用<strong>效率极其低下</strong>。</p>
+<p>12未更新</p>
+<h1 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h1><blockquote>
+<p><a href="https://time.geekbang.org/column/article/13091" target="_blank" rel="noopener">https://time.geekbang.org/column/article/13091</a></p>
+</blockquote>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/08/29/笔记-深入拆解Java虚拟机-10Java对象的内存分布/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Ennis L.M. Wu">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/portrait.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Ennis -Little Monster">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/08/29/笔记-深入拆解Java虚拟机-10Java对象的内存分布/" itemprop="url">笔记-深入拆解Java虚拟机-10Java对象的内存分布</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-08-29T09:38:58+08:00">
+                2018-08-29
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Java虚拟机/" itemprop="url" rel="index">
+                    <span itemprop="name">Java虚拟机</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h1 id="Java-新建对象的方式"><a href="#Java-新建对象的方式" class="headerlink" title="Java 新建对象的方式"></a>Java 新建对象的方式</h1><ul>
+<li>new 语句</li>
+<li>反射</li>
+<li>Object.clone方法</li>
+<li>反序列化</li>
+<li>Unsafe.allocateInstance方法</li>
+</ul>
+<h1 id="压缩指针"><a href="#压缩指针" class="headerlink" title="压缩指针"></a>压缩指针</h1><h2 id="对象头（object-header）"><a href="#对象头（object-header）" class="headerlink" title="对象头（object header）"></a>对象头（object header）</h2><ul>
+<li>每个 Java 对象都有。</li>
+<li>由<strong>标记字段、类型指针</strong>构成。</li>
+<li>标记字段：存储 Java 虚拟机有关该对象的运行数据（如哈希码、GC 信息、锁信息）。</li>
+<li>类型指针：指向该对象的类。</li>
+<li>64 位Java虚拟机中，对象头占 16 个字节。</li>
+</ul>
+<h2 id="压缩指针-1"><a href="#压缩指针-1" class="headerlink" title="压缩指针"></a>压缩指针</h2><ul>
+<li>开启压缩指针：-XX:+UseCompressedOops（默认开启）。</li>
+<li><strong>将堆中原本 64 位的 Java 对象指针压缩成 32 位。</strong></li>
+<li>类型指针也被压缩成 32 位，<strong>对象头的大小从 16 字节降至 12 字节。</strong></li>
+<li>还可以作用于<strong>引用类型的字段</strong>，<strong>引用类型数组</strong>。</li>
+</ul>
+<h1 id="内存对齐"><a href="#内存对齐" class="headerlink" title="内存对齐"></a>内存对齐</h1><ul>
+<li>虚拟机选项 -XX:ObjectAlignmentInBytes，默认值为 8。</li>
+<li>默认情况，堆中对象（包括字段之间）起始地址要对齐至 8 的倍数。</li>
+<li>浪费掉的空间称之为对象间的填充（padding）。</li>
+<li>32 位压缩指针可以寻址到 2 的 35 次方个字节（32GB 地址空间，超过 32GB 会关闭压缩指针）。</li>
+<li>压缩指针解引用：左移 3 位，再加上一个固定偏移量。</li>
+<li>字段内存对齐的一个原因：<strong>让字段只出现在同一 CPU 的缓存行中</strong>。<strong>不懂</strong></li>
+</ul>
+<h1 id="字段重排列"><a href="#字段重排列" class="headerlink" title="字段重排列"></a>字段重排列</h1><ul>
+<li>Java 虚拟机重新分配字段的顺序，达到内存对齐</li>
+</ul>
+<h1 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h1><blockquote>
+<p><a href="https://time.geekbang.org/column/article/13081" target="_blank" rel="noopener">https://time.geekbang.org/column/article/13081</a></p>
+</blockquote>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/08/27/暑假、日剧、独身者、改变、目标/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Ennis L.M. Wu">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/portrait.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Ennis -Little Monster">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/08/27/暑假、日剧、独身者、改变、目标/" itemprop="url">暑假、日剧、独身者、改变、目标</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-08-27T12:47:04+08:00">
+                2018-08-27
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>2018-8 大二暑假</p>
+<p>暑假选择了留校，本来想等到 8 月 20 号再回去的，但是寝室里 N 多虫子，还在我腿上咬了 N 多坨，加上寝室经常停电停水， 8 月 7 号寝室对面突然搞装修，实在受不了，选择了回家。</p>
+<p>一直以来，对自己以后的生活希望是可以成为一名独立开发者，一个人生活，一个人工作，没有任何人打扰。我以为自己一个人可以生活的很好。但是这个暑假，我的想法似乎动摇了。</p>
+<p>我一直把自己归类为情感很淡的人，不喜欢说一些关心别人的话，我一直觉得很恶心，包括对自己的亲人。并且认为自己只是装作和身边的人关系很好的样子，分别后便没有任何关系，但是似乎好像并不是这样。</p>
+<p>8 月 17 号，和最好的两个朋友出去聚了一次，感觉已经不是以前的那种感觉了，变的不是他们，是我。我变得越来越冷淡，和他们也越来越聊不起来，但是心里还是想着以后就一个人过最好。</p>
+<p>在家是无法学习的，每天除了练车就没别的事，因为一些日剧演员再次将目光放在了《家族的形式》上，这部剧刚播出的时候就关注过，当时是因为里面有很多《朝 5 晚 9》的演员，看过几分钟觉得很无聊就没看了，这次是因为豆瓣的评分很高，所以决定再看一次。</p>
+<p>首先这部剧的主角永里大介是一个人喜欢一人生活的人，他很享受自己一人的时间，并且认为人类之间的感情是麻烦的，这点和我非常像，我感觉他向往的生活和我向往的生活一样。后来因为一系列事情主角的爸爸常邀请他的朋友，大介的朋友同事，邻居一起聚会，我发现我很喜欢里面那种家人、朋友、同事、邻居一起吃饭很融洽的感觉。其实每次我都是这样，在校觉得别人好吵，放假太长又觉得孤单。以前觉得一个人在家看剧，一个人玩游戏，一个人出去吃东西看电影，一个人是很幸福的事情。但是现在真正只有一个人的时候有觉得很孤单，很后悔没有抓住以前的朋友。</p>
+<p>原本打算考完科目三便来学校，和妈妈说后她很生气，说一暑假都没有陪她。当时正好看完《家族的形式》，想了很多，我给家人留的空间非常少，但以前又一直觉得自己不需要这些情感，觉得感情是一件很麻烦的事情，并且因为选择学习软件开发的原因，想要花大量时间学习，但想到 7 月刚放假留校那段时间，每天学习看剧无聊到爆，感觉一个人很孤单。突然很讨厌现在的自己，想要改变，和曾经的曾经一样珍惜每一段情感，不管是亲情还是友情。</p>
+<p>又来也是在找日剧看的过程中，发现田中圭 2018 年有一部新剧《大叔之爱》，这部剧 2016 的时候出过一集 SP ，超级搞笑，因为人气比较高扩充了这个故事。当时只是当作一部搞笑的剧来看，看到后面发现自己很喜欢牧凌太这个角色，会做家务又会做饭，温柔又体贴，超级心动，感觉一下理解了那些女生看剧很心动的感觉。又想到 7 月在学校的时候，腿上被虫子咬，对寝室驱虫这件事很头疼。厕所很脏，洗澡也很不爽，但是又很怕脏，不想把它搞干净。在网上买了几大袋泡面，天天吃泡面吃到恶心（其实想过以后有自己的房子后学视频自己做菜吃，现在想想好像还比较遥远）。想到这些就希望自己有一个像牧凌太这样的居家型的男朋友，第一次有了想恋爱的感觉。作为同性恋以前一直对自己未来的对象很迷茫，不知道自己喜欢什么类型的，每次都是想以后就一个人过算了，但是因为这部剧，感觉知道了自己以后选择的标准，就是像牧凌太那样（可能和林遣都的长相有关系，但应该关系不大），刚看完感觉自己都像犯花痴了一样。</p>
+<p>大二下过得很颓废，现在感觉又振作了起来，又有了精神，并且撇去之前抹掉情感的想法，不再是整天只知道敲代码的呆子程序员，生活也要变得有意思起来。</p>
+<p>2018-08-27</p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/08/10/笔记-深入拆解Java虚拟机-0809JVM是怎么实现invokedynamic的？/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -391,7 +1076,55 @@
       
         
           
-            
+            <h1 id="invokedynamic"><a href="#invokedynamic" class="headerlink" title="invokedynamic"></a>invokedynamic</h1><ul>
+<li>Java 7 引入的新指令</li>
+<li>调用机制抽象出调用点的概念</li>
+<li>允许将调用点链接至任意符合条件的方法上</li>
+</ul>
+<h1 id="MethodHandle（方法句柄）"><a href="#MethodHandle（方法句柄）" class="headerlink" title="MethodHandle（方法句柄）"></a>MethodHandle（方法句柄）</h1><ul>
+<li>Java 7 引入</li>
+<li>是一个强类型的，能被直接执行的引用</li>
+<li>可以指向静态方法、实例方法、构造器、字段</li>
+</ul>
+<h2 id="方法句柄的类型（MethodType）"><a href="#方法句柄的类型（MethodType）" class="headerlink" title="方法句柄的类型（MethodType）"></a>方法句柄的类型（MethodType）</h2><ul>
+<li>由参数类型、返回类型组成</li>
+<li>确认方法句柄是否适配的唯一关键</li>
+<li>不关心方法的类名或方法名</li>
+</ul>
+<h2 id="方法句柄的创建"><a href="#方法句柄的创建" class="headerlink" title="方法句柄的创建"></a>方法句柄的创建</h2><p>通过 MethodHandles.Lookup 类</p>
+<ul>
+<li>使用反射的 Method 类查找</li>
+<li>Lookup.findStatic 查找调用 invokestatic 的方法</li>
+<li>Lookup.findVirtual 查找调用 invokevirtual 和 invokeinterface 的方法</li>
+<li>Lookup.findSpecial 查找调用 invokespecial 的方法</li>
+</ul>
+<h2 id="方法句柄的权限"><a href="#方法句柄的权限" class="headerlink" title="方法句柄的权限"></a>方法句柄的权限</h2><ul>
+<li>权限检查在创建阶段完成</li>
+<li>实际调用过程中不检查</li>
+<li>取决于 Lookup 对象创建位置（不是方法句柄创建位置）</li>
+</ul>
+<h2 id="方法句柄的操作"><a href="#方法句柄的操作" class="headerlink" title="方法句柄的操作"></a>方法句柄的操作</h2><h3 id="invokeExact"><a href="#invokeExact" class="headerlink" title="invokeExact"></a>invokeExact</h3><ul>
+<li>严格匹配参数类型（需要显示向上转型）</li>
+<li>@PolymorphicSignature 根据传入参数的声明类型来生成方法描述符（而不是目标方法）</li>
+</ul>
+<h3 id="invoke"><a href="#invoke" class="headerlink" title="invoke"></a>invoke</h3><ul>
+<li>自动适配参数类型</li>
+<li>会调用 MethodHandle.asType 方法生成一个适配器方法句柄</li>
+</ul>
+<h3 id="增删改"><a href="#增删改" class="headerlink" title="增删改"></a>增删改</h3><p>通过生成另一个充当适配器的方法句柄来实现</p>
+<p>捕获类型的 Lambda 表达式用增操作实现</p>
+<p>增操作可以实现方法的柯里化</p>
+<h2 id="方法句柄的实现"><a href="#方法句柄的实现" class="headerlink" title="方法句柄的实现"></a>方法句柄的实现</h2><p>HotSpot 虚拟机中方法句柄调用的具体实现，只讨论DirectMethodHandle</p>
+<h3 id="invokeExact-1"><a href="#invokeExact-1" class="headerlink" title="invokeExact"></a>invokeExact</h3><ul>
+<li>调用至一个共享的、与方法句柄类型相关的特殊适配器中</li>
+<li>适配器是一个 LambdaForm</li>
+</ul>
+<h2 id="方法句柄的缺点"><a href="#方法句柄的缺点" class="headerlink" title="方法句柄的缺点"></a>方法句柄的缺点</h2><ul>
+<li>与反射一样是简介调用</li>
+<li>无法内联</li>
+</ul>
+<p><strong>未更新09</strong></p>
+
           
         
       
@@ -1419,759 +2152,11 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/08/01/获取Activity根布局/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Ennis L.M. Wu">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/portrait.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Ennis -Little Monster">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/08/01/获取Activity根布局/" itemprop="url">获取Activity根布局</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-08-01T20:47:40+08:00">
-                2018-08-01
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Android布局/" itemprop="url" rel="index">
-                    <span itemprop="name">Android布局</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">findViewById(android.R.id.content).getChildAt(<span class="number">0</span>)；</span><br></pre></td></tr></table></figure>
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/08/01/如何修改ActionBar的字体颜色？/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Ennis L.M. Wu">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/portrait.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Ennis -Little Monster">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/08/01/如何修改ActionBar的字体颜色？/" itemprop="url">如何修改ActionBar的字体颜色？</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-08-01T18:22:46+08:00">
-                2018-08-01
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Android视图/" itemprop="url" rel="index">
-                    <span itemprop="name">Android视图</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">style</span> <span class="attr">name</span>=<span class="string">"AppTheme"</span> <span class="attr">parent</span>=<span class="string">"@style/Theme.AppCompat.Light.DarkActionBar"</span>&gt;</span><span class="undefined"></span></span><br><span class="line"><span class="xml">	<span class="tag">&lt;<span class="name">item</span> <span class="attr">name</span>=<span class="string">"actionBarStyle"</span>&gt;</span>@style/ActionBarStyle<span class="tag">&lt;/<span class="name">item</span>&gt;</span></span></span><br><span class="line"><span class="undefined"></span><span class="tag">&lt;/<span class="name">style</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="name">style</span> <span class="attr">name</span>=<span class="string">"ActionBarStyle"</span> <span class="attr">parent</span>=<span class="string">"@style/Widget.AppCompat.ActionBar.Solid"</span>&gt;</span><span class="undefined"></span></span><br><span class="line"><span class="xml">	<span class="tag">&lt;<span class="name">item</span> <span class="attr">name</span>=<span class="string">"titleTextStyle"</span>&gt;</span>@style/TitleTextStyle<span class="tag">&lt;/<span class="name">item</span>&gt;</span></span></span><br><span class="line"><span class="undefined"></span><span class="tag">&lt;/<span class="name">style</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="name">style</span> <span class="attr">name</span>=<span class="string">"TitleTextStyle"</span> <span class="attr">parent</span>=<span class="string">"@style/TextAppearance.AppCompat.Widget.ActionBar.Title"</span>&gt;</span><span class="undefined"></span></span><br><span class="line"><span class="xml">	<span class="tag">&lt;<span class="name">item</span> <span class="attr">name</span>=<span class="string">"android:textColor"</span>&gt;</span>#000000<span class="tag">&lt;/<span class="name">item</span>&gt;</span></span></span><br><span class="line"><span class="xml">	<span class="comment">&lt;!-- 这里设置ActionBar字体颜色 --&gt;</span></span></span><br><span class="line"><span class="undefined"></span><span class="tag">&lt;/<span class="name">style</span>&gt;</span></span><br></pre></td></tr></table></figure>
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/08/01/笔记-深入拆解Java虚拟机-06JVM是如何处理异常的？/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Ennis L.M. Wu">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/portrait.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Ennis -Little Monster">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/08/01/笔记-深入拆解Java虚拟机-06JVM是如何处理异常的？/" itemprop="url">笔记-深入拆解Java虚拟机-06JVM是如何处理异常的？</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-08-01T14:41:48+08:00">
-                2018-08-01
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Java虚拟机/" itemprop="url" rel="index">
-                    <span itemprop="name">Java虚拟机</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h1 id="异常的基本概念"><a href="#异常的基本概念" class="headerlink" title="异常的基本概念"></a>异常的基本概念</h1><p><img src="http://pcrioz2ch.bkt.clouddn.com/47c8429fc30aec201286b47f3c1a5993.png" alt="image"></p>
-<ul>
-<li><p>Error：涵盖程序不应捕获的异常（JVM抛出）。<br>程序出发Error时，执行状态已经无法恢复，需要终止线程甚至终止虚拟机。</p>
-</li>
-<li><p>Exception：涵盖程序可能需要捕获且处理的异常。</p>
-</li>
-<li>RuntimeException：表示“程序虽然无法继续执行，但是还能抢救一下”的情况。</li>
-<li><strong>RuntimeException和Error非检查异常（unchecked exception）。其他异常属于检查异常（checked exception）。</strong></li>
-<li>检查异常需要程序显式地捕获，或者在方法声明中用throws关键字再次抛出。</li>
-</ul>
-<h2 id="常实例的构造十分昂贵。"><a href="#常实例的构造十分昂贵。" class="headerlink" title="常实例的构造十分昂贵。"></a>常实例的构造十分昂贵。</h2><p>在构造异常实例时，Java虚拟机需要<strong>生成该异常的栈轨迹</strong>（stack trace）。</p>
-<ul>
-<li>逐一访问当前线程的Java栈帧。</li>
-<li>记录下各种调试信息（方法名，方法所在类名，文件名，代码中第几行）。</li>
-<li>Java虚拟机会<strong>忽略异常构造器和填充栈帧的Java方法</strong>（Throwable.fillInStackTrace），直接从新建异常位置开始算起。</li>
-<li>Java虚拟机会<strong>忽略标记为不可见的Java方法栈帧</strong>。</li>
-</ul>
-<h3 id="是否可以缓存异常实例，在需要用到的时候直接抛出？"><a href="#是否可以缓存异常实例，在需要用到的时候直接抛出？" class="headerlink" title="是否可以缓存异常实例，在需要用到的时候直接抛出？"></a>是否可以缓存异常实例，在需要用到的时候直接抛出？</h3><ul>
-<li>从语法角度上，是允许的。</li>
-<li><strong>对应的栈轨迹并非throw语句的位置，而是新建异常的位置。</strong></li>
-</ul>
-<h1 id="Java虚拟机是如何捕获异常的？"><a href="#Java虚拟机是如何捕获异常的？" class="headerlink" title="Java虚拟机是如何捕获异常的？"></a>Java虚拟机是如何捕获异常的？</h1><p>编译生成的字节码中，<strong>每个方法都附带一个异常表</strong>。</p>
-<p>异常表中每一个条目代表一个异常处理器。</p>
-<p>异常处理器的组成：</p>
-<ul>
-<li>from指针</li>
-<li>to指针</li>
-<li>target指针</li>
-<li>所捕获的异常类型</li>
-</ul>
-<p>注：指针的值是字节码索引（bytecode index，bci），用来定位字节码。</p>
-<p><strong>from指针和to指针：标示异常处理器所监控的范围（如try代码块范围）。</strong></p>
-<p><strong>target指针：指向异常处理器的起始位置（如catch代码块起始位置）。</strong></p>
-<h2 id="触发异常的处理流程"><a href="#触发异常的处理流程" class="headerlink" title="触发异常的处理流程"></a>触发异常的处理流程</h2><ol>
-<li>Java虚拟机<strong>从上至下遍历异常表</strong>中的所有条目。</li>
-<li><strong>触发异常</strong>的字节码的索引值<strong>在某个异常表条目的监控范围内</strong>，Java虚拟机判断所抛出的异常和该条目想要捕获的异常<strong>是否匹配</strong>。</li>
-<li>如果<strong>匹配</strong>，Java 虚拟机将控制流<strong>转移至该条目target指针指向</strong>的字节码。</li>
-<li>如果<strong>遍历完所有</strong>异常表条目，仍<strong>未匹配</strong>到异常处理器，<strong>弹出当前方法对应的Java栈帧，在调用者（caller）中重复上述操作</strong>。</li>
-<li>finally代码块的编译，当前版本Java编译器，是<strong>复制finally代码块的内容，分别放在try-catch代码块所有正常执行路径和异常执行路径的出口中</strong>。</li>
-</ol>
-<p><img src="http://pcrioz2ch.bkt.clouddn.com/17e2a3053b06b0a4383884f106e31c06.png" alt="iamge"></p>
-<p>针对异常执行路径，Java编译器会生成一个或多个异常表条目，监控整个try-catch代码块，并且捕获所有种类的异常（在 javap 中以 any 指代）。</p>
-<p>这些异常表条目的 target 指针将指向另一份复制的finally代码块。</p>
-<p>在这个finally代码块的最后，Java编译器会重新抛出所捕获的异常。</p>
-<p><strong>如果catch代码块捕获了异常，并且触发了另一个异常，那么finally捕获并且重抛后者，忽略前者。</strong></p>
-<h1 id="Java7的Suppressed异常以及语法糖"><a href="#Java7的Suppressed异常以及语法糖" class="headerlink" title="Java7的Suppressed异常以及语法糖"></a>Java7的Suppressed异常以及语法糖</h1><h2 id="Suppressed异常"><a href="#Suppressed异常" class="headerlink" title="Suppressed异常"></a>Suppressed异常</h2><p>允许将一个异常附于另一个异常之上。</p>
-<p><strong>抛出的异常可以附带多个异常信息。</strong></p>
-<p>finally代码块缺少指向所捕获异常的引用，这个新特性使用起来非常繁琐。</p>
-<h2 id="try-with-resources"><a href="#try-with-resources" class="headerlink" title="try-with-resources"></a>try-with-resources</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">try</span> (  ); <span class="comment">// try-with-resources</span></span><br></pre></td></tr></table></figure>
-<p>在字节码层面自动使用Suppressed异常。</p>
-<p><strong>自动关闭资源</strong>（实现AutoCloseable接口）。</p>
-<h2 id="同一catch代码块捕获多种异常"><a href="#同一catch代码块捕获多种异常" class="headerlink" title="同一catch代码块捕获多种异常"></a>同一catch代码块捕获多种异常</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">try</span> &#123;</span><br><span class="line">  </span><br><span class="line">&#125; <span class="keyword">catch</span> (SomeException | OtherException e) &#123;</span><br><span class="line">  </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h1 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h1><blockquote>
-<p><a href="https://time.geekbang.org/column/article/12134" target="_blank" rel="noopener">https://time.geekbang.org/column/article/12134</a></p>
-</blockquote>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/08/01/转-传输层和应用层的协议和作用/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Ennis L.M. Wu">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/portrait.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Ennis -Little Monster">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/08/01/转-传输层和应用层的协议和作用/" itemprop="url">[转]传输层和应用层的协议和作用</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-08-01T00:03:07+08:00">
-                2018-08-01
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/TCP-IP/" itemprop="url" rel="index">
-                    <span itemprop="name">TCP/IP</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <blockquote>
-<p>转载请注明出处：<a href="https://blog.csdn.net/DarkAngel1228/article/details/78581019" target="_blank" rel="noopener">https://blog.csdn.net/DarkAngel1228/article/details/78581019</a></p>
-</blockquote>
-<h1 id="TCP-IP传输层概述"><a href="#TCP-IP传输层概述" class="headerlink" title="TCP/IP传输层概述"></a>TCP/IP传输层概述</h1><p>TCP/IP是指一整套数据通信协议，传输层完成端到端的连接和传输。</p>
-<h2 id="TCP-IP传输层包含的两个协议"><a href="#TCP-IP传输层包含的两个协议" class="headerlink" title="TCP/IP传输层包含的两个协议"></a>TCP/IP传输层包含的两个协议</h2><ul>
-<li><p>传输控制协议<br>Transmission Control Protocol —— TCP</p>
-</li>
-<li><p>用户数据报协议<br>User Dategram Protocol —— UDP</p>
-</li>
-</ul>
-<h2 id="常用的TCP端口及应用"><a href="#常用的TCP端口及应用" class="headerlink" title="常用的TCP端口及应用"></a>常用的TCP端口及应用</h2><p>TCP在网络中使用的范围很广，下面将列出一些常用的端口号及其功能.以便进一步对TCP进行检测和管理。</p>
-<table>
-<thead>
-<tr>
-<th>端口</th>
-<th>协议</th>
-<th>说明</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>80</td>
-<td>http</td>
-<td>web服务器所开放的进程端口,用于客户端http访问</td>
-</tr>
-<tr>
-<td>21</td>
-<td>FTP</td>
-<td>FTP服务器所开放的控制端口,用于上传下载</td>
-</tr>
-<tr>
-<td>23</td>
-<td>Telnet</td>
-<td>用于远程登录,通过连接目的计算机的这一端口,得到验证后可以远程控制管理目标计算机</td>
-</tr>
-<tr>
-<td>25</td>
-<td>SMTP</td>
-<td>SMTP服务器开放的端口,用于发送邮件</td>
-</tr>
-<tr>
-<td>53</td>
-<td>DNS</td>
-<td>DNS服务器开放的端口,当用户输入网站的名称后,由DNS负责将它解析成IP地址,这个过程中用到的端口号就是53</td>
-</tr>
-</tbody>
-</table>
-<h2 id="常用的UDP端口及应用"><a href="#常用的UDP端口及应用" class="headerlink" title="常用的UDP端口及应用"></a>常用的UDP端口及应用</h2><table>
-<thead>
-<tr>
-<th>端口</th>
-<th>协议</th>
-<th>说明</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>7</td>
-<td>Echo</td>
-<td>将收到的数据包回送到发送器</td>
-</tr>
-<tr>
-<td>53</td>
-<td>Nameserver</td>
-<td>域名服务</td>
-</tr>
-<tr>
-<td>69</td>
-<td>TFTP</td>
-<td>简单文件传输协议</td>
-</tr>
-<tr>
-<td>111</td>
-<td>RPC</td>
-<td>远程过程调用</td>
-</tr>
-<tr>
-<td>123</td>
-<td>NTP</td>
-<td>网络时间协议</td>
-</tr>
-</tbody>
-</table>
-<h1 id="常用的应用层协议"><a href="#常用的应用层协议" class="headerlink" title="常用的应用层协议"></a>常用的应用层协议</h1><table>
-<thead>
-<tr>
-<th>缩写</th>
-<th>全文</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>http</td>
-<td>超文本传送协议</td>
-</tr>
-<tr>
-<td>https</td>
-<td>基于安全套接字层的http协议</td>
-</tr>
-<tr>
-<td>ftp</td>
-<td>文件传输协议</td>
-</tr>
-<tr>
-<td>dns</td>
-<td>域名系统</td>
-</tr>
-<tr>
-<td>smtp</td>
-<td>邮件传输协议</td>
-</tr>
-<tr>
-<td>pop3</td>
-<td>邮局协议</td>
-</tr>
-<tr>
-<td>ssh</td>
-<td>安全外壳协议</td>
-</tr>
-</tbody>
-</table>
-<h2 id="HTTP"><a href="#HTTP" class="headerlink" title="HTTP"></a>HTTP</h2><p>用于传输Internet浏览器使用的普通文本,超文本,音频和视频等数据<br>端口号：TCP的80</p>
-<h2 id="HTTPS"><a href="#HTTPS" class="headerlink" title="HTTPS"></a>HTTPS</h2><p>基于HTTP开发,提供加密,可以确保消息的私有性和完整性<br>端口号：443</p>
-<h2 id="FTP"><a href="#FTP" class="headerlink" title="FTP"></a>FTP</h2><p>用于传输文件<br>端口号：TCP的21和20</p>
-<h2 id="DNS"><a href="#DNS" class="headerlink" title="DNS"></a>DNS</h2><p>用来完成域名和IP地址之间的映射<br>端口号：TCP或UDP的53</p>
-<p><img src="http://pcrioz2ch.bkt.clouddn.com/20171120203718999.png" alt="image"></p>
-<h2 id="SMTP"><a href="#SMTP" class="headerlink" title="SMTP"></a>SMTP</h2><p>用于发送和接收邮件<br>端口号：25</p>
-<h2 id="POP3"><a href="#POP3" class="headerlink" title="POP3"></a>POP3</h2><p>用于客户端接收邮件<br>端口号：110</p>
-<h2 id="SSH"><a href="#SSH" class="headerlink" title="SSH"></a>SSH</h2><p>建立在应用层和传输层基础上的安全协议，ssh是目前较可靠，专为远程登录会话和其他网络服务提供安全性的协议，利用ssh协议可以有效防止远程管理过程中的信息泄漏问题。</p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
   <nav class="pagination">
-    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="page-number" href="/page/3/">3</a><a class="extend next" rel="next" href="/page/2/"><i class="fa fa-angle-right"></i></a>
+    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><span class="space">&hellip;</span><a class="page-number" href="/page/4/">4</a><a class="extend next" rel="next" href="/page/2/"><i class="fa fa-angle-right"></i></a>
   </nav>
 
 
@@ -2221,7 +2206,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">27</span>
+                  <span class="site-state-item-count">32</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -2232,7 +2217,7 @@
               
               <div class="site-state-item site-state-categories">
                 <a href="/categories/index.html">
-                  <span class="site-state-item-count">8</span>
+                  <span class="site-state-item-count">9</span>
                   <span class="site-state-item-name">分类</span>
                 </a>
               </div>
@@ -2243,7 +2228,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">16</span>
+                  <span class="site-state-item-count">17</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>
@@ -2270,27 +2255,21 @@
                   </span>
                 
                   <span class="links-of-author-item">
-                    <a href="https://gitee.com/EnnisLM" target="_blank" title="Gitee">
+                    <a href="https://gitee.com/EnnisWu" target="_blank" title="Gitee">
                       
                         <i class="fa fa-fw fa-globe"></i>Gitee</a>
                   </span>
                 
                   <span class="links-of-author-item">
-                    <a href="https://twitter.com/wkf1997" target="_blank" title="Twitter">
+                    <a href="https://twitter.com/EnnisWu" target="_blank" title="Twitter">
                       
                         <i class="fa fa-fw fa-twitter"></i>Twitter</a>
                   </span>
                 
                   <span class="links-of-author-item">
-                    <a href="https://instagram.com/ennis_lm" target="_blank" title="Instagram">
+                    <a href="https://instagram.com/ennis_wu" target="_blank" title="Instagram">
                       
                         <i class="fa fa-fw fa-instagram"></i>Instagram</a>
-                  </span>
-                
-                  <span class="links-of-author-item">
-                    <a href="https://www.weibo.com/u/3660210774" target="_blank" title="微博">
-                      
-                        <i class="fa fa-fw fa-weibo"></i>微博</a>
                   </span>
                 
                   <span class="links-of-author-item">

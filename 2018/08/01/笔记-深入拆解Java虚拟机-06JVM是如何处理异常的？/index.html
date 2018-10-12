@@ -53,16 +53,16 @@
 <link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
 
 
-  <link rel="apple-touch-icon" sizes="180x180" href="/images/portrait.png?v=5.1.4">
+  <link rel="apple-touch-icon" sizes="180x180" href="http://pcrioz2ch.bkt.clouddn.com/portrait.png?v=5.1.4">
 
 
-  <link rel="icon" type="image/png" sizes="32x32" href="/images/portrait.png?v=5.1.4">
+  <link rel="icon" type="image/png" sizes="32x32" href="http://pcrioz2ch.bkt.clouddn.com/portrait.png?v=5.1.4">
 
 
-  <link rel="icon" type="image/png" sizes="16x16" href="/images/portrait.png?v=5.1.4">
+  <link rel="icon" type="image/png" sizes="16x16" href="http://pcrioz2ch.bkt.clouddn.com/portrait.png?v=5.1.4">
 
 
-  <link rel="mask-icon" href="/images/portrait.svg?v=5.1.4" color="#222">
+  <link rel="mask-icon" href="http://pcrioz2ch.bkt.clouddn.com/portrait.svg?v=5.1.4" color="#222">
 
 
 
@@ -89,13 +89,13 @@
 <meta property="og:site_name" content="Ennis -Little Monster">
 <meta property="og:description" content="异常的基本概念  Error：涵盖程序不应捕获的异常（JVM抛出）。程序出发Error时，执行状态已经无法恢复，需要终止线程甚至终止虚拟机。  Exception：涵盖程序可能需要捕获且处理的异常。  RuntimeException：表示“程序虽然无法继续执行，但是还能抢救一下”的情况。 RuntimeException和Error非检查异常（unchecked exception）。其他异常属">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:image" content="http://pcrioz2ch.bkt.clouddn.com/47c8429fc30aec201286b47f3c1a5993.png">
-<meta property="og:image" content="http://pcrioz2ch.bkt.clouddn.com/17e2a3053b06b0a4383884f106e31c06.png">
-<meta property="og:updated_time" content="2018-08-15T12:44:46.643Z">
+<meta property="og:image" content="http://pcrioz2ch.bkt.clouddn.com/JVM/06/throwable.png">
+<meta property="og:image" content="http://pcrioz2ch.bkt.clouddn.com/JVM/06/trigger_exception.png">
+<meta property="og:updated_time" content="2018-08-29T07:18:41.138Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="笔记-深入拆解Java虚拟机-06JVM是如何处理异常的？">
 <meta name="twitter:description" content="异常的基本概念  Error：涵盖程序不应捕获的异常（JVM抛出）。程序出发Error时，执行状态已经无法恢复，需要终止线程甚至终止虚拟机。  Exception：涵盖程序可能需要捕获且处理的异常。  RuntimeException：表示“程序虽然无法继续执行，但是还能抢救一下”的情况。 RuntimeException和Error非检查异常（unchecked exception）。其他异常属">
-<meta name="twitter:image" content="http://pcrioz2ch.bkt.clouddn.com/47c8429fc30aec201286b47f3c1a5993.png">
+<meta name="twitter:image" content="http://pcrioz2ch.bkt.clouddn.com/JVM/06/throwable.png">
 
 
 
@@ -391,7 +391,7 @@
       
 
       
-        <h1 id="异常的基本概念"><a href="#异常的基本概念" class="headerlink" title="异常的基本概念"></a>异常的基本概念</h1><p><img src="http://pcrioz2ch.bkt.clouddn.com/47c8429fc30aec201286b47f3c1a5993.png" alt="image"></p>
+        <h1 id="异常的基本概念"><a href="#异常的基本概念" class="headerlink" title="异常的基本概念"></a>异常的基本概念</h1><p><img src="http://pcrioz2ch.bkt.clouddn.com/JVM/06/throwable.png" alt="image"></p>
 <ul>
 <li><p>Error：涵盖程序不应捕获的异常（JVM抛出）。<br>程序出发Error时，执行状态已经无法恢复，需要终止线程甚至终止虚拟机。</p>
 </li>
@@ -431,7 +431,7 @@
 <li>如果<strong>遍历完所有</strong>异常表条目，仍<strong>未匹配</strong>到异常处理器，<strong>弹出当前方法对应的Java栈帧，在调用者（caller）中重复上述操作</strong>。</li>
 <li>finally代码块的编译，当前版本Java编译器，是<strong>复制finally代码块的内容，分别放在try-catch代码块所有正常执行路径和异常执行路径的出口中</strong>。</li>
 </ol>
-<p><img src="http://pcrioz2ch.bkt.clouddn.com/17e2a3053b06b0a4383884f106e31c06.png" alt="iamge"></p>
+<p><img src="http://pcrioz2ch.bkt.clouddn.com/JVM/06/trigger_exception.png" alt="iamge"></p>
 <p>针对异常执行路径，Java编译器会生成一个或多个异常表条目，监控整个try-catch代码块，并且捕获所有种类的异常（在 javap 中以 any 指代）。</p>
 <p>这些异常表条目的 target 指针将指向另一份复制的finally代码块。</p>
 <p>在这个finally代码块的最后，Java编译器会重新抛出所捕获的异常。</p>
@@ -598,7 +598,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">27</span>
+                  <span class="site-state-item-count">32</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -609,7 +609,7 @@
               
               <div class="site-state-item site-state-categories">
                 <a href="/categories/index.html">
-                  <span class="site-state-item-count">8</span>
+                  <span class="site-state-item-count">9</span>
                   <span class="site-state-item-name">分类</span>
                 </a>
               </div>
@@ -620,7 +620,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">16</span>
+                  <span class="site-state-item-count">17</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>
@@ -647,27 +647,21 @@
                   </span>
                 
                   <span class="links-of-author-item">
-                    <a href="https://gitee.com/EnnisLM" target="_blank" title="Gitee">
+                    <a href="https://gitee.com/EnnisWu" target="_blank" title="Gitee">
                       
                         <i class="fa fa-fw fa-globe"></i>Gitee</a>
                   </span>
                 
                   <span class="links-of-author-item">
-                    <a href="https://twitter.com/wkf1997" target="_blank" title="Twitter">
+                    <a href="https://twitter.com/EnnisWu" target="_blank" title="Twitter">
                       
                         <i class="fa fa-fw fa-twitter"></i>Twitter</a>
                   </span>
                 
                   <span class="links-of-author-item">
-                    <a href="https://instagram.com/ennis_lm" target="_blank" title="Instagram">
+                    <a href="https://instagram.com/ennis_wu" target="_blank" title="Instagram">
                       
                         <i class="fa fa-fw fa-instagram"></i>Instagram</a>
-                  </span>
-                
-                  <span class="links-of-author-item">
-                    <a href="https://www.weibo.com/u/3660210774" target="_blank" title="微博">
-                      
-                        <i class="fa fa-fw fa-weibo"></i>微博</a>
                   </span>
                 
                   <span class="links-of-author-item">

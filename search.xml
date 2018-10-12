@@ -1,9 +1,47 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title><![CDATA[笔记-深入拆解Java虚拟机-13Java内存模型]]></title>
+    <url>%2F2018%2F08%2F31%2F%E7%AC%94%E8%AE%B0-%E6%B7%B1%E5%85%A5%E6%8B%86%E8%A7%A3Java%E8%99%9A%E6%8B%9F%E6%9C%BA-13Java%E5%86%85%E5%AD%98%E6%A8%A1%E5%9E%8B%2F</url>
+    <content type="text"><![CDATA[编译器优化的重排序 保证遵守 as-if-serial 属性。 操作之间存在数据依赖，不能调整顺序。 Java 内存模型与 happens-before 关系 用来描述两个操作的内存可见性。 操作 X happens-before 操作 Y，X 的结果对于 Y 可见。 happens-before 关系具有传递性。 解决这种数据竞争的关键：构造一个跨线程的 happens-before 关系。 线程间的 happens-before 关系： 解锁操作 happens-before 之后（时钟顺序）对同一把锁的加锁操作。 volatile 字段的写操作 happens-before 之后（时钟顺序）对同一字段的读操作。 线程的启动操作（Thread.starts()） happens-before 该线程的第一个操作。 线程的最后一个操作 happens-before 它的终止事件（Thread.isAlive() 或 Thread.join()）。 线程对其他线程的中断操作 happens-before 被中断线程所收到的中断事件（即被中断线程的 InterruptedException 异常，或者第三个线程针对被中断线程的 Thread.interrupted 或者 Thread.isInterrupted 调用）。 构造器中的最后一个操作 happens-before 析构器的第一个操作。 Java 内存模型的底层实现 通过内存屏障（memory barrier）禁止重排序。 开不太懂，之后再看 问题参考 https://time.geekbang.org/column/article/13484]]></content>
+      <categories>
+        <category>Java虚拟机</category>
+      </categories>
+      <tags>
+        <tag>JVM</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title><![CDATA[笔记-深入拆解Java虚拟机-1112垃圾回收]]></title>
+    <url>%2F2018%2F08%2F29%2F%E7%AC%94%E8%AE%B0-%E6%B7%B1%E5%85%A5%E6%8B%86%E8%A7%A3Java%E8%99%9A%E6%8B%9F%E6%9C%BA-1112%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6%2F</url>
+    <content type="text"><![CDATA[如何辨别对象是否死亡引用计数法（reference counting） 为每个对象添加一个引用计数器。 为 0 时死亡。 缺点： 需要额外的空间。 更新操作繁琐。 无法处理循环引用对象（a 与 b 相互引用）。 可达性分析GC Roots（由堆外指向堆内的引用）包括不限于： Java 方法栈桢中的局部变量。 已加载类的静态变量。 JNI handles。不懂 已启动且未停止的 Java 线程。 可达性分析算法： 将一系列 GC Roots 作为初始的存活对象合集（live set）。 标记（mark）：从该合集出发，探索所有能够被该集合引用到的对象，将其加入到该集合中。 未被探索到的对象是死亡的，是可以回收的。 需要解决的问题： 在多线程环境下，其他线程可能会更新已经访问过的对象中的引用，从而造成误报（将引用设置为 null）或者漏报（将引用设置为未被访问过的对象）。 Stop-the-world 停止其他非垃圾回收线程的工作，直到完成垃圾回收。 暂停时间（GC pause）。 安全点（safepoint） 当 Java 虚拟机收到 Stop-the-world 请求，它便会等待所有的线程都到达安全点，才允许请求 Stop-the-world 的线程进行独占的工作。 本地代码的安全点 Java 程序通过 JNI 执行本地代码时，这段代码不访问 Java 对象、调用 Java 方法或者返回至原 Java 方法。 API 入口处进行安全点检测（safepoint poll）。 解释执行字节码的安全点 字节码与字节码之间。 有安全点请求时，执行一条字节码进行一次安全点检测。 执行即时编译器生成的机器码 生成机器码时，即时编译器插入安全点检测。 HotSpot 虚拟机：在生成代码的方法出口、非计数循环的循环回边（back-edge）处插入。 阻塞的线程属于安全点。垃圾回收的三种方式清除（sweep） 把死亡对象所占据的内存标记为空闲内存，记录在一个空闲列表（free list）中。 缺点： 造成内存碎片。 堆中对象必须是连续分布的，可能出现总空闲内存足够，无法分配的极端情况。 分配效率较低。 压缩（compact） 把存活的对象聚集到内存区域的起始位置，留下一段连续的内存空间。 缺点： 压缩算法有性能开销。 复制（copy） 把内存区域分为两等分，分别用两个指针 from 和 to 来维护，只是用 from 指针指向的内存区域来分配内存。当发生垃圾回收时，把存活的对象复制到 to 指针指向的内存区域中，交换 from 指针和 to 指针的内容。 缺点： 1.堆空间的使用效率极其低下。 12未更新 参考 https://time.geekbang.org/column/article/13091]]></content>
+      <categories>
+        <category>Java虚拟机</category>
+      </categories>
+      <tags>
+        <tag>JVM</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title><![CDATA[笔记-深入拆解Java虚拟机-10Java对象的内存分布]]></title>
+    <url>%2F2018%2F08%2F29%2F%E7%AC%94%E8%AE%B0-%E6%B7%B1%E5%85%A5%E6%8B%86%E8%A7%A3Java%E8%99%9A%E6%8B%9F%E6%9C%BA-10Java%E5%AF%B9%E8%B1%A1%E7%9A%84%E5%86%85%E5%AD%98%E5%88%86%E5%B8%83%2F</url>
+    <content type="text"><![CDATA[Java 新建对象的方式 new 语句 反射 Object.clone方法 反序列化 Unsafe.allocateInstance方法 压缩指针对象头（object header） 每个 Java 对象都有。 由标记字段、类型指针构成。 标记字段：存储 Java 虚拟机有关该对象的运行数据（如哈希码、GC 信息、锁信息）。 类型指针：指向该对象的类。 64 位Java虚拟机中，对象头占 16 个字节。 压缩指针 开启压缩指针：-XX:+UseCompressedOops（默认开启）。 将堆中原本 64 位的 Java 对象指针压缩成 32 位。 类型指针也被压缩成 32 位，对象头的大小从 16 字节降至 12 字节。 还可以作用于引用类型的字段，引用类型数组。 内存对齐 虚拟机选项 -XX:ObjectAlignmentInBytes，默认值为 8。 默认情况，堆中对象（包括字段之间）起始地址要对齐至 8 的倍数。 浪费掉的空间称之为对象间的填充（padding）。 32 位压缩指针可以寻址到 2 的 35 次方个字节（32GB 地址空间，超过 32GB 会关闭压缩指针）。 压缩指针解引用：左移 3 位，再加上一个固定偏移量。 字段内存对齐的一个原因：让字段只出现在同一 CPU 的缓存行中。不懂 字段重排列 Java 虚拟机重新分配字段的顺序，达到内存对齐 参考 https://time.geekbang.org/column/article/13081]]></content>
+      <categories>
+        <category>Java虚拟机</category>
+      </categories>
+      <tags>
+        <tag>JVM</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title><![CDATA[暑假、日剧、独身者、改变、目标]]></title>
+    <url>%2F2018%2F08%2F27%2F%E6%9A%91%E5%81%87%E3%80%81%E6%97%A5%E5%89%A7%E3%80%81%E7%8B%AC%E8%BA%AB%E8%80%85%E3%80%81%E6%94%B9%E5%8F%98%E3%80%81%E7%9B%AE%E6%A0%87%2F</url>
+    <content type="text"><![CDATA[2018-8 大二暑假 暑假选择了留校，本来想等到 8 月 20 号再回去的，但是寝室里 N 多虫子，还在我腿上咬了 N 多坨，加上寝室经常停电停水， 8 月 7 号寝室对面突然搞装修，实在受不了，选择了回家。 一直以来，对自己以后的生活希望是可以成为一名独立开发者，一个人生活，一个人工作，没有任何人打扰。我以为自己一个人可以生活的很好。但是这个暑假，我的想法似乎动摇了。 我一直把自己归类为情感很淡的人，不喜欢说一些关心别人的话，我一直觉得很恶心，包括对自己的亲人。并且认为自己只是装作和身边的人关系很好的样子，分别后便没有任何关系，但是似乎好像并不是这样。 8 月 17 号，和最好的两个朋友出去聚了一次，感觉已经不是以前的那种感觉了，变的不是他们，是我。我变得越来越冷淡，和他们也越来越聊不起来，但是心里还是想着以后就一个人过最好。 在家是无法学习的，每天除了练车就没别的事，因为一些日剧演员再次将目光放在了《家族的形式》上，这部剧刚播出的时候就关注过，当时是因为里面有很多《朝 5 晚 9》的演员，看过几分钟觉得很无聊就没看了，这次是因为豆瓣的评分很高，所以决定再看一次。 首先这部剧的主角永里大介是一个人喜欢一人生活的人，他很享受自己一人的时间，并且认为人类之间的感情是麻烦的，这点和我非常像，我感觉他向往的生活和我向往的生活一样。后来因为一系列事情主角的爸爸常邀请他的朋友，大介的朋友同事，邻居一起聚会，我发现我很喜欢里面那种家人、朋友、同事、邻居一起吃饭很融洽的感觉。其实每次我都是这样，在校觉得别人好吵，放假太长又觉得孤单。以前觉得一个人在家看剧，一个人玩游戏，一个人出去吃东西看电影，一个人是很幸福的事情。但是现在真正只有一个人的时候有觉得很孤单，很后悔没有抓住以前的朋友。 原本打算考完科目三便来学校，和妈妈说后她很生气，说一暑假都没有陪她。当时正好看完《家族的形式》，想了很多，我给家人留的空间非常少，但以前又一直觉得自己不需要这些情感，觉得感情是一件很麻烦的事情，并且因为选择学习软件开发的原因，想要花大量时间学习，但想到 7 月刚放假留校那段时间，每天学习看剧无聊到爆，感觉一个人很孤单。突然很讨厌现在的自己，想要改变，和曾经的曾经一样珍惜每一段情感，不管是亲情还是友情。 又来也是在找日剧看的过程中，发现田中圭 2018 年有一部新剧《大叔之爱》，这部剧 2016 的时候出过一集 SP ，超级搞笑，因为人气比较高扩充了这个故事。当时只是当作一部搞笑的剧来看，看到后面发现自己很喜欢牧凌太这个角色，会做家务又会做饭，温柔又体贴，超级心动，感觉一下理解了那些女生看剧很心动的感觉。又想到 7 月在学校的时候，腿上被虫子咬，对寝室驱虫这件事很头疼。厕所很脏，洗澡也很不爽，但是又很怕脏，不想把它搞干净。在网上买了几大袋泡面，天天吃泡面吃到恶心（其实想过以后有自己的房子后学视频自己做菜吃，现在想想好像还比较遥远）。想到这些就希望自己有一个像牧凌太这样的居家型的男朋友，第一次有了想恋爱的感觉。作为同性恋以前一直对自己未来的对象很迷茫，不知道自己喜欢什么类型的，每次都是想以后就一个人过算了，但是因为这部剧，感觉知道了自己以后选择的标准，就是像牧凌太那样（可能和林遣都的长相有关系，但应该关系不大），刚看完感觉自己都像犯花痴了一样。 大二下过得很颓废，现在感觉又振作了起来，又有了精神，并且撇去之前抹掉情感的想法，不再是整天只知道敲代码的呆子程序员，生活也要变得有意思起来。 2018-08-27]]></content>
+  </entry>
+  <entry>
     <title><![CDATA[笔记-深入拆解Java虚拟机-0809JVM是怎么实现invokedynamic的？]]></title>
     <url>%2F2018%2F08%2F10%2F%E7%AC%94%E8%AE%B0-%E6%B7%B1%E5%85%A5%E6%8B%86%E8%A7%A3Java%E8%99%9A%E6%8B%9F%E6%9C%BA-0809JVM%E6%98%AF%E6%80%8E%E4%B9%88%E5%AE%9E%E7%8E%B0invokedynamic%E7%9A%84%EF%BC%9F%2F</url>
-    <content type="text"></content>
+    <content type="text"><![CDATA[invokedynamic Java 7 引入的新指令 调用机制抽象出调用点的概念 允许将调用点链接至任意符合条件的方法上 MethodHandle（方法句柄） Java 7 引入 是一个强类型的，能被直接执行的引用 可以指向静态方法、实例方法、构造器、字段 方法句柄的类型（MethodType） 由参数类型、返回类型组成 确认方法句柄是否适配的唯一关键 不关心方法的类名或方法名 方法句柄的创建通过 MethodHandles.Lookup 类 使用反射的 Method 类查找 Lookup.findStatic 查找调用 invokestatic 的方法 Lookup.findVirtual 查找调用 invokevirtual 和 invokeinterface 的方法 Lookup.findSpecial 查找调用 invokespecial 的方法 方法句柄的权限 权限检查在创建阶段完成 实际调用过程中不检查 取决于 Lookup 对象创建位置（不是方法句柄创建位置） 方法句柄的操作invokeExact 严格匹配参数类型（需要显示向上转型） @PolymorphicSignature 根据传入参数的声明类型来生成方法描述符（而不是目标方法） invoke 自动适配参数类型 会调用 MethodHandle.asType 方法生成一个适配器方法句柄 增删改通过生成另一个充当适配器的方法句柄来实现 捕获类型的 Lambda 表达式用增操作实现 增操作可以实现方法的柯里化 方法句柄的实现HotSpot 虚拟机中方法句柄调用的具体实现，只讨论DirectMethodHandle invokeExact 调用至一个共享的、与方法句柄类型相关的特殊适配器中 适配器是一个 LambdaForm 方法句柄的缺点 与反射一样是简介调用 无法内联 未更新09]]></content>
       <categories>
         <category>Java虚拟机</category>
       </categories>
@@ -161,9 +199,21 @@
       </tags>
   </entry>
   <entry>
+    <title><![CDATA[Android的性能优化方法]]></title>
+    <url>%2F2018%2F07%2F23%2FAndroid%E7%9A%84%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96%E6%96%B9%E6%B3%95%2F</url>
+    <content type="text"><![CDATA[布局优化 LinearLayout与RelativeLayout作用相同时使用LinearLayout。 LinearLayout需要嵌套时使用RelativeLayout。 \标签 只支持android:layout_开头的属性（android:id是特例）。 \指定了id属性，包含的布局文件根元素也指定了id属性，以\指定的为准。 \标签 配合\标签使用可以减少布局的层级。 ViewStub 继承自View，宽高都是0，本身不参与任何的布局和绘制过程。 按需加载所需的布局文件（如网络异常时的界面），使用的时候再加载，提高初始化性能。 不支持\标签。 怎样加载？((ViewStub) findViewById(R.id.stub_import)).setVisibility(View.VISIBLE); 或 View importPanel = ((ViewStub) findViewById(R.id.stub_import)).inflate(); 加载后ViewStub不在属于布局，为null。 绘制优化onDraw方法 不要创建新的布局对象。 不要做耗时的任务。 内存泄漏优化静态变量导致的内存泄漏 静态变量引用Context。 静态变量引用View（持有Context）。 单例模式导致的内存泄漏 单例模式保存某个监听器（由Context实现）而没有解注册的方法。 属性动画导致的内存泄漏 无限循环的属性动画，Activity在onDestroy中需要停止动画（否则动画会一直播放，动画持有View，View持有Activity，Activity不能被释放）。 响应速度优化 核心思想：避免在主线程中做耗时操作。 一个进程发生ANR之后，系统会在/data/anr目录下建一个文件traces.txt。 ListView优化 别优化了，直接用RecyclerView，同理GridView。 Bitmap优化未更新 线程优化 采用线程池，避免大量的Thread。 其他 避免创建过多对象。 不要过多使用枚举，枚举占用的内存空间比整形大。 常量使用static final修饰。 Android特有的数据结构有更好的性能(SparseArray，Pair等)。 适当使用软引用和弱引用。 采用内存缓存和磁盘缓存。 尽量采用静态内部类。]]></content>
+      <categories>
+        <category>Android优化</category>
+      </categories>
+      <tags>
+        <tag>Android</tag>
+        <tag>优化</tag>
+      </tags>
+  </entry>
+  <entry>
     <title><![CDATA[Android架构——Clean]]></title>
     <url>%2F2018%2F07%2F23%2FAndroid%E6%9E%B6%E6%9E%84%E2%80%94%E2%80%94Clean%2F</url>
-    <content type="text"><![CDATA[Clean架构的主要特点： 框架独立 容易测试 UI独立 数据库独立 不依赖任何中介 Clean的主要思想是外层依赖内层，内层完全不依赖外层（或者说内层不知道外层的存在，可以独立开发，复用性强）。 Clean架构解析 Enterprise Business Rules：业务对象 Application Business Rules：用于处理我们的业务对象，业务逻辑所在，也称为Interactor Interface Adapters： 接口转换，拿到我们需要的数据，主持者层（Presenters）和控制层（Controllers）就在这一层 Frameworks and Drivers: 这里是所有具体的实现了：比如：UI，工具类，基础框架等等。 Clean框架不一定只有4层，这里以4层为例。上面可能比较抽象，下面是简单的说法： 第一层：实体类 第二层：也叫UseCase层，实现具体业务逻辑。 第三层：如果是MVP这一层为Presenter，MVC这一层为Controller。 第四层：具体实现。 内层均为纯Java代码，只需要jvm便可以运行。 内层代码不仅可以在Android平台，还可以在别的Java平台复用。 各层单独测试，各层之间通过接口通信，且独立，方便单元测试。 层与层之间完全隔离，最主要的体现就是各层有自己的数据结构，不同层之间相互转换，完全没有依赖关系。 通过依赖注入的方式导致灵活修改逻辑、实现，这点与MVP的思想相似，Clean与MVP和Dagger结合使用是天然合适的。 以mvp-clean为例，与纯mvp最主要的区别就是Presenter层剥离出UserCase层，一是方便测试，二是方便代码复用，减少Presenter层的代码冗余。 Google Demo —— todo-mvp-clean 解析 demo地址：https://github.com/googlesamples/android-architecture/tree/todo-mvp-clean/mvp-clean基于mvp，加了 domain layer 介于 presentation 和 repositories。同时也将整个app 分为三个层次处理。 mvp-clean层次图 Presentation层 : MVP 设计准则。 Domain层 : 处理所有的业务逻辑，注意是所有的业务逻辑。对应use case（interactors）。 Data层 : 获取数据，以及数据的存储，分为本地和远程。 基本概念（摘自mvp-clean GitHub主页部分原文翻译） mvp-clean 和 基本的mvp 最大的区别就是在domain层和UseCase 的使用上。从 presenter 层分离出domain 层好处是可以减少代码的冗余。 UseCase 的好处是在domain的代码层上可以复用。CompleteTask在TaskDetailPresenter和TasksPresenter做到了很好的复用。 domain layer 是完全解耦与Android 层和第三方依赖的。是一个纯java层的处理。 UseCase 从主线程剥离出来，对于Android app是个好的操作。这种操作是尽可能的减少占用UI 线程。我们决定使用 command pattern 将use case 在线程池里执行操作。同样的我们可以用RxJava 或者 Promises实现同样的功能。 我们使用异步的repositories 。 但是现在没有必要这么做了。因为UseCase 已经从主线程里剥离出来了。这是尽量保持 samples 和原来的是一致的。 项目主要关系图 具体用例流程思考纯MVP架构会使项目变得复杂，Clean架构则会更复杂，大项目可以使项目的结构清晰，内层复用性强，便于测试。小项目则会使项目过于复杂，反而使项目结构显得不清晰，就像MVVM不适合小型项目一样。MVP作为万金油可以说适合大部分项目，我个人的思考是小型项目使用MVP架构，但在MVP的基础上加入部分Clean的思想。 从Presenter层分离出UseCase层，方便代码复用 各层独立，这里有一点需要注意，Clean中各层有各层的数据结构，在实际项目中各层可能写出类似的实体类，这里可以考虑只写一个通用实体类的作为最内层，虽然违背了Clean各层完全独立的思想，但是可以减少部分冗余，这一点根据自己项目来缺点。 参考资料 https://8thlight.com/blog/uncle-bob/2012/08/13/the-clean-architecture.html https://www.jianshu.com/p/c6a1a5c9a49b https://blog.csdn.net/YANGDAHUAN/article/details/80388849 https://www.jianshu.com/p/552c3a1c5fe5 https://www.jianshu.com/p/e0258ce7d392]]></content>
+    <content type="text"><![CDATA[Clean架构的主要特点： 框架独立 容易测试 UI独立 数据库独立 不依赖任何中介 Clean的主要思想是外层依赖内层，内层完全不依赖外层（或者说内层不知道外层的存在，可以独立开发，复用性强）。 Clean架构解析 Enterprise Business Rules：业务对象 Application Business Rules：用于处理我们的业务对象，业务逻辑所在，也称为Interactor Interface Adapters： 接口转换，拿到我们需要的数据，主持者层（Presenters）和控制层（Controllers）就在这一层 Frameworks and Drivers: 这里是所有具体的实现了：比如：UI，工具类，基础框架等等。 Clean框架不一定只有4层，这里以4层为例。上面可能比较抽象，下面是简单的说法： 第一层：实体类 第二层：也叫UseCase层，实现具体业务逻辑。 第三层：如果是MVP这一层为Presenter，MVC这一层为Controller。 第四层：具体实现。 内层均为纯Java代码，只需要jvm便可以运行。 内层代码不仅可以在Android平台，还可以在别的Java平台复用。 各层单独测试，各层之间通过接口通信，且独立，方便单元测试。 层与层之间完全隔离，最主要的体现就是各层有自己的数据结构，不同层之间相互转换，完全没有依赖关系。 通过依赖注入的方式导致灵活修改逻辑、实现，这点与MVP的思想相似，Clean与MVP和Dagger结合使用是天然合适的。 以mvp-clean为例，与纯mvp最主要的区别就是Presenter层剥离出UserCase层，一是方便测试，二是方便代码复用，减少Presenter层的代码冗余。 Google Demo —— todo-mvp-clean 解析 demo地址：https://github.com/googlesamples/android-architecture/tree/todo-mvp-clean/mvp-clean基于mvp，加了 domain layer 介于 presentation 和 repositories。同时也将整个app 分为三个层次处理。 mvp-clean层次图 Presentation层 : MVP 设计准则。 Domain层 : 处理所有的业务逻辑，注意是所有的业务逻辑。对应use case（interactors）。 Data层 : 获取数据，以及数据的存储，分为本地和远程。 基本概念（摘自mvp-clean GitHub主页部分原文翻译） mvp-clean 和 基本的mvp 最大的区别就是在domain层和UseCase 的使用上。从 presenter 层分离出domain 层好处是可以减少代码的冗余。 UseCase 的好处是在domain的代码层上可以复用。CompleteTask在TaskDetailPresenter和TasksPresenter做到了很好的复用。 domain layer 是完全解耦与Android 层和第三方依赖的。是一个纯java层的处理。 UseCase 从主线程剥离出来，对于Android app是个好的操作。这种操作是尽可能的减少占用UI 线程。我们决定使用 command pattern 将use case 在线程池里执行操作。同样的我们可以用RxJava 或者 Promises实现同样的功能。 我们使用异步的repositories 。 但是现在没有必要这么做了。因为UseCase 已经从主线程里剥离出来了。这是尽量保持 samples 和原来的是一致的。 项目主要关系图 具体用例流程未完待续。。。 思考纯MVP架构会使项目变得复杂，Clean架构则会更复杂，大项目可以使项目的结构清晰，内层复用性强，便于测试。小项目则会使项目过于复杂，反而使项目结构显得不清晰，就像MVVM不适合小型项目一样。MVP作为万金油可以说适合大部分项目，我个人的思考是小型项目使用MVP架构，但在MVP的基础上加入部分Clean的思想。 从Presenter层分离出UseCase层，方便代码复用 各层独立，这里有一点需要注意，Clean中各层有各层的数据结构，在实际项目中各层可能写出类似的实体类，这里可以考虑只写一个通用实体类的作为最内层，虽然违背了Clean各层完全独立的思想，但是可以减少部分冗余，这一点根据自己项目来缺点。 参考资料 https://8thlight.com/blog/uncle-bob/2012/08/13/the-clean-architecture.html https://www.jianshu.com/p/c6a1a5c9a49b https://blog.csdn.net/YANGDAHUAN/article/details/80388849 https://www.jianshu.com/p/552c3a1c5fe5 https://www.jianshu.com/p/e0258ce7d392]]></content>
       <categories>
         <category>Android架构</category>
       </categories>
