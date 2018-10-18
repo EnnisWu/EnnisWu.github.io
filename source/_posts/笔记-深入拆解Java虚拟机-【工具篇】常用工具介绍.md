@@ -1,0 +1,282 @@
+---
+title: 笔记-深入拆解Java虚拟机-【工具篇】常用工具介绍
+date: 2018-08-05 14:41:13
+tags: JVM
+categories: Java虚拟机
+---
+
+# javap：查阅Java字节码
+
+> javap是一个能够将class文件反汇编成人类可读格式的工具。
+
+| 选项 | 作用 |
+| ---- | ---- |
+| -p | 追加打印私有字段和方法 |
+| -v | 尽可能打印所有信息 |
+| -c | 只打印方法 |
+| -g |  |
+
+## -v选项输出
+
+### 基本信息
+
+| 字段 | 作用 |
+| ---- | ---- |
+| minor version: 0，major version: 54 | class文件的版本号 |
+| flags: (0x0021) ACC_PUBLIC, ACC_SUPER | 该类的访问权限 |
+| this_class: #7 | 该类名字 |
+| super_class: #8 | 父类名字 |
+| interfaces: 0 | 实现接口数目 |
+| fields: 4 | 字段数目 |
+| methods: 2 | 方法数目 |
+| attributes: 1 | 属性数目 |
+
+- 属性：class文件所携带的辅助信息（class文件的源文件的名称）。
+这类信息通常被用于 Java 虚拟机的验证和运行，以及 Java 程序的调试，一般无须深入了解。
+
+- class文件的版本号：编译生成该class文件时所用的JRE版本。
+由较新的JRE版本中的javac编译而成的class文件，不能在旧版本的JRE上跑，否则，会出现异常（java.lang.UnsupportedClassVersionError）。
+
+### 常量池
+
+- 每一项都有一个对应的索引（如 #1）。
+- 可能引用其他的常量池项（#1 = Methodref #8.#23）。
+
+### 字段区域
+
+| 字段 | 作用 |
+| ---- | ---- |
+| descriptor: I | 字段的类型 |
+| flags: (0x0002) ACC_PRIVATE | 访问权限 |
+
+- 声明为static final的基本类型或者字符串字段，字段区域包括它的常量值。
+
+### 方法区域
+
+- 方法描述符
+- 访问权限
+- 代码区域
+
+#### 代码区域
+
+##### 开头声明
+
+| 字段 | 作用 |
+| ---- | ---- |
+| stack=2 | 操作数栈 |
+| locals=3 | 局部变量数目最大值 |
+| args_size=1 |接收参数的个数 |
+
+- 局部变量指的是字节码中的局部变量。
+- 后面接着的是字节码，每条字节码均标注了对应的偏移量（bytecode index，BCI）。
+
+##### 异常表
+
+- 使用偏移量定位每个异常处理器所监控的范围（由 from 到 to 的代码区域）。
+- 异常处理器的起始位置（target）。
+- 声明所捕获的异常类型（type）。
+any指代任意异常类型。
+
+##### 行数表
+
+- Java源程序到字节码偏移量的映射。
+
+###### 局部变量表
+
+- Java程序中每个局部变量的名字、类型以及作用域。
+
+注：行数表和局部变量表均属于调试信息。Java虚拟机不要求class文件必备这些信息。
+
+##### 字节码操作数栈映射表
+
+- 字节码跳转后操作数栈的分布情况。
+一般被Java虚拟机用于验证所加载的类，和即时编译相关的一些操作，正常情况下，无须深入了解。
+
+# OpenJDK项目Code Tools：实用小工具集
+
+## ASMTools
+
+### 反汇编操作命令
+
+```
+$ java -cp /path/to/asmtools.jar org.openjdk.asmtools.jdis.Main Foo.class > Foo.jasm
+```
+
+### 汇编操作命令
+
+```
+$ java -cp /path/to/asmtools.jar org.openjdk.asmtools.jasm.Main Foo.jasm
+```
+
+## JOL
+
+### 查阅Java虚拟机中对象的内存分布
+
+```
+$ java -jar /path/to/jol-cli-0.9-full.jar internals java.util.HashMap
+$ java -jar /path/to/jol-cli-0.9-full.jar estimates java.util.HashMap
+```
+
+# ASM：Java字节码框架
+
+- ASM既可以生成新的class文件，也可以修改已有的class文件。
+- 辅助类ASMifier，接收一个 class文件，输出一段生成该class文件原始字节数组的代码。
+
+# 附录
+
+```java
+public class Foo {
+    private int tryBlock;
+    private int catchBlock;
+    private int finallyBlock;
+    private int methodExit;
+
+    public void test() {
+        try {
+            tryBlock = 0;
+        } catch (Exception e) {
+            catchBlock = 1;
+        } finally {
+            finallyBlock = 2;
+        }
+        methodExit = 3;
+    }
+}
+```
+
+编译后用javap查阅字节码
+
+```
+$ javac Foo.java
+$ javap -p -v Foo
+Classfile ../Foo.class
+  Last modified ..; size 541 bytes
+  MD5 checksum 3828cdfbba56fea1da6c8d94fd13b20d
+  Compiled from "Foo.java"
+public class Foo
+  minor version: 0
+  major version: 54
+  flags: (0x0021) ACC_PUBLIC, ACC_SUPER
+  this_class: #7                          // Foo
+  super_class: #8                         // java/lang/Object
+  interfaces: 0, fields: 4, methods: 2, attributes: 1
+Constant pool:
+   #1 = Methodref          #8.#23         // java/lang/Object."<init>":()V
+   #2 = Fieldref           #7.#24         // Foo.tryBlock:I
+   #3 = Fieldref           #7.#25         // Foo.finallyBlock:I
+   #4 = Class              #26            // java/lang/Exception
+   #5 = Fieldref           #7.#27         // Foo.catchBlock:I
+   #6 = Fieldref           #7.#28         // Foo.methodExit:I
+   #7 = Class              #29            // Foo
+   #8 = Class              #30            // java/lang/Object
+   #9 = Utf8               tryBlock
+  #10 = Utf8               I
+  #11 = Utf8               catchBlock
+  #12 = Utf8               finallyBlock
+  #13 = Utf8               methodExit
+  #14 = Utf8               <init>
+  #15 = Utf8               ()V
+  #16 = Utf8               Code
+  #17 = Utf8               LineNumberTable
+  #18 = Utf8               test
+  #19 = Utf8               StackMapTable
+  #20 = Class              #31            // java/lang/Throwable
+  #21 = Utf8               SourceFile
+  #22 = Utf8               Foo.java
+  #23 = NameAndType        #14:#15        // "<init>":()V
+  #24 = NameAndType        #9:#10         // tryBlock:I
+  #25 = NameAndType        #12:#10        // finallyBlock:I
+  #26 = Utf8               java/lang/Exception
+  #27 = NameAndType        #11:#10        // catchBlock:I
+  #28 = NameAndType        #13:#10        // methodExit:I
+  #29 = Utf8               Foo
+  #30 = Utf8               java/lang/Object
+  #31 = Utf8               java/lang/Throwable
+{
+  private int tryBlock;
+    descriptor: I
+    flags: (0x0002) ACC_PRIVATE
+
+  private int catchBlock;
+    descriptor: I
+    flags: (0x0002) ACC_PRIVATE
+
+  private int finallyBlock;
+    descriptor: I
+    flags: (0x0002) ACC_PRIVATE
+
+  private int methodExit;
+    descriptor: I
+    flags: (0x0002) ACC_PRIVATE
+
+  public Foo();
+    descriptor: ()V
+    flags: (0x0001) ACC_PUBLIC
+    Code:
+      stack=1, locals=1, args_size=1
+         0: aload_0
+         1: invokespecial #1                  // Method java/lang/Object."<init>":()V
+         4: return
+      LineNumberTable:
+        line 1: 0
+
+  public void test();
+    descriptor: ()V
+    flags: (0x0001) ACC_PUBLIC
+    Code:
+      stack=2, locals=3, args_size=1
+         0: aload_0
+         1: iconst_0
+         2: putfield      #2                  // Field tryBlock:
+         5: aload_0
+         6: iconst_2
+         7: putfield      #3                  // Field finallyBlock:I
+        10: goto          35
+        13: astore_1
+        14: aload_0
+        15: iconst_1
+        16: putfield      #5                  // Field catchBlock:I
+        19: aload_0
+        20: iconst_2
+        21: putfield      #3                  // Field finallyBlock:I
+        24: goto          35
+        27: astore_2
+        28: aload_0
+        29: iconst_2
+        30: putfield      #3                  // Field finallyBlock:I
+        33: aload_2
+        34: athrow
+        35: aload_0
+        36: iconst_3
+        37: putfield      #6                  // Field methodExit:I
+        40: return
+      Exception table:
+         from    to  target type
+             0     5    13   Class java/lang/Exception
+             0     5    27   any
+            13    19    27   any
+      LineNumberTable:
+        line 9: 0
+        line 13: 5
+        line 14: 10
+        line 10: 13
+        line 11: 14
+        line 13: 19
+        line 14: 24
+        line 13: 27
+        line 14: 33
+        line 15: 35
+        line 16: 40
+      StackMapTable: number_of_entries = 3
+        frame_type = 77 /* same_locals_1_stack_item */
+          stack = [ class java/lang/Exception ]
+        frame_type = 77 /* same_locals_1_stack_item */
+          stack = [ class java/lang/Throwable ]
+        frame_type = 7 /* same */
+}
+SourceFile: "Foo.java"
+```
+
+# 参考
+
+> https://time.geekbang.org/column/article/12423

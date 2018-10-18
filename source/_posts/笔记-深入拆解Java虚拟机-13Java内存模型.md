@@ -1,0 +1,39 @@
+---
+title: 笔记-深入拆解Java虚拟机-13Java内存模型
+date: 2018-08-31 14:44:23
+tags: JVM
+categories: Java虚拟机
+---
+
+# 编译器优化的重排序
+
+- 保证遵守 as-if-serial 属性。
+- 操作之间存在数据依赖，不能调整顺序。
+
+# Java 内存模型与 happens-before 关系
+
+- 用来描述两个操作的内存可见性。
+- 操作 X happens-before 操作 Y，X 的结果对于 Y 可见。
+- happens-before 关系具有传递性。
+- 解决这种数据竞争的关键：构造一个跨线程的 happens-before 关系。
+
+线程间的 happens-before 关系：
+
+1. 解锁操作 happens-before 之后（时钟顺序）对同一把锁的加锁操作。
+2. volatile 字段的写操作 happens-before 之后（时钟顺序）对同一字段的读操作。
+3. 线程的启动操作（Thread.starts()） happens-before 该线程的第一个操作。
+4. 线程的最后一个操作 happens-before 它的终止事件（Thread.isAlive() 或 Thread.join()）。
+5. 线程对其他线程的中断操作 happens-before 被中断线程所收到的中断事件（即被中断线程的 InterruptedException 异常，或者第三个线程针对被中断线程的 Thread.interrupted 或者 Thread.isInterrupted 调用）。
+6. 构造器中的最后一个操作 happens-before 析构器的第一个操作。
+
+# Java 内存模型的底层实现
+
+- 通过内存屏障（memory barrier）禁止重排序。
+
+开不太懂，之后再看
+
+# 问题
+
+# 参考
+
+> https://time.geekbang.org/column/article/13484

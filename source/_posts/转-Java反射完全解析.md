@@ -1,0 +1,801 @@
+---
+title: '[转]Java反射完全解析'
+date: 2018-07-20 20:31:41
+tags: [Java,反射]
+categories: Java反射
+---
+
+> 转载请注明出处：https://www.jianshu.com/p/607ff4e79a13
+
+本文相关知识点大部分总结自[Oracle官方文档](https://docs.oracle.com/javase/8/docs/technotes/guides/reflection/index.html)，对于英文比较好的朋友，建议直接阅读原文档。
+
+按例，首先描述一下定义：
+
+> Reflection enables Java code to discover information about the fields, methods and constructors of loaded classes, and to use reflected fields, methods, and constructors to operate on their underlying counterparts, within security restrictions.
+通过反射，Java 代码可以发现有关已加载类的字段，方法和构造函数的信息，并可以在安全限制内对这些字段，方法和构造函数进行操作。
+
+简而言之，你可以在运行状态中通过反射机制做到：
+
+- 对于任意一个类，都能够知道这个类的所有属性和方法；
+- 对于任意一个对象，都能够调用它的任意一个方法和属性;
+
+这种动态获取的信息以及动态调用对象的方法的功能称为java语言的反射机制。
+
+在我看来我们平时使用 Java 反射主要涉及两个类(接口) [Class](https://docs.oracle.com/javase/8/docs/api/java/lang/Class.html)， [Member](https://docs.oracle.com/javase/8/docs/api/java/lang/reflect/Member.html)，如果把这两个类搞清楚了，反射基本就 ok 了。
+
+# Class
+
+提到反射就不得不提到 Class，Class 可以说是反射能够实现的基础；注意这里说的 Class与 class 关键字**不是同一种东西**。class 关键字是在声明 java 类时使用的；而 Class 是 java JDK 提供的一个类,完整路径为 [java.lang.Class](https://docs.oracle.com/javase/8/docs/api/java/lang/Class.html)，本质上与 Math, String 或者你自己定义各种类没什么区别。
+
+```java
+public final class Class<T> implements java.io.Serializable, GenericDeclaration, Type, AnnotatedElement {
+   ...
+}
+```
+
+那 Class 到底在反射中起到什么作用呢？
+
+> For every type of object, the Java virtual machine instantiates an immutable instance of [java.lang.Class](https://docs.oracle.com/javase/8/docs/api/java/lang/Class.html) which provides methods to examine the runtime properties of the object including its members and type information. [Class](https://docs.oracle.com/javase/8/docs/api/java/lang/Class.html) also provides the ability to create new classes and objects. Most importantly, it is the entry point for all of the Reflection APIs.
+
+对于每一种类，Java 虚拟机都会初始化出一个 Class 类型的实例，每当我们编写并且编译一个新创建的类就会产生一个对应 Class 对象，并且这个 Class 对象会被保存在同名 .class 文件里。当我们 new 一个新对象或者引用静态成员变量时，Java 虚拟机(JVM)中的类加载器系统会将对应 Class 对象加载到 JVM 中，然后 JVM 再根据这个类型信息相关的Class 对象创建我们需要实例对象或者提供静态变量的引用值。
+
+比如创建编译一个 Shapes 类，那么，JVM 就会创建一个 Shapes 对应 Class 类的 Class实例，该 Class 实例保存了 Shapes 类相关的类型信息，包括属性，方法，构造方法等等，通过这个 Class 实例可以在运行时访问 Shapes 对象的属性和方法等。另外通过 Class类还可以创建出一个新的 Shapes 对象。这就是反射能够实现的原因，可以说 Class 是反射操作的基础。
+
+需要特别注意的是，每个 class（注意 class 是小写，代表普通类）类，无论创建多少个实例对象，在 JVM 中都对应同一个 Class 对象。
+
+下面就通过一个简单的例子来说明如何通过反射实例化一个对象。
+
+```java
+public class Animal {
+    private String name;
+    private int age;
+    public Animal(String name, int age){
+        this.name = name;
+        this.age = age;
+    }
+    @Override
+    public String toString() {
+        return "Animal : name = " + name + " age = " + age;
+    }
+}
+
+ public class TestReflection{
+    private static final String TAG = "Reflection";
+    public void testReflection(){
+        //获取Animal类的Class对象
+        Class c = Animal.class;
+        try {
+            //通过Class对象反射获取Animal类的构造方法
+            Constructor constructor = c.getConstructor(String.class, int.class);
+            //调用构造方法获取Animal实例
+            Animal animal = (Animal) constructor.newInstance( "Jack", 3);
+            //将构造出来的Animal对象打印出来
+            Log.d(TAG, animal.toString());
+        } catch (NoSuchMethodException e) {
+            e.printStackTrace();
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        } catch (InstantiationException e) {
+            e.printStackTrace();
+        } catch (InvocationTargetException e) {
+            e.printStackTrace();
+        }
+    }
+}
+```
+
+下面我们来看下打印值
+
+```
+03-28 20:12:00.958 2835-2835/? D/Reflection: Animal : name = Jack age = 3
+```
+
+可以看出我们确实成功构造出了 Animal 对象，而且在这过程中 Class 功不可没。有人说你这也太费事了，都知道 Animal 对象了，我分分钟就能给你 new 出来了。
+
+```java
+Animal animal = new Animal("Jack", 3);
+```
+
+没错！但是如果并不能直接导入 Animal 类呢，如果构造方法都是 private 的呢？这个时候反射就能大展身手了。
+
+## 如何获取Class
+
+说 Class 是反射能够实现的基础的另一个原因是：Java 反射包 java.lang.reflect 中的所有类都没有 public 构造方法，要想获得这些类实例，只能通过 Class 类获取。所以说如果想使用反射，必须得获得 Class 对象。
+下面列举了几种能够获取 Class 对象的方法。
+
+- Object.getClass()
+  通过对象实例获取对应 Class 对象，如
+
+```java
+//Returns the Class for String
+Class c = "foo".getClass();
+
+enum E { A, B }
+//Returns the Class corresponding to the enumeration type E.
+Class c = A.getClass();
+
+byte[] bytes = new byte[1024];
+//Returns the Class corresponding to an array with component type byte.
+Class c = bytes.getClass();
+
+Set<String> s = new HashSet<String>();
+//Returns the Class corresponding to java.util.HashSet.
+Class c = s.getClass();
+```
+
+然而对于基本类型无法使用这种方法
+
+```java
+boolean b;
+Class c = b.getClass();   // compile-time error
+```
+
+- The .class Syntax
+  通过类的类型获取Class对象,基本类型同样可以使用这种方法，如
+
+```java
+//The `.class` syntax returns the Class corresponding to the type `boolean`.
+Class c = boolean.class;  
+
+//Returns the Class for String
+Class c = String.class;
+```
+
+- Class.forName()
+  通过类的全限定名获取Class对象， 基本类型无法使用此方法
+
+```java
+Class c = Class.forName("java.lang.String");
+```
+
+对于数组比较特殊
+
+```java
+Class cDoubleArray = Class.forName("[D");    //相当于double[].class
+
+Class cStringArray = Class.forName("[[Ljava.lang.String;");   //相当于String[][].class
+```
+
+- TYPE Field for Primitive Type Wrappers
+  基本类型和 void 类型的包装类可以使用 TYPE 字段获取
+
+```java
+Class c = Double.TYPE;   //等价于 double.class.
+Class c = Void.TYPE;
+```
+
+- Methods that Return Classes
+  另外还有一些反射方法可以获取 Class 对象，但前提是你已经获取了一个 Class 对象。
+  有点拗口，比如说你已经获取了一个类的 Class 对象，就可以通过反射方法获取这个类的父类的 Class 对象。
+
+[Class.getSuperclass()](https://docs.oracle.com/javase/8/docs/api/java/lang/Class.html#getSuperclass--)获得给定类的父类 Class
+
+```java
+// javax.swing.JButton的父类是javax.swing.AbstractButton
+Class c = javax.swing.JButton.class.getSuperclass();
+```
+
+类似方法还有：
+
+[Class.getClasses()](https://docs.oracle.com/javase/8/docs/api/java/lang/Class.html#getClasses--)
+[Class.getDeclaredClasses()](https://docs.oracle.com/javase/8/docs/api/java/lang/Class.html#getDeclaredClasses--)
+[Class.getDeclaringClass()](https://docs.oracle.com/javase/8/docs/api/java/lang/Class.html#getDeclaringClass--)
+[Class.getEnclosingClass()](https://docs.oracle.com/javase/8/docs/api/java/lang/Class.html#getEnclosingClass--)
+[java.lang.reflect.Field.getDeclaringClass()](https://docs.oracle.com/javase/8/docs/api/java/lang/reflect/Field.html#getDeclaringClass--)
+[java.lang.reflect.Method.getDeclaringClass()](https://docs.oracle.com/javase/8/docs/api/java/lang/reflect/Method.html#getDeclaringClass--)
+[java.lang.reflect.Constructor.getDeclaringClass()](https://docs.oracle.com/javase/8/docs/api/java/lang/reflect/Constructor.html#getDeclaringClass--)
+
+## 通过Class获取类修饰符和类型
+
+我们知道类的声明一般如下表示
+
+![img](https://mmbiz.qpic.cn/mmbiz_png/v1LbPPWiaSt5tL9GD0n77s3FwJiarzao9SKeiccYrAOy1qStMPfiadTQhuy4bmt3kx18tyf5zaq3ITOmRK3ib4Be6eA/640?wx_fmt=png&tp=webp&wxfrom=5&wx_lazy=1)
+
+下面我们就以 HashMap 为例，通过一个 Demo 来说明如何获取这些信息
+
+```java
+public class TestReflection {
+    private static final String TAG = "Reflection";
+    public void testReflection() {
+        Class<?> c = HashMap.class;
+        //获取类名
+        Log.d(TAG, "Class : " + c.getCanonicalName());
+        //获取类限定符
+        Log.d(TAG, "Modifiers : " + Modifier.toString(c.getModifiers()));
+        //获取类泛型信息
+        TypeVariable[] tv = c.getTypeParameters();
+        if (tv.length != 0) {
+            StringBuilder parameter = new StringBuilder("Parameters : ");
+            for (TypeVariable t : tv) {
+                parameter.append(t.getName());
+                parameter.append(" ");
+            }
+            Log.d(TAG, parameter.toString());
+        } else {
+            Log.d(TAG, "  -- No Type Parameters --");
+        }
+        //获取类实现的所有接口
+        Type[] intfs = c.getGenericInterfaces();
+        if (intfs.length != 0) {
+            StringBuilder interfaces = new StringBuilder("Implemented Interfaces : ");
+            for (Type intf : intfs){
+                interfaces.append(intf.toString());
+                interfaces.append(" ");
+            }
+            Log.d(TAG, interfaces.toString());
+        } else {
+            Log.d(TAG, "  -- No Implemented Interfaces --");
+        }
+        //获取类继承数上的所有父类
+        List<Class> l = new ArrayList<>();
+        printAncestor(c, l);
+        if (l.size() != 0) {
+            StringBuilder inheritance = new StringBuilder("Inheritance Path : ");
+            for (Class<?> cl : l){
+                inheritance.append(cl.getCanonicalName());
+                inheritance.append(" ");
+            }
+            Log.d(TAG, inheritance.toString());
+        } else {
+            Log.d(TAG, "  -- No Super Classes --%n%n");
+        }
+        //获取类的注解(只能获取到 RUNTIME 类型的注解)
+        Annotation[] ann = c.getAnnotations();
+        if (ann.length != 0) {
+            StringBuilder annotation = new StringBuilder("Annotations : ");
+            for (Annotation a : ann){
+                annotation.append(a.toString());
+                annotation.append(" ");
+            }
+            Log.d(TAG, annotation.toString());
+        } else {
+            Log.d(TAG, "  -- No Annotations --%n%n");
+        }
+    }
+    private static void printAncestor(Class<?> c, List<Class> l) {
+        Class<?> ancestor = c.getSuperclass();
+        if (ancestor != null) {
+            l.add(ancestor);
+            printAncestor(ancestor, l);
+        }
+    }
+}
+```
+
+打印结果如下
+
+```
+03-29 15:04:23.070 27826-27826/com.example.ming.testproject D/Reflection: Class : java.util.HashMap
+03-29 15:04:23.070 27826-27826/com.example.ming.testproject D/Reflection: Modifiers : public
+03-29 15:04:23.071 27826-27826/com.example.ming.testproject D/Reflection: Parameters : K  V  
+03-29 15:04:23.071 27826-27826/com.example.ming.testproject D/Reflection: Implemented Interfaces : java.util.Map<K, V>  interface java.lang.Cloneable  interface java.io.Serializable  
+03-29 15:04:23.071 27826-27826/com.example.ming.testproject D/Reflection: Inheritance Path : java.util.AbstractMap  java.lang.Object  
+03-29 15:04:23.071 27826-27826/com.example.ming.testproject D/Reflection:   -- No Annotations --
+```
+
+# Member
+
+> Reflection defines an interface [java.lang.reflect.Member](https://docs.oracle.com/javase/8/docs/api/java/lang/reflect/Member.html) which is implemented by [java.lang.reflect.Field](https://docs.oracle.com/javase/8/docs/api/java/lang/reflect/Field.html), [java.lang.reflect.Method](https://docs.oracle.com/javase/8/docs/api/java/lang/reflect/Method.html), and [java.lang.reflect.Constructor](https://docs.oracle.com/javase/8/docs/api/java/lang/reflect/Constructor.html) .
+
+对于 Member 接口可能会有人不清楚是干什么的，但如果提到实现它的三个实现类，估计用过反射的人都能知道。我们知道类成员主要包括构造函数，变量和方法，Java 中的操作基本都和这三者相关，而 Member 的这三个实现类就分别对应他们。
+
+[java.lang.reflect.Field](https://docs.oracle.com/javase/8/docs/api/java/lang/reflect/Field.html) ：对应类变量
+[java.lang.reflect.Method](https://docs.oracle.com/javase/8/docs/api/java/lang/reflect/Method.html) ：对应类方法
+[java.lang.reflect.Constructor](https://docs.oracle.com/javase/8/docs/api/java/lang/reflect/Constructor.html) ：对应类构造函数
+
+反射就是通过这三个类才能在运行时改变对象状态。下面就让我们通过一些例子来说明如何通过反射操作它们。
+
+首先建一个测试类
+
+```java
+public class Cat {
+    public static final String TAG = Cat.class.getSimpleName();
+    private String name;
+    @Deprecated
+    public int age;
+
+    public Cat(String name, int age){
+        this.name = name;
+        this.age = age;
+    }
+
+    public String getName(){
+        return name;
+    }
+
+    public void eat(String food){
+        Log.d(TAG, "eat food " + food);
+    }
+
+    public void eat(String... foods){
+        StringBuilder s = new StringBuilder();
+        for(String food : foods){
+            s.append(food);
+            s.append(" ");
+        }
+        Log.d(TAG, "eat food " + s.toString());
+    }
+
+    public void sleep(){
+        Log.d(TAG, "sleep");
+    }
+
+    @Override
+    public String toString() {
+        return "name = " + name + " age = " + age;
+    }
+}
+```
+
+## Field
+
+通过 Field 你可以访问给定对象的类变量，包括获取变量的类型、修饰符、注解、变量名、变量的值或者重新设置变量值，即使变量是 private 的。
+
+- ### 获取 Field
+
+Class 提供了4种方法获得给定类的 Field
+
+- - [getDeclaredField(String name)](https://docs.oracle.com/javase/8/docs/api/java/lang/Class.html#getDeclaredField-java.lang.String-)     
+
+    获取指定的变量（只要是声明的变量都能获得，包括 private）
+
+  - [getField(String name)](https://docs.oracle.com/javase/8/docs/api/java/lang/Class.html#getField-java.lang.String-)      
+
+    获取指定的变量（只能获得 public 的）
+
+  - [getDeclaredFields()](https://docs.oracle.com/javase/8/docs/api/java/lang/Class.html#getDeclaredFields--)              
+
+    获取所有声明的变量（包括 private）
+
+  - [getFields()](https://docs.oracle.com/javase/8/docs/api/java/lang/Class.html#getFields--)
+
+    获取所有的 public 变量
+
+- ### 获取变量类型、修饰符、注解
+
+一个例子说明问题
+
+```java
+public void testField(){
+        Class c = Cat.class;
+        Field[] fields = c.getDeclaredFields();
+        for(Field f : fields){
+            StringBuilder builder = new StringBuilder();
+            //获取名称
+            builder.append("filed name = ");
+            builder.append(f.getName());
+            //获取类型
+            builder.append(" type = ");
+            builder.append(f.getType());
+            //获取修饰符
+            builder.append(" modifiers = ");
+            builder.append(Modifier.toString(f.getModifiers()));
+            //获取注解
+            Annotation[] ann = f.getAnnotations();
+            if (ann.length != 0) {
+                builder.append(" annotations = ");
+                for (Annotation a : ann){
+                    builder.append(a.toString());
+                    builder.append(" ");
+                }
+            } else {
+                builder.append("  -- No Annotations --");
+            }
+            Log.d(TAG, builder.toString());
+        }
+    }
+```
+
+打印结果：
+
+```
+filed name = age type = int modifiers = public annotations = @java.lang.Deprecated() 
+filed name = name type = class java.lang.String modifiers = private  -- No Annotations --
+filed name = TAG type = class java.lang.String modifiers = public static final  -- No Annotations --
+```
+
+- ### 获取、设置变量值
+
+给定一个对象和它的成员变量名称，就能通过反射获取和改变该变量的值。什么都不说了，没有什么是不能通过一个例子解决的， Easy~
+
+仍然是上面的测试类，通过反射获取并改变 Cat 的 name 和 age.
+
+```java
+public void testField(){
+        Cat cat = new Cat("Tom", 2);
+        Class c = cat.getClass();
+        try {
+            //注意获取private变量时，需要用getDeclaredField
+            Field fieldName = c.getDeclaredField("name");
+            Field fieldAge = c.getField("age");
+            //反射获取名字, 年龄
+            String name = (String) fieldName.get(cat);
+            int age = fieldAge.getInt(cat);
+            Log.d(TAG, "before set, Cat name = " + name + " age = " + age);
+            //反射重新set名字和年龄
+            fieldName.set(cat, "Timmy");
+            fieldAge.setInt(cat, 3);
+            Log.d(TAG, "after set, Cat " + cat.toString());
+        } catch (NoSuchFieldException e) {
+            e.printStackTrace();
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        }
+    }
+```
+
+嗯？竟然报错？
+
+```
+System.err: java.lang.IllegalAccessException: Class java.lang.Class<com.example.ming.testnestscrollview.TestReflection> cannot access private  field java.lang.String com.example.ming.testnestscrollview.Cat.name of class java.lang.Class<com.example.ming.testnestscrollview.Cat>
+System.err:     at java.lang.reflect.Field.get(Native Method)
+System.err:     at com.example.ming.testnestscrollview.TestReflection.testField(TestReflection.java:22)
+System.err:     at com.example.ming.testnestscrollview.MainActivity.onCreate(MainActivity.java:17)
+```
+
+观察一下异常信息 java.lang.IllegalAccessException，说我们没有权限操作变量 name；回到 Cat 类中查看一下 name 变量。
+
+```java
+private String name;
+```
+
+原来 name 变量是 private，Java 运行时会进行访问权限检查，private 类型的变量无法进行直接访问，刚刚进行的反射操作并没有打破这种封装，所以我们依然没有权限对 private属性进行直接访问。
+
+难道就没有办法打破这种限制吗？必须有！强大的反射早已暗中为我们准备好了一切。反射包里为我们提供了一个强大的类。
+
+- [java.lang.reflect.AccessibleObject](https://docs.oracle.com/javase/8/docs/api/java/lang/reflect/AccessibleObject.html)
+
+[AccessibleObject](https://docs.oracle.com/javase/8/docs/api/java/lang/reflect/AccessibleObject.html) 为我们提供了一个方法 [setAccessible(boolean flag)](https://docs.oracle.com/javase/8/docs/api/java/lang/reflect/AccessibleObject.html#setAccessible-boolean-)，该方法的作用就是可以取消 Java 语言访问权限检查。所以任何继承 [AccessibleObject](https://docs.oracle.com/javase/8/docs/api/java/lang/reflect/AccessibleObject.html) 的类的对象都可以使用该方法取消 Java 语言访问权限检查。（final 类型变量也可以通过这种办法访问）
+
+```java
+public final class Field extends AccessibleObject implements Member
+```
+
+[Field](https://docs.oracle.com/javase/8/docs/api/java/lang/reflect/Field.html) 正是 [AccessibleObject](https://docs.oracle.com/javase/8/docs/api/java/lang/reflect/AccessibleObject.html) 的子类，那么简单了，只要在访问私有变量前调用 filed.setAccessible(true) 就可以了
+
+```java
+...
+fieldName.setAccessible(true);
+//反射获取名字, 年龄
+String name = (String) fieldName.get(cat);
+...
+```
+
+打印结果
+
+```
+TestReflection: before set, Cat name = Tom age = 2
+TestReflection: after set, Cat name = Timmy age = 3
+```
+
+Bingo!
+
+注意 Method 和 Constructor 也都是继承 AccessibleObject，所以如果遇到私有方法和私有构造函数无法访问，记得处理方法一样。
+
+## Method
+
+> The java.lang.reflect.Method class provides APIs to access information about a method's modifiers, return type, parameters, annotations, and thrown exceptions. It also be used to invoke methods.
+
+这节主要介绍如何通过反射访问对象的方法。
+
+- ### 获取 Method
+
+Class 依然提供了4种方法获取 Method:
+
+- - getDeclaredMethod(String name, Class<?>... parameterTypes)
+
+    根据方法名获得指定的方法， 参数 name 为方法名，参数 parameterTypes 为方法的参数类型，如 getDeclaredMethod(“eat”, String.class)
+
+  - getMethod(String name, Class<?>... parameterTypes)
+
+    根据方法名获取指定的 public 方法，其它同上
+
+  - getDeclaredMethods()
+
+    获取所有声明的方法
+
+  - getMethods()
+
+    获取所有的 public 方法
+
+> 注意：获取带参数方法时，如果参数类型错误会报 NoSuchMethodException，对于参数是泛型的情况，泛型须当成Object处理（Object.class）
+
+- ### 获取方法返回类型
+
+- - getReturnType()   获取目标方法返回类型对应的 Class 对象
+  - getGenericReturnType()  获取目标方法返回类型对应的 Type 对象
+
+这两个方法有啥区别呢？
+
+- getReturnType()返回类型为 Class，getGenericReturnType() 返回类型为 Type; Class 实现 Type。
+
+- 返回值为普通简单类型如 Object, int, String 等，getGenericReturnType() 返回值和 getReturnType() 一样
+
+  例如 public String function1()，那么各自返回值为：
+
+- - getReturnType() : class java.lang.String
+  - getGenericReturnType() : class java.lang.String
+
+- 返回值为泛型
+
+  例如 public T function2()，那么各自返回值为：
+
+- - getReturnType() : class java.lang.Object
+  - getGenericReturnType() : T
+
+- 返回值为参数化类型
+
+  例如public Class<String> function3()，那么各自返回值为：
+
+- - getReturnType() : class java.lang.Class
+  - getGenericReturnType() : java.lang.Class<java.lang.String>
+
+其实反射中所有形如 getGenericXXX()的方法规则都与上面所述类似。
+
+- ### 获取方法参数类型
+
+  getParameterTypes() 获取目标方法各参数类型对应的 Class 对象
+  getGenericParameterTypes() 获取目标方法各参数类型对应的 Type 对象
+  返回值为数组，它俩区别同上 “方法返回类型的区别” 。
+
+- ### 获取方法声明抛出的异常的类型
+
+  getExceptionTypes() 获取目标方法抛出的异常类型对应的 Class 对象
+  getGenericExceptionTypes()  获取目标方法抛出的异常类型对应的 Type 对象
+  返回值为数组，区别同上
+
+- ### 获取方法参数名称
+
+  .class 文件中默认不存储方法参数名称，如果想要获取方法参数名称，需要在编译的时候加上 -parameters 参数。(构造方法的参数获取方法同样)
+
+```java
+//这里的m可以是普通方法Method，也可以是构造方法Constructor
+//获取方法所有参数
+Parameter[] params = m.getParameters();
+for (int i = 0; i < params.length; i++) {
+    Parameter p = params[i];
+    p.getType();   //获取参数类型
+    p.getName();  //获取参数名称，如果编译时未加上`-parameters`，返回的名称形如`argX`, X为参数在方法声明中的位置，从0开始
+    p.getModifiers(); //获取参数修饰符
+    p.isNamePresent();  //.class文件中是否保存参数名称, 编译时加上`-parameters`返回true,反之flase
+}
+```
+
+获取方法参数名称的详细信息请参考 oracle 的官方例子 MethodParameterSpy
+
+- ### 获取方法修饰符
+
+方法与 Filed 等类似
+
+```java
+method.getModifiers();
+```
+
+Ps：顺便多介绍几个Method方法
+
+1. method.isVarArgs() //判断方法参数是否是可变参数
+
+```java
+public Constructor<T> getConstructor(Class<?>... parameterTypes)  //返回true
+public Constructor<T> getConstructor(Class<?> [] parameterTypes)  //返回flase
+```
+
+1. method.isSynthetic() //判断是否是复合方法，个人理解复合方法是编译期间编译器生成的方法，并不是源代码中有的方法
+2. method.isBridge() //判断是否是桥接方法，桥接方法是 JDK 1.5 引入泛型后，为了使Java的泛型方法生成的字节码和 1.5 版本前的字节码相兼容，由编译器自动生成的方法。可以参考：https://www.jianshu.com/u/ceba5da6bd7a
+
+- ### 通过反射调用方法
+
+反射通过Method的invoke()方法来调用目标方法。第一个参数为需要调用的目标类对象，如果方法为static的，则该参数为null。后面的参数都为目标方法的参数值，顺序与目标方法声明中的参数顺序一致。
+
+```java
+public native Object invoke(Object obj, Object... args)
+            throws IllegalAccessException, IllegalArgumentException, InvocationTargetException
+```
+
+还是以上面测试类 Cat 为例
+
+> 注意：如果方法是private的，可以使用 method.setAccessible(true) 方法绕过权限检查
+
+```java
+Class<?> c = Cat.class;
+ try {
+     //构造Cat实例
+     Constructor constructor = c.getConstructor(String.class, int.class);
+     Object cat = constructor.newInstance( "Jack", 3);
+     //调用无参方法
+     Method sleep = c.getDeclaredMethod("sleep");
+     sleep.invoke(cat);
+     //调用定项参数方法
+     Method eat = c.getDeclaredMethod("eat", String.class);
+     eat.invoke(cat, "grass");
+     //调用不定项参数方法
+     //不定项参数可以当成数组来处理
+     Class[] argTypes = new Class[] { String[].class };
+     Method varargsEat = c.getDeclaredMethod("eat", argTypes);
+     String[] foods = new String[]{
+          "grass", "meat"
+     };
+     varargsEat.invoke(cat, (Object)foods);
+  } catch (InstantiationException | IllegalAccessException | NoSuchMethodException | InvocationTargetException e) {
+     e.printStackTrace();
+ }
+```
+
+> 被调用的方法本身所抛出的异常在反射中都会以 InvocationTargetException 抛出。换句话说，反射调用过程中如果异常 InvocationTargetException 抛出，说明反射调用本身是成功的，因为这个异常是目标方法本身所抛出的异常。
+
+## Constructor
+
+这节主要介绍如何通过反射访问构造方法并通过构造方法构建新的对象。
+
+- ### 获取构造方法
+
+和 Method 一样，Class 也为 Constructor 提供了4种方法获取
+
+- - getDeclaredConstructor(Class<?>... parameterTypes)
+
+    获取指定构造函数，参数 parameterTypes 为构造方法的参数类型
+
+  - getConstructor(Class<?>... parameterTypes)
+
+    获取指定 public 构造函数，参数 parameterTypes 为构造方法的参数类型
+
+  - getDeclaredConstructors()
+
+    获取所有声明的构造方法
+
+  - getConstructors()
+
+    获取所有的 public 构造方法
+
+> 构造方法的名称、限定符、参数、声明的异常等获取方法都与 Method 类似，请参照Method。
+
+- ### 创建对象
+
+通过反射有两种方法可以创建对象：
+
+- java.lang.reflect.Constructor.newInstance()
+- Class.newInstance()
+
+一般来讲，我们优先使用第一种方法；那么这两种方法有何异同呢？
+
+1. Class.newInstance()仅可用来调用无参的构造方法；Constructor.newInstance()可以调用任意参数的构造方法。
+2. Class.newInstance()会将构造方法中抛出的异常不作处理原样抛出; Constructor.newInstance()会将构造方法中抛出的异常都包装成 InvocationTargetException 抛出。
+3. Class.newInstance()需要拥有构造方法的访问权限; Constructor.newInstance()可以通过 setAccessible(true) 方法绕过访问权限访问 private 构造方法。
+
+例子在 Method 一节已经写过，这里直接截取过来
+
+```java
+Class<?> c = Cat.class;
+try {
+    Constructor constructor = c.getConstructor(String.class, int.class);
+    Cat cat = (Cat) constructor.newInstance( "Jack", 3);
+} catch (InstantiationException | IllegalAccessException | NoSuchMethodException | InvocationTargetException e) {
+    e.printStackTrace();
+}
+```
+
+> 注意：反射不支持自动封箱，传入参数时要小心（自动封箱是在编译期间的，而反射在运行期间）
+
+## 数组和枚举
+
+数组和枚举也是对象，但是在反射中，对数组和枚举的创建、访问和普通对象有那么一丢丢的不同，所以 Java 反射为数组和枚举提供了一些特定的 API 接口。
+
+### 数组
+
+- #### 数组类型
+
+数组类型：数组本质是一个对象，所以它也有自己的类型。
+
+例如对于int[] intArray，数组类型为class [I。数组类型中的[个数代表数组的维度，例如[代表一维数组，[[ 代表二维数组；[ 后面的字母代表数组元素类型，I 代表 int，一般为类型的首字母大写(long 类型例外，为 J)。
+
+```java
+class [B    //byte类型一维数组
+class [S    //short类型一维数组
+class [I    //int类型一维数组
+class [C    //char类型一维数组
+class [J    //long类型一维数组，J代表long类型，因为L被引用对象类型占用了
+class [F    //float类型一维数组
+class [D    //double类型一维数组
+class [Lcom.dada.Season    //引用类型一维数组
+class [[Ljava.lang.String  //引用类型二维数组
+```
+
+```java
+//获取一个变量的类型
+Class<?> c = field.getType();
+//判断该变量是否为数组
+if (c.isArray()) {
+   //获取数组的元素类型
+   c.getComponentType()
+}
+```
+
+- #### 创建和初始化数组
+
+Java 反射为我们提供了 java.lang.reflect.Array 类用来创建和初始化数组。
+
+```java
+//创建数组， 参数componentType为数组元素的类型，后面不定项参数的个数代表数组的维度，参数值为数组长度
+Array.newInstance(Class<?> componentType, int... dimensions)
+
+//设置数组值，array为数组对象，index为数组的下标，value为需要设置的值
+Array.set(Object array, int index, int value)
+
+//获取数组的值，array为数组对象，index为数组的下标
+Array.get(Object array, int index)
+```
+
+例子,用反射创建 int[] array = new int[]{1, 2}
+
+```java
+Object array = Array.newInstance(int.class, 2);
+Array.setInt(array , 0, 1);
+Array.setInt(array , 1, 2);
+```
+
+> 注意：反射支持对数据自动加宽，但不允许数据 narrowing(变窄?真难翻译)。意思是对于上述 set 方法，你可以在 int 类型数组中 set short 类型数据，但不可以 set long 类型数据，否则会报 IllegalArgumentException。
+
+- #### 多维数组
+
+Java 反射没有提供能够直接访问多维数组元素的 API，但你可以把多维数组当成数组的数组处理。
+
+```java
+Object matrix = Array.newInstance(int.class, 2, 2);
+Object row0 = Array.get(matrix, 0);
+Object row1 = Array.get(matrix, 1);
+
+Array.setInt(row0, 0, 1);
+Array.setInt(row0, 1, 2);
+Array.setInt(row1, 0, 3);
+Array.setInt(row1, 1, 4);
+```
+
+或者
+
+```java
+Object matrix = Array.newInstance(int.class, 2);
+Object row0 = Array.newInstance(int.class, 2);
+Object row1 = Array.newInstance(int.class, 2);
+
+Array.setInt(row0, 0, 1);
+Array.setInt(row0, 1, 2);
+Array.setInt(row1, 0, 3);
+Array.setInt(row1, 1, 4);
+
+Array.set(matrix, 0, row0);
+Array.set(matrix, 1, row1);
+```
+
+## 枚举
+
+枚举隐式继承自 java.lang.Enum，Enum 继承自 Object，所以枚举本质也是一个类，也可以有成员变量，构造方法，方法等；对于普通类所能使用的反射方法，枚举都能使用；另外 java 反射额外提供了几个方法为枚举服务。
+
+- `Class.isEnum()`
+
+  Indicates whether this class represents an enum type
+
+- `Class.getEnumConstants()`
+
+  Retrieves the list of enum constants defined by the enum in the order they're declared
+
+- `java.lang.reflect.Field.isEnumConstant()`
+
+  Indicates whether this field represents an element of an enumerated type
+
+# 反射的缺点
+
+没有任何一项技术是十全十美的，Java 反射拥有强大功能的同时也带来了一些副作用。
+
+- 性能开销
+
+  反射涉及类型动态解析，所以 JVM 无法对这些代码进行优化。因此，反射操作的效率要比那些非反射操作低得多。我们应该避免在经常被执行的代码或对性能要求很高的程序中使用反射。
+
+- 安全限制
+
+  使用反射技术要求程序必须在一个没有安全限制的环境中运行。如果一个程序必须在有安全限制的环境中运行，如 Applet，那么这就是个问题了。
+
+- 内部曝光
+
+  由于反射允许代码执行一些在正常情况下不被允许的操作（比如访问私有的属性和方法），所以使用反射可能会导致意料之外的副作用－－代码有功能上的错误，降低可移植性。反射代码破坏了抽象性，因此当平台发生改变的时候，代码的行为就有可能也随着变化。
+
+> 使用反射的一个原则：如果使用常规方法能够实现，那么就不要用反射。
