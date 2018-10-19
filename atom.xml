@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://yoursite.com/"/>
-  <updated>2018-08-31T07:39:12.000Z</updated>
+  <updated>2018-10-19T01:23:58.154Z</updated>
   <id>http://yoursite.com/</id>
   
   <author>
@@ -15,6 +15,34 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>笔记-深入拆解Java虚拟机-14Java虚拟机是怎么实现synchronized的？</title>
+    <link href="http://yoursite.com/2018/10/19/%E7%AC%94%E8%AE%B0-%E6%B7%B1%E5%85%A5%E6%8B%86%E8%A7%A3Java%E8%99%9A%E6%8B%9F%E6%9C%BA-14Java%E8%99%9A%E6%8B%9F%E6%9C%BA%E6%98%AF%E6%80%8E%E4%B9%88%E5%AE%9E%E7%8E%B0synchronized%E7%9A%84%EF%BC%9F/"/>
+    <id>http://yoursite.com/2018/10/19/笔记-深入拆解Java虚拟机-14Java虚拟机是怎么实现synchronized的？/</id>
+    <published>2018-10-19T00:08:55.000Z</published>
+    <updated>2018-10-19T01:23:58.154Z</updated>
+    
+    <content type="html"><![CDATA[<ul><li>声明 synchronized 的代码块，字节码包含 monitorenter 和 monitorexit 指令。</li><li>这两种指令会<strong>消耗</strong>操作数栈上的<strong>一个引用类型的元素</strong>。</li><li>这个元素是用来加解锁的锁对象。（synchronized 括号里的引用，实例方法是 this，静态方法是 class实例）。</li><li>用 synchronized 标记方法，字节码中方法的访问标记包括 ACC_SYNCHRONIZED。</li></ul><h1 id="monitorenter-和-monitorexit"><a href="#monitorenter-和-monitorexit" class="headerlink" title="monitorenter 和 monitorexit"></a>monitorenter 和 monitorexit</h1><h2 id="作用"><a href="#作用" class="headerlink" title="作用"></a>作用</h2><p>可以<strong>抽象</strong>地理解为<strong>每个锁对象</strong>有：</p><ol><li>一个锁<strong>计数器</strong></li><li>一个指向持有该锁的<strong>线程的指针</strong></li></ol><h2 id="执行-monitorenter"><a href="#执行-monitorenter" class="headerlink" title="执行 monitorenter"></a>执行 monitorenter</h2><ul><li><p>计数器为0</p><ul><li>说明没有被其他线程所持有。</li><li>锁对象的持有线程设置为当前线程。</li><li>计数器加 1。</li></ul></li><li><p>计数器不为0</p><ul><li>如果锁对象的持有当前线程，计数器加 1。</li><li>否则等待，直至锁释放。</li></ul></li></ul><h2 id="执行-monitorexit"><a href="#执行-monitorexit" class="headerlink" title="执行 monitorexit"></a>执行 monitorexit</h2><ul><li>锁对象的计数器减 1。</li><li>减为 0 时，锁被释放。</li></ul><h2 id="为什么采用计数器的方式？"><a href="#为什么采用计数器的方式？" class="headerlink" title="为什么采用计数器的方式？"></a>为什么采用计数器的方式？</h2><ul><li><strong>允许同一个线程重复获取同一把锁。</strong></li></ul><blockquote><p>HotSpot 虚拟机中具体的锁实现。</p></blockquote><h1 id="重量级锁"><a href="#重量级锁" class="headerlink" title="重量级锁"></a>重量级锁</h1><ul><li>JVM中<strong>最基础</strong>的锁实现。</li><li>阻塞加锁失败的线程，锁被释放时唤醒。</li><li>阻塞及唤醒依靠操作系统完成，<strong>开销大</strong>。</li></ul><h2 id="自旋状态"><a href="#自旋状态" class="headerlink" title="自旋状态"></a>自旋状态</h2><ul><li>为了尽量<strong>避免昂贵的线程阻塞、唤醒操作</strong>。</li><li>在线程<strong>进入阻塞状态之前</strong>，或被<strong>唤醒后竞争不到锁</strong>的情况下<strong>进入自旋状态</strong>。</li><li><strong>在处理器上空跑</strong>并且轮询锁是否被释放。</li><li>与线程阻塞相比，<strong>自旋状态可能会浪费大量的处理器资源</strong>。</li><li>JVM 不能根据等待时间的长短来选择自旋还是阻塞。</li><li>JVM 采用<strong>自适应自旋</strong>，根据以往自旋等待时能否获得锁，<strong>动态调整自旋时间</strong>（循环数目）。</li></ul><h3 id="自旋状态的副作用：不公平的锁机制"><a href="#自旋状态的副作用：不公平的锁机制" class="headerlink" title="自旋状态的副作用：不公平的锁机制"></a>自旋状态的副作用：<strong>不公平的锁机制</strong></h3><ul><li>阻塞状态的线程，没有办法立刻竞争被释放的锁。</li><li>自旋状态的线程，很有可能优先获得锁。</li></ul><h1 id="轻量级锁"><a href="#轻量级锁" class="headerlink" title="轻量级锁"></a>轻量级锁</h1><ul><li><strong>没有锁竞争的情况。</strong></li></ul><h2 id="怎样区分轻量级锁和重量级锁？"><a href="#怎样区分轻量级锁和重量级锁？" class="headerlink" title="怎样区分轻量级锁和重量级锁？"></a>怎样区分轻量级锁和重量级锁？</h2><p>对象头的标记字段（mark word）最后两位用来表示该对象的锁状态。</p><table><thead><tr><th>值</th><th>含义</th></tr></thead><tbody><tr><td>00</td><td>轻量级锁</td></tr><tr><td>01</td><td>无锁或偏向锁</td></tr><tr><td>10</td><td>重量级锁</td></tr><tr><td>11</td><td>垃圾回收标记</td></tr></tbody></table><h2 id="加锁操作"><a href="#加锁操作" class="headerlink" title="加锁操作"></a>加锁操作</h2><p>判断是否是重量级锁</p><h3 id="判断为非重量级锁"><a href="#判断为非重量级锁" class="headerlink" title="判断为非重量级锁"></a>判断为非重量级锁</h3><ul><li>在当前线程的当前栈桢中划出一块空间作为该锁的锁记录。</li><li><strong>将锁对象的标记字段复制到锁记录中。</strong></li><li>JVM 尝试<strong>用 CAS 操作替换锁对象的标记字段</strong>。（不懂）<br>比较标记字段是否为X…X01<ul><li>是，替换为锁记录地址，成功获得锁，继续执行。</li><li>否<ul><li>线程重复获得同一把锁，JVM 将锁记录清理，代表锁被重复获取。</li><li><strong>其他线程持有锁，JVM 将该锁膨胀为重量级锁</strong>，阻塞该线程。</li></ul></li></ul></li></ul><h2 id="解锁操作"><a href="#解锁操作" class="headerlink" title="解锁操作"></a>解锁操作</h2><h3 id="锁记录值为-0"><a href="#锁记录值为-0" class="headerlink" title="锁记录值为 0"></a>锁记录值为 0</h3><p>重复进入同一把锁，直接返回。（不懂）</p><h3 id="锁记录值不为-0"><a href="#锁记录值不为-0" class="headerlink" title="锁记录值不为 0"></a>锁记录值不为 0</h3><p>JVM 尝试用 CAS 操作比较标记字段是否为当前锁记录地址</p><ul><li>是，替换为锁记录的值，锁释放。</li><li>否，表示锁已膨胀为重量级锁，进入重量级锁释放过程。</li></ul><h1 id="偏向锁"><a href="#偏向锁" class="headerlink" title="偏向锁"></a>偏向锁</h1><h2 id="加锁操作-1"><a href="#加锁操作-1" class="headerlink" title="加锁操作"></a>加锁操作</h2><ul><li>锁对象支持偏向锁。</li><li>JVM 通过 CAS 操作，将<strong>当前线程地址记录在锁对象的标记字段</strong>，将标记字段<strong>最后三位设为 101</strong>。</li></ul><h3 id="线程请求锁时"><a href="#线程请求锁时" class="headerlink" title="线程请求锁时"></a>线程请求锁时</h3><p>判断锁对象标记字段：</p><ol><li><strong>最后三位是否为 101</strong></li><li>是否<strong>包含当前线程的地址</strong></li><li>epoch 值是否<strong>和锁对象的类的 epoch 值相同</strong></li></ol><ul><li><p>都满足则当前线程持有该偏向锁，直接返回。</p></li><li><p>2 不满足，epoch 值相等时，JVM 需要撤销该偏向锁。</p></li><li><p>2 满足，epoch 值不等时，当前线程可以将该锁重偏向至自己。</p></li></ul><h2 id="epoch-值"><a href="#epoch-值" class="headerlink" title="epoch 值"></a>epoch 值</h2><ul><li>每个类维护一个 epoch 值。</li><li>设置偏向锁时，JVM 要将 epoch 值复制到锁对象标记字段中。</li><li><strong>撤销偏向锁</strong>要求持有偏向锁的<strong>线程到达安全点</strong>，再将偏向锁<strong>替换成轻量级锁</strong>。</li><li>某类锁对象<strong>撤销数超过一个阈值，JVM 宣布该类偏向锁失效</strong>。</li><li>宣布偏向锁失效时，JVM 将该类的 epoch 值加 1。</li><li>为了保证当前持有偏向锁并且已加锁的线程<strong>不丢锁</strong>，<ul><li>JVM <strong>遍历所有线程的 Java 栈</strong>，找出该类已加锁实例，</li><li>将标记字段的 epoch 值加 1（<strong>需要所有线程处于安全点状态</strong>）。</li></ul></li><li><strong>总撤销数超过另一个阈值</strong> JVM 认为<strong>这个类不再适合偏向锁</strong>。<ul><li>JVM 会<strong>撤销该类实例的偏向锁</strong>，</li><li>之后<strong>加锁直接设置轻量级锁</strong>。</li></ul></li></ul><h1 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h1><h1 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h1><blockquote><p><a href="https://time.geekbang.org/column/article/13530" target="_blank" rel="noopener">https://time.geekbang.org/column/article/13530</a></p></blockquote>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;ul&gt;
+&lt;li&gt;声明 synchronized 的代码块，字节码包含 monitorenter 和 monitorexit 指令。&lt;/li&gt;
+&lt;li&gt;这两种指令会&lt;strong&gt;消耗&lt;/strong&gt;操作数栈上的&lt;strong&gt;一个引用类型的元素&lt;/strong&gt;。&lt;/li&gt;
+
+      
+    
+    </summary>
+    
+      <category term="Java虚拟机" scheme="http://yoursite.com/categories/Java%E8%99%9A%E6%8B%9F%E6%9C%BA/"/>
+    
+    
+      <category term="JVM" scheme="http://yoursite.com/tags/JVM/"/>
+    
+  </entry>
   
   <entry>
     <title>笔记-深入拆解Java虚拟机-13Java内存模型</title>
@@ -519,37 +547,6 @@
       <category term="Android" scheme="http://yoursite.com/tags/Android/"/>
     
       <category term="优化" scheme="http://yoursite.com/tags/%E4%BC%98%E5%8C%96/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>Android架构——Clean</title>
-    <link href="http://yoursite.com/2018/07/23/Android%E6%9E%B6%E6%9E%84%E2%80%94%E2%80%94Clean/"/>
-    <id>http://yoursite.com/2018/07/23/Android架构——Clean/</id>
-    <published>2018-07-23T03:16:49.000Z</published>
-    <updated>2018-08-29T07:30:11.000Z</updated>
-    
-    <content type="html"><![CDATA[<h1 id="Clean架构的主要特点："><a href="#Clean架构的主要特点：" class="headerlink" title="Clean架构的主要特点："></a>Clean架构的主要特点：</h1><ul><li>框架独立</li><li>容易测试</li><li>UI独立</li><li>数据库独立</li><li>不依赖任何中介</li></ul><p>Clean的主要思想是外层依赖内层，<strong>内层完全不依赖外层</strong>（或者说内层不知道外层的存在，可以独立开发，复用性强）。</p><h1 id="Clean架构解析"><a href="#Clean架构解析" class="headerlink" title="Clean架构解析"></a>Clean架构解析</h1><p><img src="http://pcrioz2ch.bkt.clouddn.com/android/architecture/clean/CleanArchitecture-c.jpg" alt="image"></p><ul><li>Enterprise Business Rules：业务对象</li><li>Application Business Rules：用于处理我们的业务对象，业务逻辑所在，也称为Interactor</li><li>Interface Adapters： 接口转换，拿到我们需要的数据，主持者层（Presenters）和控制层（Controllers）就在这一层</li><li>Frameworks and Drivers: 这里是所有具体的实现了：比如：UI，工具类，基础框架等等。</li></ul><p>Clean框架不一定只有4层，这里以4层为例。<br>上面可能比较抽象，下面是简单的说法：</p><ul><li>第一层：实体类</li><li>第二层：也叫UseCase层，实现具体业务逻辑。</li><li>第三层：如果是MVP这一层为Presenter，MVC这一层为Controller。</li><li>第四层：具体实现。</li></ul><p><img src="http://pcrioz2ch.bkt.clouddn.com/android/architecture/clean/CleanSimple.jpg" alt="image"></p><ol><li><strong>内层均为纯Java代码</strong>，只需要jvm便可以运行。</li><li>内层代码不仅可以在Android平台，还可以在别的Java平台复用。</li><li>各层单独测试，各层之间通过接口通信，且独立，方便单元测试。</li><li><strong>层与层之间完全隔离</strong>，最主要的体现就是<strong>各层有自己的数据结构</strong>，不同层之间相互转换，完全没有依赖关系。</li><li>通过依赖注入的方式导致灵活修改逻辑、实现，这点与MVP的思想相似，Clean与MVP和Dagger结合使用是天然合适的。</li></ol><p>以mvp-clean为例，与纯mvp最主要的区别就是Presenter层剥离出UserCase层，一是方便测试，二是方便代码复用，减少Presenter层的代码冗余。</p><h1 id="Google-Demo-——-todo-mvp-clean-解析"><a href="#Google-Demo-——-todo-mvp-clean-解析" class="headerlink" title="Google Demo —— todo-mvp-clean 解析"></a>Google Demo —— todo-mvp-clean 解析</h1><blockquote><p>demo地址：<a href="https://github.com/googlesamples/android-architecture/tree/todo-mvp-clean/" target="_blank" rel="noopener">https://github.com/googlesamples/android-architecture/tree/todo-mvp-clean/</a><br>mvp-clean基于mvp，加了 domain layer 介于 presentation 和 repositories。同时也将整个app 分为三个层次处理。</p></blockquote><h2 id="mvp-clean层次图"><a href="#mvp-clean层次图" class="headerlink" title="mvp-clean层次图"></a>mvp-clean层次图</h2><p><img src="http://pcrioz2ch.bkt.clouddn.com/android/architecture/clean/mvp-clean.png" alt="image"></p><ul><li>Presentation层 : MVP 设计准则。</li><li>Domain层 : 处理所有的业务逻辑，注意是所有的业务逻辑。对应use case（interactors）。</li><li>Data层 : 获取数据，以及数据的存储，分为本地和远程。</li></ul><h2 id="基本概念（摘自mvp-clean-GitHub主页部分原文翻译）"><a href="#基本概念（摘自mvp-clean-GitHub主页部分原文翻译）" class="headerlink" title="基本概念（摘自mvp-clean GitHub主页部分原文翻译）"></a>基本概念（摘自mvp-clean GitHub主页部分原文翻译）</h2><ul><li>mvp-clean 和 基本的mvp 最大的区别就是在domain层和UseCase 的使用上。从 presenter 层分离出domain 层好处是可以减少代码的冗余。</li><li><strong>UseCase 的好处是在domain的代码层上可以复用。</strong>CompleteTask在TaskDetailPresenter和TasksPresenter做到了很好的复用。</li><li>domain layer 是完全解耦与Android 层和第三方依赖的。是一个纯java层的处理。</li><li><strong>UseCase 从主线程剥离出来</strong>，对于Android app是个好的操作。这种操作是尽可能的减少占用UI 线程。我们决定使用 command pattern 将use case 在线程池里执行操作。同样的我们可以用RxJava 或者 Promises实现同样的功能。</li><li>我们使用异步的repositories 。 但是现在没有必要这么做了。因为UseCase 已经从主线程里剥离出来了。这是尽量保持 samples 和原来的是一致的。</li></ul><h2 id="项目主要关系图"><a href="#项目主要关系图" class="headerlink" title="项目主要关系图"></a>项目主要关系图</h2><p><img src="http://pcrioz2ch.bkt.clouddn.com/android/architecture/clean/mvpcleanproject.png" alt="image"></p><h2 id="具体用例流程"><a href="#具体用例流程" class="headerlink" title="具体用例流程"></a>具体用例流程</h2><p>未完待续。。。</p><h1 id="思考"><a href="#思考" class="headerlink" title="思考"></a>思考</h1><p>纯MVP架构会使项目变得复杂，Clean架构则会更复杂，大项目可以使项目的结构清晰，内层复用性强，便于测试。<br>小项目则会使项目过于复杂，反而使项目结构显得不清晰，就像MVVM不适合小型项目一样。MVP作为万金油可以说适合大部分项目，我个人的思考是小型项目使用MVP架构，但在MVP的基础上加入部分Clean的思想。</p><ol><li>从Presenter层分离出UseCase层，方便代码复用</li><li>各层独立，这里有一点需要注意，Clean中各层有各层的数据结构，在实际项目中各层可能写出类似的实体类，这里可以考虑只写一个通用实体类的作为最内层，虽然违背了Clean各层完全独立的思想，但是可以减少部分冗余，这一点根据自己项目来缺点。</li></ol><blockquote><p>参考资料</p><ul><li><a href="https://8thlight.com/blog/uncle-bob/2012/08/13/the-clean-architecture.html" target="_blank" rel="noopener">https://8thlight.com/blog/uncle-bob/2012/08/13/the-clean-architecture.html</a></li><li><a href="https://www.jianshu.com/p/c6a1a5c9a49b" target="_blank" rel="noopener">https://www.jianshu.com/p/c6a1a5c9a49b</a></li><li><a href="https://blog.csdn.net/YANGDAHUAN/article/details/80388849" target="_blank" rel="noopener">https://blog.csdn.net/YANGDAHUAN/article/details/80388849</a></li><li><a href="https://www.jianshu.com/p/552c3a1c5fe5" target="_blank" rel="noopener">https://www.jianshu.com/p/552c3a1c5fe5</a></li><li><a href="https://www.jianshu.com/p/e0258ce7d392" target="_blank" rel="noopener">https://www.jianshu.com/p/e0258ce7d392</a></li></ul></blockquote>]]></content>
-    
-    <summary type="html">
-    
-      
-      
-        &lt;h1 id=&quot;Clean架构的主要特点：&quot;&gt;&lt;a href=&quot;#Clean架构的主要特点：&quot; class=&quot;headerlink&quot; title=&quot;Clean架构的主要特点：&quot;&gt;&lt;/a&gt;Clean架构的主要特点：&lt;/h1&gt;&lt;ul&gt;
-&lt;li&gt;框架独立&lt;/li&gt;
-&lt;li&gt;容易测试&lt;/
-      
-    
-    </summary>
-    
-      <category term="Android架构" scheme="http://yoursite.com/categories/Android%E6%9E%B6%E6%9E%84/"/>
-    
-    
-      <category term="Android" scheme="http://yoursite.com/tags/Android/"/>
-    
-      <category term="架构" scheme="http://yoursite.com/tags/%E6%9E%B6%E6%9E%84/"/>
-    
-      <category term="Clean" scheme="http://yoursite.com/tags/Clean/"/>
     
   </entry>
   

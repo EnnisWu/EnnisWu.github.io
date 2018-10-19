@@ -68,7 +68,7 @@
 
 
 
-  <meta name="keywords" content="Hexo, NexT" />
+  <meta name="keywords" content="JVM," />
 
 
 
@@ -81,16 +81,18 @@
 
 
 
-<meta name="description" content="We could, we could belong togeter, ARTPOP.">
-<meta property="og:type" content="website">
-<meta property="og:title" content="Ennis -Little Monster">
-<meta property="og:url" content="http://yoursite.com/archives/2018/05/index.html">
+<meta name="description" content="声明 synchronized 的代码块，字节码包含 monitorenter 和 monitorexit 指令。 这两种指令会消耗操作数栈上的一个引用类型的元素。 这个元素是用来加解锁的锁对象。（synchronized 括号里的引用，实例方法是 this，静态方法是 class实例）。 用 synchronized 标记方法，字节码中方法的访问标记包括 ACC_SYNCHRONIZED。">
+<meta name="keywords" content="JVM">
+<meta property="og:type" content="article">
+<meta property="og:title" content="笔记-深入拆解Java虚拟机-14Java虚拟机是怎么实现synchronized的？">
+<meta property="og:url" content="http://yoursite.com/2018/10/19/笔记-深入拆解Java虚拟机-14Java虚拟机是怎么实现synchronized的？/index.html">
 <meta property="og:site_name" content="Ennis -Little Monster">
-<meta property="og:description" content="We could, we could belong togeter, ARTPOP.">
+<meta property="og:description" content="声明 synchronized 的代码块，字节码包含 monitorenter 和 monitorexit 指令。 这两种指令会消耗操作数栈上的一个引用类型的元素。 这个元素是用来加解锁的锁对象。（synchronized 括号里的引用，实例方法是 this，静态方法是 class实例）。 用 synchronized 标记方法，字节码中方法的访问标记包括 ACC_SYNCHRONIZED。">
 <meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2018-10-19T01:23:58.154Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Ennis -Little Monster">
-<meta name="twitter:description" content="We could, we could belong togeter, ARTPOP.">
+<meta name="twitter:title" content="笔记-深入拆解Java虚拟机-14Java虚拟机是怎么实现synchronized的？">
+<meta name="twitter:description" content="声明 synchronized 的代码块，字节码包含 monitorenter 和 monitorexit 指令。 这两种指令会消耗操作数栈上的一个引用类型的元素。 这个元素是用来加解锁的锁对象。（synchronized 括号里的引用，实例方法是 this，静态方法是 class实例）。 用 synchronized 标记方法，字节码中方法的访问标记包括 ACC_SYNCHRONIZED。">
 
 
 
@@ -120,13 +122,13 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/archives/2018/05/"/>
+  <link rel="canonical" href="http://yoursite.com/2018/10/19/笔记-深入拆解Java虚拟机-14Java虚拟机是怎么实现synchronized的？/"/>
 
 
 
 
 
-  <title>归档 | Ennis -Little Monster</title>
+  <title>笔记-深入拆解Java虚拟机-14Java虚拟机是怎么实现synchronized的？ | Ennis -Little Monster</title>
   
 
 
@@ -145,7 +147,7 @@
     
   
 
-  <div class="container sidebar-position-left page-archive">
+  <div class="container sidebar-position-left page-post-detail">
     <div class="headband"></div>
 
     <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
@@ -283,73 +285,338 @@
           <div id="content" class="content">
             
 
+  <div id="posts" class="posts-expand">
+    
+
+  
+
   
   
   
-  <div class="post-block archive">
-    <div id="posts" class="posts-collapse">
-      <span class="archive-move-on"></span>
-
-      <span class="archive-page-counter">
-        
-        
-         
-        
-        OK! 目前共计 32 篇日志。 继续努力。
-      </span>
-
-      
-
-        
-        
-        
-
-        
-          
-          <div class="collection-title">
-            <h1 class="archive-year" id="archive-year-2018">2018</h1>
-          </div>
-        
-        
-
-        
 
   <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/10/19/笔记-深入拆解Java虚拟机-14Java虚拟机是怎么实现synchronized的？/">
 
-      <h2 class="post-title">
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Ennis L.M. Wu">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="http://pcrioz2ch.bkt.clouddn.com/portrait.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Ennis -Little Monster">
+    </span>
+
+    
+      <header class="post-header">
+
         
-            <a class="post-title-link" href="/2018/05/31/《TCPIP详解卷1》002阅读笔记/" itemprop="url">
-              
-                <span itemprop="name">《TCPIP详解卷1》002阅读笔记</span>
-              
-            </a>
         
-      </h2>
+          <h1 class="post-title" itemprop="name headline">笔记-深入拆解Java虚拟机-14Java虚拟机是怎么实现synchronized的？</h1>
+        
 
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2018-05-31T11:45:10+08:00"
-              content="2018-05-31" >
-          05-31
-        </time>
-      </div>
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-10-19T08:08:55+08:00">
+                2018-10-19
+              </time>
+            
 
-    </header>
-  </article>
+            
 
+            
+          </span>
 
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Java虚拟机/" itemprop="url" rel="index">
+                    <span itemprop="name">Java虚拟机</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
 
       
+      
 
+      
+        <ul>
+<li>声明 synchronized 的代码块，字节码包含 monitorenter 和 monitorexit 指令。</li>
+<li>这两种指令会<strong>消耗</strong>操作数栈上的<strong>一个引用类型的元素</strong>。</li>
+<li>这个元素是用来加解锁的锁对象。（synchronized 括号里的引用，实例方法是 this，静态方法是 class实例）。</li>
+<li>用 synchronized 标记方法，字节码中方法的访问标记包括 ACC_SYNCHRONIZED。</li>
+</ul>
+<h1 id="monitorenter-和-monitorexit"><a href="#monitorenter-和-monitorexit" class="headerlink" title="monitorenter 和 monitorexit"></a>monitorenter 和 monitorexit</h1><h2 id="作用"><a href="#作用" class="headerlink" title="作用"></a>作用</h2><p>可以<strong>抽象</strong>地理解为<strong>每个锁对象</strong>有：</p>
+<ol>
+<li>一个锁<strong>计数器</strong></li>
+<li>一个指向持有该锁的<strong>线程的指针</strong></li>
+</ol>
+<h2 id="执行-monitorenter"><a href="#执行-monitorenter" class="headerlink" title="执行 monitorenter"></a>执行 monitorenter</h2><ul>
+<li><p>计数器为0</p>
+<ul>
+<li>说明没有被其他线程所持有。</li>
+<li>锁对象的持有线程设置为当前线程。</li>
+<li>计数器加 1。</li>
+</ul>
+</li>
+<li><p>计数器不为0</p>
+<ul>
+<li>如果锁对象的持有当前线程，计数器加 1。</li>
+<li>否则等待，直至锁释放。</li>
+</ul>
+</li>
+</ul>
+<h2 id="执行-monitorexit"><a href="#执行-monitorexit" class="headerlink" title="执行 monitorexit"></a>执行 monitorexit</h2><ul>
+<li>锁对象的计数器减 1。</li>
+<li>减为 0 时，锁被释放。</li>
+</ul>
+<h2 id="为什么采用计数器的方式？"><a href="#为什么采用计数器的方式？" class="headerlink" title="为什么采用计数器的方式？"></a>为什么采用计数器的方式？</h2><ul>
+<li><strong>允许同一个线程重复获取同一把锁。</strong></li>
+</ul>
+<blockquote>
+<p>HotSpot 虚拟机中具体的锁实现。</p>
+</blockquote>
+<h1 id="重量级锁"><a href="#重量级锁" class="headerlink" title="重量级锁"></a>重量级锁</h1><ul>
+<li>JVM中<strong>最基础</strong>的锁实现。</li>
+<li>阻塞加锁失败的线程，锁被释放时唤醒。</li>
+<li>阻塞及唤醒依靠操作系统完成，<strong>开销大</strong>。</li>
+</ul>
+<h2 id="自旋状态"><a href="#自旋状态" class="headerlink" title="自旋状态"></a>自旋状态</h2><ul>
+<li>为了尽量<strong>避免昂贵的线程阻塞、唤醒操作</strong>。</li>
+<li>在线程<strong>进入阻塞状态之前</strong>，或被<strong>唤醒后竞争不到锁</strong>的情况下<strong>进入自旋状态</strong>。</li>
+<li><strong>在处理器上空跑</strong>并且轮询锁是否被释放。</li>
+<li>与线程阻塞相比，<strong>自旋状态可能会浪费大量的处理器资源</strong>。</li>
+<li>JVM 不能根据等待时间的长短来选择自旋还是阻塞。</li>
+<li>JVM 采用<strong>自适应自旋</strong>，根据以往自旋等待时能否获得锁，<strong>动态调整自旋时间</strong>（循环数目）。</li>
+</ul>
+<h3 id="自旋状态的副作用：不公平的锁机制"><a href="#自旋状态的副作用：不公平的锁机制" class="headerlink" title="自旋状态的副作用：不公平的锁机制"></a>自旋状态的副作用：<strong>不公平的锁机制</strong></h3><ul>
+<li>阻塞状态的线程，没有办法立刻竞争被释放的锁。</li>
+<li>自旋状态的线程，很有可能优先获得锁。</li>
+</ul>
+<h1 id="轻量级锁"><a href="#轻量级锁" class="headerlink" title="轻量级锁"></a>轻量级锁</h1><ul>
+<li><strong>没有锁竞争的情况。</strong></li>
+</ul>
+<h2 id="怎样区分轻量级锁和重量级锁？"><a href="#怎样区分轻量级锁和重量级锁？" class="headerlink" title="怎样区分轻量级锁和重量级锁？"></a>怎样区分轻量级锁和重量级锁？</h2><p>对象头的标记字段（mark word）最后两位用来表示该对象的锁状态。</p>
+<table>
+<thead>
+<tr>
+<th>值</th>
+<th>含义</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>00</td>
+<td>轻量级锁</td>
+</tr>
+<tr>
+<td>01</td>
+<td>无锁或偏向锁</td>
+</tr>
+<tr>
+<td>10</td>
+<td>重量级锁</td>
+</tr>
+<tr>
+<td>11</td>
+<td>垃圾回收标记</td>
+</tr>
+</tbody>
+</table>
+<h2 id="加锁操作"><a href="#加锁操作" class="headerlink" title="加锁操作"></a>加锁操作</h2><p>判断是否是重量级锁</p>
+<h3 id="判断为非重量级锁"><a href="#判断为非重量级锁" class="headerlink" title="判断为非重量级锁"></a>判断为非重量级锁</h3><ul>
+<li>在当前线程的当前栈桢中划出一块空间作为该锁的锁记录。</li>
+<li><strong>将锁对象的标记字段复制到锁记录中。</strong></li>
+<li>JVM 尝试<strong>用 CAS 操作替换锁对象的标记字段</strong>。（不懂）<br>比较标记字段是否为X…X01<ul>
+<li>是，替换为锁记录地址，成功获得锁，继续执行。</li>
+<li>否<ul>
+<li>线程重复获得同一把锁，JVM 将锁记录清理，代表锁被重复获取。</li>
+<li><strong>其他线程持有锁，JVM 将该锁膨胀为重量级锁</strong>，阻塞该线程。</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h2 id="解锁操作"><a href="#解锁操作" class="headerlink" title="解锁操作"></a>解锁操作</h2><h3 id="锁记录值为-0"><a href="#锁记录值为-0" class="headerlink" title="锁记录值为 0"></a>锁记录值为 0</h3><p>重复进入同一把锁，直接返回。（不懂）</p>
+<h3 id="锁记录值不为-0"><a href="#锁记录值不为-0" class="headerlink" title="锁记录值不为 0"></a>锁记录值不为 0</h3><p>JVM 尝试用 CAS 操作比较标记字段是否为当前锁记录地址</p>
+<ul>
+<li>是，替换为锁记录的值，锁释放。</li>
+<li>否，表示锁已膨胀为重量级锁，进入重量级锁释放过程。</li>
+</ul>
+<h1 id="偏向锁"><a href="#偏向锁" class="headerlink" title="偏向锁"></a>偏向锁</h1><h2 id="加锁操作-1"><a href="#加锁操作-1" class="headerlink" title="加锁操作"></a>加锁操作</h2><ul>
+<li>锁对象支持偏向锁。</li>
+<li>JVM 通过 CAS 操作，将<strong>当前线程地址记录在锁对象的标记字段</strong>，将标记字段<strong>最后三位设为 101</strong>。</li>
+</ul>
+<h3 id="线程请求锁时"><a href="#线程请求锁时" class="headerlink" title="线程请求锁时"></a>线程请求锁时</h3><p>判断锁对象标记字段：</p>
+<ol>
+<li><strong>最后三位是否为 101</strong></li>
+<li>是否<strong>包含当前线程的地址</strong></li>
+<li>epoch 值是否<strong>和锁对象的类的 epoch 值相同</strong></li>
+</ol>
+<ul>
+<li><p>都满足则当前线程持有该偏向锁，直接返回。</p>
+</li>
+<li><p>2 不满足，epoch 值相等时，JVM 需要撤销该偏向锁。</p>
+</li>
+<li><p>2 满足，epoch 值不等时，当前线程可以将该锁重偏向至自己。</p>
+</li>
+</ul>
+<h2 id="epoch-值"><a href="#epoch-值" class="headerlink" title="epoch 值"></a>epoch 值</h2><ul>
+<li>每个类维护一个 epoch 值。</li>
+<li>设置偏向锁时，JVM 要将 epoch 值复制到锁对象标记字段中。</li>
+<li><strong>撤销偏向锁</strong>要求持有偏向锁的<strong>线程到达安全点</strong>，再将偏向锁<strong>替换成轻量级锁</strong>。</li>
+<li>某类锁对象<strong>撤销数超过一个阈值，JVM 宣布该类偏向锁失效</strong>。</li>
+<li>宣布偏向锁失效时，JVM 将该类的 epoch 值加 1。</li>
+<li>为了保证当前持有偏向锁并且已加锁的线程<strong>不丢锁</strong>，<ul>
+<li>JVM <strong>遍历所有线程的 Java 栈</strong>，找出该类已加锁实例，</li>
+<li>将标记字段的 epoch 值加 1（<strong>需要所有线程处于安全点状态</strong>）。</li>
+</ul>
+</li>
+<li><strong>总撤销数超过另一个阈值</strong> JVM 认为<strong>这个类不再适合偏向锁</strong>。<ul>
+<li>JVM 会<strong>撤销该类实例的偏向锁</strong>，</li>
+<li>之后<strong>加锁直接设置轻量级锁</strong>。</li>
+</ul>
+</li>
+</ul>
+<h1 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h1><h1 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h1><blockquote>
+<p><a href="https://time.geekbang.org/column/article/13530" target="_blank" rel="noopener">https://time.geekbang.org/column/article/13530</a></p>
+</blockquote>
+
+      
     </div>
+    
+    
+    
+
+    
+
+    
+      <div>
+        <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+  <div>如果你喜欢这篇文章的话。。。能给我一个小红包吗，爱你呦~(*´∀`)~♥</div>
+  <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+    <span>打赏</span>
+  </button>
+  <div id="QR" style="display: none;">
+
+    
+      <div id="wechat" style="display: inline-block">
+        <img id="wechat_qr" src="http://pcrioz2ch.bkt.clouddn.com/reward_wechatpay.jpg" alt="Ennis L.M. Wu 微信支付"/>
+        <p>微信支付</p>
+      </div>
+    
+
+    
+      <div id="alipay" style="display: inline-block">
+        <img id="alipay_qr" src="http://pcrioz2ch.bkt.clouddn.com/reward_alipay.jpg" alt="Ennis L.M. Wu 支付宝"/>
+        <p>支付宝</p>
+      </div>
+    
+
+    
+
+  </div>
+</div>
+
+      </div>
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/JVM/" rel="tag"># JVM</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/08/31/笔记-深入拆解Java虚拟机-13Java内存模型/" rel="next" title="笔记-深入拆解Java虚拟机-13Java内存模型">
+                <i class="fa fa-chevron-left"></i> 笔记-深入拆解Java虚拟机-13Java内存模型
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
   </div>
   
   
   
+  </article>
 
-  
 
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
 
 
           </div>
@@ -357,6 +624,10 @@
 
 
           
+
+  
+
+
 
         </div>
         
@@ -377,8 +648,17 @@
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
 
-      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
+      <section class="site-overview-wrap sidebar-panel">
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
             
@@ -483,6 +763,22 @@
         </div>
       </section>
 
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#monitorenter-和-monitorexit"><span class="nav-number">1.</span> <span class="nav-text">monitorenter 和 monitorexit</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#作用"><span class="nav-number">1.1.</span> <span class="nav-text">作用</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#执行-monitorenter"><span class="nav-number">1.2.</span> <span class="nav-text">执行 monitorenter</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#执行-monitorexit"><span class="nav-number">1.3.</span> <span class="nav-text">执行 monitorexit</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#为什么采用计数器的方式？"><span class="nav-number">1.4.</span> <span class="nav-text">为什么采用计数器的方式？</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#重量级锁"><span class="nav-number">2.</span> <span class="nav-text">重量级锁</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#自旋状态"><span class="nav-number">2.1.</span> <span class="nav-text">自旋状态</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#自旋状态的副作用：不公平的锁机制"><span class="nav-number">2.1.1.</span> <span class="nav-text">自旋状态的副作用：不公平的锁机制</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#轻量级锁"><span class="nav-number">3.</span> <span class="nav-text">轻量级锁</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#怎样区分轻量级锁和重量级锁？"><span class="nav-number">3.1.</span> <span class="nav-text">怎样区分轻量级锁和重量级锁？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#加锁操作"><span class="nav-number">3.2.</span> <span class="nav-text">加锁操作</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#判断为非重量级锁"><span class="nav-number">3.2.1.</span> <span class="nav-text">判断为非重量级锁</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#解锁操作"><span class="nav-number">3.3.</span> <span class="nav-text">解锁操作</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#锁记录值为-0"><span class="nav-number">3.3.1.</span> <span class="nav-text">锁记录值为 0</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#锁记录值不为-0"><span class="nav-number">3.3.2.</span> <span class="nav-text">锁记录值不为 0</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#偏向锁"><span class="nav-number">4.</span> <span class="nav-text">偏向锁</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#加锁操作-1"><span class="nav-number">4.1.</span> <span class="nav-text">加锁操作</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#线程请求锁时"><span class="nav-number">4.1.1.</span> <span class="nav-text">线程请求锁时</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#epoch-值"><span class="nav-number">4.2.</span> <span class="nav-text">epoch 值</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#问题"><span class="nav-number">5.</span> <span class="nav-text">问题</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#参考"><span class="nav-number">6.</span> <span class="nav-text">参考</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
       
 
       
@@ -624,6 +920,10 @@
 
 
   
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
 
   
 

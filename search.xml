@@ -1,6 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title><![CDATA[笔记-深入拆解Java虚拟机-14Java虚拟机是怎么实现synchronized的？]]></title>
+    <url>%2F2018%2F10%2F19%2F%E7%AC%94%E8%AE%B0-%E6%B7%B1%E5%85%A5%E6%8B%86%E8%A7%A3Java%E8%99%9A%E6%8B%9F%E6%9C%BA-14Java%E8%99%9A%E6%8B%9F%E6%9C%BA%E6%98%AF%E6%80%8E%E4%B9%88%E5%AE%9E%E7%8E%B0synchronized%E7%9A%84%EF%BC%9F%2F</url>
+    <content type="text"><![CDATA[声明 synchronized 的代码块，字节码包含 monitorenter 和 monitorexit 指令。 这两种指令会消耗操作数栈上的一个引用类型的元素。 这个元素是用来加解锁的锁对象。（synchronized 括号里的引用，实例方法是 this，静态方法是 class实例）。 用 synchronized 标记方法，字节码中方法的访问标记包括 ACC_SYNCHRONIZED。 monitorenter 和 monitorexit作用可以抽象地理解为每个锁对象有： 一个锁计数器 一个指向持有该锁的线程的指针 执行 monitorenter 计数器为0 说明没有被其他线程所持有。 锁对象的持有线程设置为当前线程。 计数器加 1。 计数器不为0 如果锁对象的持有当前线程，计数器加 1。 否则等待，直至锁释放。 执行 monitorexit 锁对象的计数器减 1。 减为 0 时，锁被释放。 为什么采用计数器的方式？ 允许同一个线程重复获取同一把锁。 HotSpot 虚拟机中具体的锁实现。 重量级锁 JVM中最基础的锁实现。 阻塞加锁失败的线程，锁被释放时唤醒。 阻塞及唤醒依靠操作系统完成，开销大。 自旋状态 为了尽量避免昂贵的线程阻塞、唤醒操作。 在线程进入阻塞状态之前，或被唤醒后竞争不到锁的情况下进入自旋状态。 在处理器上空跑并且轮询锁是否被释放。 与线程阻塞相比，自旋状态可能会浪费大量的处理器资源。 JVM 不能根据等待时间的长短来选择自旋还是阻塞。 JVM 采用自适应自旋，根据以往自旋等待时能否获得锁，动态调整自旋时间（循环数目）。 自旋状态的副作用：不公平的锁机制 阻塞状态的线程，没有办法立刻竞争被释放的锁。 自旋状态的线程，很有可能优先获得锁。 轻量级锁 没有锁竞争的情况。 怎样区分轻量级锁和重量级锁？对象头的标记字段（mark word）最后两位用来表示该对象的锁状态。 值 含义 00 轻量级锁 01 无锁或偏向锁 10 重量级锁 11 垃圾回收标记 加锁操作判断是否是重量级锁 判断为非重量级锁 在当前线程的当前栈桢中划出一块空间作为该锁的锁记录。 将锁对象的标记字段复制到锁记录中。 JVM 尝试用 CAS 操作替换锁对象的标记字段。（不懂）比较标记字段是否为X…X01 是，替换为锁记录地址，成功获得锁，继续执行。 否 线程重复获得同一把锁，JVM 将锁记录清理，代表锁被重复获取。 其他线程持有锁，JVM 将该锁膨胀为重量级锁，阻塞该线程。 解锁操作锁记录值为 0重复进入同一把锁，直接返回。（不懂） 锁记录值不为 0JVM 尝试用 CAS 操作比较标记字段是否为当前锁记录地址 是，替换为锁记录的值，锁释放。 否，表示锁已膨胀为重量级锁，进入重量级锁释放过程。 偏向锁加锁操作 锁对象支持偏向锁。 JVM 通过 CAS 操作，将当前线程地址记录在锁对象的标记字段，将标记字段最后三位设为 101。 线程请求锁时判断锁对象标记字段： 最后三位是否为 101 是否包含当前线程的地址 epoch 值是否和锁对象的类的 epoch 值相同 都满足则当前线程持有该偏向锁，直接返回。 2 不满足，epoch 值相等时，JVM 需要撤销该偏向锁。 2 满足，epoch 值不等时，当前线程可以将该锁重偏向至自己。 epoch 值 每个类维护一个 epoch 值。 设置偏向锁时，JVM 要将 epoch 值复制到锁对象标记字段中。 撤销偏向锁要求持有偏向锁的线程到达安全点，再将偏向锁替换成轻量级锁。 某类锁对象撤销数超过一个阈值，JVM 宣布该类偏向锁失效。 宣布偏向锁失效时，JVM 将该类的 epoch 值加 1。 为了保证当前持有偏向锁并且已加锁的线程不丢锁， JVM 遍历所有线程的 Java 栈，找出该类已加锁实例， 将标记字段的 epoch 值加 1（需要所有线程处于安全点状态）。 总撤销数超过另一个阈值 JVM 认为这个类不再适合偏向锁。 JVM 会撤销该类实例的偏向锁， 之后加锁直接设置轻量级锁。 问题参考 https://time.geekbang.org/column/article/13530]]></content>
+      <categories>
+        <category>Java虚拟机</category>
+      </categories>
+      <tags>
+        <tag>JVM</tag>
+      </tags>
+  </entry>
+  <entry>
     <title><![CDATA[笔记-深入拆解Java虚拟机-13Java内存模型]]></title>
     <url>%2F2018%2F08%2F31%2F%E7%AC%94%E8%AE%B0-%E6%B7%B1%E5%85%A5%E6%8B%86%E8%A7%A3Java%E8%99%9A%E6%8B%9F%E6%9C%BA-13Java%E5%86%85%E5%AD%98%E6%A8%A1%E5%9E%8B%2F</url>
     <content type="text"><![CDATA[编译器优化的重排序 保证遵守 as-if-serial 属性。 操作之间存在数据依赖，不能调整顺序。 Java 内存模型与 happens-before 关系 用来描述两个操作的内存可见性。 操作 X happens-before 操作 Y，X 的结果对于 Y 可见。 happens-before 关系具有传递性。 解决这种数据竞争的关键：构造一个跨线程的 happens-before 关系。 线程间的 happens-before 关系： 解锁操作 happens-before 之后（时钟顺序）对同一把锁的加锁操作。 volatile 字段的写操作 happens-before 之后（时钟顺序）对同一字段的读操作。 线程的启动操作（Thread.starts()） happens-before 该线程的第一个操作。 线程的最后一个操作 happens-before 它的终止事件（Thread.isAlive() 或 Thread.join()）。 线程对其他线程的中断操作 happens-before 被中断线程所收到的中断事件（即被中断线程的 InterruptedException 异常，或者第三个线程针对被中断线程的 Thread.interrupted 或者 Thread.isInterrupted 调用）。 构造器中的最后一个操作 happens-before 析构器的第一个操作。 Java 内存模型的底层实现 通过内存屏障（memory barrier）禁止重排序。 开不太懂，之后再看 问题参考 https://time.geekbang.org/column/article/13484]]></content>
