@@ -81,18 +81,18 @@
 
 
 
-<meta name="description" content="声明 synchronized 的代码块，字节码包含 monitorenter 和 monitorexit 指令。 这两种指令会消耗操作数栈上的一个引用类型的元素。 这个元素是用来加解锁的锁对象。（synchronized 括号里的引用，实例方法是 this，静态方法是 class实例）。 用 synchronized 标记方法，字节码中方法的访问标记包括 ACC_SYNCHRONIZED。">
+<meta name="description" content="自动装箱（auto-boxing）与自动拆箱（auto-unboxing）123456public int foo() &amp;#123;	ArrayList&amp;lt;Integer&amp;gt; list = new ArrayList&amp;lt;&amp;gt;();	list.add(0);	int result = list.get(0);	return result;&amp;#125; 上段代码对应的字节码： 1234">
 <meta name="keywords" content="JVM">
 <meta property="og:type" content="article">
-<meta property="og:title" content="笔记-深入拆解Java虚拟机-14Java虚拟机是怎么实现synchronized的？">
-<meta property="og:url" content="http://yoursite.com/2018/10/17/笔记-深入拆解Java虚拟机-14Java虚拟机是怎么实现synchronized的？/index.html">
+<meta property="og:title" content="笔记-深入拆解Java虚拟机-15Java语法糖与Java编译器">
+<meta property="og:url" content="http://yoursite.com/2018/10/20/笔记-深入拆解Java虚拟机-15Java语法糖与Java编译器/index.html">
 <meta property="og:site_name" content="Ennis -Little Monster">
-<meta property="og:description" content="声明 synchronized 的代码块，字节码包含 monitorenter 和 monitorexit 指令。 这两种指令会消耗操作数栈上的一个引用类型的元素。 这个元素是用来加解锁的锁对象。（synchronized 括号里的引用，实例方法是 this，静态方法是 class实例）。 用 synchronized 标记方法，字节码中方法的访问标记包括 ACC_SYNCHRONIZED。">
+<meta property="og:description" content="自动装箱（auto-boxing）与自动拆箱（auto-unboxing）123456public int foo() &amp;#123;	ArrayList&amp;lt;Integer&amp;gt; list = new ArrayList&amp;lt;&amp;gt;();	list.add(0);	int result = list.get(0);	return result;&amp;#125; 上段代码对应的字节码： 1234">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-10-19T11:01:18.890Z">
+<meta property="og:updated_time" content="2018-10-20T12:58:51.743Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="笔记-深入拆解Java虚拟机-14Java虚拟机是怎么实现synchronized的？">
-<meta name="twitter:description" content="声明 synchronized 的代码块，字节码包含 monitorenter 和 monitorexit 指令。 这两种指令会消耗操作数栈上的一个引用类型的元素。 这个元素是用来加解锁的锁对象。（synchronized 括号里的引用，实例方法是 this，静态方法是 class实例）。 用 synchronized 标记方法，字节码中方法的访问标记包括 ACC_SYNCHRONIZED。">
+<meta name="twitter:title" content="笔记-深入拆解Java虚拟机-15Java语法糖与Java编译器">
+<meta name="twitter:description" content="自动装箱（auto-boxing）与自动拆箱（auto-unboxing）123456public int foo() &amp;#123;	ArrayList&amp;lt;Integer&amp;gt; list = new ArrayList&amp;lt;&amp;gt;();	list.add(0);	int result = list.get(0);	return result;&amp;#125; 上段代码对应的字节码： 1234">
 
 
 
@@ -122,13 +122,13 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/2018/10/17/笔记-深入拆解Java虚拟机-14Java虚拟机是怎么实现synchronized的？/"/>
+  <link rel="canonical" href="http://yoursite.com/2018/10/20/笔记-深入拆解Java虚拟机-15Java语法糖与Java编译器/"/>
 
 
 
 
 
-  <title>笔记-深入拆解Java虚拟机-14Java虚拟机是怎么实现synchronized的？ | Ennis -Little Monster</title>
+  <title>笔记-深入拆解Java虚拟机-15Java语法糖与Java编译器 | Ennis -Little Monster</title>
   
 
 
@@ -299,7 +299,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/10/17/笔记-深入拆解Java虚拟机-14Java虚拟机是怎么实现synchronized的？/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/10/20/笔记-深入拆解Java虚拟机-15Java语法糖与Java编译器/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Ennis L.M. Wu">
@@ -316,7 +316,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">笔记-深入拆解Java虚拟机-14Java虚拟机是怎么实现synchronized的？</h1>
+          <h1 class="post-title" itemprop="name headline">笔记-深入拆解Java虚拟机-15Java语法糖与Java编译器</h1>
         
 
         <div class="post-meta">
@@ -328,8 +328,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-10-17T14:08:55+08:00">
-                2018-10-17
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-10-20T19:02:34+08:00">
+                2018-10-20
               </time>
             
 
@@ -388,146 +388,53 @@
       
 
       
-        <ul>
-<li>声明 synchronized 的代码块，字节码包含 monitorenter 和 monitorexit 指令。</li>
-<li>这两种指令会<strong>消耗</strong>操作数栈上的<strong>一个引用类型的元素</strong>。</li>
-<li>这个元素是用来加解锁的锁对象。（synchronized 括号里的引用，实例方法是 this，静态方法是 class实例）。</li>
-<li>用 synchronized 标记方法，字节码中方法的访问标记包括 ACC_SYNCHRONIZED。</li>
-</ul>
-<h1 id="monitorenter-和-monitorexit"><a href="#monitorenter-和-monitorexit" class="headerlink" title="monitorenter 和 monitorexit"></a>monitorenter 和 monitorexit</h1><h2 id="作用"><a href="#作用" class="headerlink" title="作用"></a>作用</h2><p>可以<strong>抽象</strong>地理解为<strong>每个锁对象</strong>有：</p>
-<ol>
-<li>一个锁<strong>计数器</strong></li>
-<li>一个指向持有该锁的<strong>线程的指针</strong></li>
-</ol>
-<h2 id="执行-monitorenter"><a href="#执行-monitorenter" class="headerlink" title="执行 monitorenter"></a>执行 monitorenter</h2><ul>
-<li><p>计数器为0</p>
+        <h1 id="自动装箱（auto-boxing）与自动拆箱（auto-unboxing）"><a href="#自动装箱（auto-boxing）与自动拆箱（auto-unboxing）" class="headerlink" title="自动装箱（auto-boxing）与自动拆箱（auto-unboxing）"></a>自动装箱（auto-boxing）与自动拆箱（auto-unboxing）</h1><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">foo</span><span class="params">()</span> </span>&#123;</span><br><span class="line">	ArrayList&lt;Integer&gt; list = <span class="keyword">new</span> ArrayList&lt;&gt;();</span><br><span class="line">	list.add(<span class="number">0</span>);</span><br><span class="line">	<span class="keyword">int</span> result = list.get(<span class="number">0</span>);</span><br><span class="line">	<span class="keyword">return</span> result;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>上段代码对应的字节码：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">public int foo();</span><br><span class="line">  Code:</span><br><span class="line">     0: new java/util/ArrayList</span><br><span class="line">     3: dup</span><br><span class="line">     4: invokespecial java/util/ArrayList.&quot;&lt;init&gt;&quot;:()V</span><br><span class="line">     7: astore_1</span><br><span class="line">     8: aload_1</span><br><span class="line">     9: iconst_0</span><br><span class="line">    10: invokestatic java/lang/Integer.valueOf:(I)Ljava/lang/Integer;</span><br><span class="line">    13: invokevirtual java/util/ArrayList.add:(Ljava/lang/Object;)Z</span><br><span class="line">    16: pop</span><br><span class="line">    17: aload_1</span><br><span class="line">    18: iconst_0</span><br><span class="line">    19: invokevirtual java/util/ArrayList.get:(I)Ljava/lang/Object;</span><br><span class="line">    22: checkcast java/lang/Integer</span><br><span class="line">    25: invokevirtual java/lang/Integer.intValue:()I</span><br><span class="line">    28: istore_2</span><br><span class="line">    29: iload_2</span><br><span class="line">    30: ireturn</span><br></pre></td></tr></table></figure>
 <ul>
-<li>说明没有被其他线程所持有。</li>
-<li>锁对象的持有线程设置为当前线程。</li>
-<li>计数器加 1。</li>
+<li>向泛型参数为 Integer 的 ArrayList 添加 int 值，<strong>字节码中调用了 Integer.valueOf 方法</strong>。</li>
+<li>从泛型参数为 Integer 的 ArrayList 取出元素，程序期待的是 int 值，<strong>字节码中调用了 Integer.intValue 方法</strong>。</li>
 </ul>
-</li>
-<li><p>计数器不为0</p>
+<h1 id="泛型与类型擦除"><a href="#泛型与类型擦除" class="headerlink" title="泛型与类型擦除"></a>泛型与类型擦除</h1><ul>
+<li>在字节码中，ArrayList 的 add 接受的参数类型是 Object，get 方法的返回类型是 Object。</li>
+<li>get 方法<strong>强制向下转换类型</strong>。</li>
+<li><strong>泛型信息</strong>在 JVM 中会<strong>全部擦出</strong>，为了兼容引入泛型之前的代码。</li>
+<li>为限定继承类的泛型参数擦除为 Object，<strong>限定继承类</strong>的泛型参数<strong>擦除为所限定的类</strong>。</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">GenericTest</span>&lt;<span class="title">T</span> <span class="keyword">extends</span> <span class="title">Number</span>&gt; </span>&#123;</span><br><span class="line">	<span class="function">T <span class="title">foo</span><span class="params">(T t)</span> </span>&#123;</span><br><span class="line">		<span class="keyword">return</span> t;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>上段代码字节码</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">T foo(T);</span><br><span class="line">  descriptor: (Ljava/lang/Number;)Ljava/lang/Number;</span><br><span class="line">  flags: (0x0000)</span><br><span class="line">  Code:</span><br><span class="line">    stack=1, locals=2, args_size=2</span><br><span class="line">       0: aload_1</span><br><span class="line">       1: areturn</span><br><span class="line">  Signature: (TT;)TT;</span><br></pre></td></tr></table></figure>
 <ul>
-<li>如果锁对象的持有当前线程，计数器加 1。</li>
-<li>否则等待，直至锁释放。</li>
+<li><strong>方法声明和方法签名（Signature）仍存在泛型参数信息</strong>，由 Java 编译器编译其他类时使用。</li>
 </ul>
-</li>
+<h1 id="桥接方法"><a href="#桥接方法" class="headerlink" title="桥接方法"></a>桥接方法</h1><ul>
+<li>桥接方法标识符包括 ACC_BRIDGE 和 ACC_SYNTHETIC（对于 Java 源代码不可见）。</li>
+<li><strong>不能直接调用桥接方法，但可通过反射调用。</strong></li>
 </ul>
-<h2 id="执行-monitorexit"><a href="#执行-monitorexit" class="headerlink" title="执行 monitorexit"></a>执行 monitorexit</h2><ul>
-<li>锁对象的计数器减 1。</li>
-<li>减为 0 时，锁被释放。</li>
-</ul>
-<h2 id="为什么采用计数器的方式？"><a href="#为什么采用计数器的方式？" class="headerlink" title="为什么采用计数器的方式？"></a>为什么采用计数器的方式？</h2><ul>
-<li><strong>允许同一个线程重复获取同一把锁。</strong></li>
-</ul>
-<blockquote>
-<p>HotSpot 虚拟机中具体的锁实现。</p>
-</blockquote>
-<h1 id="重量级锁"><a href="#重量级锁" class="headerlink" title="重量级锁"></a>重量级锁</h1><ul>
-<li>JVM中<strong>最基础</strong>的锁实现。</li>
-<li>阻塞加锁失败的线程，锁被释放时唤醒。</li>
-<li>阻塞及唤醒依靠操作系统完成，<strong>开销大</strong>。</li>
-</ul>
-<h2 id="自旋状态"><a href="#自旋状态" class="headerlink" title="自旋状态"></a>自旋状态</h2><ul>
-<li>为了尽量<strong>避免昂贵的线程阻塞、唤醒操作</strong>。</li>
-<li>在线程<strong>进入阻塞状态之前</strong>，或被<strong>唤醒后竞争不到锁</strong>的情况下<strong>进入自旋状态</strong>。</li>
-<li><strong>在处理器上空跑</strong>并且轮询锁是否被释放。</li>
-<li>与线程阻塞相比，<strong>自旋状态可能会浪费大量的处理器资源</strong>。</li>
-<li>JVM 不能根据等待时间的长短来选择自旋还是阻塞。</li>
-<li>JVM 采用<strong>自适应自旋</strong>，根据以往自旋等待时能否获得锁，<strong>动态调整自旋时间</strong>（循环数目）。</li>
-</ul>
-<h3 id="自旋状态的副作用：不公平的锁机制"><a href="#自旋状态的副作用：不公平的锁机制" class="headerlink" title="自旋状态的副作用：不公平的锁机制"></a>自旋状态的副作用：<strong>不公平的锁机制</strong></h3><ul>
-<li>阻塞状态的线程，没有办法立刻竞争被释放的锁。</li>
-<li>自旋状态的线程，很有可能优先获得锁。</li>
-</ul>
-<h1 id="轻量级锁"><a href="#轻量级锁" class="headerlink" title="轻量级锁"></a>轻量级锁</h1><ul>
-<li><strong>没有锁竞争的情况。</strong></li>
-</ul>
-<h2 id="怎样区分轻量级锁和重量级锁？"><a href="#怎样区分轻量级锁和重量级锁？" class="headerlink" title="怎样区分轻量级锁和重量级锁？"></a>怎样区分轻量级锁和重量级锁？</h2><p>对象头的标记字段（mark word）最后两位用来表示该对象的锁状态。</p>
-<table>
-<thead>
-<tr>
-<th>值</th>
-<th>含义</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>00</td>
-<td>轻量级锁</td>
-</tr>
-<tr>
-<td>01</td>
-<td>无锁或偏向锁</td>
-</tr>
-<tr>
-<td>10</td>
-<td>重量级锁</td>
-</tr>
-<tr>
-<td>11</td>
-<td>垃圾回收标记</td>
-</tr>
-</tbody>
-</table>
-<h2 id="加锁操作"><a href="#加锁操作" class="headerlink" title="加锁操作"></a>加锁操作</h2><p>判断是否是重量级锁</p>
-<h3 id="判断为非重量级锁"><a href="#判断为非重量级锁" class="headerlink" title="判断为非重量级锁"></a>判断为非重量级锁</h3><ul>
-<li>在当前线程的当前栈桢中划出一块空间作为该锁的锁记录。</li>
-<li><strong>将锁对象的标记字段复制到锁记录中。</strong></li>
-<li>JVM 尝试<strong>用 CAS 操作替换锁对象的标记字段</strong>。（不懂）<br>比较标记字段是否为X…X01<ul>
-<li>是，替换为锁记录地址，成功获得锁，继续执行。</li>
-<li>否<ul>
-<li>线程重复获得同一把锁，JVM 将锁记录清理，代表锁被重复获取。</li>
-<li><strong>其他线程持有锁，JVM 将该锁膨胀为重量级锁</strong>，阻塞该线程。</li>
-</ul>
-</li>
-</ul>
-</li>
-</ul>
-<h2 id="解锁操作"><a href="#解锁操作" class="headerlink" title="解锁操作"></a>解锁操作</h2><h3 id="锁记录值为-0"><a href="#锁记录值为-0" class="headerlink" title="锁记录值为 0"></a>锁记录值为 0</h3><p>重复进入同一把锁，直接返回。（不懂）</p>
-<h3 id="锁记录值不为-0"><a href="#锁记录值不为-0" class="headerlink" title="锁记录值不为 0"></a>锁记录值不为 0</h3><p>JVM 尝试用 CAS 操作比较标记字段是否为当前锁记录地址</p>
+<h2 id="泛型重写生成桥接方法"><a href="#泛型重写生成桥接方法" class="headerlink" title="泛型重写生成桥接方法"></a>泛型重写生成桥接方法</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Merchant</span>&lt;<span class="title">T</span> <span class="keyword">extends</span> <span class="title">Customer</span>&gt; </span>&#123;</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">double</span> <span class="title">actionPrice</span><span class="params">(T customer)</span> </span>&#123;</span><br><span class="line">		<span class="keyword">return</span> <span class="number">0.0</span>d;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">VIPOnlyMerchant</span> <span class="keyword">extends</span> <span class="title">Merchant</span>&lt;<span class="title">VIP</span>&gt; </span>&#123;</span><br><span class="line">	<span class="meta">@Override</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">double</span> <span class="title">actionPrice</span><span class="params">(VIP customer)</span> </span>&#123;</span><br><span class="line">		<span class="keyword">return</span> <span class="number">0.0</span>d;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <ul>
-<li>是，替换为锁记录的值，锁释放。</li>
-<li>否，表示锁已膨胀为重量级锁，进入重量级锁释放过程。</li>
+<li>actionPrice 方法符合 Java 语言的方法重写。</li>
+<li><p>不符合 JVM 方法重写的定义。<br>父类方法描述符(LCustomer)<br>子类方法描述符(LVIP)</p>
+</li>
+<li><p>为了<strong>保证编译的字节码能保留重写的语言</strong>，Java 编译器额外<strong>添加了桥接方法</strong>。</p>
+</li>
 </ul>
-<h1 id="偏向锁"><a href="#偏向锁" class="headerlink" title="偏向锁"></a>偏向锁</h1><h2 id="加锁操作-1"><a href="#加锁操作-1" class="headerlink" title="加锁操作"></a>加锁操作</h2><ul>
-<li>锁对象支持偏向锁。</li>
-<li>JVM 通过 CAS 操作，将<strong>当前线程地址记录在锁对象的标记字段</strong>，将标记字段<strong>最后三位设为 101</strong>。</li>
-</ul>
-<h3 id="线程请求锁时"><a href="#线程请求锁时" class="headerlink" title="线程请求锁时"></a>线程请求锁时</h3><p>判断锁对象标记字段：</p>
-<ol>
-<li><strong>最后三位是否为 101</strong></li>
-<li>是否<strong>包含当前线程的地址</strong></li>
-<li>epoch 值是否<strong>和锁对象的类的 epoch 值相同</strong></li>
-</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">class VIPOnlyMerchant extends Merchant&lt;VIP&gt;</span><br><span class="line">...</span><br><span class="line">  public double actionPrice(VIP);</span><br><span class="line">    descriptor: (LVIP;)D</span><br><span class="line">    flags: (0x0001) ACC_PUBLIC</span><br><span class="line">    Code:</span><br><span class="line">         0: dconst_0</span><br><span class="line">         1: dreturn</span><br><span class="line"></span><br><span class="line">  public double actionPrice(Customer);</span><br><span class="line">    descriptor: (LCustomer;)D</span><br><span class="line">    flags: (0x1041) ACC_PUBLIC, ACC_BRIDGE, ACC_SYNTHETIC</span><br><span class="line">    Code:</span><br><span class="line">         0: aload_0</span><br><span class="line">         1: aload_1</span><br><span class="line">         2: checkcast class VIP</span><br><span class="line">         5: invokevirtual actionPrice:(LVIP;)D</span><br><span class="line">         8: dreturn</span><br><span class="line"></span><br><span class="line">// 这个桥接方法等同于</span><br><span class="line">public double actionPrice(Customer customer) &#123;</span><br><span class="line">  return actionPrice((VIP) customer);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <ul>
-<li><p>都满足则当前线程持有该偏向锁，直接返回。</p>
-</li>
-<li><p>2 不满足，epoch 值相等时，JVM 需要撤销该偏向锁。</p>
-</li>
-<li><p>2 满足，epoch 值不等时，当前线程可以将该锁重偏向至自己。</p>
-</li>
+<li>桥接方法在字节码层面重写父类方法，并通过强制类型转换调用子类方法。</li>
 </ul>
-<h2 id="epoch-值"><a href="#epoch-值" class="headerlink" title="epoch 值"></a>epoch 值</h2><ul>
-<li>每个类维护一个 epoch 值。</li>
-<li>设置偏向锁时，JVM 要将 epoch 值复制到锁对象标记字段中。</li>
-<li><strong>撤销偏向锁</strong>要求持有偏向锁的<strong>线程到达安全点</strong>，再将偏向锁<strong>替换成轻量级锁</strong>。</li>
-<li>某类锁对象<strong>撤销数超过一个阈值，JVM 宣布该类偏向锁失效</strong>。</li>
-<li>宣布偏向锁失效时，JVM 将该类的 epoch 值加 1。</li>
-<li>为了保证当前持有偏向锁并且已加锁的线程<strong>不丢锁</strong>，<ul>
-<li>JVM <strong>遍历所有线程的 Java 栈</strong>，找出该类已加锁实例，</li>
-<li>将标记字段的 epoch 值加 1（<strong>需要所有线程处于安全点状态</strong>）。</li>
+<h2 id="子类定义与父类参数相同，返回类型为父类方法返回类型的子类生成桥接方法"><a href="#子类定义与父类参数相同，返回类型为父类方法返回类型的子类生成桥接方法" class="headerlink" title="子类定义与父类参数相同，返回类型为父类方法返回类型的子类生成桥接方法"></a>子类定义与父类参数相同，返回类型为父类方法返回类型的子类生成桥接方法</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">class NaiveMerchant extends Merchant</span><br><span class="line">  public java.lang.Double actionPrice(Customer);</span><br><span class="line">    descriptor: (LCustomer;)Ljava/lang/Double;</span><br><span class="line">    flags: (0x0001) ACC_PUBLIC</span><br><span class="line">    Code:</span><br><span class="line">      stack=2, locals=2, args_size=2</span><br><span class="line">         0: dconst_0</span><br><span class="line">         1: invokestatic Double.valueOf:(D)Ljava/lang/Double;</span><br><span class="line">         4: areturn</span><br><span class="line"></span><br><span class="line">  public java.lang.Number actionPrice(Customer);</span><br><span class="line">    descriptor: (LCustomer;)Ljava/lang/Number;</span><br><span class="line">    flags: (0x1041) ACC_PUBLIC, ACC_BRIDGE, ACC_SYNTHETIC</span><br><span class="line">    Code:</span><br><span class="line">      stack=2, locals=2, args_size=2</span><br><span class="line">         0: aload_0</span><br><span class="line">         1: aload_1</span><br><span class="line">         2: invokevirtual actionPrice:(LCustomer;)Ljava/lang/Double;</span><br><span class="line">         5: areturn</span><br></pre></td></tr></table></figure>
+<ul>
+<li>JVM 允许两个同名、同参数类型、不同返回类型的方法。</li>
 </ul>
-</li>
-<li><strong>总撤销数超过另一个阈值</strong> JVM 认为<strong>这个类不再适合偏向锁</strong>。<ul>
-<li>JVM 会<strong>撤销该类实例的偏向锁</strong>，</li>
-<li>之后<strong>加锁直接设置轻量级锁</strong>。</li>
-</ul>
-</li>
+<h1 id="foreach"><a href="#foreach" class="headerlink" title="foreach"></a>foreach</h1><h2 id="数组"><a href="#数组" class="headerlink" title="数组"></a>数组</h2><p>循环从 0 到末尾逐一访问数组元素。</p>
+<h2 id="Iterable-对象"><a href="#Iterable-对象" class="headerlink" title="Iterable 对象"></a>Iterable 对象</h2><p>循环调用 hasNext 和 next 方法 遍历元素。</p>
+<h1 id="字符串-switch"><a href="#字符串-switch" class="headerlink" title="字符串 switch"></a>字符串 switch</h1><ul>
+<li>case 比较字符串的哈希值。</li>
+<li>哈希值相同的字符串用 equals 比较。</li>
 </ul>
 <h1 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h1><h1 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h1><blockquote>
-<p><a href="https://time.geekbang.org/column/article/13530" target="_blank" rel="noopener">https://time.geekbang.org/column/article/13530</a></p>
+<p><a href="https://time.geekbang.org/column/article/13781" target="_blank" rel="noopener">https://time.geekbang.org/column/article/13781</a></p>
 </blockquote>
 
       
@@ -588,8 +495,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2018/08/31/笔记-深入拆解Java虚拟机-13Java内存模型/" rel="next" title="笔记-深入拆解Java虚拟机-13Java内存模型">
-                <i class="fa fa-chevron-left"></i> 笔记-深入拆解Java虚拟机-13Java内存模型
+              <a href="/2018/10/17/笔记-深入拆解Java虚拟机-14Java虚拟机是怎么实现synchronized的？/" rel="next" title="笔记-深入拆解Java虚拟机-14Java虚拟机是怎么实现synchronized的？">
+                <i class="fa fa-chevron-left"></i> 笔记-深入拆解Java虚拟机-14Java虚拟机是怎么实现synchronized的？
               </a>
             
           </div>
@@ -597,10 +504,6 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2018/10/20/笔记-深入拆解Java虚拟机-15Java语法糖与Java编译器/" rel="prev" title="笔记-深入拆解Java虚拟机-15Java语法糖与Java编译器">
-                笔记-深入拆解Java虚拟机-15Java语法糖与Java编译器 <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -777,7 +680,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#monitorenter-和-monitorexit"><span class="nav-number">1.</span> <span class="nav-text">monitorenter 和 monitorexit</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#作用"><span class="nav-number">1.1.</span> <span class="nav-text">作用</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#执行-monitorenter"><span class="nav-number">1.2.</span> <span class="nav-text">执行 monitorenter</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#执行-monitorexit"><span class="nav-number">1.3.</span> <span class="nav-text">执行 monitorexit</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#为什么采用计数器的方式？"><span class="nav-number">1.4.</span> <span class="nav-text">为什么采用计数器的方式？</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#重量级锁"><span class="nav-number">2.</span> <span class="nav-text">重量级锁</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#自旋状态"><span class="nav-number">2.1.</span> <span class="nav-text">自旋状态</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#自旋状态的副作用：不公平的锁机制"><span class="nav-number">2.1.1.</span> <span class="nav-text">自旋状态的副作用：不公平的锁机制</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#轻量级锁"><span class="nav-number">3.</span> <span class="nav-text">轻量级锁</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#怎样区分轻量级锁和重量级锁？"><span class="nav-number">3.1.</span> <span class="nav-text">怎样区分轻量级锁和重量级锁？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#加锁操作"><span class="nav-number">3.2.</span> <span class="nav-text">加锁操作</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#判断为非重量级锁"><span class="nav-number">3.2.1.</span> <span class="nav-text">判断为非重量级锁</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#解锁操作"><span class="nav-number">3.3.</span> <span class="nav-text">解锁操作</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#锁记录值为-0"><span class="nav-number">3.3.1.</span> <span class="nav-text">锁记录值为 0</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#锁记录值不为-0"><span class="nav-number">3.3.2.</span> <span class="nav-text">锁记录值不为 0</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#偏向锁"><span class="nav-number">4.</span> <span class="nav-text">偏向锁</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#加锁操作-1"><span class="nav-number">4.1.</span> <span class="nav-text">加锁操作</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#线程请求锁时"><span class="nav-number">4.1.1.</span> <span class="nav-text">线程请求锁时</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#epoch-值"><span class="nav-number">4.2.</span> <span class="nav-text">epoch 值</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#问题"><span class="nav-number">5.</span> <span class="nav-text">问题</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#参考"><span class="nav-number">6.</span> <span class="nav-text">参考</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#自动装箱（auto-boxing）与自动拆箱（auto-unboxing）"><span class="nav-number">1.</span> <span class="nav-text">自动装箱（auto-boxing）与自动拆箱（auto-unboxing）</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#泛型与类型擦除"><span class="nav-number">2.</span> <span class="nav-text">泛型与类型擦除</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#桥接方法"><span class="nav-number">3.</span> <span class="nav-text">桥接方法</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#泛型重写生成桥接方法"><span class="nav-number">3.1.</span> <span class="nav-text">泛型重写生成桥接方法</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#子类定义与父类参数相同，返回类型为父类方法返回类型的子类生成桥接方法"><span class="nav-number">3.2.</span> <span class="nav-text">子类定义与父类参数相同，返回类型为父类方法返回类型的子类生成桥接方法</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#foreach"><span class="nav-number">4.</span> <span class="nav-text">foreach</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#数组"><span class="nav-number">4.1.</span> <span class="nav-text">数组</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Iterable-对象"><span class="nav-number">4.2.</span> <span class="nav-text">Iterable 对象</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#字符串-switch"><span class="nav-number">5.</span> <span class="nav-text">字符串 switch</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#问题"><span class="nav-number">6.</span> <span class="nav-text">问题</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#参考"><span class="nav-number">7.</span> <span class="nav-text">参考</span></a></li></ol></div>
             
 
           </div>
