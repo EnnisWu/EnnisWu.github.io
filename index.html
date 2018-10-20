@@ -401,7 +401,7 @@
 <h1 id="泛型与类型擦除"><a href="#泛型与类型擦除" class="headerlink" title="泛型与类型擦除"></a>泛型与类型擦除</h1><ul>
 <li>在字节码中，ArrayList 的 add 接受的参数类型是 Object，get 方法的返回类型是 Object。</li>
 <li>get 方法<strong>强制向下转换类型</strong>。</li>
-<li><strong>泛型信息</strong>在 JVM 中会<strong>全部擦出</strong>，为了兼容引入泛型之前的代码。</li>
+<li><strong>泛型信息</strong>在 JVM 中会<strong>全部擦除</strong>，为了兼容引入泛型之前的代码。</li>
 <li>为限定继承类的泛型参数擦除为 Object，<strong>限定继承类</strong>的泛型参数<strong>擦除为所限定的类</strong>。</li>
 </ul>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">GenericTest</span>&lt;<span class="title">T</span> <span class="keyword">extends</span> <span class="title">Number</span>&gt; </span>&#123;</span><br><span class="line">	<span class="function">T <span class="title">foo</span><span class="params">(T t)</span> </span>&#123;</span><br><span class="line">		<span class="keyword">return</span> t;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>

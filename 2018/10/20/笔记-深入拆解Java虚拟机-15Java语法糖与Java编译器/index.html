@@ -89,7 +89,7 @@
 <meta property="og:site_name" content="Ennis -Little Monster">
 <meta property="og:description" content="自动装箱（auto-boxing）与自动拆箱（auto-unboxing）123456public int foo() &amp;#123;	ArrayList&amp;lt;Integer&amp;gt; list = new ArrayList&amp;lt;&amp;gt;();	list.add(0);	int result = list.get(0);	return result;&amp;#125; 上段代码对应的字节码： 1234">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-10-20T12:58:51.743Z">
+<meta property="og:updated_time" content="2018-10-20T13:02:37.137Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="笔记-深入拆解Java虚拟机-15Java语法糖与Java编译器">
 <meta name="twitter:description" content="自动装箱（auto-boxing）与自动拆箱（auto-unboxing）123456public int foo() &amp;#123;	ArrayList&amp;lt;Integer&amp;gt; list = new ArrayList&amp;lt;&amp;gt;();	list.add(0);	int result = list.get(0);	return result;&amp;#125; 上段代码对应的字节码： 1234">
@@ -398,7 +398,7 @@
 <h1 id="泛型与类型擦除"><a href="#泛型与类型擦除" class="headerlink" title="泛型与类型擦除"></a>泛型与类型擦除</h1><ul>
 <li>在字节码中，ArrayList 的 add 接受的参数类型是 Object，get 方法的返回类型是 Object。</li>
 <li>get 方法<strong>强制向下转换类型</strong>。</li>
-<li><strong>泛型信息</strong>在 JVM 中会<strong>全部擦出</strong>，为了兼容引入泛型之前的代码。</li>
+<li><strong>泛型信息</strong>在 JVM 中会<strong>全部擦除</strong>，为了兼容引入泛型之前的代码。</li>
 <li>为限定继承类的泛型参数擦除为 Object，<strong>限定继承类</strong>的泛型参数<strong>擦除为所限定的类</strong>。</li>
 </ul>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">GenericTest</span>&lt;<span class="title">T</span> <span class="keyword">extends</span> <span class="title">Number</span>&gt; </span>&#123;</span><br><span class="line">	<span class="function">T <span class="title">foo</span><span class="params">(T t)</span> </span>&#123;</span><br><span class="line">		<span class="keyword">return</span> t;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
