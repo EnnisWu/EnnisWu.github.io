@@ -298,6 +298,307 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/08/05/笔记-深入拆解Java虚拟机-【工具篇】常用工具介绍/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Ennis L.M. Wu">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="http://pcrioz2ch.bkt.clouddn.com/portrait.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Ennis -Little Monster">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/08/05/笔记-深入拆解Java虚拟机-【工具篇】常用工具介绍/" itemprop="url">笔记-深入拆解Java虚拟机-【工具篇】常用工具介绍</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-08-05T14:41:13+08:00">
+                2018-08-05
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Java虚拟机/" itemprop="url" rel="index">
+                    <span itemprop="name">Java虚拟机</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h1 id="javap：查阅Java字节码"><a href="#javap：查阅Java字节码" class="headerlink" title="javap：查阅Java字节码"></a>javap：查阅Java字节码</h1><blockquote>
+<p>javap是一个能够将class文件反汇编成人类可读格式的工具。</p>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>选项</th>
+<th>作用</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>-p</td>
+<td>追加打印私有字段和方法</td>
+</tr>
+<tr>
+<td>-v</td>
+<td>尽可能打印所有信息</td>
+</tr>
+<tr>
+<td>-c</td>
+<td>只打印方法</td>
+</tr>
+<tr>
+<td>-g</td>
+</tr>
+</tbody>
+</table>
+<h2 id="v选项输出"><a href="#v选项输出" class="headerlink" title="-v选项输出"></a>-v选项输出</h2><h3 id="基本信息"><a href="#基本信息" class="headerlink" title="基本信息"></a>基本信息</h3><table>
+<thead>
+<tr>
+<th>字段</th>
+<th>作用</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>minor version: 0，major version: 54</td>
+<td>class文件的版本号</td>
+</tr>
+<tr>
+<td>flags: (0x0021) ACC_PUBLIC, ACC_SUPER</td>
+<td>该类的访问权限</td>
+</tr>
+<tr>
+<td>this_class: #7</td>
+<td>该类名字</td>
+</tr>
+<tr>
+<td>super_class: #8</td>
+<td>父类名字</td>
+</tr>
+<tr>
+<td>interfaces: 0</td>
+<td>实现接口数目</td>
+</tr>
+<tr>
+<td>fields: 4</td>
+<td>字段数目</td>
+</tr>
+<tr>
+<td>methods: 2</td>
+<td>方法数目</td>
+</tr>
+<tr>
+<td>attributes: 1</td>
+<td>属性数目</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li><p>属性：class文件所携带的辅助信息（class文件的源文件的名称）。<br>这类信息通常被用于 Java 虚拟机的验证和运行，以及 Java 程序的调试，一般无须深入了解。</p>
+</li>
+<li><p>class文件的版本号：编译生成该class文件时所用的JRE版本。<br>由较新的JRE版本中的javac编译而成的class文件，不能在旧版本的JRE上跑，否则，会出现异常（java.lang.UnsupportedClassVersionError）。</p>
+</li>
+</ul>
+<h3 id="常量池"><a href="#常量池" class="headerlink" title="常量池"></a>常量池</h3><ul>
+<li>每一项都有一个对应的索引（如 #1）。</li>
+<li>可能引用其他的常量池项（#1 = Methodref #8.#23）。</li>
+</ul>
+<h3 id="字段区域"><a href="#字段区域" class="headerlink" title="字段区域"></a>字段区域</h3><table>
+<thead>
+<tr>
+<th>字段</th>
+<th>作用</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>descriptor: I</td>
+<td>字段的类型</td>
+</tr>
+<tr>
+<td>flags: (0x0002) ACC_PRIVATE</td>
+<td>访问权限</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>声明为static final的基本类型或者字符串字段，字段区域包括它的常量值。</li>
+</ul>
+<h3 id="方法区域"><a href="#方法区域" class="headerlink" title="方法区域"></a>方法区域</h3><ul>
+<li>方法描述符</li>
+<li>访问权限</li>
+<li>代码区域</li>
+</ul>
+<h4 id="代码区域"><a href="#代码区域" class="headerlink" title="代码区域"></a>代码区域</h4><h5 id="开头声明"><a href="#开头声明" class="headerlink" title="开头声明"></a>开头声明</h5><table>
+<thead>
+<tr>
+<th>字段</th>
+<th>作用</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>stack=2</td>
+<td>操作数栈</td>
+</tr>
+<tr>
+<td>locals=3</td>
+<td>局部变量数目最大值</td>
+</tr>
+<tr>
+<td>args_size=1</td>
+<td>接收参数的个数</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>局部变量指的是字节码中的局部变量。</li>
+<li>后面接着的是字节码，每条字节码均标注了对应的偏移量（bytecode index，BCI）。</li>
+</ul>
+<h5 id="异常表"><a href="#异常表" class="headerlink" title="异常表"></a>异常表</h5><ul>
+<li>使用偏移量定位每个异常处理器所监控的范围（由 from 到 to 的代码区域）。</li>
+<li>异常处理器的起始位置（target）。</li>
+<li>声明所捕获的异常类型（type）。<br>any指代任意异常类型。</li>
+</ul>
+<h5 id="行数表"><a href="#行数表" class="headerlink" title="行数表"></a>行数表</h5><ul>
+<li>Java源程序到字节码偏移量的映射。</li>
+</ul>
+<h6 id="局部变量表"><a href="#局部变量表" class="headerlink" title="局部变量表"></a>局部变量表</h6><ul>
+<li>Java程序中每个局部变量的名字、类型以及作用域。</li>
+</ul>
+<p>注：行数表和局部变量表均属于调试信息。Java虚拟机不要求class文件必备这些信息。</p>
+<h5 id="字节码操作数栈映射表"><a href="#字节码操作数栈映射表" class="headerlink" title="字节码操作数栈映射表"></a>字节码操作数栈映射表</h5><ul>
+<li>字节码跳转后操作数栈的分布情况。<br>一般被Java虚拟机用于验证所加载的类，和即时编译相关的一些操作，正常情况下，无须深入了解。</li>
+</ul>
+<h1 id="OpenJDK项目Code-Tools：实用小工具集"><a href="#OpenJDK项目Code-Tools：实用小工具集" class="headerlink" title="OpenJDK项目Code Tools：实用小工具集"></a>OpenJDK项目Code Tools：实用小工具集</h1><h2 id="ASMTools"><a href="#ASMTools" class="headerlink" title="ASMTools"></a>ASMTools</h2><h3 id="反汇编操作命令"><a href="#反汇编操作命令" class="headerlink" title="反汇编操作命令"></a>反汇编操作命令</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ java -cp /path/to/asmtools.jar org.openjdk.asmtools.jdis.Main Foo.class &gt; Foo.jasm</span><br></pre></td></tr></table></figure>
+<h3 id="汇编操作命令"><a href="#汇编操作命令" class="headerlink" title="汇编操作命令"></a>汇编操作命令</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ java -cp /path/to/asmtools.jar org.openjdk.asmtools.jasm.Main Foo.jasm</span><br></pre></td></tr></table></figure>
+<h2 id="JOL"><a href="#JOL" class="headerlink" title="JOL"></a>JOL</h2><h3 id="查阅Java虚拟机中对象的内存分布"><a href="#查阅Java虚拟机中对象的内存分布" class="headerlink" title="查阅Java虚拟机中对象的内存分布"></a>查阅Java虚拟机中对象的内存分布</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ java -jar /path/to/jol-cli-0.9-full.jar internals java.util.HashMap</span><br><span class="line">$ java -jar /path/to/jol-cli-0.9-full.jar estimates java.util.HashMap</span><br></pre></td></tr></table></figure>
+<h1 id="ASM：Java字节码框架"><a href="#ASM：Java字节码框架" class="headerlink" title="ASM：Java字节码框架"></a>ASM：Java字节码框架</h1><ul>
+<li>ASM既可以生成新的class文件，也可以修改已有的class文件。</li>
+<li>辅助类ASMifier，接收一个 class文件，输出一段生成该class文件原始字节数组的代码。</li>
+</ul>
+<h1 id="附录"><a href="#附录" class="headerlink" title="附录"></a>附录</h1><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Foo</span> </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">int</span> tryBlock;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">int</span> catchBlock;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">int</span> finallyBlock;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">int</span> methodExit;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">test</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            tryBlock = <span class="number">0</span>;</span><br><span class="line">        &#125; <span class="keyword">catch</span> (Exception e) &#123;</span><br><span class="line">            catchBlock = <span class="number">1</span>;</span><br><span class="line">        &#125; <span class="keyword">finally</span> &#123;</span><br><span class="line">            finallyBlock = <span class="number">2</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        methodExit = <span class="number">3</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>编译后用javap查阅字节码</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br></pre></td><td class="code"><pre><span class="line">$ javac Foo.java</span><br><span class="line">$ javap -p -v Foo</span><br><span class="line">Classfile ../Foo.class</span><br><span class="line">  Last modified ..; size 541 bytes</span><br><span class="line">  MD5 checksum 3828cdfbba56fea1da6c8d94fd13b20d</span><br><span class="line">  Compiled from &quot;Foo.java&quot;</span><br><span class="line">public class Foo</span><br><span class="line">  minor version: 0</span><br><span class="line">  major version: 54</span><br><span class="line">  flags: (0x0021) ACC_PUBLIC, ACC_SUPER</span><br><span class="line">  this_class: #7                          // Foo</span><br><span class="line">  super_class: #8                         // java/lang/Object</span><br><span class="line">  interfaces: 0, fields: 4, methods: 2, attributes: 1</span><br><span class="line">Constant pool:</span><br><span class="line">   #1 = Methodref          #8.#23         // java/lang/Object.&quot;&lt;init&gt;&quot;:()V</span><br><span class="line">   #2 = Fieldref           #7.#24         // Foo.tryBlock:I</span><br><span class="line">   #3 = Fieldref           #7.#25         // Foo.finallyBlock:I</span><br><span class="line">   #4 = Class              #26            // java/lang/Exception</span><br><span class="line">   #5 = Fieldref           #7.#27         // Foo.catchBlock:I</span><br><span class="line">   #6 = Fieldref           #7.#28         // Foo.methodExit:I</span><br><span class="line">   #7 = Class              #29            // Foo</span><br><span class="line">   #8 = Class              #30            // java/lang/Object</span><br><span class="line">   #9 = Utf8               tryBlock</span><br><span class="line">  #10 = Utf8               I</span><br><span class="line">  #11 = Utf8               catchBlock</span><br><span class="line">  #12 = Utf8               finallyBlock</span><br><span class="line">  #13 = Utf8               methodExit</span><br><span class="line">  #14 = Utf8               &lt;init&gt;</span><br><span class="line">  #15 = Utf8               ()V</span><br><span class="line">  #16 = Utf8               Code</span><br><span class="line">  #17 = Utf8               LineNumberTable</span><br><span class="line">  #18 = Utf8               test</span><br><span class="line">  #19 = Utf8               StackMapTable</span><br><span class="line">  #20 = Class              #31            // java/lang/Throwable</span><br><span class="line">  #21 = Utf8               SourceFile</span><br><span class="line">  #22 = Utf8               Foo.java</span><br><span class="line">  #23 = NameAndType        #14:#15        // &quot;&lt;init&gt;&quot;:()V</span><br><span class="line">  #24 = NameAndType        #9:#10         // tryBlock:I</span><br><span class="line">  #25 = NameAndType        #12:#10        // finallyBlock:I</span><br><span class="line">  #26 = Utf8               java/lang/Exception</span><br><span class="line">  #27 = NameAndType        #11:#10        // catchBlock:I</span><br><span class="line">  #28 = NameAndType        #13:#10        // methodExit:I</span><br><span class="line">  #29 = Utf8               Foo</span><br><span class="line">  #30 = Utf8               java/lang/Object</span><br><span class="line">  #31 = Utf8               java/lang/Throwable</span><br><span class="line">&#123;</span><br><span class="line">  private int tryBlock;</span><br><span class="line">    descriptor: I</span><br><span class="line">    flags: (0x0002) ACC_PRIVATE</span><br><span class="line"></span><br><span class="line">  private int catchBlock;</span><br><span class="line">    descriptor: I</span><br><span class="line">    flags: (0x0002) ACC_PRIVATE</span><br><span class="line"></span><br><span class="line">  private int finallyBlock;</span><br><span class="line">    descriptor: I</span><br><span class="line">    flags: (0x0002) ACC_PRIVATE</span><br><span class="line"></span><br><span class="line">  private int methodExit;</span><br><span class="line">    descriptor: I</span><br><span class="line">    flags: (0x0002) ACC_PRIVATE</span><br><span class="line"></span><br><span class="line">  public Foo();</span><br><span class="line">    descriptor: ()V</span><br><span class="line">    flags: (0x0001) ACC_PUBLIC</span><br><span class="line">    Code:</span><br><span class="line">      stack=1, locals=1, args_size=1</span><br><span class="line">         0: aload_0</span><br><span class="line">         1: invokespecial #1                  // Method java/lang/Object.&quot;&lt;init&gt;&quot;:()V</span><br><span class="line">         4: return</span><br><span class="line">      LineNumberTable:</span><br><span class="line">        line 1: 0</span><br><span class="line"></span><br><span class="line">  public void test();</span><br><span class="line">    descriptor: ()V</span><br><span class="line">    flags: (0x0001) ACC_PUBLIC</span><br><span class="line">    Code:</span><br><span class="line">      stack=2, locals=3, args_size=1</span><br><span class="line">         0: aload_0</span><br><span class="line">         1: iconst_0</span><br><span class="line">         2: putfield      #2                  // Field tryBlock:</span><br><span class="line">         5: aload_0</span><br><span class="line">         6: iconst_2</span><br><span class="line">         7: putfield      #3                  // Field finallyBlock:I</span><br><span class="line">        10: goto          35</span><br><span class="line">        13: astore_1</span><br><span class="line">        14: aload_0</span><br><span class="line">        15: iconst_1</span><br><span class="line">        16: putfield      #5                  // Field catchBlock:I</span><br><span class="line">        19: aload_0</span><br><span class="line">        20: iconst_2</span><br><span class="line">        21: putfield      #3                  // Field finallyBlock:I</span><br><span class="line">        24: goto          35</span><br><span class="line">        27: astore_2</span><br><span class="line">        28: aload_0</span><br><span class="line">        29: iconst_2</span><br><span class="line">        30: putfield      #3                  // Field finallyBlock:I</span><br><span class="line">        33: aload_2</span><br><span class="line">        34: athrow</span><br><span class="line">        35: aload_0</span><br><span class="line">        36: iconst_3</span><br><span class="line">        37: putfield      #6                  // Field methodExit:I</span><br><span class="line">        40: return</span><br><span class="line">      Exception table:</span><br><span class="line">         from    to  target type</span><br><span class="line">             0     5    13   Class java/lang/Exception</span><br><span class="line">             0     5    27   any</span><br><span class="line">            13    19    27   any</span><br><span class="line">      LineNumberTable:</span><br><span class="line">        line 9: 0</span><br><span class="line">        line 13: 5</span><br><span class="line">        line 14: 10</span><br><span class="line">        line 10: 13</span><br><span class="line">        line 11: 14</span><br><span class="line">        line 13: 19</span><br><span class="line">        line 14: 24</span><br><span class="line">        line 13: 27</span><br><span class="line">        line 14: 33</span><br><span class="line">        line 15: 35</span><br><span class="line">        line 16: 40</span><br><span class="line">      StackMapTable: number_of_entries = 3</span><br><span class="line">        frame_type = 77 /* same_locals_1_stack_item */</span><br><span class="line">          stack = [ class java/lang/Exception ]</span><br><span class="line">        frame_type = 77 /* same_locals_1_stack_item */</span><br><span class="line">          stack = [ class java/lang/Throwable ]</span><br><span class="line">        frame_type = 7 /* same */</span><br><span class="line">&#125;</span><br><span class="line">SourceFile: &quot;Foo.java&quot;</span><br></pre></td></tr></table></figure>
+<h1 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h1><blockquote>
+<p><a href="https://time.geekbang.org/column/article/12423" target="_blank" rel="noopener">https://time.geekbang.org/column/article/12423</a></p>
+</blockquote>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/08/03/LayoutInflater中inflate方法各参数作用/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -2025,197 +2326,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/07/28/笔记-深入拆解Java虚拟机-02Java的基本类型/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Ennis L.M. Wu">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="http://pcrioz2ch.bkt.clouddn.com/portrait.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Ennis -Little Monster">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/07/28/笔记-深入拆解Java虚拟机-02Java的基本类型/" itemprop="url">笔记-深入拆解Java虚拟机-02Java的基本类型</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-07-28T14:46:02+08:00">
-                2018-07-28
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Java虚拟机/" itemprop="url" rel="index">
-                    <span itemprop="name">Java虚拟机</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>在 Smalltalk 中，所有的值都是对象。因此，许多人认为它是一门纯粹的面向对象语言。</p>
-<p>Java 则不同，它引进了<strong>八个基本类型</strong>，来支持数值计算。Java 这么做的原因主要是工程上的考虑，因为使用<strong>基本类型能够在执行效率以及内存使用两方面提升软件性能</strong>。</p>
-<h1 id="Java虚拟机的-boolean类型"><a href="#Java虚拟机的-boolean类型" class="headerlink" title="Java虚拟机的 boolean类型"></a>Java虚拟机的 boolean类型</h1><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Foo</span> </span>&#123;</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">		<span class="keyword">boolean</span> 吃过饭没 = <span class="number">2</span>; <span class="comment">// 直接编译的话 javac 会报错</span></span><br><span class="line">		<span class="keyword">if</span> (吃过饭没) </span><br><span class="line">			System.out.println(<span class="string">" 吃了 "</span>);</span><br><span class="line">		<span class="keyword">if</span> (<span class="keyword">true</span> == 吃过饭没) </span><br><span class="line">			System.out.println(<span class="string">" 真吃了 "</span>);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>Java语言规范中，boolean类型的值只有两种，用“true”和“false”表示。</p>
-<p><strong>Java虚拟机规范中，boolean类型被映射成int类型，“true”映射为整数1，“false”映射为整数0。</strong></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"># Foo.main 编译后的字节码</span><br><span class="line"> 0: iconst_2       // 我们用 AsmTools 更改了这一指令</span><br><span class="line"> 1: istore_1</span><br><span class="line"> 2: iload_1</span><br><span class="line"> 3: ifeq 14        // 第一个 if 语句，即操作数栈上数值为 0 时跳转</span><br><span class="line"> 6: getstatic java.lang.System.out</span><br><span class="line"> 9: ldc &quot; 吃了 &quot;</span><br><span class="line">11: invokevirtual java.io.PrintStream.println</span><br><span class="line">14: iload_1</span><br><span class="line">15: iconst_1</span><br><span class="line">16: if_icmpne 27   // 第二个 if 语句，即操作数栈上两个数值不相同时跳转</span><br><span class="line">19: getstatic java.lang.System.out</span><br><span class="line">22: ldc &quot; 真吃了 &quot;</span><br><span class="line">24: invokevirtual java.io.PrintStream.println</span><br><span class="line">27: return</span><br></pre></td></tr></table></figure>
-<p>在前面的例子中，第一个 if 语句会被编译成条件跳转字节码 ifeq，翻译成人话就是说，如果局部变量“吃过饭没”的值为 0，那么跳过打印“吃了”的语句。  </p>
-<p>而第二个 if 语句则会被编译成条件跳转字节码 if_icmpne，也就是说，如果局部变量的值和整数 1 不相等，那么跳过打印“真吃了”的语句。  </p>
-<h1 id="Java的基本类型"><a href="#Java的基本类型" class="headerlink" title="Java的基本类型"></a>Java的基本类型</h1><p><img src="http://pcrioz2ch.bkt.clouddn.com/JVM/02/primitive%20_types.png" alt="image"></p>
-<h2 id="默认值"><a href="#默认值" class="headerlink" title="默认值"></a>默认值</h2><p><strong>在内存中，默认值都是0。</strong></p>
-<h2 id="取值范围"><a href="#取值范围" class="headerlink" title="取值范围"></a>取值范围</h2><ul>
-<li>boolean和char是唯二的无符号类型。</li>
-<li>boolean类型的取值范围是0或1。</li>
-<li>char类型的取值范围是[0, 65535]。</li>
-</ul>
-<p>boolean, byte, char, short的<strong>局部变量储存可以超过取值范围</strong>。</p>
-<p><strong>正常使用Java编译器的情况下，生成的字节码会遵守Java虚拟机规范对编译器的约束。</strong></p>
-<h2 id="浮点数"><a href="#浮点数" class="headerlink" title="浮点数"></a>浮点数</h2><p>浮点数类型采用IEEE 754 浮点数格式。</p>
-<p>以float为例，<strong>浮点类型通常有两个0，+0.0F 和 -0.0F</strong>。</p>
-<p>在Java里，前者为0，后者符号位为1，其他位为0。</p>
-<p>虽然内存数值不同，但 +0.0F == -0.0F 会返回true。</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">float</span> a = +<span class="number">0.0f</span>;</span><br><span class="line"><span class="keyword">float</span> b = -<span class="number">0.0f</span>;</span><br><span class="line"><span class="keyword">float</span> c = Float.intBitsToFloat(<span class="number">0x80000000</span>);</span><br></pre></td></tr></table></figure>
-<p><strong>在内存中，正无穷等于0x7F800000，负无穷等于0xFF800000。</strong></p>
-<p><strong>[0x7F800001, 0x7FFFFFFF] 和 [0xFF800001, 0xFFFFFFFF] 对应NaN （Not-a-Number）。</strong></p>
-<p>一般我们计算得出的NaN（+0.0F/+0.0F），在内存中为0x7FC00000。</p>
-<p>这个数值称为标准的NaN，其他的称为不标准的NaN。</p>
-<p><strong>NaN有一个特性：“!=” 始终返回true，其他比较结果都回返回false。</strong></p>
-<h1 id="Java基本类型的大小"><a href="#Java基本类型的大小" class="headerlink" title="Java基本类型的大小"></a>Java基本类型的大小</h1><p>Java虚拟机没调用一个Java方法，便会创建一个栈帧，这里<strong>只讨论供解释器使用的解释栈帧（interpreted frame）</strong>。</p>
-<h2 id="解释栈帧"><a href="#解释栈帧" class="headerlink" title="解释栈帧"></a>解释栈帧</h2><p>这种栈帧有两个主要组成部分：广义的局部变量区，字节码的操作栈。</p>
-<p>广义局部变量包含：普遍意义的局部变量，this指针，方法参数。</p>
-<h2 id="局部变量"><a href="#局部变量" class="headerlink" title="局部变量"></a>局部变量</h2><p>在Java虚拟机规范中，<strong>局部变量区等价于一个数组</strong>。除了long、double的值用两个数组单元存储，其他基本类型以及引用类型的值均占用一个数组单元。</p>
-<p><strong>boolean、byte、char、short在栈上占用的空间和int、引用类型一样。</strong>32位HotSpot中占用4字节，64位HotSport中，占用8字节。这种情况<strong>仅存在于局部变量，不会出现在存储于堆中的字段或数组元素</strong>。</p>
-<h2 id="存储"><a href="#存储" class="headerlink" title="存储"></a>存储</h2><p><strong>将int类型的值存到其他类型的字段或数组时，相当于做了一次隐式的掩码操作。</strong></p>
-<p>把0xFFFFFFFF(-1)储存到一个声明为char类型的字段里时，高两位字节被截取掉，存入“\uFFFF”。</p>
-<p>HotSpot在<strong>存储boolean时显示进行掩码操作</strong>，只取最后一位的值存入boolean字段或数组中。</p>
-<p>HotSpot中boolean字段占用一字节，boolean数组直接用byte数组实现。</p>
-<h2 id="加载"><a href="#加载" class="headerlink" title="加载"></a>加载</h2><p>Java虚拟机的算数运算几乎全部依赖于操作数栈，堆中的boolean、byte、char和short加载到操作数栈上，当成int类型运算。</p>
-<p>对于boolean、char这两个无符号类型，加载伴随零扩展。</p>
-<p>对于byte、short加载伴随符号扩展。</p>
-<h1 id="将boolean类型的值存入字段中时，Java-虚拟机所做的掩码操作"><a href="#将boolean类型的值存入字段中时，Java-虚拟机所做的掩码操作" class="headerlink" title="将boolean类型的值存入字段中时，Java 虚拟机所做的掩码操作"></a>将boolean类型的值存入字段中时，Java 虚拟机所做的掩码操作</h1><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Foo</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">static</span> <span class="keyword">boolean</span> boolValue;</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">		boolValue = <span class="keyword">true</span>; <span class="comment">// 将这个 true 替换为 2 或者 3，再看看打印结果</span></span><br><span class="line">		<span class="keyword">if</span> (boolValue) </span><br><span class="line">			System.out.println(<span class="string">"Hello, Java!"</span>);</span><br><span class="line">		<span class="keyword">if</span> (boolValue == <span class="keyword">true</span>) </span><br><span class="line">			System.out.println(<span class="string">"Hello, JVM!"</span>);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p><strong>当替换为2的时候无输出</strong><br><strong>当替换为3的时候打印HelloJava及HelloJVM</strong><br>因为将boolean 保存在静态域中,指定了其类型为’Z’,当修改为2时取低位最后一位为0,当修改为3时取低位最后一位为1<br>则说明boolean的掩码处理是取低位的最后一位</p>
-<h1 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h1><p>Q：“也就是说，boolean、byte、char、short 这四种类型，在栈上占用的空间和 int 是一样的，和引用类型也是一样的。因此，在 32 位的 HotSpot 中，这些类型在栈上将占用 4 个字节；而在 64 位的 HotSpot 中，他们将占 8 个字节。”</p>
-<p>但是我记得boolean在内存中占1字节，char占2字节，这里是什么个意思？</p>
-<p>A：你说的是在堆里的情况。在解释器栈上是不一样的。至于原因吗，主要是<strong>变长数组不好控制</strong>，所以就选择浪费一些空间，以便访问时直接通过下标来计算地址。</p>
-<hr>
-<p>Q：使用基本类型能够在执行效率以及内存使用两方面提升软件性能。具体是什么原理呢？</p>
-<p>A：<strong>占的空间更小，不需要类型转换</strong>。</p>
-<h1 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h1><blockquote>
-<p><a href="https://time.geekbang.org/column/article/11503" target="_blank" rel="noopener">https://time.geekbang.org/column/article/11503</a></p>
-</blockquote>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -2270,7 +2380,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">34</span>
+                  <span class="site-state-item-count">35</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
