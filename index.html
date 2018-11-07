@@ -426,6 +426,65 @@
 <li>这里所收集的数据我们称之为程序的 profile。</li>
 <li>例如 JDK 附带的 hprof。</li>
 <li>profiler 大多通过<strong>注入</strong>或 <strong>JVMTI 事件</strong>来实现。</li>
+<li><strong>第 0 层和第 3 层还会收集用于第 4 层 C2 编译的数据。</strong></li>
+</ul>
+<p>如：分支跳转字节码的分支 profile（branch profile）（跳转次数和不跳转次数），非私有实例方法调用指令，强制类型转换 checkcast 指令，类型测试 instanceof 指令，引用类型的数组存储 aastore 指令的 profile（receiver type profile）。</p>
+<ul>
+<li>分支 profile 和类型 profile 的收集会给应用程序<strong>带来不少性能开销</strong>。</li>
+<li>通常情况，<strong>不会在解释执行中收集</strong>分支 profile 和类型 profile。</li>
+<li><strong>只有触发 C1 编译后</strong>，JVM 认为可能被 C2 编译，才收集这些 profile。</li>
+<li>比较<strong>极端情况</strong>下，JVM 才会在<strong>解释执行时收集</strong> profile（如等待 C1 编译的方法过多时）。</li>
+<li>C2 可以根据收集到的数据进行猜测，作出比较<strong>激进的优化</strong>。</li>
+</ul>
+<h3 id="基于分支-profile-的优化"><a href="#基于分支-profile-的优化" class="headerlink" title="基于分支 profile 的优化"></a>基于分支 profile 的优化</h3><ul>
+<li><p>根据条件跳转指令的分支 profile，即时编译器可以将<strong>从未执行过的分支剪掉</strong>。</p>
+<ul>
+<li><strong>节省编译时间</strong>和部署代码要消耗的<strong>内存空间</strong>。</li>
+<li>将<strong>精简程序的数据流</strong>，触发更多的优化。</li>
+</ul>
+</li>
+<li><p>根据分支 profile，计算每一条程序执行路径的概率，<strong>优化优先处理概率较高的路径</strong>。</p>
+</li>
+</ul>
+<h3 id="基于类型-profile-的优化"><a href="#基于类型-profile-的优化" class="headerlink" title="基于类型 profile 的优化"></a>基于类型 profile 的优化</h3><h4 id="instanceof-测试"><a href="#instanceof-测试" class="headerlink" title="instanceof 测试"></a>instanceof 测试</h4><ul>
+<li>目标类型是 final 类型，只比较测试对象的动态类型是否为该类型。</li>
+<li>目标类型是非 final 类型，依次测试该类，该类的父类、祖先类，该类所直接或者间接实现的接口。</li>
+</ul>
+<h4 id="instanceof-以及方法调用的类型-profile"><a href="#instanceof-以及方法调用的类型-profile" class="headerlink" title="instanceof 以及方法调用的类型 profile"></a>instanceof 以及方法调用的类型 profile</h4><ul>
+<li><strong>假设对象的动态类型仅为类型 profile 中的那几个。</strong></li>
+<li><strong>针对分支 profile 优化。</strong></li>
+<li><strong>对方法调用的条件去虚化内联。</strong></li>
+</ul>
+<h3 id="去优化"><a href="#去优化" class="headerlink" title="去优化"></a>去优化</h3><blockquote>
+<p>即从执行即时编译生成的机器码切换回解释执行。</p>
+</blockquote>
+<ul>
+<li>当<strong>假设失败</strong>的情况下，JVM 将<strong>去优化</strong>。</li>
+<li>生成的机器码中，即时编译器在<strong>假设失败的位置上插入一个陷阱</strong>（trap）。</li>
+<li>陷阱实际上是一条 call 指令，调用至 Java 虚拟机专门负责去优化的方法。</li>
+<li>与普通的 call 指令的区别：去优化方法会更改栈上的返回地址，并不再返回即时编译器生成的机器码中。</li>
+<li><strong>去优化过程非常复杂。</strong></li>
+<li>生成的机器代码和原本的字节码差异非常大。</li>
+<li>需要将当前机器码的执行状态转换至某一字节码之前的执行状态，并从该字节码开始执行。</li>
+<li>这便要求即时编译器在编译过程中<strong>记录好这两种执行状态的映射</strong>。</li>
+</ul>
+<h4 id="去优化的原因与优化无关"><a href="#去优化的原因与优化无关" class="headerlink" title="去优化的原因与优化无关"></a>去优化的原因与优化无关</h4><blockquote>
+<p>即使重新编译也不会改变生成的机器码。</p>
+</blockquote>
+<ul>
+<li>生成的机器码可以在调用去优化方法时传入 Action_None。</li>
+<li>表示<strong>保留这一份机器码</strong>。</li>
+<li>在下一次调用该方法时重新进入这一份机器码。</li>
+</ul>
+<h4 id="去优化的原因与静态分析的结果有关"><a href="#去优化的原因与静态分析的结果有关" class="headerlink" title="去优化的原因与静态分析的结果有关"></a>去优化的原因与静态分析的结果有关</h4><ul>
+<li>生成的机器码可以在调用去优化方法时传入 Action_Recompile。</li>
+<li>表示<strong>不保留这一份机器码</strong>。</li>
+<li>但是可以<strong>不经过重新 profile，直接重新编译</strong>。</li>
+</ul>
+<h4 id="去优化的原因与基于-profile-的激进优化有关"><a href="#去优化的原因与基于-profile-的激进优化有关" class="headerlink" title="去优化的原因与基于 profile 的激进优化有关"></a>去优化的原因与基于 profile 的激进优化有关</h4><ul>
+<li>生成的机器码需要在调用去优化方法时传入 Action_Reinterpret。</li>
+<li>表示<strong>不保留这一份机器码</strong>。</li>
+<li>而且<strong>需要重新收集程序的 profile</strong>。</li>
 </ul>
 <h2 id="编译路径"><a href="#编译路径" class="headerlink" title="编译路径"></a>编译路径</h2><ul>
 <li><strong>1 层和 4 层为终止状态。</strong></li>
@@ -486,7 +545,7 @@
 <p>Q：为什么要用分层编译呢？<strong>使用最快的编译代码编译器编译的代码不是更好吗？</strong></p>
 <p>A：<strong>机器码越快，需要的编译时间就越长。分层编译是一种折衷的方式</strong>，既能够满足部分不那么热的代码能够在短时间内编译完成，也能满足很热的代码能够拥有最好的优化。</p>
 <h1 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h1><blockquote>
-<p><a href="https://time.geekbang.org/column/article/14061" target="_blank" rel="noopener">https://time.geekbang.org/column/article/14061</a></p>
+<p><a href="https://time.geekbang.org/column/article/14061" target="_blank" rel="noopener">https://time.geekbang.org/column/article/14061</a><br><a href="https://time.geekbang.org/column/article/14070" target="_blank" rel="noopener">https://time.geekbang.org/column/article/14070</a></p>
 </blockquote>
 
           
