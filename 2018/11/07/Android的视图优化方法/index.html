@@ -68,7 +68,7 @@
 
 
 
-  <meta name="keywords" content="计算机网络,TCP/IP," />
+  <meta name="keywords" content="Android,优化,视图," />
 
 
 
@@ -81,18 +81,20 @@
 
 
 
-<meta name="description" content="名词解释   缩写 英文全称 中文     AS Autonomous System 自治系统   IGP Interior Gateway Protocol 内部网关协议/域内选路协议   EGP Exterier Gateway Protocol 外部网关协议/域内选路协议的分隔选路协议   BGP Border Gateway Protocol 边界网关协议   RIP Routing In">
-<meta name="keywords" content="计算机网络,TCP&#x2F;IP">
+<meta name="description" content="过度绘制（Overdraw） 过度绘制（Overdraw）指的是屏幕上的某个像素在同一帧的时间内被绘制了多次。  检测过度绘制Android 中打开过度绘制检测工具的方式：  开发者选项 ➡ 调试GPU过度绘制 ➡ 显示过度绘制区域  界面中会出现不同颜色的区域，各颜色代表的意思：  过度绘制优化移除布局中不需要的背景移除 Window 默认的 Background通常使用的 theme 会包含一">
+<meta name="keywords" content="Android,优化,视图">
 <meta property="og:type" content="article">
-<meta property="og:title" content="《TCPIP详解卷1》010阅读笔记">
-<meta property="og:url" content="http://yoursite.com/2018/06/13/《TCPIP详解卷1》010阅读笔记/index.html">
+<meta property="og:title" content="Android的视图优化方法">
+<meta property="og:url" content="http://yoursite.com/2018/11/07/Android的视图优化方法/index.html">
 <meta property="og:site_name" content="Ennis -Little Monster">
-<meta property="og:description" content="名词解释   缩写 英文全称 中文     AS Autonomous System 自治系统   IGP Interior Gateway Protocol 内部网关协议/域内选路协议   EGP Exterier Gateway Protocol 外部网关协议/域内选路协议的分隔选路协议   BGP Border Gateway Protocol 边界网关协议   RIP Routing In">
+<meta property="og:description" content="过度绘制（Overdraw） 过度绘制（Overdraw）指的是屏幕上的某个像素在同一帧的时间内被绘制了多次。  检测过度绘制Android 中打开过度绘制检测工具的方式：  开发者选项 ➡ 调试GPU过度绘制 ➡ 显示过度绘制区域  界面中会出现不同颜色的区域，各颜色代表的意思：  过度绘制优化移除布局中不需要的背景移除 Window 默认的 Background通常使用的 theme 会包含一">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-08-15T12:48:14.000Z">
+<meta property="og:image" content="http://pcrioz2ch.bkt.clouddn.com/android/layout/overdraw.webp">
+<meta property="og:updated_time" content="2018-11-08T06:32:48.828Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="《TCPIP详解卷1》010阅读笔记">
-<meta name="twitter:description" content="名词解释   缩写 英文全称 中文     AS Autonomous System 自治系统   IGP Interior Gateway Protocol 内部网关协议/域内选路协议   EGP Exterier Gateway Protocol 外部网关协议/域内选路协议的分隔选路协议   BGP Border Gateway Protocol 边界网关协议   RIP Routing In">
+<meta name="twitter:title" content="Android的视图优化方法">
+<meta name="twitter:description" content="过度绘制（Overdraw） 过度绘制（Overdraw）指的是屏幕上的某个像素在同一帧的时间内被绘制了多次。  检测过度绘制Android 中打开过度绘制检测工具的方式：  开发者选项 ➡ 调试GPU过度绘制 ➡ 显示过度绘制区域  界面中会出现不同颜色的区域，各颜色代表的意思：  过度绘制优化移除布局中不需要的背景移除 Window 默认的 Background通常使用的 theme 会包含一">
+<meta name="twitter:image" content="http://pcrioz2ch.bkt.clouddn.com/android/layout/overdraw.webp">
 
 
 
@@ -122,13 +124,13 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/2018/06/13/《TCPIP详解卷1》010阅读笔记/"/>
+  <link rel="canonical" href="http://yoursite.com/2018/11/07/Android的视图优化方法/"/>
 
 
 
 
 
-  <title>《TCPIP详解卷1》010阅读笔记 | Ennis -Little Monster</title>
+  <title>Android的视图优化方法 | Ennis -Little Monster</title>
   
 
 
@@ -299,7 +301,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/06/13/《TCPIP详解卷1》010阅读笔记/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/11/07/Android的视图优化方法/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Ennis L.M. Wu">
@@ -316,7 +318,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">《TCPIP详解卷1》010阅读笔记</h1>
+          <h1 class="post-title" itemprop="name headline">Android的视图优化方法</h1>
         
 
         <div class="post-meta">
@@ -328,8 +330,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-06-13T20:05:37+08:00">
-                2018-06-13
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-11-07T21:31:51+08:00">
+                2018-11-07
               </time>
             
 
@@ -351,8 +353,8 @@
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/TCP-IP/" itemprop="url" rel="index">
-                    <span itemprop="name">TCP/IP</span>
+                  <a href="/categories/Android优化/" itemprop="url" rel="index">
+                    <span itemprop="name">Android优化</span>
                   </a>
                 </span>
 
@@ -388,155 +390,75 @@
       
 
       
-        <h4 id="名词解释"><a href="#名词解释" class="headerlink" title="名词解释"></a>名词解释</h4><table>
-<thead>
-<tr>
-<th>缩写</th>
-<th>英文全称</th>
-<th>中文</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>AS</td>
-<td>Autonomous System</td>
-<td>自治系统</td>
-</tr>
-<tr>
-<td>IGP</td>
-<td>Interior Gateway Protocol</td>
-<td>内部网关协议/域内选路协议</td>
-</tr>
-<tr>
-<td>EGP</td>
-<td>Exterier Gateway Protocol</td>
-<td>外部网关协议/域内选路协议的分隔选路协议</td>
-</tr>
-<tr>
-<td>BGP</td>
-<td>Border Gateway Protocol</td>
-<td>边界网关协议</td>
-</tr>
-<tr>
-<td>RIP</td>
-<td>Routing Infomation Protocol</td>
-<td>选路信息协议</td>
-</tr>
-<tr>
-<td>OSPF</td>
-<td>Open Shortest Path First</td>
-<td>开放最短路径优先协议</td>
-</tr>
-<tr>
-<td>CIDR</td>
-<td>Classless Inter-Domain Routing</td>
-<td>无类别域间路由</td>
-</tr>
-</tbody>
-</table>
+        <h1 id="过度绘制（Overdraw）"><a href="#过度绘制（Overdraw）" class="headerlink" title="过度绘制（Overdraw）"></a>过度绘制（Overdraw）</h1><blockquote>
+<p>过度绘制（Overdraw）指的是屏幕上的某个像素在同一帧的时间内被绘制了多次。</p>
+</blockquote>
+<h2 id="检测过度绘制"><a href="#检测过度绘制" class="headerlink" title="检测过度绘制"></a>检测过度绘制</h2><p>Android 中打开过度绘制检测工具的方式：</p>
 <ul>
-<li>IGP用于自治系统内。</li>
-<li>EGP用于自治系统之间。</li>
-<li>BGP意在取代EGP。<br><br></li>
+<li>开发者选项 ➡ 调试GPU过度绘制 ➡ 显示过度绘制区域</li>
 </ul>
-<h4 id="动态选路"><a href="#动态选路" class="headerlink" title="动态选路"></a>动态选路</h4><ul>
-<li>相邻路由器之间进行通信，告知对方每个路由器当前所连接的网络。</li>
-<li>路由守护程序根据从相邻路由器收到的信息更新内核中的路由表。</li>
-<li>随时间变化时，路由是由路由守护程序动态地增加或删除。</li>
-<li>如果路由守护程序发现前往同一信宿存在多条路由，选择最佳路由加入内核路由表。</li>
-<li>如果路由守护程序发现一条链路已经断开，删除受影响的路由或增加一条路由绕过。</li>
-<li>每个自治系统由单个<strong>实体</strong>管理。==什么是实体？==<br><br></li>
+<p>界面中会出现不同颜色的区域，各颜色代表的意思：</p>
+<p><img src="http://pcrioz2ch.bkt.clouddn.com/android/layout/overdraw.webp" alt="image"></p>
+<h2 id="过度绘制优化"><a href="#过度绘制优化" class="headerlink" title="过度绘制优化"></a>过度绘制优化</h2><h3 id="移除布局中不需要的背景"><a href="#移除布局中不需要的背景" class="headerlink" title="移除布局中不需要的背景"></a>移除布局中不需要的背景</h3><h4 id="移除-Window-默认的-Background"><a href="#移除-Window-默认的-Background" class="headerlink" title="移除 Window 默认的 Background"></a>移除 Window 默认的 Background</h4><p>通常使用的 theme 会包含一个 windowBackground。</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">item</span> <span class="attr">name</span>=<span class="string">"android:windowBackground"</span>&gt;</span>@color/background_material_light<span class="tag">&lt;/<span class="name">item</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>然后又给跟布局添加了一个背景，这会导致整个页面被多绘制一次。</p>
+<p>移掉 windowBackground 即可解决，有两种方法。</p>
+<ul>
+<li>在 theme 中设置</li>
 </ul>
-<h4 id="RIP：选路信息协议"><a href="#RIP：选路信息协议" class="headerlink" title="RIP：选路信息协议"></a>RIP：选路信息协议</h4><ul>
-<li>正式描述文件RFC 1058 [Hedrick 1988a]。</li>
-<li>RIP报文包含在UDP数据报中。</li>
-<li>RIP的度量是以跳计数的。</li>
-<li>最多携带25个路由。<br><br></li>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">item</span> <span class="attr">name</span>=<span class="string">"android:windowBackground"</span>&gt;</span>@null<span class="tag">&lt;/<span class="name">item</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<ul>
+<li>在 onCreate() 方法中添加</li>
 </ul>
-<h6 id="度量"><a href="#度量" class="headerlink" title="度量"></a>度量</h6><ul>
-<li>直接连接接口的跳数为1。</li>
-<li>一个路由器到一个网络有多条路由，路由器选择跳数最小的路由。</li>
-<li>度量为16表示无路由到达该IP地址。<br><br></li>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">getWindow().setBackgroundDrawable(<span class="keyword">null</span>);</span><br></pre></td></tr></table></figure>
+<h4 id="移除控件中不需要的背景"><a href="#移除控件中不需要的背景" class="headerlink" title="移除控件中不需要的背景"></a>移除控件中不需要的背景</h4><ul>
+<li>父布局和子布局设置了相同的 background，选择其一设置即可。</li>
 </ul>
-<h6 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h6><ul>
-<li>RIP没有子网地址的概念。</li>
-<li>路由器或链路发生故障后在稳定下来这段时间可能发生路由环路。</li>
-<li>度量最大值限制了可以使用RIP的网络的大小。<br><br></li>
+<h2 id="减少透明度的使用"><a href="#减少透明度的使用" class="headerlink" title="减少透明度的使用"></a>减少透明度的使用</h2><p>View 设置了 alpha 值至少渲染两次。</p>
+<h1 id="布局优化"><a href="#布局优化" class="headerlink" title="布局优化"></a>布局优化</h1><ul>
+<li>LinearLayout 与 RelativeLayout 作用相同时使用 LinearLayout。</li>
+<li>LinearLayout 需要嵌套时使用 RelativeLayout。</li>
+<li>使用 ConstraintLayout。</li>
 </ul>
-<h4 id="RIP版本2"><a href="#RIP版本2" class="headerlink" title="RIP版本2"></a>RIP版本2</h4><ul>
-<li>RFC 1388 [Malkin 1993a] 对RIP定义进行了扩充。</li>
-<li>路由域字段：数据报的所有者。</li>
-<li>选路标记字段：携带一个EGP和BGP的自治系统号。</li>
-<li>子网掩码字段：应用于相应的IP地址。</li>
-<li>下一站IP地址字段：指明发往目的IP地址的报文应该发往哪里。</li>
-<li>除了支持广播，还支持多播。<br><br></li>
+<h2 id="使用-Layout-Inspector-查看-layout-层次结构"><a href="#使用-Layout-Inspector-查看-layout-层次结构" class="headerlink" title="使用 Layout Inspector 查看 layout 层次结构"></a>使用 Layout Inspector 查看 layout 层次结构</h2><blockquote>
+<p>Tools &gt; Android &gt; Layout Inspector</p>
+</blockquote>
+<h2 id="使用-lint-优化布局的层次结构"><a href="#使用-lint-优化布局的层次结构" class="headerlink" title="使用 lint 优化布局的层次结构"></a>使用 lint 优化布局的层次结构</h2><blockquote>
+<p>Analyze&gt; Inspect Code</p>
+<blockquote>
+<p>Android&gt; Lint&gt; Performance</p>
+</blockquote>
+</blockquote>
+<h2 id="lt-include-标签"><a href="#lt-include-标签" class="headerlink" title="&lt;include> 标签"></a>&lt;include> 标签</h2><ul>
+<li>只支持 android:layout_ 开头的属性（android:id 是特例）。</li>
+<li>&lt;include> 指定了 id 属性，包含的布局文件根元素也指定了 id 属性，以 &lt;include> 指定的为准。</li>
 </ul>
-<h4 id="OSPF：开放最短路径优先"><a href="#OSPF：开放最短路径优先" class="headerlink" title="OSPF：开放最短路径优先"></a>OSPF：开放最短路径优先</h4><ul>
-<li>RFC 1247 [Moy 1991] 对第2版OSPF进行了描述。</li>
-<li>OSPF克服了RIP所有限制。</li>
-<li>路由器不与临站交换距离信息，主动测试与临站相连的链路状态。</li>
-<li>信息发给其他临站，临站将这些信息在自治系统中传播出去。</li>
-<li>路由器接收这些链路状态信息，建立完整的路由表。</li>
-<li>链路状态协议总是比距离向量协议稳定更快。</li>
-<li>OSPF直接使用IP，不使用UDP或TCP。</li>
-<li>优于RIP的特点：</li>
-<li><ol>
-<li>可以对每个IP服务类型计算各自的路由集。</li>
-</ol>
-</li>
-<li><ol start="2">
-<li>给每个接口指派一个无维数的费用。</li>
-</ol>
-</li>
-<li><ol start="3">
-<li>同一个目的地址存在多个相同费用的路由时，平均分配流量。</li>
-</ol>
-</li>
-<li><ol start="4">
-<li>支持子网，子网掩码与每个通告相连。</li>
-</ol>
-</li>
-<li><ol start="5">
-<li>无编号网络。</li>
-</ol>
-</li>
-<li><ol start="6">
-<li>简单鉴别机制。</li>
-</ol>
-</li>
-<li><ol start="7">
-<li>采用多播而不是广播形式，减少系统负载。<br><br></li>
-</ol>
-</li>
+<h2 id="lt-merge-标签"><a href="#lt-merge-标签" class="headerlink" title="&lt;merge> 标签"></a>&lt;merge> 标签</h2><ul>
+<li>配合 &lt;include> 标签使用可以减少布局的层级。</li>
 </ul>
-<h4 id="BGP：边界网关协议"><a href="#BGP：边界网关协议" class="headerlink" title="BGP：边界网关协议"></a>BGP：边界网关协议</h4><ul>
-<li>RFC 1267 [Lougheed and Rekhter 1991] 对第3版BGP进行描述。</li>
-<li>BGP系统之间交换网络可到达信息，包括所必须经过的自治系统的所有路径。</li>
-<li>使用BGP的一个目的是减少通过流量。</li>
-<li>允许使用基于策略的选路。</li>
-<li>使用TCP作为其传输层协议。</li>
-<li>BGP是一个距离测量协议，列举了到每个目的地址的路由，排除了一些距离向量协议的问题。</li>
-<li>定期发送keepalive报文给临站来监测TCP连接对端的链路或主机失败。</li>
-<li>应用层的keepalive报文与TCP的keepalive报文选项相互独立。<br><br></li>
+<h2 id="ViewStub"><a href="#ViewStub" class="headerlink" title="ViewStub"></a>ViewStub</h2><ul>
+<li>继承自 View，宽高都是 0，本身不参与任何的布局和绘制过程。</li>
+<li>按需加载所需的布局文件（如网络异常时的界面），使用的时候再加载，提高初始化性能。</li>
+<li>不支持 &lt;merge> 标签。</li>
+<li>使用 inflateedId 属性指定加载的布局 id。</li>
 </ul>
-<h4 id="CIDR：无类型域间选路"><a href="#CIDR：无类型域间选路" class="headerlink" title="CIDR：无类型域间选路"></a>CIDR：无类型域间选路</h4><ul>
-<li>RFC 1518 [Rekher and Li 1993], RFC 1519 [Fuller et al. 1993]对它描述。</li>
-<li>[Ford, Rekhter, and Braun 1993] 综述。</li>
-<li>一个防止路由表膨胀的方法，也成为超网。</li>
-<li>采用分配多个IP地址的方式，使许多表项总和成更少的数目</li>
-<li>必须满足3种特性：</li>
-<li><ol>
-<li>IP地址必须具有相同的高位地址比特。</li>
-</ol>
-</li>
-<li><ol start="2">
-<li>路由表和选路算法必须扩展成根据32 bit IP地址和32 bit 掩码做出选路决策。</li>
-</ol>
-</li>
-<li><ol start="3">
-<li>选路协议要有32 bit掩码。</li>
-</ol>
-</li>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">ViewStub</span></span></span><br><span class="line"><span class="tag">	<span class="attr">android:id</span>=<span class="string">"@+id/stub_import"</span></span></span><br><span class="line"><span class="tag">	<span class="attr">android:inflatedId</span>=<span class="string">"@+id/panel_import"</span> /&gt;</span></span><br></pre></td></tr></table></figure>
+<h3 id="怎样加载？"><a href="#怎样加载？" class="headerlink" title="怎样加载？"></a>怎样加载？</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">((ViewStub) findViewById(R.id.stub_import)).setVisibility(View.VISIBLE);</span><br></pre></td></tr></table></figure>
+<p>或</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">View importPanel = ((ViewStub) findViewById(R.id.stub_import)).inflate();</span><br></pre></td></tr></table></figure>
+<ul>
+<li>加载后 ViewStub 不在属于布局，为 null。</li>
+</ul>
+<h1 id="绘制优化"><a href="#绘制优化" class="headerlink" title="绘制优化"></a>绘制优化</h1><h2 id="onDraw-方法"><a href="#onDraw-方法" class="headerlink" title="onDraw 方法"></a>onDraw 方法</h2><ul>
+<li>不要创建新的布局对象。</li>
+<li>不要做耗时的任务。</li>
+</ul>
+<h3 id="减少自定义-View-的过度绘制"><a href="#减少自定义-View-的过度绘制" class="headerlink" title="减少自定义 View 的过度绘制"></a>减少自定义 View 的过度绘制</h3><ul>
+<li>假如有多张图片叠层显示时，可以使用 <code>Canvas</code> 的 <code>clipRect()</code> 等方法将图片裁剪。</li>
+</ul>
+<h1 id="使用-GPU-呈现模式分析工具"><a href="#使用-GPU-呈现模式分析工具" class="headerlink" title="使用 GPU 呈现模式分析工具"></a>使用 GPU 呈现模式分析工具</h1><p>Android 中打开 GPU 呈现模式分析工具的方式：</p>
+<ul>
+<li>开发者模式 ➡ 监控 ➡ GPU呈现模式</li>
 </ul>
 
       
@@ -584,9 +506,11 @@
       
         <div class="post-tags">
           
-            <a href="/tags/计算机网络/" rel="tag"># 计算机网络</a>
+            <a href="/tags/Android/" rel="tag"># Android</a>
           
-            <a href="/tags/TCP-IP/" rel="tag"># TCP/IP</a>
+            <a href="/tags/优化/" rel="tag"># 优化</a>
+          
+            <a href="/tags/视图/" rel="tag"># 视图</a>
           
         </div>
       
@@ -599,8 +523,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2018/06/12/《TCPIP详解卷1》007、008、009阅读笔记/" rel="next" title="《TCPIP详解卷1》007、008、009阅读笔记">
-                <i class="fa fa-chevron-left"></i> 《TCPIP详解卷1》007、008、009阅读笔记
+              <a href="/2018/11/06/笔记-深入拆解Java虚拟机-1617即时编译/" rel="next" title="笔记-深入拆解Java虚拟机-1617即时编译">
+                <i class="fa fa-chevron-left"></i> 笔记-深入拆解Java虚拟机-1617即时编译
               </a>
             
           </div>
@@ -608,10 +532,6 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2018/07/20/转-Java反射完全解析/" rel="prev" title="[转]Java反射完全解析">
-                [转]Java反射完全解析 <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -788,7 +708,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#名词解释"><span class="nav-number">1.</span> <span class="nav-text">名词解释</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#动态选路"><span class="nav-number">2.</span> <span class="nav-text">动态选路</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#RIP：选路信息协议"><span class="nav-number">3.</span> <span class="nav-text">RIP：选路信息协议</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#度量"><span class="nav-number">3.0.1.</span> <span class="nav-text">度量</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#问题"><span class="nav-number">3.0.2.</span> <span class="nav-text">问题</span></a></li></ol></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#RIP版本2"><span class="nav-number">4.</span> <span class="nav-text">RIP版本2</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#OSPF：开放最短路径优先"><span class="nav-number">5.</span> <span class="nav-text">OSPF：开放最短路径优先</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#BGP：边界网关协议"><span class="nav-number">6.</span> <span class="nav-text">BGP：边界网关协议</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#CIDR：无类型域间选路"><span class="nav-number">7.</span> <span class="nav-text">CIDR：无类型域间选路</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#过度绘制（Overdraw）"><span class="nav-number">1.</span> <span class="nav-text">过度绘制（Overdraw）</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#检测过度绘制"><span class="nav-number">1.1.</span> <span class="nav-text">检测过度绘制</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#过度绘制优化"><span class="nav-number">1.2.</span> <span class="nav-text">过度绘制优化</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#移除布局中不需要的背景"><span class="nav-number">1.2.1.</span> <span class="nav-text">移除布局中不需要的背景</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#移除-Window-默认的-Background"><span class="nav-number">1.2.1.1.</span> <span class="nav-text">移除 Window 默认的 Background</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#移除控件中不需要的背景"><span class="nav-number">1.2.1.2.</span> <span class="nav-text">移除控件中不需要的背景</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#减少透明度的使用"><span class="nav-number">1.3.</span> <span class="nav-text">减少透明度的使用</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#布局优化"><span class="nav-number">2.</span> <span class="nav-text">布局优化</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#使用-Layout-Inspector-查看-layout-层次结构"><span class="nav-number">2.1.</span> <span class="nav-text">使用 Layout Inspector 查看 layout 层次结构</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#使用-lint-优化布局的层次结构"><span class="nav-number">2.2.</span> <span class="nav-text">使用 lint 优化布局的层次结构</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#lt-include-标签"><span class="nav-number">2.3.</span> <span class="nav-text">&lt;include&gt; 标签</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#lt-merge-标签"><span class="nav-number">2.4.</span> <span class="nav-text">&lt;merge&gt; 标签</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#ViewStub"><span class="nav-number">2.5.</span> <span class="nav-text">ViewStub</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#怎样加载？"><span class="nav-number">2.5.1.</span> <span class="nav-text">怎样加载？</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#绘制优化"><span class="nav-number">3.</span> <span class="nav-text">绘制优化</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#onDraw-方法"><span class="nav-number">3.1.</span> <span class="nav-text">onDraw 方法</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#减少自定义-View-的过度绘制"><span class="nav-number">3.1.1.</span> <span class="nav-text">减少自定义 View 的过度绘制</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#使用-GPU-呈现模式分析工具"><span class="nav-number">4.</span> <span class="nav-text">使用 GPU 呈现模式分析工具</span></a></li></ol></div>
             
 
           </div>

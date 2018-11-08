@@ -298,6 +298,217 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/11/07/Android的视图优化方法/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Ennis L.M. Wu">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="http://pcrioz2ch.bkt.clouddn.com/portrait.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Ennis -Little Monster">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/11/07/Android的视图优化方法/" itemprop="url">Android的视图优化方法</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-11-07T21:31:51+08:00">
+                2018-11-07
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Android优化/" itemprop="url" rel="index">
+                    <span itemprop="name">Android优化</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h1 id="过度绘制（Overdraw）"><a href="#过度绘制（Overdraw）" class="headerlink" title="过度绘制（Overdraw）"></a>过度绘制（Overdraw）</h1><blockquote>
+<p>过度绘制（Overdraw）指的是屏幕上的某个像素在同一帧的时间内被绘制了多次。</p>
+</blockquote>
+<h2 id="检测过度绘制"><a href="#检测过度绘制" class="headerlink" title="检测过度绘制"></a>检测过度绘制</h2><p>Android 中打开过度绘制检测工具的方式：</p>
+<ul>
+<li>开发者选项 ➡ 调试GPU过度绘制 ➡ 显示过度绘制区域</li>
+</ul>
+<p>界面中会出现不同颜色的区域，各颜色代表的意思：</p>
+<p><img src="http://pcrioz2ch.bkt.clouddn.com/android/layout/overdraw.webp" alt="image"></p>
+<h2 id="过度绘制优化"><a href="#过度绘制优化" class="headerlink" title="过度绘制优化"></a>过度绘制优化</h2><h3 id="移除布局中不需要的背景"><a href="#移除布局中不需要的背景" class="headerlink" title="移除布局中不需要的背景"></a>移除布局中不需要的背景</h3><h4 id="移除-Window-默认的-Background"><a href="#移除-Window-默认的-Background" class="headerlink" title="移除 Window 默认的 Background"></a>移除 Window 默认的 Background</h4><p>通常使用的 theme 会包含一个 windowBackground。</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">item</span> <span class="attr">name</span>=<span class="string">"android:windowBackground"</span>&gt;</span>@color/background_material_light<span class="tag">&lt;/<span class="name">item</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>然后又给跟布局添加了一个背景，这会导致整个页面被多绘制一次。</p>
+<p>移掉 windowBackground 即可解决，有两种方法。</p>
+<ul>
+<li>在 theme 中设置</li>
+</ul>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">item</span> <span class="attr">name</span>=<span class="string">"android:windowBackground"</span>&gt;</span>@null<span class="tag">&lt;/<span class="name">item</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<ul>
+<li>在 onCreate() 方法中添加</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">getWindow().setBackgroundDrawable(<span class="keyword">null</span>);</span><br></pre></td></tr></table></figure>
+<h4 id="移除控件中不需要的背景"><a href="#移除控件中不需要的背景" class="headerlink" title="移除控件中不需要的背景"></a>移除控件中不需要的背景</h4><ul>
+<li>父布局和子布局设置了相同的 background，选择其一设置即可。</li>
+</ul>
+<h2 id="减少透明度的使用"><a href="#减少透明度的使用" class="headerlink" title="减少透明度的使用"></a>减少透明度的使用</h2><p>View 设置了 alpha 值至少渲染两次。</p>
+<h1 id="布局优化"><a href="#布局优化" class="headerlink" title="布局优化"></a>布局优化</h1><ul>
+<li>LinearLayout 与 RelativeLayout 作用相同时使用 LinearLayout。</li>
+<li>LinearLayout 需要嵌套时使用 RelativeLayout。</li>
+<li>使用 ConstraintLayout。</li>
+</ul>
+<h2 id="使用-Layout-Inspector-查看-layout-层次结构"><a href="#使用-Layout-Inspector-查看-layout-层次结构" class="headerlink" title="使用 Layout Inspector 查看 layout 层次结构"></a>使用 Layout Inspector 查看 layout 层次结构</h2><blockquote>
+<p>Tools &gt; Android &gt; Layout Inspector</p>
+</blockquote>
+<h2 id="使用-lint-优化布局的层次结构"><a href="#使用-lint-优化布局的层次结构" class="headerlink" title="使用 lint 优化布局的层次结构"></a>使用 lint 优化布局的层次结构</h2><blockquote>
+<p>Analyze&gt; Inspect Code</p>
+<blockquote>
+<p>Android&gt; Lint&gt; Performance</p>
+</blockquote>
+</blockquote>
+<h2 id="lt-include-标签"><a href="#lt-include-标签" class="headerlink" title="&lt;include> 标签"></a>&lt;include> 标签</h2><ul>
+<li>只支持 android:layout_ 开头的属性（android:id 是特例）。</li>
+<li>&lt;include> 指定了 id 属性，包含的布局文件根元素也指定了 id 属性，以 &lt;include> 指定的为准。</li>
+</ul>
+<h2 id="lt-merge-标签"><a href="#lt-merge-标签" class="headerlink" title="&lt;merge> 标签"></a>&lt;merge> 标签</h2><ul>
+<li>配合 &lt;include> 标签使用可以减少布局的层级。</li>
+</ul>
+<h2 id="ViewStub"><a href="#ViewStub" class="headerlink" title="ViewStub"></a>ViewStub</h2><ul>
+<li>继承自 View，宽高都是 0，本身不参与任何的布局和绘制过程。</li>
+<li>按需加载所需的布局文件（如网络异常时的界面），使用的时候再加载，提高初始化性能。</li>
+<li>不支持 &lt;merge> 标签。</li>
+<li>使用 inflateedId 属性指定加载的布局 id。</li>
+</ul>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">ViewStub</span></span></span><br><span class="line"><span class="tag">	<span class="attr">android:id</span>=<span class="string">"@+id/stub_import"</span></span></span><br><span class="line"><span class="tag">	<span class="attr">android:inflatedId</span>=<span class="string">"@+id/panel_import"</span> /&gt;</span></span><br></pre></td></tr></table></figure>
+<h3 id="怎样加载？"><a href="#怎样加载？" class="headerlink" title="怎样加载？"></a>怎样加载？</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">((ViewStub) findViewById(R.id.stub_import)).setVisibility(View.VISIBLE);</span><br></pre></td></tr></table></figure>
+<p>或</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">View importPanel = ((ViewStub) findViewById(R.id.stub_import)).inflate();</span><br></pre></td></tr></table></figure>
+<ul>
+<li>加载后 ViewStub 不在属于布局，为 null。</li>
+</ul>
+<h1 id="绘制优化"><a href="#绘制优化" class="headerlink" title="绘制优化"></a>绘制优化</h1><h2 id="onDraw-方法"><a href="#onDraw-方法" class="headerlink" title="onDraw 方法"></a>onDraw 方法</h2><ul>
+<li>不要创建新的布局对象。</li>
+<li>不要做耗时的任务。</li>
+</ul>
+<h3 id="减少自定义-View-的过度绘制"><a href="#减少自定义-View-的过度绘制" class="headerlink" title="减少自定义 View 的过度绘制"></a>减少自定义 View 的过度绘制</h3><ul>
+<li>假如有多张图片叠层显示时，可以使用 <code>Canvas</code> 的 <code>clipRect()</code> 等方法将图片裁剪。</li>
+</ul>
+<h1 id="使用-GPU-呈现模式分析工具"><a href="#使用-GPU-呈现模式分析工具" class="headerlink" title="使用 GPU 呈现模式分析工具"></a>使用 GPU 呈现模式分析工具</h1><p>Android 中打开 GPU 呈现模式分析工具的方式：</p>
+<ul>
+<li>开发者模式 ➡ 监控 ➡ GPU呈现模式</li>
+</ul>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/11/06/笔记-深入拆解Java虚拟机-1617即时编译/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -2240,190 +2451,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/08/06/笔记-深入拆解Java虚拟机-07JVM是如何实现反射的？/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Ennis L.M. Wu">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="http://pcrioz2ch.bkt.clouddn.com/portrait.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Ennis -Little Monster">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/08/06/笔记-深入拆解Java虚拟机-07JVM是如何实现反射的？/" itemprop="url">笔记-深入拆解Java虚拟机-07JVM是如何实现反射的？</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-08-06T14:33:36+08:00">
-                2018-08-06
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Java虚拟机/" itemprop="url" rel="index">
-                    <span itemprop="name">Java虚拟机</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h1 id="反射调用的实现"><a href="#反射调用的实现" class="headerlink" title="反射调用的实现"></a>反射调用的实现</h1><h2 id="Methond-invoke"><a href="#Methond-invoke" class="headerlink" title="Methond.invoke"></a>Methond.invoke</h2><p>委派给MethodAccessor接口处理。</p>
-<p>MethodAccessor两个具体实现：</p>
-<ol>
-<li>本地方法实现反射调用</li>
-<li>委派模式</li>
-</ol>
-<h2 id="委派实现"><a href="#委派实现" class="headerlink" title="委派实现"></a>委派实现</h2><ul>
-<li>每个Method实例的<strong>第一次反射调用</strong>会生成一个委派实现。</li>
-<li>委派的具体实现是一个<strong>本地实现</strong>。</li>
-<li>Java的反射调用机制还设立了另一种动态生成字节码的<strong>动态实现</strong>。</li>
-<li>采用委派实现，是为了能够在本地实现以及动态实现中切换。</li>
-</ul>
-<h3 id="动态实现"><a href="#动态实现" class="headerlink" title="动态实现"></a>动态实现</h3><ul>
-<li><p><strong>运行效率比本地实现要快20倍。</strong><br>因为动态实现无需经过Java到C++再到Java的切换。</p>
-</li>
-<li><p>由于<strong>生成字节码十分耗时</strong>，仅<strong>调用一次</strong>的话，反而是<strong>本地实现要快上3到4倍</strong>。</p>
-</li>
-</ul>
-<h3 id="Inflation"><a href="#Inflation" class="headerlink" title="Inflation"></a>Inflation</h3><p>Java虚拟机设置了一个阈值15（可以通过 -Dsun.reflect.inflationThreshold= 来调整）。<br>当某个反射调用的方法调用次数在 15 之下时，采用本地实现。<br>当达到 15 时，便开始动态生成字节码，并将委派实现的委派对象切换至动态实现，这个过程称之为Inflation。</p>
-<p>反射调用的Inflation机制是可以通过参数（-Dsun.reflect.noInflation=true）关闭。<br>反射调用一开始便会直接生成动态实现，而不会使用委派实现或者本地实现。</p>
-<h1 id="反射调用的开销"><a href="#反射调用的开销" class="headerlink" title="反射调用的开销"></a>反射调用的开销</h1><h2 id="反射api性能开销"><a href="#反射api性能开销" class="headerlink" title="反射api性能开销"></a>反射api性能开销</h2><ul>
-<li>Class.getMethod会遍历该类的公有方法。如果没有匹配到，遍历父类的公有方法。</li>
-<li>以getMethod为代表的查找方法操作，会返回查找得到结果的一份拷贝。<br><strong>避免在热点代码中使用返回Method数组的方法，减少不必要的堆空间消耗。</strong></li>
-</ul>
-<h2 id="反射本身性能开销"><a href="#反射本身性能开销" class="headerlink" title="反射本身性能开销"></a>反射本身性能开销</h2><h3 id="Method-invoke是一个变长参数方法。"><a href="#Method-invoke是一个变长参数方法。" class="headerlink" title="Method.invoke是一个变长参数方法。"></a>Method.invoke是一个变长参数方法。</h3><p>Java编译器会在方法调用处生成一个长度为传入参数个数的Object数组，并将传入参数一一存储进该数组中。</p>
-<h3 id="Java编译器会对传入的基本类型参数自动装箱。"><a href="#Java编译器会对传入的基本类型参数自动装箱。" class="headerlink" title="Java编译器会对传入的基本类型参数自动装箱。"></a>Java编译器会对传入的基本类型参数自动装箱。</h3><p>Java 缓存了 [-128, 127] 中所有整数所对应的 Integer 对象。<br>需要自动装箱的整数在这个范围之内时，返回缓存的 Integer，否则需要新建一个Integer对象。</p>
-<p>解决方法：</p>
-<ul>
-<li><strong>扩大缓存范围</strong>（对应参数-Djava.lang.Integer.IntegerCache.high=128）。</li>
-<li><strong>在外部缓存</strong>自动装箱得到的Integer对象。</li>
-</ul>
-<p><strong>上面两条除了带来性能开销外，还可能占用堆内存，使得 GC 更加频繁。</strong></p>
-<h3 id="权限检查带来的开销"><a href="#权限检查带来的开销" class="headerlink" title="权限检查带来的开销"></a>权限检查带来的开销</h3><ul>
-<li>关闭权限检查。<br>setAccessible(true)</li>
-</ul>
-<h3 id="方法内联"><a href="#方法内联" class="headerlink" title="方法内联"></a>方法内联</h3><ul>
-<li>没有方法内联优化</li>
-<li>逃逸分析不起效</li>
-</ul>
-<p>具体代码具体分析。</p>
-<h1 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h1><blockquote>
-<p><a href="https://time.geekbang.org/column/article/12192" target="_blank" rel="noopener">https://time.geekbang.org/column/article/12192</a></p>
-</blockquote>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -2478,7 +2505,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">35</span>
+                  <span class="site-state-item-count">36</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -2500,7 +2527,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">18</span>
+                  <span class="site-state-item-count">19</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>
