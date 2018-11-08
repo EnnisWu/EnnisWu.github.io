@@ -9,29 +9,41 @@ categories: Android优化
 
 - LinearLayout与RelativeLayout作用相同时使用LinearLayout。
 - LinearLayout需要嵌套时使用RelativeLayout。
+- 使用ConstraintLayout。
 
-## \<include>标签
+## <include\>标签
 
 - 只支持android:layout\_开头的属性（android:id是特例）。
-- \<include>指定了id属性，包含的布局文件根元素也指定了id属性，以\<include>指定的为准。
+- <include\>指定了id属性，包含的布局文件根元素也指定了id属性，以<include\>指定的为准。
 
-## \<merge>标签
+## <merge\>标签
 
-- 配合\<include>标签使用可以减少布局的层级。
+- 配合<include\>标签使用可以减少布局的层级。
 
 ## ViewStub
 
 - 继承自View，宽高都是0，本身不参与任何的布局和绘制过程。
 - 按需加载所需的布局文件（如网络异常时的界面），使用的时候再加载，提高初始化性能。
-- 不支持\<merge>标签。
+- 不支持<merge\>标签。
+- 使用inflateedId属性指定加载的布局id。
+
+```xml
+<ViewStub
+	android:id="@+id/stub_import"
+	android:inflatedId="@+id/panel_import" />
+```
 
 ### 怎样加载？
 
+```java
 ((ViewStub) findViewById(R.id.stub_import)).setVisibility(View.VISIBLE);
+```
 
 或
 
+```java
 View importPanel = ((ViewStub) findViewById(R.id.stub_import)).inflate();
+```
 
 - 加载后ViewStub不在属于布局，为null。
 
