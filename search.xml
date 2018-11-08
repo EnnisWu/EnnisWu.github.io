@@ -1,6 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title><![CDATA[笔记-深入拆解Java虚拟机-19Java字节码（基础篇）]]></title>
+    <url>%2F2018%2F11%2F08%2F%E7%AC%94%E8%AE%B0-%E6%B7%B1%E5%85%A5%E6%8B%86%E8%A7%A3Java%E8%99%9A%E6%8B%9F%E6%9C%BA-19Java%E5%AD%97%E8%8A%82%E7%A0%81%EF%BC%88%E5%9F%BA%E7%A1%80%E7%AF%87%EF%BC%89%2F</url>
+    <content type="text"><![CDATA[操作数栈 解释执行过程中，为 Java 方法分配栈桢时，JVM 需要开辟一块额外的空间作为操作数栈，存放计算的操作数和返回结果。 执行每一条指令之前，JVM 要求该指令的操作数已被压入操作数栈中。 在执行指令时，JVM 会将该指令所需的操作数弹出，并且将指令的结果重新压入栈中。 直接作用在操作数栈上的指令dup 指令 复制栈顶元素。 常用于复制 new 指令所生成的未经初始化的引用。 pop 指令 舍弃栈顶元素。 常用于舍弃调用指令的返回结果。 dup2 指令和 pop2 指令 long 类型或 double 类型的值占据两个栈单元。 dup 指令和 pop 指令只能处理非 long 或非 double 类型的值。 dup2 指令复制栈顶两个单元。 pop2 指令弹出栈顶两个单元。 swap 指令 交换栈顶两个元素的值。 直接将常量加载在操作数栈上的指令 常量类型包括 int 类型 long 类型 float 类型 double 类型 String 类型 Class 类型 正常情况下，操作数栈的压入弹出是一条条指令完成。 例外：抛异常时会清除操作数栈上的所有内容，然后将异常实例压入操作数栈。 int 类型为例 可以通过 iconst 指令加载 -1 至 5 之间的 int 值。 可以通过 bipush、sipush 加载一个字节、两个字节所能代表的 int 值。 可以通过 ldc 加载常量池中的常量值（如 ldc #18 将加载常量池中的第 18 项）。 局部变量区 方法栈帧的重要组成部分。 可以缓存计算的结果。 JVM 将其当成一个数组，依次存放 this 指针（仅非静态方法），所传入的参数，字节码中的局部变量。 long 类型和 double 类型的值占据两个单元，其余类型占据一个单元。 生命周期没有重合的局部变量可以编排至同一单元。 存储在局部变量区的值，需要加载至操作数栈中，才能进行计算。 计算得到的结果再存储至局部变量区中。 局部变量数组的加载、存储指令需要指明所加载单元的下标。 iinc M N 指令 Java 字节码唯一能够作用于局部变量的指令。 M 为非负整数，N 为整数。 将局部变量数组的第 M 个单元中的 int 值增加 N。 常用于更新 for 循环的自增量。 Java 字节码简介Java 相关指令 new：后跟目标类，生成该类的未初始化的对象。 instanceof：后跟目标类，判断栈顶元素是否为目标类 / 接口的实例（是则压入 1，否则压入 0）。 checkcast：后跟目标类，判断栈顶元素是否为目标类 / 接口的实例（如果不是便抛出异常）。 athrow：将栈顶异常抛出。 monitorenter：为栈顶对象加锁。 monitorexit：为栈顶对象解锁。 字段访问指令 静态字段访问指令：getstatic、putstatic。 实例字段访问指令：getfield、putfield。 这四条指令均附带用以定位目标字段的信息。 这四条指令所消耗的操作数栈元素皆不同。 方法调用指令 包括 invokestatic，invokespecial，invokevirtual，invokeinterface 和 invokedynamic。 除 invokedynamic 外，其他的方法调用指令所消耗的操作数栈元素由调用类型和目标方法描述符确定。 数组相关指令 newarray：新建基本类型数组。 anewarray：新建引用类型数组。 mutianewarray：新建多维数组。 arraylength：求数组长度。 数组加载指令。 数组存储指令。 控制流指令 goto：无条件跳转指令。 tableswitch：条件跳转指令（针对密集的 cases）。 lookupswtich：条件跳转指令（针对稀疏的 cases）。 被废弃的 jsr，ret 指令。 返回指令。 除返回指令外，其他的控制流指令均附带一个或者多个字节码偏移量，代表需要跳转到的位置。 问题Q：JVM 为什么使用基于栈的计算模型？ A：实现起来容易一些，但并不高效，因为没有使用底层体系架构的寄存器。在JVM中，只有解释器完整地模拟出该计算模型。即时编译器在解析字节码时会使用一个虚拟的栈计算模型，但是在接下来的编译优化，以及生成的机器码就不用了。 Q：为什么局部变量要初始化？ A：①如果是虚拟机初始化局部变量，那么它需要掌握每个变量的生命周期，以便初始化共享同一下标的局部变量。实现起来比较费事。②从代码规范来看，使用未经初始化的局部变量意义不明。 Q：C/C++ 的汇编指令会有大量寄存器的操作，Java 的指令会用到寄存器吗？ A：Java 字节码不会，但是底下的实现（比如解释执行器，即时编译器）是会的。 参考 https://time.geekbang.org/column/article/14794]]></content>
+      <categories>
+        <category>Java虚拟机</category>
+      </categories>
+      <tags>
+        <tag>JVM</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title><![CDATA[笔记-深入拆解Java虚拟机-18即时编译器的中间表达形式]]></title>
+    <url>%2F2018%2F11%2F08%2F%E7%AC%94%E8%AE%B0-%E6%B7%B1%E5%85%A5%E6%8B%86%E8%A7%A3Java%E8%99%9A%E6%8B%9F%E6%9C%BA-18%E5%8D%B3%E6%97%B6%E7%BC%96%E8%AF%91%E5%99%A8%E7%9A%84%E4%B8%AD%E9%97%B4%E8%A1%A8%E8%BE%BE%E5%BD%A2%E5%BC%8F%2F</url>
+    <content type="text"><![CDATA[目测太难看不懂。。。 待更新 https://time.geekbang.org/column/108]]></content>
+      <categories>
+        <category>Java虚拟机</category>
+      </categories>
+      <tags>
+        <tag>JVM</tag>
+      </tags>
+  </entry>
+  <entry>
     <title><![CDATA[Android的视图优化方法]]></title>
     <url>%2F2018%2F11%2F07%2FAndroid%E7%9A%84%E8%A7%86%E5%9B%BE%E4%BC%98%E5%8C%96%E6%96%B9%E6%B3%95%2F</url>
     <content type="text"><![CDATA[过度绘制（Overdraw） 过度绘制（Overdraw）指的是屏幕上的某个像素在同一帧的时间内被绘制了多次。 检测过度绘制Android 中打开过度绘制检测工具的方式： 开发者选项 ➡ 调试GPU过度绘制 ➡ 显示过度绘制区域 界面中会出现不同颜色的区域，各颜色代表的意思： 过度绘制优化移除布局中不需要的背景移除 Window 默认的 Background通常使用的 theme 会包含一个 windowBackground。 1&lt;item name="android:windowBackground"&gt;@color/background_material_light&lt;/item&gt; 然后又给跟布局添加了一个背景，这会导致整个页面被多绘制一次。 移掉 windowBackground 即可解决，有两种方法。 在 theme 中设置 1&lt;item name="android:windowBackground"&gt;@null&lt;/item&gt; 在 onCreate() 方法中添加 1getWindow().setBackgroundDrawable(null); 移除控件中不需要的背景 父布局和子布局设置了相同的 background，选择其一设置即可。 减少透明度的使用View 设置了 alpha 值至少渲染两次。 布局优化 LinearLayout 与 RelativeLayout 作用相同时使用 LinearLayout。 LinearLayout 需要嵌套时使用 RelativeLayout。 使用 ConstraintLayout。 使用 Layout Inspector 查看 layout 层次结构 Tools &gt; Android &gt; Layout Inspector 使用 lint 优化布局的层次结构 Analyze&gt; Inspect Code Android&gt; Lint&gt; Performance &lt;include> 标签 只支持 android:layout_ 开头的属性（android:id 是特例）。 &lt;include> 指定了 id 属性，包含的布局文件根元素也指定了 id 属性，以 &lt;include> 指定的为准。 &lt;merge> 标签 配合 &lt;include> 标签使用可以减少布局的层级。 ViewStub 继承自 View，宽高都是 0，本身不参与任何的布局和绘制过程。 按需加载所需的布局文件（如网络异常时的界面），使用的时候再加载，提高初始化性能。 不支持 &lt;merge> 标签。 使用 inflateedId 属性指定加载的布局 id。 123&lt;ViewStub android:id="@+id/stub_import" android:inflatedId="@+id/panel_import" /&gt; 怎样加载？1((ViewStub) findViewById(R.id.stub_import)).setVisibility(View.VISIBLE); 或 1View importPanel = ((ViewStub) findViewById(R.id.stub_import)).inflate(); 加载后 ViewStub 不在属于布局，为 null。 绘制优化onDraw 方法 不要创建新的布局对象。 不要做耗时的任务。 减少自定义 View 的过度绘制 假如有多张图片叠层显示时，可以使用 Canvas 的 clipRect() 等方法将图片裁剪。 使用 GPU 呈现模式分析工具Android 中打开 GPU 呈现模式分析工具的方式： 开发者模式 ➡ 监控 ➡ GPU呈现模式]]></content>
