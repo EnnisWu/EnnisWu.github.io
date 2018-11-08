@@ -6,6 +6,7 @@ categories: Android优化
 ---
 
 # 过度绘制（Overdraw）
+
 > 过度绘制（Overdraw）指的是屏幕上的某个像素在同一帧的时间内被绘制了多次。
 
 ## 检测过度绘制
@@ -61,9 +62,11 @@ View 设置了 alpha 值至少渲染两次。
 - 使用 ConstraintLayout。
 
 ## 使用 Layout Inspector 查看 layout 层次结构
+
 > Tools > Android > Layout Inspector
 
 ## 使用 lint 优化布局的层次结构
+
 > Analyze> Inspect Code
 >> Android> Lint> Performance
 
