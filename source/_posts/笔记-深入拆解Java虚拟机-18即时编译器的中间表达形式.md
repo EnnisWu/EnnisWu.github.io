@@ -9,4 +9,4 @@ categories: Java虚拟机
 
 待更新
 
-https://time.geekbang.org/column/108
+https://time.geekbang.org/column/article/14270
