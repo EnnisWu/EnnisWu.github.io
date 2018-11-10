@@ -89,7 +89,7 @@
 <meta property="og:site_name" content="Ennis -Little Monster">
 <meta property="og:description" content="编译器优化的重排序 保证遵守 as-if-serial 属性。 操作之间存在数据依赖，不能调整顺序。  Java 内存模型与 happens-before 关系 用来描述两个操作的内存可见性。 操作 X happens-before 操作 Y，X 的结果对于 Y 可见。 happens-before 关系具有传递性。 解决这种数据竞争的关键：构造一个跨线程的 happens-before 关系。">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-08-31T07:39:12.000Z">
+<meta property="og:updated_time" content="2018-11-10T11:40:05.318Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="笔记-深入拆解Java虚拟机-13Java内存模型">
 <meta name="twitter:description" content="编译器优化的重排序 保证遵守 as-if-serial 属性。 操作之间存在数据依赖，不能调整顺序。  Java 内存模型与 happens-before 关系 用来描述两个操作的内存可见性。 操作 X happens-before 操作 Y，X 的结果对于 Y 可见。 happens-before 关系具有传递性。 解决这种数据竞争的关键：构造一个跨线程的 happens-before 关系。">
@@ -411,7 +411,7 @@
 <li>通过内存屏障（memory barrier）禁止重排序。</li>
 </ul>
 <p>开不太懂，之后再看</p>
-<h1 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h1><h1 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h1><blockquote>
+<h1 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h1><blockquote>
 <p><a href="https://time.geekbang.org/column/article/13484" target="_blank" rel="noopener">https://time.geekbang.org/column/article/13484</a></p>
 </blockquote>
 
@@ -566,7 +566,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">38</span>
+                  <span class="site-state-item-count">39</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -662,7 +662,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#编译器优化的重排序"><span class="nav-number">1.</span> <span class="nav-text">编译器优化的重排序</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Java-内存模型与-happens-before-关系"><span class="nav-number">2.</span> <span class="nav-text">Java 内存模型与 happens-before 关系</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Java-内存模型的底层实现"><span class="nav-number">3.</span> <span class="nav-text">Java 内存模型的底层实现</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#问题"><span class="nav-number">4.</span> <span class="nav-text">问题</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#参考"><span class="nav-number">5.</span> <span class="nav-text">参考</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#编译器优化的重排序"><span class="nav-number">1.</span> <span class="nav-text">编译器优化的重排序</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Java-内存模型与-happens-before-关系"><span class="nav-number">2.</span> <span class="nav-text">Java 内存模型与 happens-before 关系</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Java-内存模型的底层实现"><span class="nav-number">3.</span> <span class="nav-text">Java 内存模型的底层实现</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#参考"><span class="nav-number">4.</span> <span class="nav-text">参考</span></a></li></ol></div>
             
 
           </div>

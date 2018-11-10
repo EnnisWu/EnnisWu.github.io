@@ -298,6 +298,181 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/08/29/笔记-深入拆解Java虚拟机-10Java对象的内存分布/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Ennis L.M. Wu">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="http://pcrioz2ch.bkt.clouddn.com/portrait.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Ennis -Little Monster">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/08/29/笔记-深入拆解Java虚拟机-10Java对象的内存分布/" itemprop="url">笔记-深入拆解Java虚拟机-10Java对象的内存分布</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-08-29T09:38:58+08:00">
+                2018-08-29
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Java虚拟机/" itemprop="url" rel="index">
+                    <span itemprop="name">Java虚拟机</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h1 id="Java-新建对象的方式"><a href="#Java-新建对象的方式" class="headerlink" title="Java 新建对象的方式"></a>Java 新建对象的方式</h1><ul>
+<li>new 语句</li>
+<li>反射</li>
+<li>Object.clone方法</li>
+<li>反序列化</li>
+<li>Unsafe.allocateInstance方法</li>
+</ul>
+<h1 id="压缩指针"><a href="#压缩指针" class="headerlink" title="压缩指针"></a>压缩指针</h1><h2 id="对象头（object-header）"><a href="#对象头（object-header）" class="headerlink" title="对象头（object header）"></a>对象头（object header）</h2><ul>
+<li>每个 Java 对象都有。</li>
+<li>由<strong>标记字段、类型指针</strong>构成。</li>
+<li>标记字段：存储 Java 虚拟机有关该对象的运行数据（如哈希码、GC 信息、锁信息）。</li>
+<li>类型指针：指向该对象的类。</li>
+<li>64 位Java虚拟机中，对象头占 16 个字节。</li>
+</ul>
+<h2 id="压缩指针-1"><a href="#压缩指针-1" class="headerlink" title="压缩指针"></a>压缩指针</h2><ul>
+<li>开启压缩指针：-XX:+UseCompressedOops（默认开启）。</li>
+<li><strong>将堆中原本 64 位的 Java 对象指针压缩成 32 位。</strong></li>
+<li>类型指针也被压缩成 32 位，<strong>对象头的大小从 16 字节降至 12 字节。</strong></li>
+<li>还可以作用于<strong>引用类型的字段</strong>，<strong>引用类型数组</strong>。</li>
+</ul>
+<h1 id="内存对齐"><a href="#内存对齐" class="headerlink" title="内存对齐"></a>内存对齐</h1><ul>
+<li>虚拟机选项 -XX:ObjectAlignmentInBytes，默认值为 8。</li>
+<li>默认情况，堆中对象（包括字段之间）起始地址要对齐至 8 的倍数。</li>
+<li>浪费掉的空间称之为对象间的填充（padding）。</li>
+<li>32 位压缩指针可以寻址到 2 的 35 次方个字节（32GB 地址空间，超过 32GB 会关闭压缩指针）。</li>
+<li>压缩指针解引用：左移 3 位，再加上一个固定偏移量。</li>
+<li>字段内存对齐的一个原因：<strong>让字段只出现在同一 CPU 的缓存行中</strong>。<strong>不懂</strong></li>
+</ul>
+<h1 id="字段重排列"><a href="#字段重排列" class="headerlink" title="字段重排列"></a>字段重排列</h1><ul>
+<li>Java 虚拟机重新分配字段的顺序，达到内存对齐</li>
+</ul>
+<h1 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h1><blockquote>
+<p><a href="https://time.geekbang.org/column/article/13081" target="_blank" rel="noopener">https://time.geekbang.org/column/article/13081</a></p>
+</blockquote>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/08/27/暑假、日剧、独身者、改变、目标/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1879,202 +2054,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/08/01/笔记-深入拆解Java虚拟机-06JVM是如何处理异常的？/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Ennis L.M. Wu">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="http://pcrioz2ch.bkt.clouddn.com/portrait.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Ennis -Little Monster">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/08/01/笔记-深入拆解Java虚拟机-06JVM是如何处理异常的？/" itemprop="url">笔记-深入拆解Java虚拟机-06JVM是如何处理异常的？</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-08-01T14:41:48+08:00">
-                2018-08-01
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Java虚拟机/" itemprop="url" rel="index">
-                    <span itemprop="name">Java虚拟机</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h1 id="异常的基本概念"><a href="#异常的基本概念" class="headerlink" title="异常的基本概念"></a>异常的基本概念</h1><p><img src="http://pcrioz2ch.bkt.clouddn.com/JVM/06/throwable.png" alt="image"></p>
-<ul>
-<li><p>Error：涵盖程序不应捕获的异常（JVM抛出）。<br>程序出发Error时，执行状态已经无法恢复，需要终止线程甚至终止虚拟机。</p>
-</li>
-<li><p>Exception：涵盖程序可能需要捕获且处理的异常。</p>
-</li>
-<li>RuntimeException：表示“程序虽然无法继续执行，但是还能抢救一下”的情况。</li>
-<li><strong>RuntimeException和Error非检查异常（unchecked exception）。其他异常属于检查异常（checked exception）。</strong></li>
-<li>检查异常需要程序显式地捕获，或者在方法声明中用throws关键字再次抛出。</li>
-</ul>
-<h2 id="常实例的构造十分昂贵。"><a href="#常实例的构造十分昂贵。" class="headerlink" title="常实例的构造十分昂贵。"></a>常实例的构造十分昂贵。</h2><p>在构造异常实例时，Java虚拟机需要<strong>生成该异常的栈轨迹</strong>（stack trace）。</p>
-<ul>
-<li>逐一访问当前线程的Java栈帧。</li>
-<li>记录下各种调试信息（方法名，方法所在类名，文件名，代码中第几行）。</li>
-<li>Java虚拟机会<strong>忽略异常构造器和填充栈帧的Java方法</strong>（Throwable.fillInStackTrace），直接从新建异常位置开始算起。</li>
-<li>Java虚拟机会<strong>忽略标记为不可见的Java方法栈帧</strong>。</li>
-</ul>
-<h3 id="是否可以缓存异常实例，在需要用到的时候直接抛出？"><a href="#是否可以缓存异常实例，在需要用到的时候直接抛出？" class="headerlink" title="是否可以缓存异常实例，在需要用到的时候直接抛出？"></a>是否可以缓存异常实例，在需要用到的时候直接抛出？</h3><ul>
-<li>从语法角度上，是允许的。</li>
-<li><strong>对应的栈轨迹并非throw语句的位置，而是新建异常的位置。</strong></li>
-</ul>
-<h1 id="Java虚拟机是如何捕获异常的？"><a href="#Java虚拟机是如何捕获异常的？" class="headerlink" title="Java虚拟机是如何捕获异常的？"></a>Java虚拟机是如何捕获异常的？</h1><p>编译生成的字节码中，<strong>每个方法都附带一个异常表</strong>。</p>
-<p>异常表中每一个条目代表一个异常处理器。</p>
-<p>异常处理器的组成：</p>
-<ul>
-<li>from指针</li>
-<li>to指针</li>
-<li>target指针</li>
-<li>所捕获的异常类型</li>
-</ul>
-<p>注：指针的值是字节码索引（bytecode index，bci），用来定位字节码。</p>
-<p><strong>from指针和to指针：标示异常处理器所监控的范围（如try代码块范围）。</strong></p>
-<p><strong>target指针：指向异常处理器的起始位置（如catch代码块起始位置）。</strong></p>
-<h2 id="触发异常的处理流程"><a href="#触发异常的处理流程" class="headerlink" title="触发异常的处理流程"></a>触发异常的处理流程</h2><ol>
-<li>Java虚拟机<strong>从上至下遍历异常表</strong>中的所有条目。</li>
-<li><strong>触发异常</strong>的字节码的索引值<strong>在某个异常表条目的监控范围内</strong>，Java虚拟机判断所抛出的异常和该条目想要捕获的异常<strong>是否匹配</strong>。</li>
-<li>如果<strong>匹配</strong>，Java 虚拟机将控制流<strong>转移至该条目target指针指向</strong>的字节码。</li>
-<li>如果<strong>遍历完所有</strong>异常表条目，仍<strong>未匹配</strong>到异常处理器，<strong>弹出当前方法对应的Java栈帧，在调用者（caller）中重复上述操作</strong>。</li>
-<li>finally代码块的编译，当前版本Java编译器，是<strong>复制finally代码块的内容，分别放在try-catch代码块所有正常执行路径和异常执行路径的出口中</strong>。</li>
-</ol>
-<p><img src="http://pcrioz2ch.bkt.clouddn.com/JVM/06/trigger_exception.png" alt="iamge"></p>
-<p>针对异常执行路径，Java编译器会生成一个或多个异常表条目，监控整个try-catch代码块，并且捕获所有种类的异常（在 javap 中以 any 指代）。</p>
-<p>这些异常表条目的 target 指针将指向另一份复制的finally代码块。</p>
-<p>在这个finally代码块的最后，Java编译器会重新抛出所捕获的异常。</p>
-<p><strong>如果catch代码块捕获了异常，并且触发了另一个异常，那么finally捕获并且重抛后者，忽略前者。</strong></p>
-<h1 id="Java7的Suppressed异常以及语法糖"><a href="#Java7的Suppressed异常以及语法糖" class="headerlink" title="Java7的Suppressed异常以及语法糖"></a>Java7的Suppressed异常以及语法糖</h1><h2 id="Suppressed异常"><a href="#Suppressed异常" class="headerlink" title="Suppressed异常"></a>Suppressed异常</h2><p>允许将一个异常附于另一个异常之上。</p>
-<p><strong>抛出的异常可以附带多个异常信息。</strong></p>
-<p>finally代码块缺少指向所捕获异常的引用，这个新特性使用起来非常繁琐。</p>
-<h2 id="try-with-resources"><a href="#try-with-resources" class="headerlink" title="try-with-resources"></a>try-with-resources</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">try</span> (  ); <span class="comment">// try-with-resources</span></span><br></pre></td></tr></table></figure>
-<p>在字节码层面自动使用Suppressed异常。</p>
-<p><strong>自动关闭资源</strong>（实现AutoCloseable接口）。</p>
-<h2 id="同一catch代码块捕获多种异常"><a href="#同一catch代码块捕获多种异常" class="headerlink" title="同一catch代码块捕获多种异常"></a>同一catch代码块捕获多种异常</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">try</span> &#123;</span><br><span class="line">  </span><br><span class="line">&#125; <span class="keyword">catch</span> (SomeException | OtherException e) &#123;</span><br><span class="line">  </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h1 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h1><blockquote>
-<p><a href="https://time.geekbang.org/column/article/12134" target="_blank" rel="noopener">https://time.geekbang.org/column/article/12134</a></p>
-</blockquote>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -2129,7 +2108,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">38</span>
+                  <span class="site-state-item-count">39</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>

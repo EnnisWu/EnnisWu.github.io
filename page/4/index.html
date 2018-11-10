@@ -298,6 +298,469 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/07/20/转-Java反射完全解析/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Ennis L.M. Wu">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="http://pcrioz2ch.bkt.clouddn.com/portrait.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Ennis -Little Monster">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/07/20/转-Java反射完全解析/" itemprop="url">[转]Java反射完全解析</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-07-20T20:31:41+08:00">
+                2018-07-20
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Java反射/" itemprop="url" rel="index">
+                    <span itemprop="name">Java反射</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <blockquote>
+<p>转载请注明出处：<a href="https://www.jianshu.com/p/607ff4e79a13" target="_blank" rel="noopener">https://www.jianshu.com/p/607ff4e79a13</a></p>
+</blockquote>
+<p>本文相关知识点大部分总结自<a href="https://docs.oracle.com/javase/8/docs/technotes/guides/reflection/index.html" target="_blank" rel="noopener">Oracle官方文档</a>，对于英文比较好的朋友，建议直接阅读原文档。</p>
+<p>按例，首先描述一下定义：</p>
+<blockquote>
+<p>Reflection enables Java code to discover information about the fields, methods and constructors of loaded classes, and to use reflected fields, methods, and constructors to operate on their underlying counterparts, within security restrictions.<br>通过反射，Java 代码可以发现有关已加载类的字段，方法和构造函数的信息，并可以在安全限制内对这些字段，方法和构造函数进行操作。</p>
+</blockquote>
+<p>简而言之，你可以在运行状态中通过反射机制做到：</p>
+<ul>
+<li>对于任意一个类，都能够知道这个类的所有属性和方法；</li>
+<li>对于任意一个对象，都能够调用它的任意一个方法和属性;</li>
+</ul>
+<p>这种动态获取的信息以及动态调用对象的方法的功能称为java语言的反射机制。</p>
+<p>在我看来我们平时使用 Java 反射主要涉及两个类(接口) <a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Class.html" target="_blank" rel="noopener">Class</a>， <a href="https://docs.oracle.com/javase/8/docs/api/java/lang/reflect/Member.html" target="_blank" rel="noopener">Member</a>，如果把这两个类搞清楚了，反射基本就 ok 了。</p>
+<h1 id="Class"><a href="#Class" class="headerlink" title="Class"></a>Class</h1><p>提到反射就不得不提到 Class，Class 可以说是反射能够实现的基础；注意这里说的 Class与 class 关键字<strong>不是同一种东西</strong>。class 关键字是在声明 java 类时使用的；而 Class 是 java JDK 提供的一个类,完整路径为 <a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Class.html" target="_blank" rel="noopener">java.lang.Class</a>，本质上与 Math, String 或者你自己定义各种类没什么区别。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">final</span> <span class="class"><span class="keyword">class</span> <span class="title">Class</span>&lt;<span class="title">T</span>&gt; <span class="keyword">implements</span> <span class="title">java</span>.<span class="title">io</span>.<span class="title">Serializable</span>, <span class="title">GenericDeclaration</span>, <span class="title">Type</span>, <span class="title">AnnotatedElement</span> </span>&#123;</span><br><span class="line">   ...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>那 Class 到底在反射中起到什么作用呢？</p>
+<blockquote>
+<p>For every type of object, the Java virtual machine instantiates an immutable instance of <a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Class.html" target="_blank" rel="noopener">java.lang.Class</a> which provides methods to examine the runtime properties of the object including its members and type information. <a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Class.html" target="_blank" rel="noopener">Class</a> also provides the ability to create new classes and objects. Most importantly, it is the entry point for all of the Reflection APIs.</p>
+</blockquote>
+<p>对于每一种类，Java 虚拟机都会初始化出一个 Class 类型的实例，每当我们编写并且编译一个新创建的类就会产生一个对应 Class 对象，并且这个 Class 对象会被保存在同名 .class 文件里。当我们 new 一个新对象或者引用静态成员变量时，Java 虚拟机(JVM)中的类加载器系统会将对应 Class 对象加载到 JVM 中，然后 JVM 再根据这个类型信息相关的Class 对象创建我们需要实例对象或者提供静态变量的引用值。</p>
+<p>比如创建编译一个 Shapes 类，那么，JVM 就会创建一个 Shapes 对应 Class 类的 Class实例，该 Class 实例保存了 Shapes 类相关的类型信息，包括属性，方法，构造方法等等，通过这个 Class 实例可以在运行时访问 Shapes 对象的属性和方法等。另外通过 Class类还可以创建出一个新的 Shapes 对象。这就是反射能够实现的原因，可以说 Class 是反射操作的基础。</p>
+<p>需要特别注意的是，每个 class（注意 class 是小写，代表普通类）类，无论创建多少个实例对象，在 JVM 中都对应同一个 Class 对象。</p>
+<p>下面就通过一个简单的例子来说明如何通过反射实例化一个对象。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Animal</span> </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> String name;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">int</span> age;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">Animal</span><span class="params">(String name, <span class="keyword">int</span> age)</span></span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.name = name;</span><br><span class="line">        <span class="keyword">this</span>.age = age;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">toString</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="string">"Animal : name = "</span> + name + <span class="string">" age = "</span> + age;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"> <span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">TestReflection</span></span>&#123;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> String TAG = <span class="string">"Reflection"</span>;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">testReflection</span><span class="params">()</span></span>&#123;</span><br><span class="line">        <span class="comment">//获取Animal类的Class对象</span></span><br><span class="line">        Class c = Animal.class;</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            <span class="comment">//通过Class对象反射获取Animal类的构造方法</span></span><br><span class="line">            Constructor constructor = c.getConstructor(String.class, <span class="keyword">int</span>.class);</span><br><span class="line">            <span class="comment">//调用构造方法获取Animal实例</span></span><br><span class="line">            Animal animal = (Animal) constructor.newInstance( <span class="string">"Jack"</span>, <span class="number">3</span>);</span><br><span class="line">            <span class="comment">//将构造出来的Animal对象打印出来</span></span><br><span class="line">            Log.d(TAG, animal.toString());</span><br><span class="line">        &#125; <span class="keyword">catch</span> (NoSuchMethodException e) &#123;</span><br><span class="line">            e.printStackTrace();</span><br><span class="line">        &#125; <span class="keyword">catch</span> (IllegalAccessException e) &#123;</span><br><span class="line">            e.printStackTrace();</span><br><span class="line">        &#125; <span class="keyword">catch</span> (InstantiationException e) &#123;</span><br><span class="line">            e.printStackTrace();</span><br><span class="line">        &#125; <span class="keyword">catch</span> (InvocationTargetException e) &#123;</span><br><span class="line">            e.printStackTrace();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>下面我们来看下打印值</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">03-28 20:12:00.958 2835-2835/? D/Reflection: Animal : name = Jack age = 3</span><br></pre></td></tr></table></figure>
+<p>可以看出我们确实成功构造出了 Animal 对象，而且在这过程中 Class 功不可没。有人说你这也太费事了，都知道 Animal 对象了，我分分钟就能给你 new 出来了。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Animal animal = <span class="keyword">new</span> Animal(<span class="string">"Jack"</span>, <span class="number">3</span>);</span><br></pre></td></tr></table></figure>
+<p>没错！但是如果并不能直接导入 Animal 类呢，如果构造方法都是 private 的呢？这个时候反射就能大展身手了。</p>
+<h2 id="如何获取Class"><a href="#如何获取Class" class="headerlink" title="如何获取Class"></a>如何获取Class</h2><p>说 Class 是反射能够实现的基础的另一个原因是：Java 反射包 java.lang.reflect 中的所有类都没有 public 构造方法，要想获得这些类实例，只能通过 Class 类获取。所以说如果想使用反射，必须得获得 Class 对象。<br>下面列举了几种能够获取 Class 对象的方法。</p>
+<ul>
+<li>Object.getClass()<br>通过对象实例获取对应 Class 对象，如</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//Returns the Class for String</span></span><br><span class="line">Class c = <span class="string">"foo"</span>.getClass();</span><br><span class="line"></span><br><span class="line"><span class="keyword">enum</span> E &#123; A, B &#125;</span><br><span class="line"><span class="comment">//Returns the Class corresponding to the enumeration type E.</span></span><br><span class="line">Class c = A.getClass();</span><br><span class="line"></span><br><span class="line"><span class="keyword">byte</span>[] bytes = <span class="keyword">new</span> <span class="keyword">byte</span>[<span class="number">1024</span>];</span><br><span class="line"><span class="comment">//Returns the Class corresponding to an array with component type byte.</span></span><br><span class="line">Class c = bytes.getClass();</span><br><span class="line"></span><br><span class="line">Set&lt;String&gt; s = <span class="keyword">new</span> HashSet&lt;String&gt;();</span><br><span class="line"><span class="comment">//Returns the Class corresponding to java.util.HashSet.</span></span><br><span class="line">Class c = s.getClass();</span><br></pre></td></tr></table></figure>
+<p>然而对于基本类型无法使用这种方法</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">boolean</span> b;</span><br><span class="line">Class c = b.getClass();   <span class="comment">// compile-time error</span></span><br></pre></td></tr></table></figure>
+<ul>
+<li>The .class Syntax<br>通过类的类型获取Class对象,基本类型同样可以使用这种方法，如</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//The `.class` syntax returns the Class corresponding to the type `boolean`.</span></span><br><span class="line">Class c = <span class="keyword">boolean</span>.class;  </span><br><span class="line"></span><br><span class="line"><span class="comment">//Returns the Class for String</span></span><br><span class="line">Class c = String.class;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>Class.forName()<br>通过类的全限定名获取Class对象， 基本类型无法使用此方法</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Class c = Class.forName(<span class="string">"java.lang.String"</span>);</span><br></pre></td></tr></table></figure>
+<p>对于数组比较特殊</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Class cDoubleArray = Class.forName(<span class="string">"[D"</span>);    <span class="comment">//相当于double[].class</span></span><br><span class="line"></span><br><span class="line">Class cStringArray = Class.forName(<span class="string">"[[Ljava.lang.String;"</span>);   <span class="comment">//相当于String[][].class</span></span><br></pre></td></tr></table></figure>
+<ul>
+<li>TYPE Field for Primitive Type Wrappers<br>基本类型和 void 类型的包装类可以使用 TYPE 字段获取</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Class c = Double.TYPE;   <span class="comment">//等价于 double.class.</span></span><br><span class="line">Class c = Void.TYPE;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>Methods that Return Classes<br>另外还有一些反射方法可以获取 Class 对象，但前提是你已经获取了一个 Class 对象。<br>有点拗口，比如说你已经获取了一个类的 Class 对象，就可以通过反射方法获取这个类的父类的 Class 对象。</li>
+</ul>
+<p><a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Class.html#getSuperclass--" target="_blank" rel="noopener">Class.getSuperclass()</a>获得给定类的父类 Class</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// javax.swing.JButton的父类是javax.swing.AbstractButton</span></span><br><span class="line">Class c = javax.swing.JButton.class.getSuperclass();</span><br></pre></td></tr></table></figure>
+<p>类似方法还有：</p>
+<p><a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Class.html#getClasses--" target="_blank" rel="noopener">Class.getClasses()</a><br><a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Class.html#getDeclaredClasses--" target="_blank" rel="noopener">Class.getDeclaredClasses()</a><br><a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Class.html#getDeclaringClass--" target="_blank" rel="noopener">Class.getDeclaringClass()</a><br><a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Class.html#getEnclosingClass--" target="_blank" rel="noopener">Class.getEnclosingClass()</a><br><a href="https://docs.oracle.com/javase/8/docs/api/java/lang/reflect/Field.html#getDeclaringClass--" target="_blank" rel="noopener">java.lang.reflect.Field.getDeclaringClass()</a><br><a href="https://docs.oracle.com/javase/8/docs/api/java/lang/reflect/Method.html#getDeclaringClass--" target="_blank" rel="noopener">java.lang.reflect.Method.getDeclaringClass()</a><br><a href="https://docs.oracle.com/javase/8/docs/api/java/lang/reflect/Constructor.html#getDeclaringClass--" target="_blank" rel="noopener">java.lang.reflect.Constructor.getDeclaringClass()</a></p>
+<h2 id="通过Class获取类修饰符和类型"><a href="#通过Class获取类修饰符和类型" class="headerlink" title="通过Class获取类修饰符和类型"></a>通过Class获取类修饰符和类型</h2><p>我们知道类的声明一般如下表示</p>
+<p><img src="https://mmbiz.qpic.cn/mmbiz_png/v1LbPPWiaSt5tL9GD0n77s3FwJiarzao9SKeiccYrAOy1qStMPfiadTQhuy4bmt3kx18tyf5zaq3ITOmRK3ib4Be6eA/640?wx_fmt=png&amp;tp=webp&amp;wxfrom=5&amp;wx_lazy=1" alt="img"></p>
+<p>下面我们就以 HashMap 为例，通过一个 Demo 来说明如何获取这些信息</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">TestReflection</span> </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> String TAG = <span class="string">"Reflection"</span>;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">testReflection</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        Class&lt;?&gt; c = HashMap.class;</span><br><span class="line">        <span class="comment">//获取类名</span></span><br><span class="line">        Log.d(TAG, <span class="string">"Class : "</span> + c.getCanonicalName());</span><br><span class="line">        <span class="comment">//获取类限定符</span></span><br><span class="line">        Log.d(TAG, <span class="string">"Modifiers : "</span> + Modifier.toString(c.getModifiers()));</span><br><span class="line">        <span class="comment">//获取类泛型信息</span></span><br><span class="line">        TypeVariable[] tv = c.getTypeParameters();</span><br><span class="line">        <span class="keyword">if</span> (tv.length != <span class="number">0</span>) &#123;</span><br><span class="line">            StringBuilder parameter = <span class="keyword">new</span> StringBuilder(<span class="string">"Parameters : "</span>);</span><br><span class="line">            <span class="keyword">for</span> (TypeVariable t : tv) &#123;</span><br><span class="line">                parameter.append(t.getName());</span><br><span class="line">                parameter.append(<span class="string">" "</span>);</span><br><span class="line">            &#125;</span><br><span class="line">            Log.d(TAG, parameter.toString());</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            Log.d(TAG, <span class="string">"  -- No Type Parameters --"</span>);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">//获取类实现的所有接口</span></span><br><span class="line">        Type[] intfs = c.getGenericInterfaces();</span><br><span class="line">        <span class="keyword">if</span> (intfs.length != <span class="number">0</span>) &#123;</span><br><span class="line">            StringBuilder interfaces = <span class="keyword">new</span> StringBuilder(<span class="string">"Implemented Interfaces : "</span>);</span><br><span class="line">            <span class="keyword">for</span> (Type intf : intfs)&#123;</span><br><span class="line">                interfaces.append(intf.toString());</span><br><span class="line">                interfaces.append(<span class="string">" "</span>);</span><br><span class="line">            &#125;</span><br><span class="line">            Log.d(TAG, interfaces.toString());</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            Log.d(TAG, <span class="string">"  -- No Implemented Interfaces --"</span>);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">//获取类继承数上的所有父类</span></span><br><span class="line">        List&lt;Class&gt; l = <span class="keyword">new</span> ArrayList&lt;&gt;();</span><br><span class="line">        printAncestor(c, l);</span><br><span class="line">        <span class="keyword">if</span> (l.size() != <span class="number">0</span>) &#123;</span><br><span class="line">            StringBuilder inheritance = <span class="keyword">new</span> StringBuilder(<span class="string">"Inheritance Path : "</span>);</span><br><span class="line">            <span class="keyword">for</span> (Class&lt;?&gt; cl : l)&#123;</span><br><span class="line">                inheritance.append(cl.getCanonicalName());</span><br><span class="line">                inheritance.append(<span class="string">" "</span>);</span><br><span class="line">            &#125;</span><br><span class="line">            Log.d(TAG, inheritance.toString());</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            Log.d(TAG, <span class="string">"  -- No Super Classes --%n%n"</span>);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">//获取类的注解(只能获取到 RUNTIME 类型的注解)</span></span><br><span class="line">        Annotation[] ann = c.getAnnotations();</span><br><span class="line">        <span class="keyword">if</span> (ann.length != <span class="number">0</span>) &#123;</span><br><span class="line">            StringBuilder annotation = <span class="keyword">new</span> StringBuilder(<span class="string">"Annotations : "</span>);</span><br><span class="line">            <span class="keyword">for</span> (Annotation a : ann)&#123;</span><br><span class="line">                annotation.append(a.toString());</span><br><span class="line">                annotation.append(<span class="string">" "</span>);</span><br><span class="line">            &#125;</span><br><span class="line">            Log.d(TAG, annotation.toString());</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            Log.d(TAG, <span class="string">"  -- No Annotations --%n%n"</span>);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">printAncestor</span><span class="params">(Class&lt;?&gt; c, List&lt;Class&gt; l)</span> </span>&#123;</span><br><span class="line">        Class&lt;?&gt; ancestor = c.getSuperclass();</span><br><span class="line">        <span class="keyword">if</span> (ancestor != <span class="keyword">null</span>) &#123;</span><br><span class="line">            l.add(ancestor);</span><br><span class="line">            printAncestor(ancestor, l);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>打印结果如下</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">03-29 15:04:23.070 27826-27826/com.example.ming.testproject D/Reflection: Class : java.util.HashMap</span><br><span class="line">03-29 15:04:23.070 27826-27826/com.example.ming.testproject D/Reflection: Modifiers : public</span><br><span class="line">03-29 15:04:23.071 27826-27826/com.example.ming.testproject D/Reflection: Parameters : K  V  </span><br><span class="line">03-29 15:04:23.071 27826-27826/com.example.ming.testproject D/Reflection: Implemented Interfaces : java.util.Map&lt;K, V&gt;  interface java.lang.Cloneable  interface java.io.Serializable  </span><br><span class="line">03-29 15:04:23.071 27826-27826/com.example.ming.testproject D/Reflection: Inheritance Path : java.util.AbstractMap  java.lang.Object  </span><br><span class="line">03-29 15:04:23.071 27826-27826/com.example.ming.testproject D/Reflection:   -- No Annotations --</span><br></pre></td></tr></table></figure>
+<h1 id="Member"><a href="#Member" class="headerlink" title="Member"></a>Member</h1><blockquote>
+<p>Reflection defines an interface <a href="https://docs.oracle.com/javase/8/docs/api/java/lang/reflect/Member.html" target="_blank" rel="noopener">java.lang.reflect.Member</a> which is implemented by <a href="https://docs.oracle.com/javase/8/docs/api/java/lang/reflect/Field.html" target="_blank" rel="noopener">java.lang.reflect.Field</a>, <a href="https://docs.oracle.com/javase/8/docs/api/java/lang/reflect/Method.html" target="_blank" rel="noopener">java.lang.reflect.Method</a>, and <a href="https://docs.oracle.com/javase/8/docs/api/java/lang/reflect/Constructor.html" target="_blank" rel="noopener">java.lang.reflect.Constructor</a> .</p>
+</blockquote>
+<p>对于 Member 接口可能会有人不清楚是干什么的，但如果提到实现它的三个实现类，估计用过反射的人都能知道。我们知道类成员主要包括构造函数，变量和方法，Java 中的操作基本都和这三者相关，而 Member 的这三个实现类就分别对应他们。</p>
+<p><a href="https://docs.oracle.com/javase/8/docs/api/java/lang/reflect/Field.html" target="_blank" rel="noopener">java.lang.reflect.Field</a> ：对应类变量<br><a href="https://docs.oracle.com/javase/8/docs/api/java/lang/reflect/Method.html" target="_blank" rel="noopener">java.lang.reflect.Method</a> ：对应类方法<br><a href="https://docs.oracle.com/javase/8/docs/api/java/lang/reflect/Constructor.html" target="_blank" rel="noopener">java.lang.reflect.Constructor</a> ：对应类构造函数</p>
+<p>反射就是通过这三个类才能在运行时改变对象状态。下面就让我们通过一些例子来说明如何通过反射操作它们。</p>
+<p>首先建一个测试类</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Cat</span> </span>&#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> String TAG = Cat.class.getSimpleName();</span><br><span class="line">    <span class="keyword">private</span> String name;</span><br><span class="line">    <span class="meta">@Deprecated</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">int</span> age;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">Cat</span><span class="params">(String name, <span class="keyword">int</span> age)</span></span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.name = name;</span><br><span class="line">        <span class="keyword">this</span>.age = age;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">getName</span><span class="params">()</span></span>&#123;</span><br><span class="line">        <span class="keyword">return</span> name;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">eat</span><span class="params">(String food)</span></span>&#123;</span><br><span class="line">        Log.d(TAG, <span class="string">"eat food "</span> + food);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">eat</span><span class="params">(String... foods)</span></span>&#123;</span><br><span class="line">        StringBuilder s = <span class="keyword">new</span> StringBuilder();</span><br><span class="line">        <span class="keyword">for</span>(String food : foods)&#123;</span><br><span class="line">            s.append(food);</span><br><span class="line">            s.append(<span class="string">" "</span>);</span><br><span class="line">        &#125;</span><br><span class="line">        Log.d(TAG, <span class="string">"eat food "</span> + s.toString());</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">sleep</span><span class="params">()</span></span>&#123;</span><br><span class="line">        Log.d(TAG, <span class="string">"sleep"</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">toString</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="string">"name = "</span> + name + <span class="string">" age = "</span> + age;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="Field"><a href="#Field" class="headerlink" title="Field"></a>Field</h2><p>通过 Field 你可以访问给定对象的类变量，包括获取变量的类型、修饰符、注解、变量名、变量的值或者重新设置变量值，即使变量是 private 的。</p>
+<ul>
+<li><h3 id="获取-Field"><a href="#获取-Field" class="headerlink" title="获取 Field"></a>获取 Field</h3></li>
+</ul>
+<p>Class 提供了4种方法获得给定类的 Field</p>
+<ul>
+<li><ul>
+<li><p><a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Class.html#getDeclaredField-java.lang.String-" target="_blank" rel="noopener">getDeclaredField(String name)</a>     </p>
+<p>获取指定的变量（只要是声明的变量都能获得，包括 private）</p>
+</li>
+<li><p><a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Class.html#getField-java.lang.String-" target="_blank" rel="noopener">getField(String name)</a>      </p>
+<p>获取指定的变量（只能获得 public 的）</p>
+</li>
+<li><p><a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Class.html#getDeclaredFields--" target="_blank" rel="noopener">getDeclaredFields()</a>              </p>
+<p>获取所有声明的变量（包括 private）</p>
+</li>
+<li><p><a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Class.html#getFields--" target="_blank" rel="noopener">getFields()</a></p>
+<p>获取所有的 public 变量</p>
+</li>
+</ul>
+</li>
+<li><h3 id="获取变量类型、修饰符、注解"><a href="#获取变量类型、修饰符、注解" class="headerlink" title="获取变量类型、修饰符、注解"></a>获取变量类型、修饰符、注解</h3></li>
+</ul>
+<p>一个例子说明问题</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">testField</span><span class="params">()</span></span>&#123;</span><br><span class="line">        Class c = Cat.class;</span><br><span class="line">        Field[] fields = c.getDeclaredFields();</span><br><span class="line">        <span class="keyword">for</span>(Field f : fields)&#123;</span><br><span class="line">            StringBuilder builder = <span class="keyword">new</span> StringBuilder();</span><br><span class="line">            <span class="comment">//获取名称</span></span><br><span class="line">            builder.append(<span class="string">"filed name = "</span>);</span><br><span class="line">            builder.append(f.getName());</span><br><span class="line">            <span class="comment">//获取类型</span></span><br><span class="line">            builder.append(<span class="string">" type = "</span>);</span><br><span class="line">            builder.append(f.getType());</span><br><span class="line">            <span class="comment">//获取修饰符</span></span><br><span class="line">            builder.append(<span class="string">" modifiers = "</span>);</span><br><span class="line">            builder.append(Modifier.toString(f.getModifiers()));</span><br><span class="line">            <span class="comment">//获取注解</span></span><br><span class="line">            Annotation[] ann = f.getAnnotations();</span><br><span class="line">            <span class="keyword">if</span> (ann.length != <span class="number">0</span>) &#123;</span><br><span class="line">                builder.append(<span class="string">" annotations = "</span>);</span><br><span class="line">                <span class="keyword">for</span> (Annotation a : ann)&#123;</span><br><span class="line">                    builder.append(a.toString());</span><br><span class="line">                    builder.append(<span class="string">" "</span>);</span><br><span class="line">                &#125;</span><br><span class="line">            &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                builder.append(<span class="string">"  -- No Annotations --"</span>);</span><br><span class="line">            &#125;</span><br><span class="line">            Log.d(TAG, builder.toString());</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+<p>打印结果：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">filed name = age type = int modifiers = public annotations = @java.lang.Deprecated() </span><br><span class="line">filed name = name type = class java.lang.String modifiers = private  -- No Annotations --</span><br><span class="line">filed name = TAG type = class java.lang.String modifiers = public static final  -- No Annotations --</span><br></pre></td></tr></table></figure>
+<ul>
+<li><h3 id="获取、设置变量值"><a href="#获取、设置变量值" class="headerlink" title="获取、设置变量值"></a>获取、设置变量值</h3></li>
+</ul>
+<p>给定一个对象和它的成员变量名称，就能通过反射获取和改变该变量的值。什么都不说了，没有什么是不能通过一个例子解决的， Easy~</p>
+<p>仍然是上面的测试类，通过反射获取并改变 Cat 的 name 和 age.</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">testField</span><span class="params">()</span></span>&#123;</span><br><span class="line">        Cat cat = <span class="keyword">new</span> Cat(<span class="string">"Tom"</span>, <span class="number">2</span>);</span><br><span class="line">        Class c = cat.getClass();</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            <span class="comment">//注意获取private变量时，需要用getDeclaredField</span></span><br><span class="line">            Field fieldName = c.getDeclaredField(<span class="string">"name"</span>);</span><br><span class="line">            Field fieldAge = c.getField(<span class="string">"age"</span>);</span><br><span class="line">            <span class="comment">//反射获取名字, 年龄</span></span><br><span class="line">            String name = (String) fieldName.get(cat);</span><br><span class="line">            <span class="keyword">int</span> age = fieldAge.getInt(cat);</span><br><span class="line">            Log.d(TAG, <span class="string">"before set, Cat name = "</span> + name + <span class="string">" age = "</span> + age);</span><br><span class="line">            <span class="comment">//反射重新set名字和年龄</span></span><br><span class="line">            fieldName.set(cat, <span class="string">"Timmy"</span>);</span><br><span class="line">            fieldAge.setInt(cat, <span class="number">3</span>);</span><br><span class="line">            Log.d(TAG, <span class="string">"after set, Cat "</span> + cat.toString());</span><br><span class="line">        &#125; <span class="keyword">catch</span> (NoSuchFieldException e) &#123;</span><br><span class="line">            e.printStackTrace();</span><br><span class="line">        &#125; <span class="keyword">catch</span> (IllegalAccessException e) &#123;</span><br><span class="line">            e.printStackTrace();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+<p>嗯？竟然报错？</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">System.err: java.lang.IllegalAccessException: Class java.lang.Class&lt;com.example.ming.testnestscrollview.TestReflection&gt; cannot access private  field java.lang.String com.example.ming.testnestscrollview.Cat.name of class java.lang.Class&lt;com.example.ming.testnestscrollview.Cat&gt;</span><br><span class="line">System.err:     at java.lang.reflect.Field.get(Native Method)</span><br><span class="line">System.err:     at com.example.ming.testnestscrollview.TestReflection.testField(TestReflection.java:22)</span><br><span class="line">System.err:     at com.example.ming.testnestscrollview.MainActivity.onCreate(MainActivity.java:17)</span><br></pre></td></tr></table></figure>
+<p>观察一下异常信息 java.lang.IllegalAccessException，说我们没有权限操作变量 name；回到 Cat 类中查看一下 name 变量。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">private</span> String name;</span><br></pre></td></tr></table></figure>
+<p>原来 name 变量是 private，Java 运行时会进行访问权限检查，private 类型的变量无法进行直接访问，刚刚进行的反射操作并没有打破这种封装，所以我们依然没有权限对 private属性进行直接访问。</p>
+<p>难道就没有办法打破这种限制吗？必须有！强大的反射早已暗中为我们准备好了一切。反射包里为我们提供了一个强大的类。</p>
+<ul>
+<li><a href="https://docs.oracle.com/javase/8/docs/api/java/lang/reflect/AccessibleObject.html" target="_blank" rel="noopener">java.lang.reflect.AccessibleObject</a></li>
+</ul>
+<p><a href="https://docs.oracle.com/javase/8/docs/api/java/lang/reflect/AccessibleObject.html" target="_blank" rel="noopener">AccessibleObject</a> 为我们提供了一个方法 <a href="https://docs.oracle.com/javase/8/docs/api/java/lang/reflect/AccessibleObject.html#setAccessible-boolean-" target="_blank" rel="noopener">setAccessible(boolean flag)</a>，该方法的作用就是可以取消 Java 语言访问权限检查。所以任何继承 <a href="https://docs.oracle.com/javase/8/docs/api/java/lang/reflect/AccessibleObject.html" target="_blank" rel="noopener">AccessibleObject</a> 的类的对象都可以使用该方法取消 Java 语言访问权限检查。（final 类型变量也可以通过这种办法访问）</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">final</span> <span class="class"><span class="keyword">class</span> <span class="title">Field</span> <span class="keyword">extends</span> <span class="title">AccessibleObject</span> <span class="keyword">implements</span> <span class="title">Member</span></span></span><br></pre></td></tr></table></figure>
+<p><a href="https://docs.oracle.com/javase/8/docs/api/java/lang/reflect/Field.html" target="_blank" rel="noopener">Field</a> 正是 <a href="https://docs.oracle.com/javase/8/docs/api/java/lang/reflect/AccessibleObject.html" target="_blank" rel="noopener">AccessibleObject</a> 的子类，那么简单了，只要在访问私有变量前调用 filed.setAccessible(true) 就可以了</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">...</span><br><span class="line">fieldName.setAccessible(<span class="keyword">true</span>);</span><br><span class="line"><span class="comment">//反射获取名字, 年龄</span></span><br><span class="line">String name = (String) fieldName.get(cat);</span><br><span class="line">...</span><br></pre></td></tr></table></figure>
+<p>打印结果</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">TestReflection: before set, Cat name = Tom age = 2</span><br><span class="line">TestReflection: after set, Cat name = Timmy age = 3</span><br></pre></td></tr></table></figure>
+<p>Bingo!</p>
+<p>注意 Method 和 Constructor 也都是继承 AccessibleObject，所以如果遇到私有方法和私有构造函数无法访问，记得处理方法一样。</p>
+<h2 id="Method"><a href="#Method" class="headerlink" title="Method"></a>Method</h2><blockquote>
+<p>The java.lang.reflect.Method class provides APIs to access information about a method’s modifiers, return type, parameters, annotations, and thrown exceptions. It also be used to invoke methods.</p>
+</blockquote>
+<p>这节主要介绍如何通过反射访问对象的方法。</p>
+<ul>
+<li><h3 id="获取-Method"><a href="#获取-Method" class="headerlink" title="获取 Method"></a>获取 Method</h3></li>
+</ul>
+<p>Class 依然提供了4种方法获取 Method:</p>
+<ul>
+<li><ul>
+<li><p>getDeclaredMethod(String name, Class&lt;?&gt;… parameterTypes)</p>
+<p>根据方法名获得指定的方法， 参数 name 为方法名，参数 parameterTypes 为方法的参数类型，如 getDeclaredMethod(“eat”, String.class)</p>
+</li>
+<li><p>getMethod(String name, Class&lt;?&gt;… parameterTypes)</p>
+<p>根据方法名获取指定的 public 方法，其它同上</p>
+</li>
+<li><p>getDeclaredMethods()</p>
+<p>获取所有声明的方法</p>
+</li>
+<li><p>getMethods()</p>
+<p>获取所有的 public 方法</p>
+</li>
+</ul>
+</li>
+</ul>
+<blockquote>
+<p>注意：获取带参数方法时，如果参数类型错误会报 NoSuchMethodException，对于参数是泛型的情况，泛型须当成Object处理（Object.class）</p>
+</blockquote>
+<ul>
+<li><h3 id="获取方法返回类型"><a href="#获取方法返回类型" class="headerlink" title="获取方法返回类型"></a>获取方法返回类型</h3></li>
+<li><ul>
+<li>getReturnType()   获取目标方法返回类型对应的 Class 对象</li>
+<li>getGenericReturnType()  获取目标方法返回类型对应的 Type 对象</li>
+</ul>
+</li>
+</ul>
+<p>这两个方法有啥区别呢？</p>
+<ul>
+<li><p>getReturnType()返回类型为 Class，getGenericReturnType() 返回类型为 Type; Class 实现 Type。</p>
+</li>
+<li><p>返回值为普通简单类型如 Object, int, String 等，getGenericReturnType() 返回值和 getReturnType() 一样</p>
+<p>例如 public String function1()，那么各自返回值为：</p>
+</li>
+<li><ul>
+<li>getReturnType() : class java.lang.String</li>
+<li>getGenericReturnType() : class java.lang.String</li>
+</ul>
+</li>
+<li><p>返回值为泛型</p>
+<p>例如 public T function2()，那么各自返回值为：</p>
+</li>
+<li><ul>
+<li>getReturnType() : class java.lang.Object</li>
+<li>getGenericReturnType() : T</li>
+</ul>
+</li>
+<li><p>返回值为参数化类型</p>
+<p>例如public Class<string> function3()，那么各自返回值为：</string></p>
+</li>
+<li><ul>
+<li>getReturnType() : class java.lang.Class</li>
+<li>getGenericReturnType() : java.lang.Class&lt;java.lang.String&gt;</li>
+</ul>
+</li>
+</ul>
+<p>其实反射中所有形如 getGenericXXX()的方法规则都与上面所述类似。</p>
+<ul>
+<li><h3 id="获取方法参数类型"><a href="#获取方法参数类型" class="headerlink" title="获取方法参数类型"></a>获取方法参数类型</h3><p>getParameterTypes() 获取目标方法各参数类型对应的 Class 对象<br>getGenericParameterTypes() 获取目标方法各参数类型对应的 Type 对象<br>返回值为数组，它俩区别同上 “方法返回类型的区别” 。</p>
+</li>
+<li><h3 id="获取方法声明抛出的异常的类型"><a href="#获取方法声明抛出的异常的类型" class="headerlink" title="获取方法声明抛出的异常的类型"></a>获取方法声明抛出的异常的类型</h3><p>getExceptionTypes() 获取目标方法抛出的异常类型对应的 Class 对象<br>getGenericExceptionTypes()  获取目标方法抛出的异常类型对应的 Type 对象<br>返回值为数组，区别同上</p>
+</li>
+<li><h3 id="获取方法参数名称"><a href="#获取方法参数名称" class="headerlink" title="获取方法参数名称"></a>获取方法参数名称</h3><p>.class 文件中默认不存储方法参数名称，如果想要获取方法参数名称，需要在编译的时候加上 -parameters 参数。(构造方法的参数获取方法同样)</p>
+</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//这里的m可以是普通方法Method，也可以是构造方法Constructor</span></span><br><span class="line"><span class="comment">//获取方法所有参数</span></span><br><span class="line">Parameter[] params = m.getParameters();</span><br><span class="line"><span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; params.length; i++) &#123;</span><br><span class="line">    Parameter p = params[i];</span><br><span class="line">    p.getType();   <span class="comment">//获取参数类型</span></span><br><span class="line">    p.getName();  <span class="comment">//获取参数名称，如果编译时未加上`-parameters`，返回的名称形如`argX`, X为参数在方法声明中的位置，从0开始</span></span><br><span class="line">    p.getModifiers(); <span class="comment">//获取参数修饰符</span></span><br><span class="line">    p.isNamePresent();  <span class="comment">//.class文件中是否保存参数名称, 编译时加上`-parameters`返回true,反之flase</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>获取方法参数名称的详细信息请参考 oracle 的官方例子 MethodParameterSpy</p>
+<ul>
+<li><h3 id="获取方法修饰符"><a href="#获取方法修饰符" class="headerlink" title="获取方法修饰符"></a>获取方法修饰符</h3></li>
+</ul>
+<p>方法与 Filed 等类似</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">method.getModifiers();</span><br></pre></td></tr></table></figure>
+<p>Ps：顺便多介绍几个Method方法</p>
+<ol>
+<li>method.isVarArgs() //判断方法参数是否是可变参数</li>
+</ol>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> Constructor&lt;T&gt; <span class="title">getConstructor</span><span class="params">(Class&lt;?&gt;... parameterTypes)</span>  <span class="comment">//返回true</span></span></span><br><span class="line"><span class="function"><span class="keyword">public</span> Constructor&lt;T&gt; <span class="title">getConstructor</span><span class="params">(Class&lt;?&gt; [] parameterTypes)</span>  <span class="comment">//返回flase</span></span></span><br></pre></td></tr></table></figure>
+<ol>
+<li>method.isSynthetic() //判断是否是复合方法，个人理解复合方法是编译期间编译器生成的方法，并不是源代码中有的方法</li>
+<li>method.isBridge() //判断是否是桥接方法，桥接方法是 JDK 1.5 引入泛型后，为了使Java的泛型方法生成的字节码和 1.5 版本前的字节码相兼容，由编译器自动生成的方法。可以参考：<a href="https://www.jianshu.com/u/ceba5da6bd7a" target="_blank" rel="noopener">https://www.jianshu.com/u/ceba5da6bd7a</a></li>
+</ol>
+<ul>
+<li><h3 id="通过反射调用方法"><a href="#通过反射调用方法" class="headerlink" title="通过反射调用方法"></a>通过反射调用方法</h3></li>
+</ul>
+<p>反射通过Method的invoke()方法来调用目标方法。第一个参数为需要调用的目标类对象，如果方法为static的，则该参数为null。后面的参数都为目标方法的参数值，顺序与目标方法声明中的参数顺序一致。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">native</span> Object <span class="title">invoke</span><span class="params">(Object obj, Object... args)</span></span></span><br><span class="line"><span class="function">            <span class="keyword">throws</span> IllegalAccessException, IllegalArgumentException, InvocationTargetException</span></span><br></pre></td></tr></table></figure>
+<p>还是以上面测试类 Cat 为例</p>
+<blockquote>
+<p>注意：如果方法是private的，可以使用 method.setAccessible(true) 方法绕过权限检查</p>
+</blockquote>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">Class&lt;?&gt; c = Cat.class;</span><br><span class="line"> <span class="keyword">try</span> &#123;</span><br><span class="line">     <span class="comment">//构造Cat实例</span></span><br><span class="line">     Constructor constructor = c.getConstructor(String.class, <span class="keyword">int</span>.class);</span><br><span class="line">     Object cat = constructor.newInstance( <span class="string">"Jack"</span>, <span class="number">3</span>);</span><br><span class="line">     <span class="comment">//调用无参方法</span></span><br><span class="line">     Method sleep = c.getDeclaredMethod(<span class="string">"sleep"</span>);</span><br><span class="line">     sleep.invoke(cat);</span><br><span class="line">     <span class="comment">//调用定项参数方法</span></span><br><span class="line">     Method eat = c.getDeclaredMethod(<span class="string">"eat"</span>, String.class);</span><br><span class="line">     eat.invoke(cat, <span class="string">"grass"</span>);</span><br><span class="line">     <span class="comment">//调用不定项参数方法</span></span><br><span class="line">     <span class="comment">//不定项参数可以当成数组来处理</span></span><br><span class="line">     Class[] argTypes = <span class="keyword">new</span> Class[] &#123; String[].class &#125;;</span><br><span class="line">     Method varargsEat = c.getDeclaredMethod(<span class="string">"eat"</span>, argTypes);</span><br><span class="line">     String[] foods = <span class="keyword">new</span> String[]&#123;</span><br><span class="line">          <span class="string">"grass"</span>, <span class="string">"meat"</span></span><br><span class="line">     &#125;;</span><br><span class="line">     varargsEat.invoke(cat, (Object)foods);</span><br><span class="line">  &#125; <span class="keyword">catch</span> (InstantiationException | IllegalAccessException | NoSuchMethodException | InvocationTargetException e) &#123;</span><br><span class="line">     e.printStackTrace();</span><br><span class="line"> &#125;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>被调用的方法本身所抛出的异常在反射中都会以 InvocationTargetException 抛出。换句话说，反射调用过程中如果异常 InvocationTargetException 抛出，说明反射调用本身是成功的，因为这个异常是目标方法本身所抛出的异常。</p>
+</blockquote>
+<h2 id="Constructor"><a href="#Constructor" class="headerlink" title="Constructor"></a>Constructor</h2><p>这节主要介绍如何通过反射访问构造方法并通过构造方法构建新的对象。</p>
+<ul>
+<li><h3 id="获取构造方法"><a href="#获取构造方法" class="headerlink" title="获取构造方法"></a>获取构造方法</h3></li>
+</ul>
+<p>和 Method 一样，Class 也为 Constructor 提供了4种方法获取</p>
+<ul>
+<li><ul>
+<li><p>getDeclaredConstructor(Class&lt;?&gt;… parameterTypes)</p>
+<p>获取指定构造函数，参数 parameterTypes 为构造方法的参数类型</p>
+</li>
+<li><p>getConstructor(Class&lt;?&gt;… parameterTypes)</p>
+<p>获取指定 public 构造函数，参数 parameterTypes 为构造方法的参数类型</p>
+</li>
+<li><p>getDeclaredConstructors()</p>
+<p>获取所有声明的构造方法</p>
+</li>
+<li><p>getConstructors()</p>
+<p>获取所有的 public 构造方法</p>
+</li>
+</ul>
+</li>
+</ul>
+<blockquote>
+<p>构造方法的名称、限定符、参数、声明的异常等获取方法都与 Method 类似，请参照Method。</p>
+</blockquote>
+<ul>
+<li><h3 id="创建对象"><a href="#创建对象" class="headerlink" title="创建对象"></a>创建对象</h3></li>
+</ul>
+<p>通过反射有两种方法可以创建对象：</p>
+<ul>
+<li>java.lang.reflect.Constructor.newInstance()</li>
+<li>Class.newInstance()</li>
+</ul>
+<p>一般来讲，我们优先使用第一种方法；那么这两种方法有何异同呢？</p>
+<ol>
+<li>Class.newInstance()仅可用来调用无参的构造方法；Constructor.newInstance()可以调用任意参数的构造方法。</li>
+<li>Class.newInstance()会将构造方法中抛出的异常不作处理原样抛出; Constructor.newInstance()会将构造方法中抛出的异常都包装成 InvocationTargetException 抛出。</li>
+<li>Class.newInstance()需要拥有构造方法的访问权限; Constructor.newInstance()可以通过 setAccessible(true) 方法绕过访问权限访问 private 构造方法。</li>
+</ol>
+<p>例子在 Method 一节已经写过，这里直接截取过来</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">Class&lt;?&gt; c = Cat.class;</span><br><span class="line"><span class="keyword">try</span> &#123;</span><br><span class="line">    Constructor constructor = c.getConstructor(String.class, <span class="keyword">int</span>.class);</span><br><span class="line">    Cat cat = (Cat) constructor.newInstance( <span class="string">"Jack"</span>, <span class="number">3</span>);</span><br><span class="line">&#125; <span class="keyword">catch</span> (InstantiationException | IllegalAccessException | NoSuchMethodException | InvocationTargetException e) &#123;</span><br><span class="line">    e.printStackTrace();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>注意：反射不支持自动封箱，传入参数时要小心（自动封箱是在编译期间的，而反射在运行期间）</p>
+</blockquote>
+<h2 id="数组和枚举"><a href="#数组和枚举" class="headerlink" title="数组和枚举"></a>数组和枚举</h2><p>数组和枚举也是对象，但是在反射中，对数组和枚举的创建、访问和普通对象有那么一丢丢的不同，所以 Java 反射为数组和枚举提供了一些特定的 API 接口。</p>
+<h3 id="数组"><a href="#数组" class="headerlink" title="数组"></a>数组</h3><ul>
+<li><h4 id="数组类型"><a href="#数组类型" class="headerlink" title="数组类型"></a>数组类型</h4></li>
+</ul>
+<p>数组类型：数组本质是一个对象，所以它也有自己的类型。</p>
+<p>例如对于int[] intArray，数组类型为class [I。数组类型中的[个数代表数组的维度，例如[代表一维数组，[[ 代表二维数组；[ 后面的字母代表数组元素类型，I 代表 int，一般为类型的首字母大写(long 类型例外，为 J)。</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">class [B    //byte类型一维数组</span><br><span class="line">class [S    //short类型一维数组</span><br><span class="line">class [I    //int类型一维数组</span><br><span class="line">class [C    //char类型一维数组</span><br><span class="line">class [J    //long类型一维数组，J代表long类型，因为L被引用对象类型占用了</span><br><span class="line">class [F    //float类型一维数组</span><br><span class="line">class [D    //double类型一维数组</span><br><span class="line">class [Lcom.dada.Season    //引用类型一维数组</span><br><span class="line">class [[Ljava.lang.String  //引用类型二维数组</span><br></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//获取一个变量的类型</span></span><br><span class="line">Class&lt;?&gt; c = field.getType();</span><br><span class="line"><span class="comment">//判断该变量是否为数组</span></span><br><span class="line"><span class="keyword">if</span> (c.isArray()) &#123;</span><br><span class="line">   <span class="comment">//获取数组的元素类型</span></span><br><span class="line">   c.getComponentType()</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li><h4 id="创建和初始化数组"><a href="#创建和初始化数组" class="headerlink" title="创建和初始化数组"></a>创建和初始化数组</h4></li>
+</ul>
+<p>Java 反射为我们提供了 java.lang.reflect.Array 类用来创建和初始化数组。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//创建数组， 参数componentType为数组元素的类型，后面不定项参数的个数代表数组的维度，参数值为数组长度</span></span><br><span class="line">Array.newInstance(Class&lt;?&gt; componentType, <span class="keyword">int</span>... dimensions)</span><br><span class="line"></span><br><span class="line"><span class="comment">//设置数组值，array为数组对象，index为数组的下标，value为需要设置的值</span></span><br><span class="line">Array.set(Object array, <span class="keyword">int</span> index, <span class="keyword">int</span> value)</span><br><span class="line"></span><br><span class="line"><span class="comment">//获取数组的值，array为数组对象，index为数组的下标</span></span><br><span class="line">Array.get(Object array, <span class="keyword">int</span> index)</span><br></pre></td></tr></table></figure>
+<p>例子,用反射创建 int[] array = new int[]{1, 2}</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Object array = Array.newInstance(<span class="keyword">int</span>.class, <span class="number">2</span>);</span><br><span class="line">Array.setInt(array , <span class="number">0</span>, <span class="number">1</span>);</span><br><span class="line">Array.setInt(array , <span class="number">1</span>, <span class="number">2</span>);</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>注意：反射支持对数据自动加宽，但不允许数据 narrowing(变窄?真难翻译)。意思是对于上述 set 方法，你可以在 int 类型数组中 set short 类型数据，但不可以 set long 类型数据，否则会报 IllegalArgumentException。</p>
+</blockquote>
+<ul>
+<li><h4 id="多维数组"><a href="#多维数组" class="headerlink" title="多维数组"></a>多维数组</h4></li>
+</ul>
+<p>Java 反射没有提供能够直接访问多维数组元素的 API，但你可以把多维数组当成数组的数组处理。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">Object matrix = Array.newInstance(<span class="keyword">int</span>.class, <span class="number">2</span>, <span class="number">2</span>);</span><br><span class="line">Object row0 = Array.get(matrix, <span class="number">0</span>);</span><br><span class="line">Object row1 = Array.get(matrix, <span class="number">1</span>);</span><br><span class="line"></span><br><span class="line">Array.setInt(row0, <span class="number">0</span>, <span class="number">1</span>);</span><br><span class="line">Array.setInt(row0, <span class="number">1</span>, <span class="number">2</span>);</span><br><span class="line">Array.setInt(row1, <span class="number">0</span>, <span class="number">3</span>);</span><br><span class="line">Array.setInt(row1, <span class="number">1</span>, <span class="number">4</span>);</span><br></pre></td></tr></table></figure>
+<p>或者</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">Object matrix = Array.newInstance(<span class="keyword">int</span>.class, <span class="number">2</span>);</span><br><span class="line">Object row0 = Array.newInstance(<span class="keyword">int</span>.class, <span class="number">2</span>);</span><br><span class="line">Object row1 = Array.newInstance(<span class="keyword">int</span>.class, <span class="number">2</span>);</span><br><span class="line"></span><br><span class="line">Array.setInt(row0, <span class="number">0</span>, <span class="number">1</span>);</span><br><span class="line">Array.setInt(row0, <span class="number">1</span>, <span class="number">2</span>);</span><br><span class="line">Array.setInt(row1, <span class="number">0</span>, <span class="number">3</span>);</span><br><span class="line">Array.setInt(row1, <span class="number">1</span>, <span class="number">4</span>);</span><br><span class="line"></span><br><span class="line">Array.set(matrix, <span class="number">0</span>, row0);</span><br><span class="line">Array.set(matrix, <span class="number">1</span>, row1);</span><br></pre></td></tr></table></figure>
+<h2 id="枚举"><a href="#枚举" class="headerlink" title="枚举"></a>枚举</h2><p>枚举隐式继承自 java.lang.Enum，Enum 继承自 Object，所以枚举本质也是一个类，也可以有成员变量，构造方法，方法等；对于普通类所能使用的反射方法，枚举都能使用；另外 java 反射额外提供了几个方法为枚举服务。</p>
+<ul>
+<li><p><code>Class.isEnum()</code></p>
+<p>Indicates whether this class represents an enum type</p>
+</li>
+<li><p><code>Class.getEnumConstants()</code></p>
+<p>Retrieves the list of enum constants defined by the enum in the order they’re declared</p>
+</li>
+<li><p><code>java.lang.reflect.Field.isEnumConstant()</code></p>
+<p>Indicates whether this field represents an element of an enumerated type</p>
+</li>
+</ul>
+<h1 id="反射的缺点"><a href="#反射的缺点" class="headerlink" title="反射的缺点"></a>反射的缺点</h1><p>没有任何一项技术是十全十美的，Java 反射拥有强大功能的同时也带来了一些副作用。</p>
+<ul>
+<li><p>性能开销</p>
+<p>反射涉及类型动态解析，所以 JVM 无法对这些代码进行优化。因此，反射操作的效率要比那些非反射操作低得多。我们应该避免在经常被执行的代码或对性能要求很高的程序中使用反射。</p>
+</li>
+<li><p>安全限制</p>
+<p>使用反射技术要求程序必须在一个没有安全限制的环境中运行。如果一个程序必须在有安全限制的环境中运行，如 Applet，那么这就是个问题了。</p>
+</li>
+<li><p>内部曝光</p>
+<p>由于反射允许代码执行一些在正常情况下不被允许的操作（比如访问私有的属性和方法），所以使用反射可能会导致意料之外的副作用－－代码有功能上的错误，降低可移植性。反射代码破坏了抽象性，因此当平台发生改变的时候，代码的行为就有可能也随着变化。</p>
+</li>
+</ul>
+<blockquote>
+<p>使用反射的一个原则：如果使用常规方法能够实现，那么就不要用反射。</p>
+</blockquote>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/06/13/《TCPIP详解卷1》010阅读笔记/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -2104,7 +2567,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">38</span>
+                  <span class="site-state-item-count">39</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>

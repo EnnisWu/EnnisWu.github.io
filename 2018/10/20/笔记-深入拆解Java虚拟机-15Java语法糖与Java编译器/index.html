@@ -89,7 +89,7 @@
 <meta property="og:site_name" content="Ennis -Little Monster">
 <meta property="og:description" content="自动装箱（auto-boxing）与自动拆箱（auto-unboxing）123456public int foo() &amp;#123;	ArrayList&amp;lt;Integer&amp;gt; list = new ArrayList&amp;lt;&amp;gt;();	list.add(0);	int result = list.get(0);	return result;&amp;#125; 上段代码对应的字节码： 1234">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-10-20T13:02:37.137Z">
+<meta property="og:updated_time" content="2018-11-10T11:34:52.994Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="笔记-深入拆解Java虚拟机-15Java语法糖与Java编译器">
 <meta name="twitter:description" content="自动装箱（auto-boxing）与自动拆箱（auto-unboxing）123456public int foo() &amp;#123;	ArrayList&amp;lt;Integer&amp;gt; list = new ArrayList&amp;lt;&amp;gt;();	list.add(0);	int result = list.get(0);	return result;&amp;#125; 上段代码对应的字节码： 1234">
@@ -433,7 +433,7 @@
 <li>case 比较字符串的哈希值。</li>
 <li>哈希值相同的字符串用 equals 比较。</li>
 </ul>
-<h1 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h1><h1 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h1><blockquote>
+<h1 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h1><blockquote>
 <p><a href="https://time.geekbang.org/column/article/13781" target="_blank" rel="noopener">https://time.geekbang.org/column/article/13781</a></p>
 </blockquote>
 
@@ -588,7 +588,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">38</span>
+                  <span class="site-state-item-count">39</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -684,7 +684,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#自动装箱（auto-boxing）与自动拆箱（auto-unboxing）"><span class="nav-number">1.</span> <span class="nav-text">自动装箱（auto-boxing）与自动拆箱（auto-unboxing）</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#泛型与类型擦除"><span class="nav-number">2.</span> <span class="nav-text">泛型与类型擦除</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#桥接方法"><span class="nav-number">3.</span> <span class="nav-text">桥接方法</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#泛型重写生成桥接方法"><span class="nav-number">3.1.</span> <span class="nav-text">泛型重写生成桥接方法</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#子类定义与父类参数相同，返回类型为父类方法返回类型的子类生成桥接方法"><span class="nav-number">3.2.</span> <span class="nav-text">子类定义与父类参数相同，返回类型为父类方法返回类型的子类生成桥接方法</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#foreach"><span class="nav-number">4.</span> <span class="nav-text">foreach</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#数组"><span class="nav-number">4.1.</span> <span class="nav-text">数组</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Iterable-对象"><span class="nav-number">4.2.</span> <span class="nav-text">Iterable 对象</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#字符串-switch"><span class="nav-number">5.</span> <span class="nav-text">字符串 switch</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#问题"><span class="nav-number">6.</span> <span class="nav-text">问题</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#参考"><span class="nav-number">7.</span> <span class="nav-text">参考</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#自动装箱（auto-boxing）与自动拆箱（auto-unboxing）"><span class="nav-number">1.</span> <span class="nav-text">自动装箱（auto-boxing）与自动拆箱（auto-unboxing）</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#泛型与类型擦除"><span class="nav-number">2.</span> <span class="nav-text">泛型与类型擦除</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#桥接方法"><span class="nav-number">3.</span> <span class="nav-text">桥接方法</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#泛型重写生成桥接方法"><span class="nav-number">3.1.</span> <span class="nav-text">泛型重写生成桥接方法</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#子类定义与父类参数相同，返回类型为父类方法返回类型的子类生成桥接方法"><span class="nav-number">3.2.</span> <span class="nav-text">子类定义与父类参数相同，返回类型为父类方法返回类型的子类生成桥接方法</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#foreach"><span class="nav-number">4.</span> <span class="nav-text">foreach</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#数组"><span class="nav-number">4.1.</span> <span class="nav-text">数组</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Iterable-对象"><span class="nav-number">4.2.</span> <span class="nav-text">Iterable 对象</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#字符串-switch"><span class="nav-number">5.</span> <span class="nav-text">字符串 switch</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#参考"><span class="nav-number">6.</span> <span class="nav-text">参考</span></a></li></ol></div>
             
 
           </div>

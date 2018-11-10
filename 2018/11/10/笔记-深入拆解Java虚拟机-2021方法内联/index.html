@@ -68,7 +68,7 @@
 
 
 
-  <meta name="keywords" content="Java,进制转换," />
+  <meta name="keywords" content="JVM," />
 
 
 
@@ -81,18 +81,20 @@
 
 
 
-<meta name="description" content="十进制转二、八、十六进制Integer.toBinaryString():StringInteger.toOctalString():StringInteger.toHexString():String 返回值为字符串。 任意进制转十进制Integer.valueOf(String,int):IntegerInteger.parseInt(String,int):int 第二个参数指定基数，将字符">
-<meta name="keywords" content="Java,进制转换">
+<meta name="description" content="在编译过程中遇到方法调用时，将目标方法的方法体纳入编译范围之中，并取代原方法调用的优化手段。   可以消除调用本身带来的性能开销。 可以进一步触发更多的优化。 可以算是编译优化里最为重要的一环。  机器码的生成即时编译器首先解析字节码，并生成 IR 图，然后在该 IR 图上进行优化。优化是由一个个独立的优化阶段（optimization phase）串联起来的。每个优化阶段都会对 IR 图进行转">
+<meta name="keywords" content="JVM">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Java中进制转换">
-<meta property="og:url" content="http://yoursite.com/2018/08/03/Java中进制转换/index.html">
+<meta property="og:title" content="笔记-深入拆解Java虚拟机-2021方法内联">
+<meta property="og:url" content="http://yoursite.com/2018/11/10/笔记-深入拆解Java虚拟机-2021方法内联/index.html">
 <meta property="og:site_name" content="Ennis -Little Monster">
-<meta property="og:description" content="十进制转二、八、十六进制Integer.toBinaryString():StringInteger.toOctalString():StringInteger.toHexString():String 返回值为字符串。 任意进制转十进制Integer.valueOf(String,int):IntegerInteger.parseInt(String,int):int 第二个参数指定基数，将字符">
+<meta property="og:description" content="在编译过程中遇到方法调用时，将目标方法的方法体纳入编译范围之中，并取代原方法调用的优化手段。   可以消除调用本身带来的性能开销。 可以进一步触发更多的优化。 可以算是编译优化里最为重要的一环。  机器码的生成即时编译器首先解析字节码，并生成 IR 图，然后在该 IR 图上进行优化。优化是由一个个独立的优化阶段（optimization phase）串联起来的。每个优化阶段都会对 IR 图进行转">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-08-15T12:46:54.000Z">
+<meta property="og:image" content="http://pcrioz2ch.bkt.clouddn.com/JVM/20/c2_parameters.jpg">
+<meta property="og:updated_time" content="2018-11-10T11:34:11.976Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Java中进制转换">
-<meta name="twitter:description" content="十进制转二、八、十六进制Integer.toBinaryString():StringInteger.toOctalString():StringInteger.toHexString():String 返回值为字符串。 任意进制转十进制Integer.valueOf(String,int):IntegerInteger.parseInt(String,int):int 第二个参数指定基数，将字符">
+<meta name="twitter:title" content="笔记-深入拆解Java虚拟机-2021方法内联">
+<meta name="twitter:description" content="在编译过程中遇到方法调用时，将目标方法的方法体纳入编译范围之中，并取代原方法调用的优化手段。   可以消除调用本身带来的性能开销。 可以进一步触发更多的优化。 可以算是编译优化里最为重要的一环。  机器码的生成即时编译器首先解析字节码，并生成 IR 图，然后在该 IR 图上进行优化。优化是由一个个独立的优化阶段（optimization phase）串联起来的。每个优化阶段都会对 IR 图进行转">
+<meta name="twitter:image" content="http://pcrioz2ch.bkt.clouddn.com/JVM/20/c2_parameters.jpg">
 
 
 
@@ -122,13 +124,13 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/2018/08/03/Java中进制转换/"/>
+  <link rel="canonical" href="http://yoursite.com/2018/11/10/笔记-深入拆解Java虚拟机-2021方法内联/"/>
 
 
 
 
 
-  <title>Java中进制转换 | Ennis -Little Monster</title>
+  <title>笔记-深入拆解Java虚拟机-2021方法内联 | Ennis -Little Monster</title>
   
 
 
@@ -299,7 +301,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/08/03/Java中进制转换/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/11/10/笔记-深入拆解Java虚拟机-2021方法内联/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Ennis L.M. Wu">
@@ -316,7 +318,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">Java中进制转换</h1>
+          <h1 class="post-title" itemprop="name headline">笔记-深入拆解Java虚拟机-2021方法内联</h1>
         
 
         <div class="post-meta">
@@ -328,8 +330,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-08-03T10:19:26+08:00">
-                2018-08-03
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-11-10T18:24:39+08:00">
+                2018-11-10
               </time>
             
 
@@ -351,8 +353,8 @@
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/进制转换/" itemprop="url" rel="index">
-                    <span itemprop="name">进制转换</span>
+                  <a href="/categories/Java虚拟机/" itemprop="url" rel="index">
+                    <span itemprop="name">Java虚拟机</span>
                   </a>
                 </span>
 
@@ -388,10 +390,75 @@
       
 
       
-        <h1 id="十进制转二、八、十六进制"><a href="#十进制转二、八、十六进制" class="headerlink" title="十进制转二、八、十六进制"></a>十进制转二、八、十六进制</h1><p>Integer.toBinaryString():String<br>Integer.toOctalString():String<br>Integer.toHexString():String</p>
-<p>返回值为字符串。</p>
-<h1 id="任意进制转十进制"><a href="#任意进制转十进制" class="headerlink" title="任意进制转十进制"></a>任意进制转十进制</h1><p>Integer.valueOf(String,int):Integer<br>Integer.parseInt(String,int):int</p>
-<p>第二个参数指定基数，将字符串参数解析为有符号的整数。 </p>
+        <blockquote>
+<p>在编译过程中遇到方法调用时，将目标方法的方法体纳入编译范围之中，并取代原方法调用的优化手段。</p>
+</blockquote>
+<ul>
+<li>可以<strong>消除调用本身带来的性能开销</strong>。</li>
+<li>可以进一步<strong>触发更多的优化</strong>。</li>
+<li>可以算是<strong>编译优化</strong>里<strong>最为重要的一环</strong>。</li>
+</ul>
+<h1 id="机器码的生成"><a href="#机器码的生成" class="headerlink" title="机器码的生成"></a>机器码的生成</h1><p>即时编译器首先解析字节码，并生成 IR 图，然后在该 IR 图上进行优化。优化是由一个个独立的优化阶段（optimization phase）串联起来的。每个优化阶段都会对 IR 图进行转换。最后即时编译器根据 IR 图的节点以及调度顺序生成机器码。</p>
+<h1 id="C2"><a href="#C2" class="headerlink" title="C2"></a>C2</h1><ul>
+<li>方法内联在<strong>解析字节码的过程</strong>中完成。</li>
+</ul>
+<p>每当碰到方法调用字节码时，C2 将决定是否需要内联该方法调用。如果需要内联，则开始解析目标方法的字节码。</p>
+<h1 id="Graal"><a href="#Graal" class="headerlink" title="Graal"></a>Graal</h1><ul>
+<li>方法内联在<strong>解析字节码的过程</strong>中完成。</li>
+<li>拥有一个<strong>独立的优化阶段</strong>，寻找指代方法调用的 IR 节点，替换为目标方法的 IR 图。</li>
+</ul>
+<h2 id="独立优化阶段"><a href="#独立优化阶段" class="headerlink" title="独立优化阶段"></a>独立优化阶段</h2><ul>
+<li><strong>将被调用方法的 IR 图节点复制到调用者方法的 IR 图中。</strong></li>
+<li>被调用方法的传入参数节点，将被替换为调用者方法进行方法调用时所传入参数对应的节点。</li>
+<li>在调用者方法的 IR 图中，所有指向原方法调用节点的数据依赖将重新指向被调用方法的返回节点。</li>
+</ul>
+<p>如果被调用方法存在多个返回节点，则生成一个 Phi 节点，将这些返回值聚合起来，并作为原方法调用节点的替换对象。</p>
+<ul>
+<li>如果被调用方法将抛出某种类型的异常，而调用者方法恰好有该异常类型的处理器，并且该异常处理器覆盖这一方法调用，那么即时编译器需要将被调用方法抛出异常的路径，与调用者方法的异常处理器相连接。</li>
+<li>在接下来的编译过程中<strong>对新的 IR 图进行进一步优化</strong>。</li>
+</ul>
+<h1 id="方法内联的条件"><a href="#方法内联的条件" class="headerlink" title="方法内联的条件"></a>方法内联的条件</h1><ul>
+<li>内联越多➡生成代码的执行效率越高。</li>
+<li>内联越多➡编译时间也就越长➡程序达到峰值性能的时刻将被推迟。</li>
+<li>内联越多➡生成的机器码越长。</li>
+</ul>
+<p>JVM 中编译生成的机器码会被部署到 Code Cache 之中。Code Cache 有大小限制。Code Cache 已满时，出现即时编译已被关闭的警告信息。</p>
+<ul>
+<li><p>即时编译器根据这些规则决定方法调用<strong>能否被内联</strong>。</p>
+<ul>
+<li><strong>方法调用指令所在的程序路径的热度</strong></li>
+<li><strong>目标方法的调用次数及大小</strong></li>
+<li><strong>当前 IR 图的大小</strong></li>
+</ul>
+</li>
+<li><p>内联算法<strong>更青睐于小方法</strong>。</p>
+</li>
+</ul>
+<p><img src="http://pcrioz2ch.bkt.clouddn.com/JVM/20/c2_parameters.jpg" alt="image" title="C2 相关的虚拟机参数"></p>
+<h2 id="特殊规则"><a href="#特殊规则" class="headerlink" title="特殊规则"></a>特殊规则</h2><ul>
+<li>自动拆箱总会被内联。</li>
+<li>Throwable 类的方法不能被其他类中的方法所内联。</li>
+</ul>
+<h2 id="强制内联"><a href="#强制内联" class="headerlink" title="强制内联"></a>强制内联</h2><ul>
+<li>由 -XX:CompileCommand 中的 inline 指令指定的方法。</li>
+<li>由 @ForceInline 注解的方法（仅限于 JDK 内部方法）。</li>
+</ul>
+<h2 id="不被内联"><a href="#不被内联" class="headerlink" title="不被内联"></a>不被内联</h2><ul>
+<li>由 -XX:CompileCommand 中的 dontinline 指令或 exclude 指令（表示不编译）指定的方法。</li>
+<li>由 @DontInline 注解的方法（仅限于 JDK 内部方法）。</li>
+</ul>
+<h2 id="无法内联"><a href="#无法内联" class="headerlink" title="无法内联"></a>无法内联</h2><ul>
+<li>调用字节码对应的符号引用未被解析。</li>
+<li>目标方法所在的类未被初始化。</li>
+<li>目标方法是 native 方法。</li>
+</ul>
+<h2 id="不支持内联"><a href="#不支持内联" class="headerlink" title="不支持内联"></a>不支持内联</h2><ul>
+<li><strong>C2 不支持内联超过 9 层的调用</strong>（可以通过虚拟机参数 -XX:MaxInlineLevel 调整）。</li>
+<li><strong>1 层的直接递归调用</strong>（可以通过虚拟机参数 -XX:MaxRecursiveInlineLevel 调整）。</li>
+</ul>
+<h1 id="引用"><a href="#引用" class="headerlink" title="引用"></a>引用</h1><blockquote>
+<p><a href="https://time.geekbang.org/column/article/14575" target="_blank" rel="noopener">https://time.geekbang.org/column/article/14575</a></p>
+</blockquote>
 
       
     </div>
@@ -438,9 +505,7 @@
       
         <div class="post-tags">
           
-            <a href="/tags/Java/" rel="tag"># Java</a>
-          
-            <a href="/tags/进制转换/" rel="tag"># 进制转换</a>
+            <a href="/tags/JVM/" rel="tag"># JVM</a>
           
         </div>
       
@@ -453,8 +518,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2018/08/02/Android透明状态栏与沉浸模式总结/" rel="next" title="Android透明状态栏与沉浸模式总结">
-                <i class="fa fa-chevron-left"></i> Android透明状态栏与沉浸模式总结
+              <a href="/2018/11/08/笔记-深入拆解Java虚拟机-19Java字节码（基础篇）/" rel="next" title="笔记-深入拆解Java虚拟机-19Java字节码（基础篇）">
+                <i class="fa fa-chevron-left"></i> 笔记-深入拆解Java虚拟机-19Java字节码（基础篇）
               </a>
             
           </div>
@@ -462,10 +527,6 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2018/08/03/LayoutInflater中inflate方法各参数作用/" rel="prev" title="LayoutInflater中inflate方法各参数作用">
-                LayoutInflater中inflate方法各参数作用 <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -642,7 +703,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#十进制转二、八、十六进制"><span class="nav-number">1.</span> <span class="nav-text">十进制转二、八、十六进制</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#任意进制转十进制"><span class="nav-number">2.</span> <span class="nav-text">任意进制转十进制</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#机器码的生成"><span class="nav-number">1.</span> <span class="nav-text">机器码的生成</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#C2"><span class="nav-number">2.</span> <span class="nav-text">C2</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Graal"><span class="nav-number">3.</span> <span class="nav-text">Graal</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#独立优化阶段"><span class="nav-number">3.1.</span> <span class="nav-text">独立优化阶段</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#方法内联的条件"><span class="nav-number">4.</span> <span class="nav-text">方法内联的条件</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#特殊规则"><span class="nav-number">4.1.</span> <span class="nav-text">特殊规则</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#强制内联"><span class="nav-number">4.2.</span> <span class="nav-text">强制内联</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#不被内联"><span class="nav-number">4.3.</span> <span class="nav-text">不被内联</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#无法内联"><span class="nav-number">4.4.</span> <span class="nav-text">无法内联</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#不支持内联"><span class="nav-number">4.5.</span> <span class="nav-text">不支持内联</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#引用"><span class="nav-number">5.</span> <span class="nav-text">引用</span></a></li></ol></div>
             
 
           </div>
