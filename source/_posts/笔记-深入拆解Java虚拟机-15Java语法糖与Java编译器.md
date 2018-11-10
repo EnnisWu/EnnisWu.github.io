@@ -171,8 +171,6 @@ class NaiveMerchant extends Merchant
 - case 比较字符串的哈希值。
 - 哈希值相同的字符串用 equals 比较。
 
-# 问题
-
 # 参考
 
 > https://time.geekbang.org/column/article/13781

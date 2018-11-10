@@ -138,8 +138,6 @@ JVM 尝试用 CAS 操作比较标记字段是否为当前锁记录地址
 	- JVM 会**撤销该类实例的偏向锁**，
 	- 之后**加锁直接设置轻量级锁**。
 
-# 问题
-
 # 参考
 
 > https://time.geekbang.org/column/article/13530

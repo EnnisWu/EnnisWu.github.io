@@ -32,8 +32,6 @@ categories: Java虚拟机
 
 开不太懂，之后再看
 
-# 问题
-
 # 参考
 
 > https://time.geekbang.org/column/article/13484
