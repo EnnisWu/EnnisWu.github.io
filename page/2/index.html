@@ -298,6 +298,219 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/08/29/笔记-深入拆解Java虚拟机-1112垃圾回收/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Ennis L.M. Wu">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="http://pcrioz2ch.bkt.clouddn.com/portrait.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Ennis -Little Monster">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/08/29/笔记-深入拆解Java虚拟机-1112垃圾回收/" itemprop="url">笔记-深入拆解Java虚拟机-1112垃圾回收</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-08-29T15:50:47+08:00">
+                2018-08-29
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Java虚拟机/" itemprop="url" rel="index">
+                    <span itemprop="name">Java虚拟机</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h1 id="如何辨别对象是否死亡"><a href="#如何辨别对象是否死亡" class="headerlink" title="如何辨别对象是否死亡"></a>如何辨别对象是否死亡</h1><h2 id="引用计数法（reference-counting）"><a href="#引用计数法（reference-counting）" class="headerlink" title="引用计数法（reference counting）"></a>引用计数法（reference counting）</h2><ul>
+<li>为每个对象添加一个引用计数器。</li>
+<li>为 0 时死亡。</li>
+</ul>
+<p>缺点：</p>
+<ol>
+<li>需要<strong>额外的空间</strong>。</li>
+<li>更新操作<strong>繁琐</strong>。</li>
+<li><strong>无法处理循环引用对象</strong>（a 与 b 相互引用）。</li>
+</ol>
+<h2 id="可达性分析"><a href="#可达性分析" class="headerlink" title="可达性分析"></a>可达性分析</h2><p>GC Roots（由堆外指向堆内的引用）包括不限于：</p>
+<ol>
+<li>Java 方法栈桢中的局部变量。</li>
+<li>已加载类的静态变量。</li>
+<li>JNI handles。<strong>不懂</strong></li>
+<li>已启动且未停止的 Java 线程。</li>
+</ol>
+<p>可达性分析算法：</p>
+<ol>
+<li>将一系列 GC Roots 作为初始的存活对象合集（live set）。</li>
+<li>标记（mark）：从该合集出发，探索所有能够被该集合引用到的对象，将其加入到该集合中。</li>
+<li>未被探索到的对象是死亡的，是可以回收的。</li>
+</ol>
+<p>需要解决的问题：</p>
+<p>在多线程环境下，其他线程可能会更新已经访问过的对象中的引用，从而造成误报（将引用设置为 null）或者漏报（将引用设置为未被访问过的对象）。</p>
+<h1 id="Stop-the-world"><a href="#Stop-the-world" class="headerlink" title="Stop-the-world"></a>Stop-the-world</h1><ul>
+<li>停止其他非垃圾回收线程的工作，直到完成垃圾回收。</li>
+<li>暂停时间（GC pause）。</li>
+</ul>
+<h1 id="安全点（safepoint）"><a href="#安全点（safepoint）" class="headerlink" title="安全点（safepoint）"></a>安全点（safepoint）</h1><blockquote>
+<p>当 Java 虚拟机收到 Stop-the-world 请求，它便会等待所有的线程都到达安全点，才允许请求 Stop-the-world 的线程进行独占的工作。</p>
+</blockquote>
+<h2 id="本地代码的安全点"><a href="#本地代码的安全点" class="headerlink" title="本地代码的安全点"></a>本地代码的安全点</h2><ul>
+<li>Java 程序通过 JNI 执行<strong>本地代码</strong>时，这段代码<strong>不访问 Java 对象、调用 Java 方法或者返回至原 Java 方法</strong>。</li>
+<li><strong>API 入口处进行安全点检测</strong>（safepoint poll）。</li>
+</ul>
+<h2 id="解释执行字节码的安全点"><a href="#解释执行字节码的安全点" class="headerlink" title="解释执行字节码的安全点"></a>解释执行字节码的安全点</h2><ul>
+<li><strong>字节码与字节码之间</strong>。</li>
+<li>有安全点请求时，<strong>执行一条字节码进行一次安全点检测</strong>。</li>
+</ul>
+<h2 id="执行即时编译器生成的机器码"><a href="#执行即时编译器生成的机器码" class="headerlink" title="执行即时编译器生成的机器码"></a>执行即时编译器生成的机器码</h2><ul>
+<li>生成机器码时，<strong>即时编译器插入安全点检测</strong>。</li>
+<li>HotSpot 虚拟机：在生成代码的方法出口、非计数循环的循环回边（back-edge）处插入。</li>
+</ul>
+<h2 id="阻塞的线程属于安全点。"><a href="#阻塞的线程属于安全点。" class="headerlink" title="阻塞的线程属于安全点。"></a>阻塞的线程属于安全点。</h2><h1 id="垃圾回收的三种方式"><a href="#垃圾回收的三种方式" class="headerlink" title="垃圾回收的三种方式"></a>垃圾回收的三种方式</h1><h2 id="清除（sweep）"><a href="#清除（sweep）" class="headerlink" title="清除（sweep）"></a>清除（sweep）</h2><blockquote>
+<p>把死亡对象所占据的内存标记为空闲内存，记录在一个空闲列表（free list）中。</p>
+</blockquote>
+<p><img src="http://pcrioz2ch.bkt.clouddn.com/JVM/11/sweep.png" alt="image"></p>
+<p>缺点：</p>
+<ol>
+<li>造成<strong>内存碎片</strong>。</li>
+<li>堆中对象必须是连续分布的，可能出现总空闲内存足够，无法分配的极端情况。</li>
+<li>分配<strong>效率较低</strong>。</li>
+</ol>
+<h2 id="压缩（compact）"><a href="#压缩（compact）" class="headerlink" title="压缩（compact）"></a>压缩（compact）</h2><blockquote>
+<p>把存活的对象聚集到内存区域的起始位置，留下一段连续的内存空间。</p>
+</blockquote>
+<p><img src="http://pcrioz2ch.bkt.clouddn.com/JVM/11/compact.png" alt="image"></p>
+<p>缺点：</p>
+<ol>
+<li>压缩算法有<strong>性能开销</strong>。</li>
+</ol>
+<h2 id="复制（copy）"><a href="#复制（copy）" class="headerlink" title="复制（copy）"></a>复制（copy）</h2><blockquote>
+<p>把内存区域分为两等分，分别用两个指针 from 和 to 来维护，只是用 from 指针指向的内存区域来分配内存。当发生垃圾回收时，把存活的对象复制到 to 指针指向的内存区域中，交换 from 指针和 to 指针的内容。</p>
+</blockquote>
+<p><img src="http://pcrioz2ch.bkt.clouddn.com/JVM/11/copy.png" alt="image"></p>
+<p>缺点：</p>
+<p>1.堆空间的使用<strong>效率极其低下</strong>。</p>
+<p>12未更新</p>
+<h1 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h1><blockquote>
+<p><a href="https://time.geekbang.org/column/article/13091" target="_blank" rel="noopener">https://time.geekbang.org/column/article/13091</a></p>
+</blockquote>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/08/29/笔记-深入拆解Java虚拟机-10Java对象的内存分布/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1913,147 +2126,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/08/01/如何修改ActionBar的字体颜色？/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Ennis L.M. Wu">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="http://pcrioz2ch.bkt.clouddn.com/portrait.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Ennis -Little Monster">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/08/01/如何修改ActionBar的字体颜色？/" itemprop="url">如何修改ActionBar的字体颜色？</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-08-01T18:22:46+08:00">
-                2018-08-01
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Android视图/" itemprop="url" rel="index">
-                    <span itemprop="name">Android视图</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">style</span> <span class="attr">name</span>=<span class="string">"AppTheme"</span> <span class="attr">parent</span>=<span class="string">"@style/Theme.AppCompat.Light.DarkActionBar"</span>&gt;</span><span class="undefined"></span></span><br><span class="line"><span class="xml">	<span class="tag">&lt;<span class="name">item</span> <span class="attr">name</span>=<span class="string">"actionBarStyle"</span>&gt;</span>@style/ActionBarStyle<span class="tag">&lt;/<span class="name">item</span>&gt;</span></span></span><br><span class="line"><span class="undefined"></span><span class="tag">&lt;/<span class="name">style</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="name">style</span> <span class="attr">name</span>=<span class="string">"ActionBarStyle"</span> <span class="attr">parent</span>=<span class="string">"@style/Widget.AppCompat.ActionBar.Solid"</span>&gt;</span><span class="undefined"></span></span><br><span class="line"><span class="xml">	<span class="tag">&lt;<span class="name">item</span> <span class="attr">name</span>=<span class="string">"titleTextStyle"</span>&gt;</span>@style/TitleTextStyle<span class="tag">&lt;/<span class="name">item</span>&gt;</span></span></span><br><span class="line"><span class="undefined"></span><span class="tag">&lt;/<span class="name">style</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="name">style</span> <span class="attr">name</span>=<span class="string">"TitleTextStyle"</span> <span class="attr">parent</span>=<span class="string">"@style/TextAppearance.AppCompat.Widget.ActionBar.Title"</span>&gt;</span><span class="undefined"></span></span><br><span class="line"><span class="xml">	<span class="tag">&lt;<span class="name">item</span> <span class="attr">name</span>=<span class="string">"android:textColor"</span>&gt;</span>#000000<span class="tag">&lt;/<span class="name">item</span>&gt;</span></span></span><br><span class="line"><span class="xml">	<span class="comment">&lt;!-- 这里设置ActionBar字体颜色 --&gt;</span></span></span><br><span class="line"><span class="undefined"></span><span class="tag">&lt;/<span class="name">style</span>&gt;</span></span><br></pre></td></tr></table></figure>
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -2108,7 +2180,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">39</span>
+                  <span class="site-state-item-count">40</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -2119,7 +2191,7 @@
               
               <div class="site-state-item site-state-categories">
                 <a href="/categories/index.html">
-                  <span class="site-state-item-count">10</span>
+                  <span class="site-state-item-count">11</span>
                   <span class="site-state-item-name">分类</span>
                 </a>
               </div>
@@ -2130,7 +2202,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">19</span>
+                  <span class="site-state-item-count">20</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>
