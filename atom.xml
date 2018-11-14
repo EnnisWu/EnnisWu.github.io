@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://yoursite.com/"/>
-  <updated>2018-11-14T06:19:20.071Z</updated>
+  <updated>2018-11-14T11:41:12.187Z</updated>
   <id>http://yoursite.com/</id>
   
   <author>
@@ -15,6 +15,33 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>笔记-深入拆解Java虚拟机-22HotSpot虚拟机的intrinsic</title>
+    <link href="http://yoursite.com/2018/11/14/%E7%AC%94%E8%AE%B0-%E6%B7%B1%E5%85%A5%E6%8B%86%E8%A7%A3Java%E8%99%9A%E6%8B%9F%E6%9C%BA-22HotSpot%E8%99%9A%E6%8B%9F%E6%9C%BA%E7%9A%84intrinsic/"/>
+    <id>http://yoursite.com/2018/11/14/笔记-深入拆解Java虚拟机-22HotSpot虚拟机的intrinsic/</id>
+    <published>2018-11-14T11:14:48.000Z</published>
+    <updated>2018-11-14T11:41:12.187Z</updated>
+    
+    <content type="html"><![CDATA[<ul><li>HotSpot 虚拟机中，所有被标注 @HotSpotIntrinsicCandidate 注解的方法都是 HotSpot intrinsic。</li><li>这些方法的调用，会被 HotSpot 虚拟机<strong>替换成高效的指令序列</strong>。<strong>原本的方法实现</strong>则会被<strong>忽略</strong>掉。</li><li>如果 Java 核心类库的开发者更改了原本的实现，虚拟机中的高效实现也需要进行相应的修改。</li><li><strong>其他虚拟机不一定维护</strong>了这些 intrinsic 的高效实现。</li><li>这些高效实现通常<strong>依赖于具体的 CPU 指令</strong>，而这些 CPU 指令不好在 Java 源程序中表达。</li><li>如果换了一个体系架构，可能没有对应的 CPU 指令，无法进行 intrinsic 优化。</li></ul><!-- # intrinsic 与 CPU 指令 --><!-- 看看即可 --><h1 id="intrinsic-与方法内联"><a href="#intrinsic-与方法内联" class="headerlink" title="intrinsic 与方法内联"></a>intrinsic 与方法内联</h1><h2 id="独立的桩程序"><a href="#独立的桩程序" class="headerlink" title="独立的桩程序"></a>独立的桩程序</h2><ul><li>可以被解释执行器利用，直接替换对原方法的调用。</li><li>可以被即时编译器所利用，把代表对原方法的调用的 IR 节点，替换为对这些桩程序的调用的 IR 节点。</li><li>这种形式实现的比较少，主要包括 Math 类的一些方法。</li></ul><h2 id="特殊的编译器-IR-节点"><a href="#特殊的编译器-IR-节点" class="headerlink" title="特殊的编译器 IR 节点"></a>特殊的编译器 IR 节点</h2><ul><li>只能被即时编译器所用。</li><li>将对原方法的调用的 IR 节点，替换成特殊的 IR 节点，并参与接下来的优化过程。</li><li>替换过程是在方法内联时进行。</li><li>native 方法被标记为 intrinsic 也能够 “ 内联 “ 进来，并插入特殊的 IR 节点。</li><li>即时编译器的后端根据这些特殊的 IR 节点，生成指定的 CPU 指令。<br>-native 方法经过 intrinsic 优化之后，JNI 开销直接消失不见，最终的结果十分高效。</li><li>大部分实现通过这种形式。</li></ul><h1 id="已有-intrinsic-简介"><a href="#已有-intrinsic-简介" class="headerlink" title="已有 intrinsic 简介"></a>已有 intrinsic 简介</h1><ul><li>最新版本的 HotSpot 虚拟机定义了三百多个 intrinsic（Java 10.0.2）。</li><li>有三成以上是Unsafe类的方法。</li></ul><!-- 其他看看即可 --><h1 id="引用"><a href="#引用" class="headerlink" title="引用"></a>引用</h1><blockquote><p><a href="https://time.geekbang.org/column/article/18046" target="_blank" rel="noopener">https://time.geekbang.org/column/article/18046</a></p></blockquote>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;ul&gt;
+&lt;li&gt;HotSpot 虚拟机中，所有被标注 @HotSpotIntrinsicCandidate 注解的方法都是 HotSpot intrinsic。&lt;/li&gt;
+&lt;li&gt;这些方法的调用，会被 HotSpot 虚拟机&lt;strong&gt;替换成高效的指令序列&lt;/strong&gt;
+      
+    
+    </summary>
+    
+      <category term="Java虚拟机" scheme="http://yoursite.com/categories/Java%E8%99%9A%E6%8B%9F%E6%9C%BA/"/>
+    
+    
+      <category term="JVM" scheme="http://yoursite.com/tags/JVM/"/>
+    
+  </entry>
   
   <entry>
     <title>转-Android学习路线指南</title>
@@ -524,31 +551,6 @@
       <category term="沉静模式" scheme="http://yoursite.com/tags/%E6%B2%89%E9%9D%99%E6%A8%A1%E5%BC%8F/"/>
     
       <category term="透明" scheme="http://yoursite.com/tags/%E9%80%8F%E6%98%8E/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>获取Activity根布局</title>
-    <link href="http://yoursite.com/2018/08/01/%E8%8E%B7%E5%8F%96Activity%E6%A0%B9%E5%B8%83%E5%B1%80/"/>
-    <id>http://yoursite.com/2018/08/01/获取Activity根布局/</id>
-    <published>2018-08-01T12:47:40.000Z</published>
-    <updated>2018-08-15T12:43:41.000Z</updated>
-    
-    <content type="html"><![CDATA[<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">findViewById(android.R.id.content).getChildAt(<span class="number">0</span>)；</span><br></pre></td></tr></table></figure>]]></content>
-    
-    <summary type="html">
-    
-      
-      
-        &lt;figure class=&quot;highlight java&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span clas
-      
-    
-    </summary>
-    
-      <category term="Android布局" scheme="http://yoursite.com/categories/Android%E5%B8%83%E5%B1%80/"/>
-    
-    
-      <category term="Android" scheme="http://yoursite.com/tags/Android/"/>
     
   </entry>
   
