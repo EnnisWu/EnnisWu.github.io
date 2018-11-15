@@ -1,7 +1,7 @@
 ---
 title: 转-Android学习路线指南
 date: 2018-11-14 13:50:40
-tags: Android,指南
+tags: [Android,指南]
 categories: 学习指南
 ---
 
