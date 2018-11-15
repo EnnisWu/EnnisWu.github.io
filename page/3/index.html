@@ -298,6 +298,210 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/08/02/Android透明状态栏与沉浸模式总结/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Ennis L.M. Wu">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="http://pcrioz2ch.bkt.clouddn.com/portrait.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Ennis -Little Monster">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/08/02/Android透明状态栏与沉浸模式总结/" itemprop="url">Android透明状态栏与沉浸模式总结</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-08-02T20:02:51+08:00">
+                2018-08-02
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Android视图/" itemprop="url" rel="index">
+                    <span itemprop="name">Android视图</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h1 id="Java实现"><a href="#Java实现" class="headerlink" title="Java实现"></a>Java实现</h1><p>通过Java代码实现的思路是通过当前界面DecorView设置UI可见性实现。</p>
+<table>
+<thead>
+<tr>
+<th>flag</th>
+<th>作用</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>SYSTEM_UI_FLAG_FULLSCREEN</td>
+<td>请求进入普通全屏模式</td>
+</tr>
+<tr>
+<td>SYSTEM_UI_FLAG_HIDE_NAVIGATION</td>
+<td>请求暂时隐藏系统导航栏</td>
+</tr>
+<tr>
+<td>SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN</td>
+<td></td>
+</tr>
+<tr>
+<td>SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION</td>
+<td></td>
+</tr>
+<tr>
+<td>SYSTEM_UI_FLAG_LAYOUT_STABLE</td>
+<td>当使用其他布局标志时，提供内容插入的稳定视图</td>
+</tr>
+<tr>
+<td>SYSTEM_UI_FLAG_IMMERSIVE_STICKY</td>
+</tr>
+</tbody>
+</table>
+<p>通过组合上面的6中flag实现各种效果</p>
+<h2 id="隐藏状态栏"><a href="#隐藏状态栏" class="headerlink" title="隐藏状态栏"></a>隐藏状态栏</h2><p>支持Android4.1及以上</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span> option = View.SYSTEM_UI_FLAG_FULLSCREEN;</span><br><span class="line">getWindow().getDecorView().setSystemUiVisibility(option);</span><br></pre></td></tr></table></figure>
+<p>注：下滑顶部会重新显示</p>
+<h2 id="透明状态栏"><a href="#透明状态栏" class="headerlink" title="透明状态栏"></a>透明状态栏</h2><p>支持Android5.0及以上</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span> option = View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN | View.SYSTEM_UI_FLAG_LAYOUT_STABLE;</span><br><span class="line">getWindow().getDecorView().setSystemUiVisibility(option);</span><br><span class="line">getWindow().setStatusBarColor(Color.TRANSPARENT);</span><br></pre></td></tr></table></figure>
+<h2 id="隐藏状态栏及导航栏"><a href="#隐藏状态栏及导航栏" class="headerlink" title="隐藏状态栏及导航栏"></a>隐藏状态栏及导航栏</h2><p>支持Android4.1及以上</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span> option = View.SYSTEM_UI_FLAG_FULLSCREEN | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION;</span><br><span class="line">getWindow().getDecorView().setSystemUiVisibility(option);</span><br></pre></td></tr></table></figure>
+<p>注：点击屏幕会退出全屏</p>
+<h2 id="透明状态栏及透明导航栏"><a href="#透明状态栏及透明导航栏" class="headerlink" title="透明状态栏及透明导航栏"></a>透明状态栏及透明导航栏</h2><p>支持Android5.0及以上</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span> option = <span class="keyword">int</span> option = View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION | View.SYSTEM_UI_FLAG_LAYOUT_STABLE;</span><br><span class="line">getWindow().getDecorView().setSystemUiVisibility(option);</span><br><span class="line">getWindow().setStatusBarColor(Color.TRANSPARENT);</span><br><span class="line">getWindow().setNavigationBarColor(Color.TRANSPARENT);</span><br></pre></td></tr></table></figure>
+<h2 id="沉浸模式"><a href="#沉浸模式" class="headerlink" title="沉浸模式"></a>沉浸模式</h2><p>支持Android4.4及以上</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span> option = View.SYSTEM_UI_FLAG_FULLSCREEN | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN | View.SYSTEM_UI_FLAG_LAYOUT_STABLE | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY;</span><br><span class="line">getWindow().getDecorView().setSystemUiVisibility(option);</span><br></pre></td></tr></table></figure>
+<p>注：滑动状态栏或导航栏的位置显示状态栏和导航栏，一段时间未操作再次隐藏</p>
+<h1 id="XML实现"><a href="#XML实现" class="headerlink" title="XML实现"></a>XML实现</h1><p>通过设置activity的style实现</p>
+<h2 id="隐藏状态栏-1"><a href="#隐藏状态栏-1" class="headerlink" title="隐藏状态栏"></a>隐藏状态栏</h2><figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">style</span> <span class="attr">name</span>=<span class="string">"AppTheme"</span> <span class="attr">parent</span>=<span class="string">"@style/Theme.AppCompat.Light.NoActionBar"</span>&gt;</span><span class="undefined"></span></span><br><span class="line"><span class="xml">	<span class="tag">&lt;<span class="name">item</span> <span class="attr">name</span>=<span class="string">"windowNoTitle"</span>&gt;</span>true<span class="tag">&lt;/<span class="name">item</span>&gt;</span></span></span><br><span class="line"><span class="xml">	<span class="tag">&lt;<span class="name">item</span> <span class="attr">name</span>=<span class="string">"android:windowFullscreen"</span>&gt;</span>true<span class="tag">&lt;/<span class="name">item</span>&gt;</span></span></span><br><span class="line"><span class="undefined"></span><span class="tag">&lt;/<span class="name">style</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<h2 id="透明状态栏-1"><a href="#透明状态栏-1" class="headerlink" title="透明状态栏"></a>透明状态栏</h2><p>Android4.4</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">style</span> <span class="attr">name</span>=<span class="string">"fullScreenTheme"</span> <span class="attr">parent</span>=<span class="string">"Theme.AppCompat.Light.DarkActionBar"</span>&gt;</span><span class="undefined"></span></span><br><span class="line"><span class="xml">	<span class="tag">&lt;<span class="name">item</span> <span class="attr">name</span>=<span class="string">"android:windowTranslucentStatus"</span>&gt;</span>true<span class="tag">&lt;/<span class="name">item</span>&gt;</span></span></span><br><span class="line"><span class="xml">	<span class="tag">&lt;<span class="name">item</span> <span class="attr">name</span>=<span class="string">"android:windowTranslucentNavigation"</span>&gt;</span>true<span class="tag">&lt;/<span class="name">item</span>&gt;</span></span></span><br><span class="line"><span class="undefined"></span><span class="tag">&lt;/<span class="name">style</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>如果添加了DrawerLayout需要设置，否则DrawerLayout部分状态栏是灰色的。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">mDrawerLayout.setFitsSystemWindows(<span class="keyword">true</span>);</span><br><span class="line">mDrawerLayout.setClipToPadding(<span class="keyword">false</span>);</span><br></pre></td></tr></table></figure>
+<p>Android5.0</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">style</span> <span class="attr">name</span>=<span class="string">"fullScreenTheme"</span> <span class="attr">parent</span>=<span class="string">"Theme.AppCompat.Light.DarkActionBar"</span>&gt;</span><span class="undefined"></span></span><br><span class="line"><span class="xml">	<span class="tag">&lt;<span class="name">item</span> <span class="attr">name</span>=<span class="string">"android:windowTranslucentStatus"</span>&gt;</span>false<span class="tag">&lt;/<span class="name">item</span>&gt;</span></span></span><br><span class="line"><span class="xml">	<span class="tag">&lt;<span class="name">item</span> <span class="attr">name</span>=<span class="string">"android:windowTranslucentNavigation"</span>&gt;</span>true<span class="tag">&lt;/<span class="name">item</span>&gt;</span></span></span><br><span class="line"><span class="xml">	<span class="tag">&lt;<span class="name">item</span> <span class="attr">name</span>=<span class="string">"android:statusBarColor"</span>&gt;</span>@android:color/transparent<span class="tag">&lt;/<span class="name">item</span>&gt;</span></span></span><br><span class="line"><span class="undefined"></span><span class="tag">&lt;/<span class="name">style</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<h1 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h1><blockquote>
+<ul>
+<li><a href="https://blog.csdn.net/guolin_blog/article/details/51763825" target="_blank" rel="noopener">https://blog.csdn.net/guolin_blog/article/details/51763825</a></li>
+<li><a href="https://blog.csdn.net/do168/article/details/51587935" target="_blank" rel="noopener">https://blog.csdn.net/do168/article/details/51587935</a></li>
+<li><a href="https://blog.csdn.net/tc_xingdechen/article/details/68958337" target="_blank" rel="noopener">https://blog.csdn.net/tc_xingdechen/article/details/68958337</a></li>
+</ul>
+</blockquote>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/08/01/获取Activity根布局/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -2122,211 +2326,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/07/23/Android架构——Clean/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Ennis L.M. Wu">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="http://pcrioz2ch.bkt.clouddn.com/portrait.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Ennis -Little Monster">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/07/23/Android架构——Clean/" itemprop="url">Android架构——Clean</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-07-23T11:16:49+08:00">
-                2018-07-23
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Android架构/" itemprop="url" rel="index">
-                    <span itemprop="name">Android架构</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h1 id="Clean架构的主要特点："><a href="#Clean架构的主要特点：" class="headerlink" title="Clean架构的主要特点："></a>Clean架构的主要特点：</h1><ul>
-<li>框架独立</li>
-<li>容易测试</li>
-<li>UI独立</li>
-<li>数据库独立</li>
-<li>不依赖任何中介</li>
-</ul>
-<p>Clean的主要思想是外层依赖内层，<strong>内层完全不依赖外层</strong>（或者说内层不知道外层的存在，可以独立开发，复用性强）。</p>
-<h1 id="Clean架构解析"><a href="#Clean架构解析" class="headerlink" title="Clean架构解析"></a>Clean架构解析</h1><p><img src="http://pcrioz2ch.bkt.clouddn.com/android/architecture/clean/CleanArchitecture-c.jpg" alt="image"></p>
-<ul>
-<li>Enterprise Business Rules：业务对象</li>
-<li>Application Business Rules：用于处理我们的业务对象，业务逻辑所在，也称为Interactor</li>
-<li>Interface Adapters： 接口转换，拿到我们需要的数据，主持者层（Presenters）和控制层（Controllers）就在这一层</li>
-<li>Frameworks and Drivers: 这里是所有具体的实现了：比如：UI，工具类，基础框架等等。</li>
-</ul>
-<p>Clean框架不一定只有4层，这里以4层为例。<br>上面可能比较抽象，下面是简单的说法：</p>
-<ul>
-<li>第一层：实体类</li>
-<li>第二层：也叫UseCase层，实现具体业务逻辑。</li>
-<li>第三层：如果是MVP这一层为Presenter，MVC这一层为Controller。</li>
-<li>第四层：具体实现。</li>
-</ul>
-<p><img src="http://pcrioz2ch.bkt.clouddn.com/android/architecture/clean/CleanSimple.jpg" alt="image"></p>
-<ol>
-<li><strong>内层均为纯Java代码</strong>，只需要jvm便可以运行。</li>
-<li>内层代码不仅可以在Android平台，还可以在别的Java平台复用。</li>
-<li>各层单独测试，各层之间通过接口通信，且独立，方便单元测试。</li>
-<li><strong>层与层之间完全隔离</strong>，最主要的体现就是<strong>各层有自己的数据结构</strong>，不同层之间相互转换，完全没有依赖关系。</li>
-<li>通过依赖注入的方式导致灵活修改逻辑、实现，这点与MVP的思想相似，Clean与MVP和Dagger结合使用是天然合适的。</li>
-</ol>
-<p>以mvp-clean为例，与纯mvp最主要的区别就是Presenter层剥离出UserCase层，一是方便测试，二是方便代码复用，减少Presenter层的代码冗余。</p>
-<h1 id="Google-Demo-——-todo-mvp-clean-解析"><a href="#Google-Demo-——-todo-mvp-clean-解析" class="headerlink" title="Google Demo —— todo-mvp-clean 解析"></a>Google Demo —— todo-mvp-clean 解析</h1><blockquote>
-<p>demo地址：<a href="https://github.com/googlesamples/android-architecture/tree/todo-mvp-clean/" target="_blank" rel="noopener">https://github.com/googlesamples/android-architecture/tree/todo-mvp-clean/</a><br>mvp-clean基于mvp，加了 domain layer 介于 presentation 和 repositories。同时也将整个app 分为三个层次处理。</p>
-</blockquote>
-<h2 id="mvp-clean层次图"><a href="#mvp-clean层次图" class="headerlink" title="mvp-clean层次图"></a>mvp-clean层次图</h2><p><img src="http://pcrioz2ch.bkt.clouddn.com/android/architecture/clean/mvp-clean.png" alt="image"></p>
-<ul>
-<li>Presentation层 : MVP 设计准则。</li>
-<li>Domain层 : 处理所有的业务逻辑，注意是所有的业务逻辑。对应use case（interactors）。</li>
-<li>Data层 : 获取数据，以及数据的存储，分为本地和远程。</li>
-</ul>
-<h2 id="基本概念（摘自mvp-clean-GitHub主页部分原文翻译）"><a href="#基本概念（摘自mvp-clean-GitHub主页部分原文翻译）" class="headerlink" title="基本概念（摘自mvp-clean GitHub主页部分原文翻译）"></a>基本概念（摘自mvp-clean GitHub主页部分原文翻译）</h2><ul>
-<li>mvp-clean 和 基本的mvp 最大的区别就是在domain层和UseCase 的使用上。从 presenter 层分离出domain 层好处是可以减少代码的冗余。</li>
-<li><strong>UseCase 的好处是在domain的代码层上可以复用。</strong>CompleteTask在TaskDetailPresenter和TasksPresenter做到了很好的复用。</li>
-<li>domain layer 是完全解耦与Android 层和第三方依赖的。是一个纯java层的处理。</li>
-<li><strong>UseCase 从主线程剥离出来</strong>，对于Android app是个好的操作。这种操作是尽可能的减少占用UI 线程。我们决定使用 command pattern 将use case 在线程池里执行操作。同样的我们可以用RxJava 或者 Promises实现同样的功能。</li>
-<li>我们使用异步的repositories 。 但是现在没有必要这么做了。因为UseCase 已经从主线程里剥离出来了。这是尽量保持 samples 和原来的是一致的。</li>
-</ul>
-<h2 id="项目主要关系图"><a href="#项目主要关系图" class="headerlink" title="项目主要关系图"></a>项目主要关系图</h2><p><img src="http://pcrioz2ch.bkt.clouddn.com/android/architecture/clean/mvpcleanproject.png" alt="image"></p>
-<h2 id="具体用例流程"><a href="#具体用例流程" class="headerlink" title="具体用例流程"></a>具体用例流程</h2><p>未完待续。。。</p>
-<h1 id="思考"><a href="#思考" class="headerlink" title="思考"></a>思考</h1><p>纯MVP架构会使项目变得复杂，Clean架构则会更复杂，大项目可以使项目的结构清晰，内层复用性强，便于测试。<br>小项目则会使项目过于复杂，反而使项目结构显得不清晰，就像MVVM不适合小型项目一样。MVP作为万金油可以说适合大部分项目，我个人的思考是小型项目使用MVP架构，但在MVP的基础上加入部分Clean的思想。</p>
-<ol>
-<li>从Presenter层分离出UseCase层，方便代码复用</li>
-<li>各层独立，这里有一点需要注意，Clean中各层有各层的数据结构，在实际项目中各层可能写出类似的实体类，这里可以考虑只写一个通用实体类的作为最内层，虽然违背了Clean各层完全独立的思想，但是可以减少部分冗余，这一点根据自己项目来缺点。</li>
-</ol>
-<blockquote>
-<p>参考资料</p>
-<ul>
-<li><a href="https://8thlight.com/blog/uncle-bob/2012/08/13/the-clean-architecture.html" target="_blank" rel="noopener">https://8thlight.com/blog/uncle-bob/2012/08/13/the-clean-architecture.html</a></li>
-<li><a href="https://www.jianshu.com/p/c6a1a5c9a49b" target="_blank" rel="noopener">https://www.jianshu.com/p/c6a1a5c9a49b</a></li>
-<li><a href="https://blog.csdn.net/YANGDAHUAN/article/details/80388849" target="_blank" rel="noopener">https://blog.csdn.net/YANGDAHUAN/article/details/80388849</a></li>
-<li><a href="https://www.jianshu.com/p/552c3a1c5fe5" target="_blank" rel="noopener">https://www.jianshu.com/p/552c3a1c5fe5</a></li>
-<li><a href="https://www.jianshu.com/p/e0258ce7d392" target="_blank" rel="noopener">https://www.jianshu.com/p/e0258ce7d392</a></li>
-</ul>
-</blockquote>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -2381,7 +2380,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">41</span>
+                  <span class="site-state-item-count">42</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>

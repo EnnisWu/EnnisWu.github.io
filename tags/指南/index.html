@@ -68,7 +68,7 @@
 
 
 
-  <meta name="keywords" content="JVM," />
+  <meta name="keywords" content="Hexo, NexT" />
 
 
 
@@ -81,18 +81,16 @@
 
 
 
-<meta name="description" content="HotSpot 虚拟机中，所有被标注 @HotSpotIntrinsicCandidate 注解的方法都是 HotSpot intrinsic。 这些方法的调用，会被 HotSpot 虚拟机替换成高效的指令序列。原本的方法实现则会被忽略掉。 如果 Java 核心类库的开发者更改了原本的实现，虚拟机中的高效实现也需要进行相应的修改。 其他虚拟机不一定维护了这些 intrinsic 的高效实现。 这">
-<meta name="keywords" content="JVM">
-<meta property="og:type" content="article">
-<meta property="og:title" content="笔记-深入拆解Java虚拟机-22HotSpot虚拟机的intrinsic">
-<meta property="og:url" content="http://yoursite.com/2018/11/14/笔记-深入拆解Java虚拟机-22HotSpot虚拟机的intrinsic/index.html">
+<meta name="description" content="We could, we could belong togeter, ARTPOP.">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Ennis -Little Monster">
+<meta property="og:url" content="http://yoursite.com/tags/指南/index.html">
 <meta property="og:site_name" content="Ennis -Little Monster">
-<meta property="og:description" content="HotSpot 虚拟机中，所有被标注 @HotSpotIntrinsicCandidate 注解的方法都是 HotSpot intrinsic。 这些方法的调用，会被 HotSpot 虚拟机替换成高效的指令序列。原本的方法实现则会被忽略掉。 如果 Java 核心类库的开发者更改了原本的实现，虚拟机中的高效实现也需要进行相应的修改。 其他虚拟机不一定维护了这些 intrinsic 的高效实现。 这">
+<meta property="og:description" content="We could, we could belong togeter, ARTPOP.">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-11-14T11:41:12.187Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="笔记-深入拆解Java虚拟机-22HotSpot虚拟机的intrinsic">
-<meta name="twitter:description" content="HotSpot 虚拟机中，所有被标注 @HotSpotIntrinsicCandidate 注解的方法都是 HotSpot intrinsic。 这些方法的调用，会被 HotSpot 虚拟机替换成高效的指令序列。原本的方法实现则会被忽略掉。 如果 Java 核心类库的开发者更改了原本的实现，虚拟机中的高效实现也需要进行相应的修改。 其他虚拟机不一定维护了这些 intrinsic 的高效实现。 这">
+<meta name="twitter:title" content="Ennis -Little Monster">
+<meta name="twitter:description" content="We could, we could belong togeter, ARTPOP.">
 
 
 
@@ -122,13 +120,13 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/2018/11/14/笔记-深入拆解Java虚拟机-22HotSpot虚拟机的intrinsic/"/>
+  <link rel="canonical" href="http://yoursite.com/tags/指南/"/>
 
 
 
 
 
-  <title>笔记-深入拆解Java虚拟机-22HotSpot虚拟机的intrinsic | Ennis -Little Monster</title>
+  <title>标签: 指南 | Ennis -Little Monster</title>
   
 
 
@@ -147,7 +145,7 @@
     
   
 
-  <div class="container sidebar-position-left page-post-detail">
+  <div class="container sidebar-position-left ">
     <div class="headband"></div>
 
     <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
@@ -285,232 +283,54 @@
           <div id="content" class="content">
             
 
-  <div id="posts" class="posts-expand">
-    
+  
+  
+  
+  <div class="post-block tag">
 
-  
+    <div id="posts" class="posts-collapse">
+      <div class="collection-title">
+        <h1>指南<small>标签</small>
+        </h1>
+      </div>
 
-  
-  
-  
+      
+        
 
   <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/11/14/笔记-深入拆解Java虚拟机-22HotSpot虚拟机的intrinsic/">
+    <header class="post-header">
 
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Ennis L.M. Wu">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="http://pcrioz2ch.bkt.clouddn.com/portrait.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Ennis -Little Monster">
-    </span>
-
-    
-      <header class="post-header">
-
+      <h2 class="post-title">
         
+            <a class="post-title-link" href="/2018/11/14/转-Android学习路线指南/" itemprop="url">
+              
+                <span itemprop="name">转-Android学习路线指南</span>
+              
+            </a>
         
-          <h1 class="post-title" itemprop="name headline">笔记-深入拆解Java虚拟机-22HotSpot虚拟机的intrinsic</h1>
-        
+      </h2>
 
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-11-14T19:14:48+08:00">
-                2018-11-14
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Java虚拟机/" itemprop="url" rel="index">
-                    <span itemprop="name">Java虚拟机</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        <ul>
-<li>HotSpot 虚拟机中，所有被标注 @HotSpotIntrinsicCandidate 注解的方法都是 HotSpot intrinsic。</li>
-<li>这些方法的调用，会被 HotSpot 虚拟机<strong>替换成高效的指令序列</strong>。<strong>原本的方法实现</strong>则会被<strong>忽略</strong>掉。</li>
-<li>如果 Java 核心类库的开发者更改了原本的实现，虚拟机中的高效实现也需要进行相应的修改。</li>
-<li><strong>其他虚拟机不一定维护</strong>了这些 intrinsic 的高效实现。</li>
-<li>这些高效实现通常<strong>依赖于具体的 CPU 指令</strong>，而这些 CPU 指令不好在 Java 源程序中表达。</li>
-<li>如果换了一个体系架构，可能没有对应的 CPU 指令，无法进行 intrinsic 优化。</li>
-</ul>
-<!-- # intrinsic 与 CPU 指令 -->
-<!-- 看看即可 -->
-<h1 id="intrinsic-与方法内联"><a href="#intrinsic-与方法内联" class="headerlink" title="intrinsic 与方法内联"></a>intrinsic 与方法内联</h1><h2 id="独立的桩程序"><a href="#独立的桩程序" class="headerlink" title="独立的桩程序"></a>独立的桩程序</h2><ul>
-<li>可以被解释执行器利用，直接替换对原方法的调用。</li>
-<li>可以被即时编译器所利用，把代表对原方法的调用的 IR 节点，替换为对这些桩程序的调用的 IR 节点。</li>
-<li>这种形式实现的比较少，主要包括 Math 类的一些方法。</li>
-</ul>
-<h2 id="特殊的编译器-IR-节点"><a href="#特殊的编译器-IR-节点" class="headerlink" title="特殊的编译器 IR 节点"></a>特殊的编译器 IR 节点</h2><ul>
-<li>只能被即时编译器所用。</li>
-<li>将对原方法的调用的 IR 节点，替换成特殊的 IR 节点，并参与接下来的优化过程。</li>
-<li>替换过程是在方法内联时进行。</li>
-<li>native 方法被标记为 intrinsic 也能够 “ 内联 “ 进来，并插入特殊的 IR 节点。</li>
-<li>即时编译器的后端根据这些特殊的 IR 节点，生成指定的 CPU 指令。<br>-native 方法经过 intrinsic 优化之后，JNI 开销直接消失不见，最终的结果十分高效。</li>
-<li>大部分实现通过这种形式。</li>
-</ul>
-<h1 id="已有-intrinsic-简介"><a href="#已有-intrinsic-简介" class="headerlink" title="已有 intrinsic 简介"></a>已有 intrinsic 简介</h1><ul>
-<li>最新版本的 HotSpot 虚拟机定义了三百多个 intrinsic（Java 10.0.2）。</li>
-<li>有三成以上是Unsafe类的方法。</li>
-</ul>
-<!-- 其他看看即可 -->
-<h1 id="引用"><a href="#引用" class="headerlink" title="引用"></a>引用</h1><blockquote>
-<p><a href="https://time.geekbang.org/column/article/18046" target="_blank" rel="noopener">https://time.geekbang.org/column/article/18046</a></p>
-</blockquote>
-
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-      <div>
-        <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
-  <div>如果你喜欢这篇文章的话。。。能给我一个小红包吗，爱你呦~(*´∀`)~♥</div>
-  <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
-    <span>打赏</span>
-  </button>
-  <div id="QR" style="display: none;">
-
-    
-      <div id="wechat" style="display: inline-block">
-        <img id="wechat_qr" src="http://pcrioz2ch.bkt.clouddn.com/reward_wechatpay.jpg" alt="Ennis L.M. Wu 微信支付"/>
-        <p>微信支付</p>
+      <div class="post-meta">
+        <time class="post-time" itemprop="dateCreated"
+              datetime="2018-11-14T13:50:40+08:00"
+              content="2018-11-14" >
+          11-14
+        </time>
       </div>
-    
 
-    
-      <div id="alipay" style="display: inline-block">
-        <img id="alipay_qr" src="http://pcrioz2ch.bkt.clouddn.com/reward_alipay.jpg" alt="Ennis L.M. Wu 支付宝"/>
-        <p>支付宝</p>
-      </div>
-    
-
-    
-
-  </div>
-</div>
-
-      </div>
-    
-
-    
-
-    <footer class="post-footer">
-      
-        <div class="post-tags">
-          
-            <a href="/tags/JVM/" rel="tag"># JVM</a>
-          
-        </div>
-      
-
-      
-      
-      
-
-      
-        <div class="post-nav">
-          <div class="post-nav-next post-nav-item">
-            
-              <a href="/2018/11/14/转-Android学习路线指南/" rel="next" title="转-Android学习路线指南">
-                <i class="fa fa-chevron-left"></i> 转-Android学习路线指南
-              </a>
-            
-          </div>
-
-          <span class="post-nav-divider"></span>
-
-          <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2018/11/15/笔记-深入拆解Java虚拟机-23逃逸分析/" rel="prev" title="笔记-深入拆解Java虚拟机-23逃逸分析">
-                笔记-深入拆解Java虚拟机-23逃逸分析 <i class="fa fa-chevron-right"></i>
-              </a>
-            
-          </div>
-        </div>
-      
-
-      
-      
-    </footer>
-  </div>
-  
-  
-  
+    </header>
   </article>
 
 
-
-    <div class="post-spread">
       
     </div>
+
   </div>
+  
+  
+  
+
+  
 
 
           </div>
@@ -518,10 +338,6 @@
 
 
           
-
-  
-
-
 
         </div>
         
@@ -542,17 +358,8 @@
       
 
       
-        <ul class="sidebar-nav motion-element">
-          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
-            文章目录
-          </li>
-          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
-            站点概览
-          </li>
-        </ul>
-      
 
-      <section class="site-overview-wrap sidebar-panel">
+      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
             
@@ -657,22 +464,6 @@
         </div>
       </section>
 
-      
-      <!--noindex-->
-        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
-          <div class="post-toc">
-
-            
-              
-            
-
-            
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#intrinsic-与方法内联"><span class="nav-number">1.</span> <span class="nav-text">intrinsic 与方法内联</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#独立的桩程序"><span class="nav-number">1.1.</span> <span class="nav-text">独立的桩程序</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#特殊的编译器-IR-节点"><span class="nav-number">1.2.</span> <span class="nav-text">特殊的编译器 IR 节点</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#已有-intrinsic-简介"><span class="nav-number">2.</span> <span class="nav-text">已有 intrinsic 简介</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#引用"><span class="nav-number">3.</span> <span class="nav-text">引用</span></a></li></ol></div>
-            
-
-          </div>
-        </section>
-      <!--/noindex-->
       
 
       
@@ -814,10 +605,6 @@
 
 
   
-  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
-<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
-
-
 
   
 
