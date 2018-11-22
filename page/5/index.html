@@ -298,6 +298,269 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/05/31/《TCPIP详解卷1》002阅读笔记/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Ennis L.M. Wu">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="http://pcrioz2ch.bkt.clouddn.com/portrait.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Ennis -Little Monster">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/05/31/《TCPIP详解卷1》002阅读笔记/" itemprop="url">《TCPIP详解卷1》002阅读笔记</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-05-31T11:45:10+08:00">
+                2018-05-31
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/TCP-IP/" itemprop="url" rel="index">
+                    <span itemprop="name">TCP/IP</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h4 id="名词解释"><a href="#名词解释" class="headerlink" title="名词解释"></a>名词解释</h4><ul>
+<li>LLC：逻辑链路控制（Logic Link Control）</li>
+<li>SNAPL：自网络访问协议（SubNetwork Access Protocol）</li>
+<li>IEEE：电子电气工程师协会</li>
+<li>CRC：循环冗余校验（Cyclic Redundancy Check ）</li>
+<li>pad字节：padding byte，填充字节</li>
+<li>RS-232：异步传输标准接口</li>
+<li>BSD：Berkeley Software Distribution，Unix的衍生系统<br><br></li>
+</ul>
+<h4 id="链路层主要三个目的"><a href="#链路层主要三个目的" class="headerlink" title="链路层主要三个目的"></a>链路层主要三个目的</h4><ol>
+<li>为IP模块发送接受IP数据报。</li>
+<li>为ARP模块发送ARP请求和接受ARP应答。</li>
+<li>为RARP发送RARP请求和接受RARP应答。<br><br></li>
+</ol>
+<h4 id="以太网与IEEE-802封装对比"><a href="#以太网与IEEE-802封装对比" class="headerlink" title="以太网与IEEE 802封装对比"></a>以太网与IEEE 802封装对比</h4><table>
+<thead>
+<tr>
+<th></th>
+<th>以太网</th>
+<th>IEEE 802</th>
+<th>备注</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>数据报封装</td>
+<td>RFC 894中定义</td>
+<td>RFC 1042中定义</td>
+<td></td>
+</tr>
+<tr>
+<td>长度字段</td>
+<td></td>
+<td>后续数据的长度字段（不包括CRC）</td>
+<td></td>
+</tr>
+<tr>
+<td>类型字段</td>
+<td>后续数据的类型</td>
+<td>由后续子网接入协议的首部给出</td>
+<td>格式相同</td>
+</tr>
+<tr>
+<td>最小长度</td>
+<td>46字节</td>
+<td>38字节</td>
+<td>不足空间填充pad字节</td>
+</tr>
+</tbody>
+</table>
+<p>有效类型值都不相同，可以对两种帧格式进行区分。<br>以太网：类型字段后是数据。<br>IEEE 802：长度字段后是802.2LLC、802.2SNAP。<br>CRC字段（FCS/帧校验序列）：后续字节差错的循环冗余码校验。<br><br></p>
+<h4 id="尾部封装"><a href="#尾部封装" class="headerlink" title="尾部封装"></a>尾部封装</h4><ul>
+<li>在RFC 89C被描述。</li>
+<li>通过调整IP数据报中字段次序提高性能。</li>
+<li>将IP首部和TCP首部移到尾部CRC之前。</li>
+<li>==<strong>当把数据复制到内核是，可以绑数据帧中的数据部分映射到一个硬件页面，节省到内存的复制过程。</strong>看不懂？？？==</li>
+<li><strong>尾部封装已遭到反对。</strong><br><br></li>
+</ul>
+<h4 id="SLIP：串行线路IP"><a href="#SLIP：串行线路IP" class="headerlink" title="SLIP：串行线路IP"></a>SLIP：串行线路IP</h4><ul>
+<li>串行线路上对IP数据报封装的简单形式。</li>
+<li>适用于RS-232串行端口、高速调制解调器接入网络。</li>
+<li>以END(0XC0)的特殊字符结束。</li>
+<li>如果有线路噪声，开始也传一个END(0XC0)字符。</li>
+<li>IP报文中END用0XDB和0XDC取代（称为ESC字符）。</li>
+<li>IP报文中ESC用0XDB和0XDD取代。</li>
+<li>缺陷：</li>
+<li><ol>
+<li>每一端必须知道对方的IP地址。</li>
+</ol>
+</li>
+<li><ol start="2">
+<li>没有类型字段，不能和其他协议同时使用。</li>
+</ol>
+</li>
+<li><ol start="3">
+<li>没有校验和。<br><br></li>
+</ol>
+</li>
+</ul>
+<h4 id="压缩的SLIP（CSLIP）"><a href="#压缩的SLIP（CSLIP）" class="headerlink" title="压缩的SLIP（CSLIP）"></a>压缩的SLIP（CSLIP）</h4><ul>
+<li>在RFC 1144中被描述。</li>
+<li>为了在SLIP上传输1个字节总共需要40字节，CSLIP能把它们压缩到3或5个字节。</li>
+<li>每一端维持多达16个TCP连接。</li>
+<li>知道每个连接的首部哪些字段一般不会发生变化。</li>
+<li>被压缩的首部大大缩短了交互响应时间。<br><br></li>
+</ul>
+<h4 id="PPP点对点协议"><a href="#PPP点对点协议" class="headerlink" title="PPP点对点协议"></a>PPP点对点协议</h4><p><strong>修改了SLIP协议中的所有缺陷，最终应该取代SLIP。</strong><br><br></p>
+<h6 id="PPP包括三个部分："><a href="#PPP包括三个部分：" class="headerlink" title="PPP包括三个部分："></a>PPP包括三个部分：</h6><ol>
+<li>在串行链路上封装IP数据报的方法。</li>
+<li>建立、配置及测试数据链路的链路控制协议。</li>
+<li>针对不同网络层协议的网络控制协议体系。<br><br><h6 id="数据报帧的格式："><a href="#数据报帧的格式：" class="headerlink" title="数据报帧的格式："></a>数据报帧的格式：</h6></li>
+</ol>
+<ul>
+<li>以0X7E开始和结束。</li>
+<li>地址字节值始终为0XFF。</li>
+<li>协议字段（类似以太网类型字段）：<br>| 协议字段的值 | 标识信息字段的类型 |<br>| ———- | —————-|<br>| 0X0021 | IP数据报 |<br>| 0XC021 | 链路控制数据 |<br>| 0X8021 | 网络控制数据 |<br>信息字段出现0X7E时需要转义。<br><br><br>利用链路控制协议，大多数可以省略标识符和地址字段。<br>使用IP网络控制协议，大多数可以采用Van Jacobson报文首部压缩方法。不懂？？？<br><br><br>对比SLIP具有的优点</li>
+</ul>
+<ol>
+<li>PPP支持在单根串行线路上运行多种协议。</li>
+<li>每一帧都有循环冗余校验。</li>
+<li>通信双方可以进行IP地址的动态协商。</li>
+<li>与CSLIP类似，对TCP和IP报文首部压缩。</li>
+<li>链路控制协议可以对多个数据链路选项进行设置。<br><br></li>
+</ol>
+<h4 id="环回接口（localhost）"><a href="#环回接口（localhost）" class="headerlink" title="环回接口（localhost）"></a>环回接口（localhost）</h4><ul>
+<li>大多数系统把IP地址127.0.0.1分配给这个接口。</li>
+<li>一个传给环回接口的IP数据报不能在任何网络上出现。<br><br></li>
+</ul>
+<h4 id="最大传输单元MTU"><a href="#最大传输单元MTU" class="headerlink" title="最大传输单元MTU"></a>最大传输单元MTU</h4><ul>
+<li>如果IP层有一个长度大于链路层的MTU的数据报要传，需要进行分片。</li>
+<li>MTU不是物理特性，它是一个逻辑限制。</li>
+<li>目的：为交互使用提供足够快的响应时间。<br><br></li>
+</ul>
+<h4 id="路径MTU"><a href="#路径MTU" class="headerlink" title="路径MTU"></a>路径MTU</h4><p>==<strong>两台主机路径中的最小MTU被称作路径MTU（不一定是个常数）。</strong>看不懂这句话==<br><br></p>
+<h4 id="串行线路吞吐量计算"><a href="#串行线路吞吐量计算" class="headerlink" title="串行线路吞吐量计算"></a>串行线路吞吐量计算</h4><blockquote>
+<p>如果线路速率是9600b/s，而一个字节有8bit，加上一个起始比特和一个停止比特，那么线路的速率就是960B/s（字节/秒）。</p>
+</blockquote>
+<ul>
+<li>这句话是指每个bit加一个起始一个停止，所有9600 / (8 + 2) = 960 B/s。</li>
+<li>如果把SLIP的MTU降到256以下，将降低传输大块数据的最大吞吐量。</li>
+<li>平均等待时间的计算（传输大数据帧所需时间的一半）只适用于SLIP或PPP链路。<br>==为什么要等一半的时间？？==<br><br></li>
+</ul>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/04/09/Toolbar的setTitle问题/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -629,7 +892,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">42</span>
+                  <span class="site-state-item-count">43</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>

@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://yoursite.com/"/>
-  <updated>2018-11-15T11:38:41.938Z</updated>
+  <updated>2018-11-22T12:09:20.398Z</updated>
   <id>http://yoursite.com/</id>
   
   <author>
@@ -15,6 +15,32 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>笔记-深入拆解Java虚拟机-24字段访问相关优化</title>
+    <link href="http://yoursite.com/2018/11/22/%E7%AC%94%E8%AE%B0-%E6%B7%B1%E5%85%A5%E6%8B%86%E8%A7%A3Java%E8%99%9A%E6%8B%9F%E6%9C%BA-24%E5%AD%97%E6%AE%B5%E8%AE%BF%E9%97%AE%E7%9B%B8%E5%85%B3%E4%BC%98%E5%8C%96/"/>
+    <id>http://yoursite.com/2018/11/22/笔记-深入拆解Java虚拟机-24字段访问相关优化/</id>
+    <published>2018-11-22T11:20:50.000Z</published>
+    <updated>2018-11-22T12:09:20.398Z</updated>
+    
+    <content type="html"><![CDATA[<h1 id="字段读取优化"><a href="#字段读取优化" class="headerlink" title="字段读取优化"></a>字段读取优化</h1><ul><li><p>即时编译器会<strong>优化实例字段和静态字段访问</strong>，以减少总的内存访问数目。</p><ul><li>沿控制流，缓存各个字段存储节点将要存储的值，或者字段读取节点所得到的值。</li><li>遇到对同一字段的读取节点时，如果缓存值还没有失效，将读取节点替换为该缓存值。</li><li>遇到对同一字段的存储节点时，更新所缓存的值。</li><li>遇到可能更新字段的节点时，采取保守策略，舍弃所有缓存值。</li></ul></li><li><p>如果字段读取节点被替换成一个常量，将进一步触发更多优化。</p><ul><li>删除不可达条件分支代码，死循环后的代码。</li></ul></li><li><p>即时编译器将在 volatile 字段访问前后插入内存屏障节点。</p></li><li><strong>内存屏障节点会阻止即时编译器将屏障之前所缓存的值用于屏障之后的读取节点之上。</strong></li><li><strong>加锁、解锁操作会阻止即时编译器的字段读取优化。</strong></li></ul><h1 id="字段存储优化"><a href="#字段存储优化" class="headerlink" title="字段存储优化"></a>字段存储优化</h1><ul><li>即时编译器会<strong>消除冗余的存储节点</strong>。</li><li>如果字段被标记为 <strong>volatile</strong>，即时编译器<strong>不能</strong>将冗余的存储操作<strong>消除</strong>掉。</li></ul><h1 id="死代码消除（dead-code-eliminiation）"><a href="#死代码消除（dead-code-eliminiation）" class="headerlink" title="死代码消除（dead code eliminiation）"></a>死代码消除（dead code eliminiation）</h1><ul><li><strong>消除局部变量的死存储</strong>（dead store）（涉及冗余存储）。</li><li><strong>消除不可达分支。</strong></li></ul><h1 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h1><p>Q：思考即时编译器会怎么优化下面代码中的除法操作？</p><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">bar</span><span class="params">(<span class="keyword">int</span> x, <span class="keyword">int</span> y)</span> </span>&#123;</span><br><span class="line"><span class="keyword">int</span> t = x/y;</span><br><span class="line">t = x+y;</span><br><span class="line"><span class="keyword">return</span> t;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><p>A：<strong>除法无法优化，因为可能存在除零异常。</strong>s即时编译器需要判断除数是否为 0。</p><h1 id="引用"><a href="#引用" class="headerlink" title="引用"></a>引用</h1><blockquote><p><a href="https://time.geekbang.org/column/article/39683" target="_blank" rel="noopener">https://time.geekbang.org/column/article/39683</a></p></blockquote>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;h1 id=&quot;字段读取优化&quot;&gt;&lt;a href=&quot;#字段读取优化&quot; class=&quot;headerlink&quot; title=&quot;字段读取优化&quot;&gt;&lt;/a&gt;字段读取优化&lt;/h1&gt;&lt;ul&gt;
+&lt;li&gt;&lt;p&gt;即时编译器会&lt;strong&gt;优化实例字段和静态字段访问&lt;/strong&gt;，以减少总的内存访
+      
+    
+    </summary>
+    
+      <category term="Java虚拟机" scheme="http://yoursite.com/categories/Java%E8%99%9A%E6%8B%9F%E6%9C%BA/"/>
+    
+    
+      <category term="JVM" scheme="http://yoursite.com/tags/JVM/"/>
+    
+  </entry>
   
   <entry>
     <title>笔记-深入拆解Java虚拟机-23逃逸分析</title>
@@ -519,33 +545,6 @@
     
     
       <category term="Android" scheme="http://yoursite.com/tags/Android/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>Java中进制转换</title>
-    <link href="http://yoursite.com/2018/08/03/Java%E4%B8%AD%E8%BF%9B%E5%88%B6%E8%BD%AC%E6%8D%A2/"/>
-    <id>http://yoursite.com/2018/08/03/Java中进制转换/</id>
-    <published>2018-08-03T02:19:26.000Z</published>
-    <updated>2018-08-15T12:46:54.000Z</updated>
-    
-    <content type="html"><![CDATA[<h1 id="十进制转二、八、十六进制"><a href="#十进制转二、八、十六进制" class="headerlink" title="十进制转二、八、十六进制"></a>十进制转二、八、十六进制</h1><p>Integer.toBinaryString():String<br>Integer.toOctalString():String<br>Integer.toHexString():String</p><p>返回值为字符串。</p><h1 id="任意进制转十进制"><a href="#任意进制转十进制" class="headerlink" title="任意进制转十进制"></a>任意进制转十进制</h1><p>Integer.valueOf(String,int):Integer<br>Integer.parseInt(String,int):int</p><p>第二个参数指定基数，将字符串参数解析为有符号的整数。 </p>]]></content>
-    
-    <summary type="html">
-    
-      
-      
-        &lt;h1 id=&quot;十进制转二、八、十六进制&quot;&gt;&lt;a href=&quot;#十进制转二、八、十六进制&quot; class=&quot;headerlink&quot; title=&quot;十进制转二、八、十六进制&quot;&gt;&lt;/a&gt;十进制转二、八、十六进制&lt;/h1&gt;&lt;p&gt;Integer.toBinaryString():Strin
-      
-    
-    </summary>
-    
-      <category term="进制转换" scheme="http://yoursite.com/categories/%E8%BF%9B%E5%88%B6%E8%BD%AC%E6%8D%A2/"/>
-    
-    
-      <category term="Java" scheme="http://yoursite.com/tags/Java/"/>
-    
-      <category term="进制转换" scheme="http://yoursite.com/tags/%E8%BF%9B%E5%88%B6%E8%BD%AC%E6%8D%A2/"/>
     
   </entry>
   
