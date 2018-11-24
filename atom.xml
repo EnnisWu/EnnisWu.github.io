@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://yoursite.com/"/>
-  <updated>2018-11-22T12:09:20.398Z</updated>
+  <updated>2018-11-24T11:57:51.059Z</updated>
   <id>http://yoursite.com/</id>
   
   <author>
@@ -15,6 +15,32 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>笔记-深入拆解Java虚拟机-25循环优化</title>
+    <link href="http://yoursite.com/2018/11/24/%E7%AC%94%E8%AE%B0-%E6%B7%B1%E5%85%A5%E6%8B%86%E8%A7%A3Java%E8%99%9A%E6%8B%9F%E6%9C%BA-25%E5%BE%AA%E7%8E%AF%E4%BC%98%E5%8C%96/"/>
+    <id>http://yoursite.com/2018/11/24/笔记-深入拆解Java虚拟机-25循环优化/</id>
+    <published>2018-11-24T10:59:41.000Z</published>
+    <updated>2018-11-24T11:57:51.059Z</updated>
+    
+    <content type="html"><![CDATA[<h1 id="循环无关代码外提"><a href="#循环无关代码外提" class="headerlink" title="循环无关代码外提"></a>循环无关代码外提</h1><blockquote><p>所谓的循环无关代码（Loop-invariant Code），指的是循环中值不变的表达式。</p></blockquote><ul><li>在<strong>不改变程序语义</strong>的情况下，将<strong>循环无关代码提出循环之外</strong>。</li></ul><h2 id="外提循环中值不变的表达式"><a href="#外提循环中值不变的表达式" class="headerlink" title="外提循环中值不变的表达式"></a>外提循环中值不变的表达式</h2><ul><li>通过 Sea-of-Nodes IR 以及节点调度共同完成。</li></ul><h2 id="外提循环无关检测"><a href="#外提循环无关检测" class="headerlink" title="外提循环无关检测"></a>外提循环无关检测</h2><ul><li>通过循环预测（Loop Prediction）完成。</li></ul><p>比如 null 检测（null check），数组下标范围检测（range check）。</p><p>null 检测涉及控制流依赖，无法通过 Sea-of-Nodes IR 转换以及节点调度外提。</p><h1 id="循环展开（Loop-Unrolling）"><a href="#循环展开（Loop-Unrolling）" class="headerlink" title="循环展开（Loop Unrolling）"></a>循环展开（Loop Unrolling）</h1><blockquote><p>指的是在循环体中重复多次循环迭代，并<strong>减少循环次数</strong>的编译优化。</p></blockquote><ul><li>在 C2 中，<strong>只有计数循环</strong>（Counted Loop）才能被展开。</li><li>随着循环体的增大，优化机会不断增加。</li><li>如果循环展开能够触发进一步优化，总体的代码复杂度将降低。</li><li>缺点：可能会<strong>增加代码的冗余度</strong>，导致所生成机器码的长度大幅上涨。</li></ul><h2 id="循环完全展开（Full-Unroll）"><a href="#循环完全展开（Full-Unroll）" class="headerlink" title="循环完全展开（Full Unroll）"></a>循环完全展开（Full Unroll）</h2><ul><li>当<strong>循环数目</strong>是<strong>固定值</strong>而且<strong>非常小</strong>时，会将<strong>循环全部展开</strong>（Full Unroll）。</li><li>仅迭代三次（或以下）的循环，即时编译器将进行完全展开。</li><li>循环体 IR 节点数目超过阈值的循环，即时编译器不会进行任何循环展开。</li></ul><h2 id="计数循环需满足的-4-个条件"><a href="#计数循环需满足的-4-个条件" class="headerlink" title="计数循环需满足的 4 个条件"></a>计数循环需满足的 4 个条件</h2><ol><li>维护一个循环计数器，并且基于计数器的循环出口只有一个（但可以有基于其他判断条件的出口）。</li><li>循环计数器的类型为 int、short 或者 char（即不能是 byte、long，更不能是 float 或者 double）。</li><li>每个迭代循环计数器的增量为常数。</li><li>循环计数器的上限（增量为正数）或下限（增量为负数）是循环无关的数值。</li></ol><h1 id="循环判断外提（loop-unswitching）"><a href="#循环判断外提（loop-unswitching）" class="headerlink" title="循环判断外提（loop unswitching）"></a>循环判断外提（loop unswitching）</h1><blockquote><p>指的是<strong>将循环中的 if 语句外提至循环之前</strong>，并且在该 if 语句的两个分支中分别放置一份循环代码。</p></blockquote><ul><li>与循环无关检测外提所针对的代码模式比较类似。</li></ul><h1 id="循环剥离（loop-peeling）"><a href="#循环剥离（loop-peeling）" class="headerlink" title="循环剥离（loop peeling）"></a>循环剥离（loop peeling）</h1><blockquote><p>指的是将循环的前几个迭代或者后几个迭代剥离出循环的优化方式。</p></blockquote><ul><li>一般来说，循环的<strong>前几个迭代</strong>或者<strong>后几个迭代</strong>都包含<strong>特殊处理</strong>。</li><li>剥离出去后，可以<strong>使原本的循环体的规律性更加明显</strong>，触发进一步的优化。</li></ul><h1 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h1><p>Q：</p><p>如果有这样一段代码：</p><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> ( ... ) &#123;</span><br><span class="line">sum += x + y + a[i];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><p>借助 Sea-of-Nodes IR 能把 x + y 表达式外提出去。但，如果表达式变成如下：</p><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sum += x + a[i] + y;</span><br></pre></td></tr></table></figure><p>也能借助 IR 外提  x + y 吗？</p><p>A：能。</p><h1 id="引用"><a href="#引用" class="headerlink" title="引用"></a>引用</h1><blockquote><p><a href="https://time.geekbang.org/column/article/39814" target="_blank" rel="noopener">https://time.geekbang.org/column/article/39814</a></p></blockquote>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;h1 id=&quot;循环无关代码外提&quot;&gt;&lt;a href=&quot;#循环无关代码外提&quot; class=&quot;headerlink&quot; title=&quot;循环无关代码外提&quot;&gt;&lt;/a&gt;循环无关代码外提&lt;/h1&gt;&lt;blockquote&gt;
+&lt;p&gt;所谓的循环无关代码（Loop-invariant Code），指的
+      
+    
+    </summary>
+    
+      <category term="Java虚拟机" scheme="http://yoursite.com/categories/Java%E8%99%9A%E6%8B%9F%E6%9C%BA/"/>
+    
+    
+      <category term="JVM" scheme="http://yoursite.com/tags/JVM/"/>
+    
+  </entry>
   
   <entry>
     <title>笔记-深入拆解Java虚拟机-24字段访问相关优化</title>
@@ -520,31 +546,6 @@
     
     
       <category term="JVM" scheme="http://yoursite.com/tags/JVM/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>LayoutInflater中inflate方法各参数作用</title>
-    <link href="http://yoursite.com/2018/08/03/LayoutInflater%E4%B8%ADinflate%E6%96%B9%E6%B3%95%E5%90%84%E5%8F%82%E6%95%B0%E4%BD%9C%E7%94%A8/"/>
-    <id>http://yoursite.com/2018/08/03/LayoutInflater中inflate方法各参数作用/</id>
-    <published>2018-08-03T07:52:33.000Z</published>
-    <updated>2018-08-15T12:46:39.000Z</updated>
-    
-    <content type="html"><![CDATA[<h1 id="1、三个参数的方法"><a href="#1、三个参数的方法" class="headerlink" title="1、三个参数的方法"></a>1、三个参数的方法</h1><p>inflate(@LayoutRes int, @Nullable ViewGroup, boolean):View</p><h2 id="1-1第二个参数不为null且第三个参数为true"><a href="#1-1第二个参数不为null且第三个参数为true" class="headerlink" title="1.1第二个参数不为null且第三个参数为true"></a>1.1第二个参数不为null且第三个参数为true</h2><ul><li>指定id布局根布局节点各个属性有效</li><li>添加到父布局</li></ul><h2 id="1-2第二个参数不为null且第三个参数为false"><a href="#1-2第二个参数不为null且第三个参数为false" class="headerlink" title="1.2第二个参数不为null且第三个参数为false"></a>1.2第二个参数不为null且第三个参数为false</h2><ul><li>指定id布局根布局节点各个属性有效</li><li>不添加到父布局</li></ul><h2 id="1-3第二各参数为null"><a href="#1-3第二各参数为null" class="headerlink" title="1.3第二各参数为null"></a>1.3第二各参数为null</h2><ul><li>指定id布局根布局节点宽高属性无效</li></ul><h1 id="2、两个参数的方法"><a href="#2、两个参数的方法" class="headerlink" title="2、两个参数的方法"></a>2、两个参数的方法</h1><p>inflate(@LayoutRes int, @Nullable ViewGroup):View</p><h2 id="2-1第二个参数不为null"><a href="#2-1第二个参数不为null" class="headerlink" title="2.1第二个参数不为null"></a>2.1第二个参数不为null</h2><p>等同于1.1</p><h2 id="2-2第二个参数为null"><a href="#2-2第二个参数为null" class="headerlink" title="2.2第二个参数为null"></a>2.2第二个参数为null</h2><p>等同于1.3</p><h1 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h1><blockquote><p><a href="https://blog.csdn.net/u012702547/article/details/52628453" target="_blank" rel="noopener">https://blog.csdn.net/u012702547/article/details/52628453</a></p></blockquote>]]></content>
-    
-    <summary type="html">
-    
-      
-      
-        &lt;h1 id=&quot;1、三个参数的方法&quot;&gt;&lt;a href=&quot;#1、三个参数的方法&quot; class=&quot;headerlink&quot; title=&quot;1、三个参数的方法&quot;&gt;&lt;/a&gt;1、三个参数的方法&lt;/h1&gt;&lt;p&gt;inflate(@LayoutRes int, @Nullable ViewGrou
-      
-    
-    </summary>
-    
-      <category term="Android视图" scheme="http://yoursite.com/categories/Android%E8%A7%86%E5%9B%BE/"/>
-    
-    
-      <category term="Android" scheme="http://yoursite.com/tags/Android/"/>
     
   </entry>
   

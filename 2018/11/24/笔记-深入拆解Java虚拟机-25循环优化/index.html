@@ -68,7 +68,7 @@
 
 
 
-  <meta name="keywords" content="Hexo, NexT" />
+  <meta name="keywords" content="JVM," />
 
 
 
@@ -81,16 +81,18 @@
 
 
 
-<meta name="description" content="We could, we could belong togeter, ARTPOP.">
-<meta property="og:type" content="website">
-<meta property="og:title" content="Ennis -Little Monster">
-<meta property="og:url" content="http://yoursite.com/archives/index.html">
+<meta name="description" content="循环无关代码外提 所谓的循环无关代码（Loop-invariant Code），指的是循环中值不变的表达式。   在不改变程序语义的情况下，将循环无关代码提出循环之外。  外提循环中值不变的表达式 通过 Sea-of-Nodes IR 以及节点调度共同完成。  外提循环无关检测 通过循环预测（Loop Prediction）完成。  比如 null 检测（null check），数组下标范围检测（">
+<meta name="keywords" content="JVM">
+<meta property="og:type" content="article">
+<meta property="og:title" content="笔记-深入拆解Java虚拟机-25循环优化">
+<meta property="og:url" content="http://yoursite.com/2018/11/24/笔记-深入拆解Java虚拟机-25循环优化/index.html">
 <meta property="og:site_name" content="Ennis -Little Monster">
-<meta property="og:description" content="We could, we could belong togeter, ARTPOP.">
+<meta property="og:description" content="循环无关代码外提 所谓的循环无关代码（Loop-invariant Code），指的是循环中值不变的表达式。   在不改变程序语义的情况下，将循环无关代码提出循环之外。  外提循环中值不变的表达式 通过 Sea-of-Nodes IR 以及节点调度共同完成。  外提循环无关检测 通过循环预测（Loop Prediction）完成。  比如 null 检测（null check），数组下标范围检测（">
 <meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2018-11-24T11:57:51.059Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Ennis -Little Monster">
-<meta name="twitter:description" content="We could, we could belong togeter, ARTPOP.">
+<meta name="twitter:title" content="笔记-深入拆解Java虚拟机-25循环优化">
+<meta name="twitter:description" content="循环无关代码外提 所谓的循环无关代码（Loop-invariant Code），指的是循环中值不变的表达式。   在不改变程序语义的情况下，将循环无关代码提出循环之外。  外提循环中值不变的表达式 通过 Sea-of-Nodes IR 以及节点调度共同完成。  外提循环无关检测 通过循环预测（Loop Prediction）完成。  比如 null 检测（null check），数组下标范围检测（">
 
 
 
@@ -120,13 +122,13 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/archives/"/>
+  <link rel="canonical" href="http://yoursite.com/2018/11/24/笔记-深入拆解Java虚拟机-25循环优化/"/>
 
 
 
 
 
-  <title>归档 | Ennis -Little Monster</title>
+  <title>笔记-深入拆解Java虚拟机-25循环优化 | Ennis -Little Monster</title>
   
 
 
@@ -145,7 +147,7 @@
     
   
 
-  <div class="container sidebar-position-left page-archive">
+  <div class="container sidebar-position-left page-post-detail">
     <div class="headband"></div>
 
     <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
@@ -283,410 +285,254 @@
           <div id="content" class="content">
             
 
+  <div id="posts" class="posts-expand">
+    
+
+  
+
   
   
   
-  <div class="post-block archive">
-    <div id="posts" class="posts-collapse">
-      <span class="archive-move-on"></span>
 
-      <span class="archive-page-counter">
-        
-        
-         
-        
-        OK! 目前共计 44 篇日志。 继续努力。
-      </span>
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/11/24/笔记-深入拆解Java虚拟机-25循环优化/">
 
-      
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Ennis L.M. Wu">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="http://pcrioz2ch.bkt.clouddn.com/portrait.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Ennis -Little Monster">
+    </span>
+
+    
+      <header class="post-header">
 
         
         
+          <h1 class="post-title" itemprop="name headline">笔记-深入拆解Java虚拟机-25循环优化</h1>
         
 
-        
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-11-24T18:59:41+08:00">
+                2018-11-24
+              </time>
+            
+
+            
+
+            
+          </span>
+
           
-          <div class="collection-title">
-            <h1 class="archive-year" id="archive-year-2018">2018</h1>
-          </div>
-        
-        
-
-        
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h2 class="post-title">
-        
-            <a class="post-title-link" href="/2018/11/24/笔记-深入拆解Java虚拟机-25循环优化/" itemprop="url">
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
               
-                <span itemprop="name">笔记-深入拆解Java虚拟机-25循环优化</span>
+                <span class="post-meta-item-text">分类于</span>
               
-            </a>
-        
-      </h2>
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Java虚拟机/" itemprop="url" rel="index">
+                    <span itemprop="name">Java虚拟机</span>
+                  </a>
+                </span>
 
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2018-11-24T18:59:41+08:00"
-              content="2018-11-24" >
-          11-24
-        </time>
-      </div>
+                
+                
+              
+            </span>
+          
 
-    </header>
-  </article>
+          
+            
+          
 
+          
+          
 
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
 
       
-
-        
-        
-        
-
-        
-        
-
-        
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h2 class="post-title">
-        
-            <a class="post-title-link" href="/2018/11/22/笔记-深入拆解Java虚拟机-24字段访问相关优化/" itemprop="url">
-              
-                <span itemprop="name">笔记-深入拆解Java虚拟机-24字段访问相关优化</span>
-              
-            </a>
-        
-      </h2>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2018-11-22T19:20:50+08:00"
-              content="2018-11-22" >
-          11-22
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-
       
 
-        
-        
-        
-
-        
-        
-
-        
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h2 class="post-title">
-        
-            <a class="post-title-link" href="/2018/11/15/笔记-深入拆解Java虚拟机-23逃逸分析/" itemprop="url">
-              
-                <span itemprop="name">笔记-深入拆解Java虚拟机-23逃逸分析</span>
-              
-            </a>
-        
-      </h2>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2018-11-15T16:40:59+08:00"
-              content="2018-11-15" >
-          11-15
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
+      
+        <h1 id="循环无关代码外提"><a href="#循环无关代码外提" class="headerlink" title="循环无关代码外提"></a>循环无关代码外提</h1><blockquote>
+<p>所谓的循环无关代码（Loop-invariant Code），指的是循环中值不变的表达式。</p>
+</blockquote>
+<ul>
+<li>在<strong>不改变程序语义</strong>的情况下，将<strong>循环无关代码提出循环之外</strong>。</li>
+</ul>
+<h2 id="外提循环中值不变的表达式"><a href="#外提循环中值不变的表达式" class="headerlink" title="外提循环中值不变的表达式"></a>外提循环中值不变的表达式</h2><ul>
+<li>通过 Sea-of-Nodes IR 以及节点调度共同完成。</li>
+</ul>
+<h2 id="外提循环无关检测"><a href="#外提循环无关检测" class="headerlink" title="外提循环无关检测"></a>外提循环无关检测</h2><ul>
+<li>通过循环预测（Loop Prediction）完成。</li>
+</ul>
+<p>比如 null 检测（null check），数组下标范围检测（range check）。</p>
+<p>null 检测涉及控制流依赖，无法通过 Sea-of-Nodes IR 转换以及节点调度外提。</p>
+<h1 id="循环展开（Loop-Unrolling）"><a href="#循环展开（Loop-Unrolling）" class="headerlink" title="循环展开（Loop Unrolling）"></a>循环展开（Loop Unrolling）</h1><blockquote>
+<p>指的是在循环体中重复多次循环迭代，并<strong>减少循环次数</strong>的编译优化。</p>
+</blockquote>
+<ul>
+<li>在 C2 中，<strong>只有计数循环</strong>（Counted Loop）才能被展开。</li>
+<li>随着循环体的增大，优化机会不断增加。</li>
+<li>如果循环展开能够触发进一步优化，总体的代码复杂度将降低。</li>
+<li>缺点：可能会<strong>增加代码的冗余度</strong>，导致所生成机器码的长度大幅上涨。</li>
+</ul>
+<h2 id="循环完全展开（Full-Unroll）"><a href="#循环完全展开（Full-Unroll）" class="headerlink" title="循环完全展开（Full Unroll）"></a>循环完全展开（Full Unroll）</h2><ul>
+<li>当<strong>循环数目</strong>是<strong>固定值</strong>而且<strong>非常小</strong>时，会将<strong>循环全部展开</strong>（Full Unroll）。</li>
+<li>仅迭代三次（或以下）的循环，即时编译器将进行完全展开。</li>
+<li>循环体 IR 节点数目超过阈值的循环，即时编译器不会进行任何循环展开。</li>
+</ul>
+<h2 id="计数循环需满足的-4-个条件"><a href="#计数循环需满足的-4-个条件" class="headerlink" title="计数循环需满足的 4 个条件"></a>计数循环需满足的 4 个条件</h2><ol>
+<li>维护一个循环计数器，并且基于计数器的循环出口只有一个（但可以有基于其他判断条件的出口）。</li>
+<li>循环计数器的类型为 int、short 或者 char（即不能是 byte、long，更不能是 float 或者 double）。</li>
+<li>每个迭代循环计数器的增量为常数。</li>
+<li>循环计数器的上限（增量为正数）或下限（增量为负数）是循环无关的数值。</li>
+</ol>
+<h1 id="循环判断外提（loop-unswitching）"><a href="#循环判断外提（loop-unswitching）" class="headerlink" title="循环判断外提（loop unswitching）"></a>循环判断外提（loop unswitching）</h1><blockquote>
+<p>指的是<strong>将循环中的 if 语句外提至循环之前</strong>，并且在该 if 语句的两个分支中分别放置一份循环代码。</p>
+</blockquote>
+<ul>
+<li>与循环无关检测外提所针对的代码模式比较类似。</li>
+</ul>
+<h1 id="循环剥离（loop-peeling）"><a href="#循环剥离（loop-peeling）" class="headerlink" title="循环剥离（loop peeling）"></a>循环剥离（loop peeling）</h1><blockquote>
+<p>指的是将循环的前几个迭代或者后几个迭代剥离出循环的优化方式。</p>
+</blockquote>
+<ul>
+<li>一般来说，循环的<strong>前几个迭代</strong>或者<strong>后几个迭代</strong>都包含<strong>特殊处理</strong>。</li>
+<li>剥离出去后，可以<strong>使原本的循环体的规律性更加明显</strong>，触发进一步的优化。</li>
+</ul>
+<h1 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h1><p>Q：</p>
+<p>如果有这样一段代码：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> ( ... ) &#123;</span><br><span class="line">	sum += x + y + a[i];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>借助 Sea-of-Nodes IR 能把 x + y 表达式外提出去。但，如果表达式变成如下：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sum += x + a[i] + y;</span><br></pre></td></tr></table></figure>
+<p>也能借助 IR 外提  x + y 吗？</p>
+<p>A：能。</p>
+<h1 id="引用"><a href="#引用" class="headerlink" title="引用"></a>引用</h1><blockquote>
+<p><a href="https://time.geekbang.org/column/article/39814" target="_blank" rel="noopener">https://time.geekbang.org/column/article/39814</a></p>
+</blockquote>
 
       
-
-        
-        
-        
-
-        
-        
-
-        
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h2 class="post-title">
-        
-            <a class="post-title-link" href="/2018/11/14/笔记-深入拆解Java虚拟机-22HotSpot虚拟机的intrinsic/" itemprop="url">
-              
-                <span itemprop="name">笔记-深入拆解Java虚拟机-22HotSpot虚拟机的intrinsic</span>
-              
-            </a>
-        
-      </h2>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2018-11-14T19:14:48+08:00"
-              content="2018-11-14" >
-          11-14
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-
-      
-
-        
-        
-        
-
-        
-        
-
-        
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h2 class="post-title">
-        
-            <a class="post-title-link" href="/2018/11/14/转-Android学习路线指南/" itemprop="url">
-              
-                <span itemprop="name">转-Android学习路线指南</span>
-              
-            </a>
-        
-      </h2>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2018-11-14T13:50:40+08:00"
-              content="2018-11-14" >
-          11-14
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-
-      
-
-        
-        
-        
-
-        
-        
-
-        
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h2 class="post-title">
-        
-            <a class="post-title-link" href="/2018/11/10/笔记-深入拆解Java虚拟机-2021方法内联/" itemprop="url">
-              
-                <span itemprop="name">笔记-深入拆解Java虚拟机-2021方法内联</span>
-              
-            </a>
-        
-      </h2>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2018-11-10T18:24:39+08:00"
-              content="2018-11-10" >
-          11-10
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-
-      
-
-        
-        
-        
-
-        
-        
-
-        
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h2 class="post-title">
-        
-            <a class="post-title-link" href="/2018/11/08/笔记-深入拆解Java虚拟机-19Java字节码（基础篇）/" itemprop="url">
-              
-                <span itemprop="name">笔记-深入拆解Java虚拟机-19Java字节码（基础篇）</span>
-              
-            </a>
-        
-      </h2>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2018-11-08T14:42:50+08:00"
-              content="2018-11-08" >
-          11-08
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-
-      
-
-        
-        
-        
-
-        
-        
-
-        
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h2 class="post-title">
-        
-            <a class="post-title-link" href="/2018/11/08/笔记-深入拆解Java虚拟机-18即时编译器的中间表达形式/" itemprop="url">
-              
-                <span itemprop="name">笔记-深入拆解Java虚拟机-18即时编译器的中间表达形式</span>
-              
-            </a>
-        
-      </h2>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2018-11-08T14:41:19+08:00"
-              content="2018-11-08" >
-          11-08
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-
-      
-
-        
-        
-        
-
-        
-        
-
-        
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h2 class="post-title">
-        
-            <a class="post-title-link" href="/2018/11/07/Android的视图优化方法/" itemprop="url">
-              
-                <span itemprop="name">Android的视图优化方法</span>
-              
-            </a>
-        
-      </h2>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2018-11-07T21:31:51+08:00"
-              content="2018-11-07" >
-          11-07
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-
-      
-
-        
-        
-        
-
-        
-        
-
-        
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h2 class="post-title">
-        
-            <a class="post-title-link" href="/2018/11/06/笔记-深入拆解Java虚拟机-1617即时编译/" itemprop="url">
-              
-                <span itemprop="name">笔记-深入拆解Java虚拟机-1617即时编译</span>
-              
-            </a>
-        
-      </h2>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2018-11-06T10:03:09+08:00"
-              content="2018-11-06" >
-          11-06
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-
-      
-
     </div>
+    
+    
+    
+
+    
+
+    
+      <div>
+        <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+  <div>如果你喜欢这篇文章的话。。。能给我一个小红包吗，爱你呦~(*´∀`)~♥</div>
+  <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+    <span>打赏</span>
+  </button>
+  <div id="QR" style="display: none;">
+
+    
+      <div id="wechat" style="display: inline-block">
+        <img id="wechat_qr" src="http://pcrioz2ch.bkt.clouddn.com/reward_wechatpay.jpg" alt="Ennis L.M. Wu 微信支付"/>
+        <p>微信支付</p>
+      </div>
+    
+
+    
+      <div id="alipay" style="display: inline-block">
+        <img id="alipay_qr" src="http://pcrioz2ch.bkt.clouddn.com/reward_alipay.jpg" alt="Ennis L.M. Wu 支付宝"/>
+        <p>支付宝</p>
+      </div>
+    
+
+    
+
+  </div>
+</div>
+
+      </div>
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/JVM/" rel="tag"># JVM</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/11/22/笔记-深入拆解Java虚拟机-24字段访问相关优化/" rel="next" title="笔记-深入拆解Java虚拟机-24字段访问相关优化">
+                <i class="fa fa-chevron-left"></i> 笔记-深入拆解Java虚拟机-24字段访问相关优化
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
   </div>
   
   
   
-
-  
-  <nav class="pagination">
-    <span class="page-number current">1</span><a class="page-number" href="/archives/page/2/">2</a><span class="space">&hellip;</span><a class="page-number" href="/archives/page/5/">5</a><a class="extend next" rel="next" href="/archives/page/2/"><i class="fa fa-angle-right"></i></a>
-  </nav>
+  </article>
 
 
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
 
 
           </div>
@@ -694,6 +540,10 @@
 
 
           
+
+  
+
+
 
         </div>
         
@@ -714,8 +564,17 @@
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
 
-      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
+      <section class="site-overview-wrap sidebar-panel">
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
             
@@ -820,6 +679,22 @@
         </div>
       </section>
 
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#循环无关代码外提"><span class="nav-number">1.</span> <span class="nav-text">循环无关代码外提</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#外提循环中值不变的表达式"><span class="nav-number">1.1.</span> <span class="nav-text">外提循环中值不变的表达式</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#外提循环无关检测"><span class="nav-number">1.2.</span> <span class="nav-text">外提循环无关检测</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#循环展开（Loop-Unrolling）"><span class="nav-number">2.</span> <span class="nav-text">循环展开（Loop Unrolling）</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#循环完全展开（Full-Unroll）"><span class="nav-number">2.1.</span> <span class="nav-text">循环完全展开（Full Unroll）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#计数循环需满足的-4-个条件"><span class="nav-number">2.2.</span> <span class="nav-text">计数循环需满足的 4 个条件</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#循环判断外提（loop-unswitching）"><span class="nav-number">3.</span> <span class="nav-text">循环判断外提（loop unswitching）</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#循环剥离（loop-peeling）"><span class="nav-number">4.</span> <span class="nav-text">循环剥离（loop peeling）</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#问题"><span class="nav-number">5.</span> <span class="nav-text">问题</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#引用"><span class="nav-number">6.</span> <span class="nav-text">引用</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
       
 
       
@@ -961,6 +836,10 @@
 
 
   
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
 
   
 
