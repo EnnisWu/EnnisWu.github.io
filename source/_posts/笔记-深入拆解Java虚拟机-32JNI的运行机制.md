@@ -16,12 +16,12 @@ categories: Java虚拟机
 # native 方法的链接
 
 - 动态链接库的名字以 lib 为前缀，以 .dylib 或 .so 为扩展名。
-- 通过 ```System.loadLibrary("---")``` 方法加载 lib---.dylib。
+- 通过 `System.loadLibrary("---")` 方法加载 lib---.dylib。
 - 如果库不在当前路径下，可以配置 java.library.path 参数指向路径（JVM 启动时）。
 
 ## JVM 自动查找符合默认命名规范的 C 函数并链接
 
-- ```javac -h``` 命令可以根据 native 方法声明，自动生成包含符合命名规范的 C 函数的头文件。
+- `javac -h` 命令可以根据 native 方法声明，自动生成包含符合命名规范的 C 函数的头文件。
 
 ### 命名规范
 
