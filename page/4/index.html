@@ -84,7 +84,7 @@
 <meta name="description" content="We could, we could belong togeter, ARTPOP.">
 <meta property="og:type" content="website">
 <meta property="og:title" content="Ennis -Little Monster">
-<meta property="og:url" content="http://yoursite.com/page/4/index.html">
+<meta property="og:url" content="http://ennis.info/page/4/index.html">
 <meta property="og:site_name" content="Ennis -Little Monster">
 <meta property="og:description" content="We could, we could belong togeter, ARTPOP.">
 <meta property="og:locale" content="zh-Hans">
@@ -120,7 +120,7 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/page/4/"/>
+  <link rel="canonical" href="http://ennis.info/page/4/"/>
 
 
 
@@ -298,7 +298,421 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/07/27/笔记-深入拆解Java虚拟机-01Java代码是怎么运行的？/">
+    <link itemprop="mainEntityOfPage" href="http://ennis.info/2018/07/29/笔记-深入拆解Java虚拟机-03Java虚拟机是如何加载Java类的？/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Ennis L.M. Wu">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="http://pcrioz2ch.bkt.clouddn.com/portrait.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Ennis -Little Monster">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/07/29/笔记-深入拆解Java虚拟机-03Java虚拟机是如何加载Java类的？/" itemprop="url">笔记-深入拆解Java虚拟机-03Java虚拟机是如何加载Java类的？</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-07-29T15:02:28+08:00">
+                2018-07-29
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Java虚拟机/" itemprop="url" rel="index">
+                    <span itemprop="name">Java虚拟机</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>Java语言的类型：基本类型（primitive types）和引用类型（reference types<br>）。</p>
+<ul>
+<li>基本类型由Java虚拟机预先定义好。</li>
+<li>引用类型：类、接口、数组类和泛型参数。</li>
+<li>泛型参数会在编译过程中被擦除，Java虚拟机上实际只有三种。</li>
+<li>数组类是由Java虚拟机直接生成，其他两种有对应的字节流。</li>
+</ul>
+<p>字节流形式：</p>
+<ul>
+<li>class文件。</li>
+<li>程序内部直接生成。</li>
+<li>从网络中获取。</li>
+</ul>
+<p>字节流加载到Java虚拟机中，成为类或接口。</p>
+<h1 id="加载"><a href="#加载" class="headerlink" title="加载"></a>加载</h1><blockquote>
+<p>查找字节流，并且据此创建类的过程。</p>
+</blockquote>
+<ul>
+<li>对于数组类，它没有对应的字节流，由Java虚拟机直接生成。</li>
+<li>对于其他类，Java虚拟机需要借助类加载器完成查找字节流的过程。</li>
+</ul>
+<h2 id="java9之前"><a href="#java9之前" class="headerlink" title="java9之前"></a>java9之前</h2><h3 id="启动类加载器（boot-class-loader）"><a href="#启动类加载器（boot-class-loader）" class="headerlink" title="启动类加载器（boot class loader）"></a>启动类加载器（boot class loader）</h3><p><strong>启动类加载器由C++实现</strong>，没有对应的Java对象，Java中只能用null来指代。</p>
+<p><strong>启动类加载器加载最为基础、最为重要的类。</strong>如：存放在jre的lib目录加jar包中的类（以及由虚拟机参数-Xbootclasspath指定的类）</p>
+<p><strong>其他类加载器都是java.lang.ClassLoader的子类。</strong>类加载器需要先由另一个类加载器加载至Java虚拟机中，才能执行类加载。</p>
+<h3 id="扩展类加载器（extension-class-loader）"><a href="#扩展类加载器（extension-class-loader）" class="headerlink" title="扩展类加载器（extension class loader）"></a>扩展类加载器（extension class loader）</h3><p>父类加载器：启动类加载器。</p>
+<p><strong>加载相对次要、但又通用的类。</strong>如：存放在jre的 lib/ext 目录下 jar 包中的类（以及由系统变量 java.ext.dirs 指定的类）。</p>
+<h3 id="应用类加载器（application-class-loader）"><a href="#应用类加载器（application-class-loader）" class="headerlink" title="应用类加载器（application class loader）"></a>应用类加载器（application class loader）</h3><p>父类加载器：扩展类加载器。</p>
+<p><strong>加载应用程序路径下的类。</strong>（这里的应用程序路径，便是指虚拟机参数 -cp/-classpath、系统变量 java.class.path 或环境变量 CLASSPATH 所指定的路径。）默认情况下，应用程序中包含的类便是由应用类加载器加载的。</p>
+<h2 id="java9之后"><a href="#java9之后" class="headerlink" title="java9之后"></a>java9之后</h2><p>Java9引入了模块系统，并且略微更改了上述的类加载器。</p>
+<p>扩展类加载器被改名为平台类加载器（platform class loader）。</p>
+<p>Java SE中除了少数几个关键模块，比如说 java.base 是由启动类加载器加载之外，其他的模块均由平台类加载器所加载。</p>
+<h2 id="双亲委派模型"><a href="#双亲委派模型" class="headerlink" title="双亲委派模型"></a>双亲委派模型</h2><p><strong>没当一个类加载器接收到加载请求时，它会先将请求转发给父类加载器。在父类加载器没有找到所请求的类情况下，该类加载器才会尝试去加载。</strong></p>
+<p><strong>注：父类加载器不是继承关系！！！</strong></p>
+<h2 id="其他"><a href="#其他" class="headerlink" title="其他"></a>其他</h2><ul>
+<li><p><strong>可以加入自定义的类加载器</strong>，来实现特殊的加载方式。<br>如：可以对 class 文件进行加密，加载时再利用自定义的类加载器对其解密。</p>
+</li>
+<li><p>类加载器还提供了命名空间的作用。</p>
+</li>
+<li>在 Java 虚拟机中，<strong>类的唯一性是由类加载器实例以及类的全名一同确定的</strong>。<br>即便是同一串字节流，经由不同的类加载器加载，也会得到两个不同的类。</li>
+</ul>
+<h1 id="链接"><a href="#链接" class="headerlink" title="链接"></a>链接</h1><blockquote>
+<p>将创建成的类合并至Java虚拟机中，使之能够只够执行的过程。它可分为验证、准备以及解析三个阶段。</p>
+</blockquote>
+<h2 id="验证"><a href="#验证" class="headerlink" title="验证"></a>验证</h2><blockquote>
+<p>确保被加载类能够满足Java虚拟机的约束条件。</p>
+</blockquote>
+<p>通常而言，Java编译器生成的类文件必然满足Java虚拟机的约束条件。</p>
+<h2 id="准备"><a href="#准备" class="headerlink" title="准备"></a>准备</h2><blockquote>
+<p>为被加载类的静态字段分配内存。</p>
+</blockquote>
+<p>部分Java虚拟机会在此阶段构造其他跟类层次相关的数据结构，比如用来实现虚方法的动态绑定的方法表。</p>
+<h2 id="解析（非必需）"><a href="#解析（非必需）" class="headerlink" title="解析（非必需）"></a>解析（非必需）</h2><p>在class文件被加载至Java虚拟机之前，这个类无法知道其他类（甚至自己）的方法、字段所对应的具体地址。引用时，Java编译器会生成一个符号引用。在运行阶段，这个符号引用一般都能无歧义地定位到具体目标上。</p>
+<p><strong>将这些符号引用解析成为实际引用。</strong></p>
+<p>如果符号引用指向一个未被加载的类，或者未被加载类的字段或方法，那么解析将触发这个类的加载（但未必触发这个类的链接以及初始化。）</p>
+<p><strong>Java 虚拟机规范并没有要求在链接过程中完成解析。</strong>它仅规定了：如果某些字节码使用了符号引用，那么在执行这些字节码之前，需要完成对这些符号引用的解析。</p>
+<h1 id="初始化"><a href="#初始化" class="headerlink" title="初始化"></a>初始化</h1><p>如果直接赋值的静态字段：</p>
+<ul>
+<li>被 final 所修饰</li>
+<li>类型是基本类型或字符串时</li>
+</ul>
+<p>该字段便会被 Java 编译器标记成<strong>常量值（ConstantValue），初始化直接由 Java 虚拟机完成</strong>。</p>
+<p><strong>除此之外的直接赋值操作，所有静态代码块中的代码，会被 Java 编译器置于同一方法中，并把它命名为&lt;clinit>。</strong></p>
+<p>&lt;clinit>方法仅被执行一次。</p>
+<p><strong>JVM 规范枚举了下述多种触发类初始化的情况：</strong></p>
+<ol>
+<li>当虚拟机启动时，初始化用户指定的主类。</li>
+<li>当遇到用以新建目标类实例的 new 指令时，初始化 new 指令的目标类。</li>
+<li>当遇到调用静态方法的指令时，初始化该静态方法所在的类。</li>
+<li>当遇到访问静态字段的指令时，初始化该静态字段所在的类。</li>
+<li>子类的初始化会触发父类的初始化。</li>
+<li>如果一个接口定义了 default 方法，那么直接实现或者间接实现该接口的类的初始化，会触发该接口的初始化。</li>
+<li>使用反射 API 对某个类进行反射调用时，初始化这个类。</li>
+<li>当初次调用 MethodHandle 实例时，初始化该 MethodHandle 指向的方法所在的类。</li>
+</ol>
+<h1 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h1><p>Q：<strong>加载阶段都加载哪些类呢，那么多类，全部加载吗？</strong></p>
+<p>A：<strong>加载阶段是针对单个类的</strong>，一般用到的类才会被加载。大部分情况下，不同类的加载阶段是不同的。</p>
+<hr>
+<p>Q：有一个零值(0/null)初始化，针对于类的静态成员变量，如果是final修饰的静态成员变量，也就是常量，是初始化为代码中指定的值比如10。非final修饰的静态成员变量，在clinit执行过程中赋值为代码中指定的值，是这样的吗？</p>
+<p>A：<strong>被final修饰的静态成员变量，如果不是基本类型或者字符串，也会放在clinit 来做。</strong></p>
+<h1 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h1><blockquote>
+<p><a href="https://time.geekbang.org/column/article/11523" target="_blank" rel="noopener">https://time.geekbang.org/column/article/11523</a></p>
+</blockquote>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://ennis.info/2018/07/28/笔记-深入拆解Java虚拟机-02Java的基本类型/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Ennis L.M. Wu">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="http://pcrioz2ch.bkt.clouddn.com/portrait.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Ennis -Little Monster">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/07/28/笔记-深入拆解Java虚拟机-02Java的基本类型/" itemprop="url">笔记-深入拆解Java虚拟机-02Java的基本类型</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-07-28T14:46:02+08:00">
+                2018-07-28
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Java虚拟机/" itemprop="url" rel="index">
+                    <span itemprop="name">Java虚拟机</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>在 Smalltalk 中，所有的值都是对象。因此，许多人认为它是一门纯粹的面向对象语言。</p>
+<p>Java 则不同，它引进了<strong>八个基本类型</strong>，来支持数值计算。Java 这么做的原因主要是工程上的考虑，因为使用<strong>基本类型能够在执行效率以及内存使用两方面提升软件性能</strong>。</p>
+<h1 id="Java虚拟机的-boolean类型"><a href="#Java虚拟机的-boolean类型" class="headerlink" title="Java虚拟机的 boolean类型"></a>Java虚拟机的 boolean类型</h1><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Foo</span> </span>&#123;</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">		<span class="keyword">boolean</span> 吃过饭没 = <span class="number">2</span>; <span class="comment">// 直接编译的话 javac 会报错</span></span><br><span class="line">		<span class="keyword">if</span> (吃过饭没) </span><br><span class="line">			System.out.println(<span class="string">" 吃了 "</span>);</span><br><span class="line">		<span class="keyword">if</span> (<span class="keyword">true</span> == 吃过饭没) </span><br><span class="line">			System.out.println(<span class="string">" 真吃了 "</span>);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>Java语言规范中，boolean类型的值只有两种，用“true”和“false”表示。</p>
+<p><strong>Java虚拟机规范中，boolean类型被映射成int类型，“true”映射为整数1，“false”映射为整数0。</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"># Foo.main 编译后的字节码</span><br><span class="line"> 0: iconst_2       // 我们用 AsmTools 更改了这一指令</span><br><span class="line"> 1: istore_1</span><br><span class="line"> 2: iload_1</span><br><span class="line"> 3: ifeq 14        // 第一个 if 语句，即操作数栈上数值为 0 时跳转</span><br><span class="line"> 6: getstatic java.lang.System.out</span><br><span class="line"> 9: ldc &quot; 吃了 &quot;</span><br><span class="line">11: invokevirtual java.io.PrintStream.println</span><br><span class="line">14: iload_1</span><br><span class="line">15: iconst_1</span><br><span class="line">16: if_icmpne 27   // 第二个 if 语句，即操作数栈上两个数值不相同时跳转</span><br><span class="line">19: getstatic java.lang.System.out</span><br><span class="line">22: ldc &quot; 真吃了 &quot;</span><br><span class="line">24: invokevirtual java.io.PrintStream.println</span><br><span class="line">27: return</span><br></pre></td></tr></table></figure>
+<p>在前面的例子中，第一个 if 语句会被编译成条件跳转字节码 ifeq，翻译成人话就是说，如果局部变量“吃过饭没”的值为 0，那么跳过打印“吃了”的语句。  </p>
+<p>而第二个 if 语句则会被编译成条件跳转字节码 if_icmpne，也就是说，如果局部变量的值和整数 1 不相等，那么跳过打印“真吃了”的语句。  </p>
+<h1 id="Java的基本类型"><a href="#Java的基本类型" class="headerlink" title="Java的基本类型"></a>Java的基本类型</h1><p><img src="http://pcrioz2ch.bkt.clouddn.com/JVM/02/primitive%20_types.png" alt="image"></p>
+<h2 id="默认值"><a href="#默认值" class="headerlink" title="默认值"></a>默认值</h2><p><strong>在内存中，默认值都是0。</strong></p>
+<h2 id="取值范围"><a href="#取值范围" class="headerlink" title="取值范围"></a>取值范围</h2><ul>
+<li>boolean和char是唯二的无符号类型。</li>
+<li>boolean类型的取值范围是0或1。</li>
+<li>char类型的取值范围是[0, 65535]。</li>
+</ul>
+<p>boolean, byte, char, short的<strong>局部变量储存可以超过取值范围</strong>。</p>
+<p><strong>正常使用Java编译器的情况下，生成的字节码会遵守Java虚拟机规范对编译器的约束。</strong></p>
+<h2 id="浮点数"><a href="#浮点数" class="headerlink" title="浮点数"></a>浮点数</h2><p>浮点数类型采用IEEE 754 浮点数格式。</p>
+<p>以float为例，<strong>浮点类型通常有两个0，+0.0F 和 -0.0F</strong>。</p>
+<p>在Java里，前者为0，后者符号位为1，其他位为0。</p>
+<p>虽然内存数值不同，但 +0.0F == -0.0F 会返回true。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">float</span> a = +<span class="number">0.0f</span>;</span><br><span class="line"><span class="keyword">float</span> b = -<span class="number">0.0f</span>;</span><br><span class="line"><span class="keyword">float</span> c = Float.intBitsToFloat(<span class="number">0x80000000</span>);</span><br></pre></td></tr></table></figure>
+<p><strong>在内存中，正无穷等于0x7F800000，负无穷等于0xFF800000。</strong></p>
+<p><strong>[0x7F800001, 0x7FFFFFFF] 和 [0xFF800001, 0xFFFFFFFF] 对应NaN （Not-a-Number）。</strong></p>
+<p>一般我们计算得出的NaN（+0.0F/+0.0F），在内存中为0x7FC00000。</p>
+<p>这个数值称为标准的NaN，其他的称为不标准的NaN。</p>
+<p><strong>NaN有一个特性：“!=” 始终返回true，其他比较结果都回返回false。</strong></p>
+<h1 id="Java基本类型的大小"><a href="#Java基本类型的大小" class="headerlink" title="Java基本类型的大小"></a>Java基本类型的大小</h1><p>Java虚拟机没调用一个Java方法，便会创建一个栈帧，这里<strong>只讨论供解释器使用的解释栈帧（interpreted frame）</strong>。</p>
+<h2 id="解释栈帧"><a href="#解释栈帧" class="headerlink" title="解释栈帧"></a>解释栈帧</h2><p>这种栈帧有两个主要组成部分：广义的局部变量区，字节码的操作栈。</p>
+<p>广义局部变量包含：普遍意义的局部变量，this指针，方法参数。</p>
+<h2 id="局部变量"><a href="#局部变量" class="headerlink" title="局部变量"></a>局部变量</h2><p>在Java虚拟机规范中，<strong>局部变量区等价于一个数组</strong>。除了long、double的值用两个数组单元存储，其他基本类型以及引用类型的值均占用一个数组单元。</p>
+<p><strong>boolean、byte、char、short在栈上占用的空间和int、引用类型一样。</strong>32位HotSpot中占用4字节，64位HotSport中，占用8字节。这种情况<strong>仅存在于局部变量，不会出现在存储于堆中的字段或数组元素</strong>。</p>
+<h2 id="存储"><a href="#存储" class="headerlink" title="存储"></a>存储</h2><p><strong>将int类型的值存到其他类型的字段或数组时，相当于做了一次隐式的掩码操作。</strong></p>
+<p>把0xFFFFFFFF(-1)储存到一个声明为char类型的字段里时，高两位字节被截取掉，存入“\uFFFF”。</p>
+<p>HotSpot在<strong>存储boolean时显示进行掩码操作</strong>，只取最后一位的值存入boolean字段或数组中。</p>
+<p>HotSpot中boolean字段占用一字节，boolean数组直接用byte数组实现。</p>
+<h2 id="加载"><a href="#加载" class="headerlink" title="加载"></a>加载</h2><p>Java虚拟机的算数运算几乎全部依赖于操作数栈，堆中的boolean、byte、char和short加载到操作数栈上，当成int类型运算。</p>
+<p>对于boolean、char这两个无符号类型，加载伴随零扩展。</p>
+<p>对于byte、short加载伴随符号扩展。</p>
+<h1 id="将boolean类型的值存入字段中时，Java-虚拟机所做的掩码操作"><a href="#将boolean类型的值存入字段中时，Java-虚拟机所做的掩码操作" class="headerlink" title="将boolean类型的值存入字段中时，Java 虚拟机所做的掩码操作"></a>将boolean类型的值存入字段中时，Java 虚拟机所做的掩码操作</h1><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Foo</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">static</span> <span class="keyword">boolean</span> boolValue;</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">		boolValue = <span class="keyword">true</span>; <span class="comment">// 将这个 true 替换为 2 或者 3，再看看打印结果</span></span><br><span class="line">		<span class="keyword">if</span> (boolValue) </span><br><span class="line">			System.out.println(<span class="string">"Hello, Java!"</span>);</span><br><span class="line">		<span class="keyword">if</span> (boolValue == <span class="keyword">true</span>) </span><br><span class="line">			System.out.println(<span class="string">"Hello, JVM!"</span>);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><strong>当替换为2的时候无输出</strong><br><strong>当替换为3的时候打印HelloJava及HelloJVM</strong><br>因为将boolean 保存在静态域中,指定了其类型为’Z’,当修改为2时取低位最后一位为0,当修改为3时取低位最后一位为1<br>则说明boolean的掩码处理是取低位的最后一位</p>
+<h1 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h1><p>Q：“也就是说，boolean、byte、char、short 这四种类型，在栈上占用的空间和 int 是一样的，和引用类型也是一样的。因此，在 32 位的 HotSpot 中，这些类型在栈上将占用 4 个字节；而在 64 位的 HotSpot 中，他们将占 8 个字节。”</p>
+<p>但是我记得boolean在内存中占1字节，char占2字节，这里是什么个意思？</p>
+<p>A：你说的是在堆里的情况。在解释器栈上是不一样的。至于原因吗，主要是<strong>变长数组不好控制</strong>，所以就选择浪费一些空间，以便访问时直接通过下标来计算地址。</p>
+<hr>
+<p>Q：使用基本类型能够在执行效率以及内存使用两方面提升软件性能。具体是什么原理呢？</p>
+<p>A：<strong>占的空间更小，不需要类型转换</strong>。</p>
+<h1 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h1><blockquote>
+<p><a href="https://time.geekbang.org/column/article/11503" target="_blank" rel="noopener">https://time.geekbang.org/column/article/11503</a></p>
+</blockquote>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://ennis.info/2018/07/27/笔记-深入拆解Java虚拟机-01Java代码是怎么运行的？/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Ennis L.M. Wu">
@@ -512,7 +926,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/07/23/Android的性能优化方法/">
+    <link itemprop="mainEntityOfPage" href="http://ennis.info/2018/07/23/Android的性能优化方法/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Ennis L.M. Wu">
@@ -712,7 +1126,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/07/23/Android架构——Clean/">
+    <link itemprop="mainEntityOfPage" href="http://ennis.info/2018/07/23/Android架构——Clean/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Ennis L.M. Wu">
@@ -917,7 +1331,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/07/22/5种写法实现单例模式/">
+    <link itemprop="mainEntityOfPage" href="http://ennis.info/2018/07/22/5种写法实现单例模式/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Ennis L.M. Wu">
@@ -1119,7 +1533,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/07/20/转-Java反射完全解析/">
+    <link itemprop="mainEntityOfPage" href="http://ennis.info/2018/07/20/转-Java反射完全解析/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Ennis L.M. Wu">
@@ -1582,7 +1996,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/06/13/《TCPIP详解卷1》010阅读笔记/">
+    <link itemprop="mainEntityOfPage" href="http://ennis.info/2018/06/13/《TCPIP详解卷1》010阅读笔记/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Ennis L.M. Wu">
@@ -1873,7 +2287,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/06/12/《TCPIP详解卷1》007、008、009阅读笔记/">
+    <link itemprop="mainEntityOfPage" href="http://ennis.info/2018/06/12/《TCPIP详解卷1》007、008、009阅读笔记/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Ennis L.M. Wu">
@@ -2078,7 +2492,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/06/12/《TCPIP详解卷1》006阅读笔记/">
+    <link itemprop="mainEntityOfPage" href="http://ennis.info/2018/06/12/《TCPIP详解卷1》006阅读笔记/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Ennis L.M. Wu">
@@ -2258,529 +2672,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/06/12/《TCPIP详解卷1》004阅读笔记/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Ennis L.M. Wu">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="http://pcrioz2ch.bkt.clouddn.com/portrait.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Ennis -Little Monster">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/06/12/《TCPIP详解卷1》004阅读笔记/" itemprop="url">《TCPIP详解卷1》004阅读笔记</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-06-12T15:38:11+08:00">
-                2018-06-12
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/TCP-IP/" itemprop="url" rel="index">
-                    <span itemprop="name">TCP/IP</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>RFC 826 [Plummer 1982] 是ARP规范描述文档。<br>ARP（地址解析协议）<br>RARP（逆地址解析协议）<br><br></p>
-<p>ARP为IP地址到对应硬件地址之间提供动态映射，因为是自动完成的。<br>RARP被没有磁盘驱动器的系统使用，需要系统管理员手工设置。<br><br></p>
-<p>ARP发送一份称作ARP请求的以太网数据帧给以太网上的每个主机。称作广播。<br><br></p>
-<p>点对点链路不使用ARP。设置这些链路时，必须告知内核链路每一端的IP地址，而不需要硬件地址。<br><br></p>
-<p>ARP高效运行因为每个主机上都有一个ARP高速缓存<br><br></p>
-<h4 id="ARP的分组格式"><a href="#ARP的分组格式" class="headerlink" title="ARP的分组格式"></a>ARP的分组格式</h4><table>
-<thead>
-<tr>
-<th>以太网目的地址</th>
-<th>以太网源地址</th>
-<th>帧类型</th>
-<th>硬件类型</th>
-<th>协议类型</th>
-<th>硬件地址长度</th>
-<th>协议地址长度</th>
-<th>op</th>
-<th>发送端以太网地址</th>
-<th>发送端IP地址</th>
-<th>目的以太网地址</th>
-<th>目的IP地址</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>6</td>
-<td>6</td>
-<td>2</td>
-<td>2</td>
-<td>2</td>
-<td>1</td>
-<td>1</td>
-<td>2</td>
-<td>6</td>
-<td>4</td>
-<td>6</td>
-<td>4</td>
-</tr>
-<tr>
-<td>全1</td>
-<td></td>
-<td>0x0806</td>
-<td>1</td>
-<td>0x0800</td>
-<td>6 bytes</td>
-<td>4 bytes</td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-</tr>
-<tr>
-<td>广播地址</td>
-<td></td>
-<td>ARP请求或应答</td>
-<td>表示以太网地址</td>
-<td>表示IP地址</td>
-<td>MAC地址长度</td>
-<td>IP地址长度</td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-</tr>
-</tbody>
-</table>
-<ul>
-<li>目的地址：全1的特殊地址是广播地址，电缆上的所有以太网接口都要接收广播的数据帧。</li>
-<li>操作字段（OP）：ARP请求（1）、ARP应答（2）、RARP请求（3）、RARP应答（4），必须字段，因为ARP请求和应答的帧类型字段相同。<br><br></li>
-</ul>
-<h4 id="ARP高速缓存超时设置"><a href="#ARP高速缓存超时设置" class="headerlink" title="ARP高速缓存超时设置"></a>ARP高速缓存超时设置</h4><ul>
-<li>BSD演变来的系统一般设置完整表项超时20分钟，不完整表项超时3分钟。</li>
-<li>表项再次使用时，超时值重设为20分钟。<br><br></li>
-</ul>
-<h4 id="ARP代理"><a href="#ARP代理" class="headerlink" title="ARP代理"></a>ARP代理</h4><ul>
-<li>路由器相当于目的主机的代理，把分组从其他主机转发给它。<br><br></li>
-</ul>
-<h4 id="免费ARP"><a href="#免费ARP" class="headerlink" title="免费ARP"></a>免费ARP</h4><ul>
-<li>是指发送ARP查找自己的IP地址。</li>
-<li>两方面作用：</li>
-<li><ol>
-<li>验证IP是否冲突，一个主机能够通过它来确定是否还有一个主机设置了相同的IP地址。</li>
-</ol>
-</li>
-<li><ol>
-<li>更换物理网卡，假设发送ARP的主机正好改变了物理地址，能够使用此方法通知网络中其他主机及时更新ARP缓存。<br><br></li>
-</ol>
-</li>
-</ul>
-<h4 id="ARP命令"><a href="#ARP命令" class="headerlink" title="ARP命令"></a>ARP命令</h4><ul>
-<li>arp -a 显示ARP高速缓存。</li>
-<li>arp -d 删除ARP高速缓存中某一项。</li>
-<li>arp -s 增加高速缓存中的内容，是永久性的，除非末尾加上关键字temp。</li>
-</ul>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/06/02/《TCPIP详解卷1》003阅读笔记/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Ennis L.M. Wu">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="http://pcrioz2ch.bkt.clouddn.com/portrait.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Ennis -Little Monster">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/06/02/《TCPIP详解卷1》003阅读笔记/" itemprop="url">《TCP/IP详解卷1》003阅读笔记</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-06-02T15:07:17+08:00">
-                2018-06-02
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/TCP-IP/" itemprop="url" rel="index">
-                    <span itemprop="name">TCP/IP</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>IP的正式规范文件：RFC 791</p>
-<p>所有TCP、UDP、ICMP及IGMP数据都以IP数据报格式传输。<br>不可靠：不能保证IP数据报能够成功到达目的地。可靠性必须由上层提供。<br>无连接：IP不维护后续数据报的状态信息。每个数据报的处理相互独立。IP数据报可以不按发送顺序接收。</p>
-<p>传输次序：网络字节序/big endian（大端）字节序</p>
-<h4 id="IP首部字段"><a href="#IP首部字段" class="headerlink" title="IP首部字段"></a>IP首部字段</h4><table>
-<thead>
-<tr>
-<th>字段名</th>
-<th>长度</th>
-<th></th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>版本</td>
-<td>4位</td>
-<td>4</td>
-</tr>
-<tr>
-<td>首部长度</td>
-<td>4位</td>
-<td>首部占32bit字的数目，没有任何选项，值为5，首部最长60字节</td>
-</tr>
-<tr>
-<td>服务类型（TOS）</td>
-<td>8位</td>
-<td>3bit优先权子字段（已忽略），4bitTOS子字段，1bit未用位（置为0）</td>
-</tr>
-<tr>
-<td>总长度</td>
-<td>16位</td>
-<td>字节为单位，最长65535字节。<strong>必要内容</strong></td>
-</tr>
-<tr>
-<td>位标识</td>
-<td>16位</td>
-<td>唯一标识主机发送的每一份数据报</td>
-</tr>
-<tr>
-<td>位标志</td>
-<td>3位</td>
-<td></td>
-</tr>
-<tr>
-<td>位片偏移</td>
-<td>13位</td>
-<td></td>
-</tr>
-<tr>
-<td>生存时间（TTL）</td>
-<td>8位</td>
-<td>经过的最多路由器数，初始值通常为64或32，源主机设置。</td>
-</tr>
-<tr>
-<td>协议</td>
-<td>8位</td>
-<td></td>
-</tr>
-<tr>
-<td>首部校验和</td>
-<td>16位</td>
-<td>根据IP首部计算校验和码。</td>
-</tr>
-<tr>
-<td>选项</td>
-<td></td>
-<td>可选，可变长。32bit为界限，不够时插入值为0的填充字节。</td>
-</tr>
-</tbody>
-</table>
-<ul>
-<li>首部长度：从包头格式图看出，是以32bit为一行的，一行包括若干字段。首部长度的数值是以32bit为单位来描述的，比如四位全为1，十六进制本来是0X0F，也就是十进制的15但是，<strong>这个字段的1不是数值1，而是指1个单位即一个32bit。</strong>所以如果该字段是1111的话。就是15*32bit=60Byte了。 </li>
-<li>4bit的TOS代表：最小时延、最大吞吐量、最高可靠性、最小费用。</li>
-<li>首部长度、总长度计算数据内容的起始位置和长度。</li>
-<li>TTL为0时丢弃数据报，发送ICMP报文通知源主机。</li>
-<li>首部校验和：如果校验和错误，丢弃数据报，但不生成差错报文，由上层发现并重传。</li>
-</ul>
-<h4 id="IP路由选择"><a href="#IP路由选择" class="headerlink" title="IP路由选择"></a>IP路由选择</h4><p>目的主机与源主机直接相连，或都在一个共享网络上，IP数据报直接送到目的主机。<br>否则发往默认路由，由路由器转发。<br><br></p>
-<h6 id="IP层可以配置成路由器或主机"><a href="#IP层可以配置成路由器或主机" class="headerlink" title="IP层可以配置成路由器或主机"></a>IP层可以配置成路由器或主机</h6><p>主机：不转发<br>路由器：转发<br>内含路由器的主机：不转发<br><br></p>
-<h6 id="收到数据报来自网络接口时（即非本地生成的数据报）"><a href="#收到数据报来自网络接口时（即非本地生成的数据报）" class="headerlink" title="收到数据报来自网络接口时（即非本地生成的数据报）"></a>收到数据报来自网络接口时（即非本地生成的数据报）</h6><ul>
-<li>检查IP地址<ul>
-<li>是本机IP地址之一或IP广播地址：发送到指定协议模块<ul>
-<li>IP层设置为路由器：转发</li>
-<li>否则：丢弃<br><br></li>
-</ul>
-</li>
-</ul>
-</li>
-</ul>
-<h6 id="路由表"><a href="#路由表" class="headerlink" title="路由表"></a>路由表</h6><table>
-<thead>
-<tr>
-<th>项</th>
-<th>含义</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>目的IP地址</td>
-<td>表中标志字段指定类型。完整的主机地址：非0主机号。网络地址：主机号为0。</td>
-</tr>
-<tr>
-<td>下一跳路由器IP地址</td>
-<td>或者有直接连接的网络IP地址。</td>
-</tr>
-<tr>
-<td>标志</td>
-<td>一个指明目的IP地址类型，==<strong>一个标志下一站路由器时真下一站路由器还是直接相连的接口。</strong>看不懂这句==</td>
-</tr>
-<tr>
-<td>指定网络接口</td>
-</tr>
-</tbody>
-</table>
-<p>IP不知道目的的完整路径<br><br></p>
-<h6 id="IP路由选择主要功能"><a href="#IP路由选择主要功能" class="headerlink" title="IP路由选择主要功能"></a>IP路由选择主要功能</h6><p>搜索路由表</p>
-<ol>
-<li>寻找与目的IP完全匹配（网络号和主机号）的条目</li>
-<li>寻找与目的网络号相匹配的条目（必须考虑子网掩码）</li>
-<li>寻找“默认”的条目</li>
-</ol>
-<p>如果找到，报文发送指定的下一站路由器或直接相连的网络接口。<br>如果都未成功，则不能被传送，向应用返回错误<br><br></p>
-<h4 id="子网寻址"><a href="#子网寻址" class="headerlink" title="子网寻址"></a>子网寻址</h4><p>==看不懂图==</p>
-<ul>
-<li>所有主机都要求支持子网寻址。</li>
-<li>IP地址 = 网络号 + 子网号 + 主机号</li>
-<li>B类IP地址 = 网络号（16位）+ 子网号（8位）+ 主机号（8位）</li>
-<li>子网对外部路由器来说隐藏了内部网络组织。</li>
-<li>子网划分缩减了路由表的规模。</li>
-<li>子网对于子网内部的路由器不透明。==不懂==</li>
-</ul>
-<h4 id="子网掩码"><a href="#子网掩码" class="headerlink" title="子网掩码"></a>子网掩码</h4><ul>
-<li>标识多少bit用于子网号，多少bit用于主机号。</li>
-<li>掩码是32bit的值，值为1留给网络号和子网号，值为0留给主机号。</li>
-<li>给定IP地址和子网掩码后可以确定：</li>
-<li><ol>
-<li>本子网上的主机。</li>
-</ol>
-</li>
-<li><ol start="2">
-<li>本网络中其他子网中的主机。</li>
-</ol>
-</li>
-<li><ol start="3">
-<li>其他网络上的主机。</li>
-</ol>
-</li>
-</ul>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -2835,7 +2726,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">43</span>
+                  <span class="site-state-item-count">45</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>

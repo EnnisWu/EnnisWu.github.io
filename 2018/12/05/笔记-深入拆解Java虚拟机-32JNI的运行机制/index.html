@@ -68,7 +68,7 @@
 
 
 
-  <meta name="keywords" content="Hexo, NexT" />
+  <meta name="keywords" content="JVM," />
 
 
 
@@ -81,16 +81,18 @@
 
 
 
-<meta name="description" content="We could, we could belong togeter, ARTPOP.">
-<meta property="og:type" content="website">
-<meta property="og:title" content="Ennis -Little Monster">
-<meta property="og:url" content="http://ennis.info/categories/Java虚拟机/page/2/index.html">
+<meta name="description" content="Java 无法表达的场景 使用汇编语言提升关键代码的性能。 调用 Java 核心类库无法提供的，某个体系架构或者操作系统特有的功能。 牺牲可移植性，在 Java 代码中调用 C/C++ 代码实现。  这种跨语言调用，需要借助 Java Native Interface 机制。 native 方法的链接 动态链接库的名字以 lib 为前缀，以 .dylib 或 .so 为扩展名。 通过 方法加载 l">
+<meta name="keywords" content="JVM">
+<meta property="og:type" content="article">
+<meta property="og:title" content="笔记-深入拆解Java虚拟机-32JNI的运行机制">
+<meta property="og:url" content="http://ennis.info/2018/12/05/笔记-深入拆解Java虚拟机-32JNI的运行机制/index.html">
 <meta property="og:site_name" content="Ennis -Little Monster">
-<meta property="og:description" content="We could, we could belong togeter, ARTPOP.">
+<meta property="og:description" content="Java 无法表达的场景 使用汇编语言提升关键代码的性能。 调用 Java 核心类库无法提供的，某个体系架构或者操作系统特有的功能。 牺牲可移植性，在 Java 代码中调用 C/C++ 代码实现。  这种跨语言调用，需要借助 Java Native Interface 机制。 native 方法的链接 动态链接库的名字以 lib 为前缀，以 .dylib 或 .so 为扩展名。 通过 方法加载 l">
 <meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2018-12-05T11:15:04.930Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Ennis -Little Monster">
-<meta name="twitter:description" content="We could, we could belong togeter, ARTPOP.">
+<meta name="twitter:title" content="笔记-深入拆解Java虚拟机-32JNI的运行机制">
+<meta name="twitter:description" content="Java 无法表达的场景 使用汇编语言提升关键代码的性能。 调用 Java 核心类库无法提供的，某个体系架构或者操作系统特有的功能。 牺牲可移植性，在 Java 代码中调用 C/C++ 代码实现。  这种跨语言调用，需要借助 Java Native Interface 机制。 native 方法的链接 动态链接库的名字以 lib 为前缀，以 .dylib 或 .so 为扩展名。 通过 方法加载 l">
 
 
 
@@ -120,13 +122,13 @@
 
 
 
-  <link rel="canonical" href="http://ennis.info/categories/Java虚拟机/page/2/"/>
+  <link rel="canonical" href="http://ennis.info/2018/12/05/笔记-深入拆解Java虚拟机-32JNI的运行机制/"/>
 
 
 
 
 
-  <title>分类: Java虚拟机 | Ennis -Little Monster</title>
+  <title>笔记-深入拆解Java虚拟机-32JNI的运行机制 | Ennis -Little Monster</title>
   
 
 
@@ -145,7 +147,7 @@
     
   
 
-  <div class="container sidebar-position-left ">
+  <div class="container sidebar-position-left page-post-detail">
     <div class="headband"></div>
 
     <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
@@ -283,311 +285,253 @@
           <div id="content" class="content">
             
 
+  <div id="posts" class="posts-expand">
+    
+
+  
+
   
   
   
-  <div class="post-block category">
-
-    <div id="posts" class="posts-collapse">
-      <div class="collection-title">
-        <h1>Java虚拟机<small>分类</small>
-        </h1>
-      </div>
-
-      
-        
 
   <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://ennis.info/2018/12/05/笔记-深入拆解Java虚拟机-32JNI的运行机制/">
 
-      <h2 class="post-title">
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Ennis L.M. Wu">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="http://pcrioz2ch.bkt.clouddn.com/portrait.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Ennis -Little Monster">
+    </span>
+
+    
+      <header class="post-header">
+
         
-            <a class="post-title-link" href="/2018/11/06/笔记-深入拆解Java虚拟机-1617即时编译/" itemprop="url">
-              
-                <span itemprop="name">笔记-深入拆解Java虚拟机-1617即时编译</span>
-              
-            </a>
         
-      </h2>
+          <h1 class="post-title" itemprop="name headline">笔记-深入拆解Java虚拟机-32JNI的运行机制</h1>
+        
 
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2018-11-06T10:03:09+08:00"
-              content="2018-11-06" >
-          11-06
-        </time>
-      </div>
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-12-05T16:27:03+08:00">
+                2018-12-05
+              </time>
+            
 
-    </header>
-  </article>
+            
 
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Java虚拟机/" itemprop="url" rel="index">
+                    <span itemprop="name">Java虚拟机</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
 
       
-        
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h2 class="post-title">
-        
-            <a class="post-title-link" href="/2018/10/20/笔记-深入拆解Java虚拟机-15Java语法糖与Java编译器/" itemprop="url">
-              
-                <span itemprop="name">笔记-深入拆解Java虚拟机-15Java语法糖与Java编译器</span>
-              
-            </a>
-        
-      </h2>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2018-10-20T19:02:34+08:00"
-              content="2018-10-20" >
-          10-20
-        </time>
-      </div>
-
-    </header>
-  </article>
-
+      
 
       
-        
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h2 class="post-title">
-        
-            <a class="post-title-link" href="/2018/10/17/笔记-深入拆解Java虚拟机-14Java虚拟机是怎么实现synchronized的？/" itemprop="url">
-              
-                <span itemprop="name">笔记-深入拆解Java虚拟机-14Java虚拟机是怎么实现synchronized的？</span>
-              
-            </a>
-        
-      </h2>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2018-10-17T14:08:55+08:00"
-              content="2018-10-17" >
-          10-17
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-      
-        
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h2 class="post-title">
-        
-            <a class="post-title-link" href="/2018/08/31/笔记-深入拆解Java虚拟机-13Java内存模型/" itemprop="url">
-              
-                <span itemprop="name">笔记-深入拆解Java虚拟机-13Java内存模型</span>
-              
-            </a>
-        
-      </h2>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2018-08-31T14:44:23+08:00"
-              content="2018-08-31" >
-          08-31
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-      
-        
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h2 class="post-title">
-        
-            <a class="post-title-link" href="/2018/08/29/笔记-深入拆解Java虚拟机-1112垃圾回收/" itemprop="url">
-              
-                <span itemprop="name">笔记-深入拆解Java虚拟机-1112垃圾回收</span>
-              
-            </a>
-        
-      </h2>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2018-08-29T15:50:47+08:00"
-              content="2018-08-29" >
-          08-29
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-      
-        
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h2 class="post-title">
-        
-            <a class="post-title-link" href="/2018/08/29/笔记-深入拆解Java虚拟机-10Java对象的内存分布/" itemprop="url">
-              
-                <span itemprop="name">笔记-深入拆解Java虚拟机-10Java对象的内存分布</span>
-              
-            </a>
-        
-      </h2>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2018-08-29T09:38:58+08:00"
-              content="2018-08-29" >
-          08-29
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-      
-        
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h2 class="post-title">
-        
-            <a class="post-title-link" href="/2018/08/10/笔记-深入拆解Java虚拟机-0809JVM是怎么实现invokedynamic的？/" itemprop="url">
-              
-                <span itemprop="name">笔记-深入拆解Java虚拟机-0809JVM是怎么实现invokedynamic的？</span>
-              
-            </a>
-        
-      </h2>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2018-08-10T15:07:18+08:00"
-              content="2018-08-10" >
-          08-10
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-      
-        
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h2 class="post-title">
-        
-            <a class="post-title-link" href="/2018/08/06/笔记-深入拆解Java虚拟机-07JVM是如何实现反射的？/" itemprop="url">
-              
-                <span itemprop="name">笔记-深入拆解Java虚拟机-07JVM是如何实现反射的？</span>
-              
-            </a>
-        
-      </h2>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2018-08-06T14:33:36+08:00"
-              content="2018-08-06" >
-          08-06
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-      
-        
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h2 class="post-title">
-        
-            <a class="post-title-link" href="/2018/08/05/笔记-深入拆解Java虚拟机-【工具篇】常用工具介绍/" itemprop="url">
-              
-                <span itemprop="name">笔记-深入拆解Java虚拟机-【工具篇】常用工具介绍</span>
-              
-            </a>
-        
-      </h2>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2018-08-05T14:41:13+08:00"
-              content="2018-08-05" >
-          08-05
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-      
-        
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h2 class="post-title">
-        
-            <a class="post-title-link" href="/2018/08/01/笔记-深入拆解Java虚拟机-06JVM是如何处理异常的？/" itemprop="url">
-              
-                <span itemprop="name">笔记-深入拆解Java虚拟机-06JVM是如何处理异常的？</span>
-              
-            </a>
-        
-      </h2>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2018-08-01T14:41:48+08:00"
-              content="2018-08-01" >
-          08-01
-        </time>
-      </div>
-
-    </header>
-  </article>
-
+        <h1 id="Java-无法表达的场景"><a href="#Java-无法表达的场景" class="headerlink" title="Java 无法表达的场景"></a>Java 无法表达的场景</h1><ul>
+<li>使用汇编语言提升关键代码的性能。</li>
+<li>调用 Java 核心类库无法提供的，某个体系架构或者操作系统特有的功能。</li>
+<li>牺牲可移植性，在 Java 代码中调用 C/C++ 代码实现。</li>
+</ul>
+<p>这种跨语言调用，需要借助 Java Native Interface 机制。</p>
+<h1 id="native-方法的链接"><a href="#native-方法的链接" class="headerlink" title="native 方法的链接"></a>native 方法的链接</h1><ul>
+<li>动态链接库的名字以 lib 为前缀，以 .dylib 或 .so 为扩展名。</li>
+<li>通过 <figure class="highlight plain"><figcaption><span>方法加载 lib---.dylib。</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br></pre></td><td class="code"><pre><span class="line">- 如果库不在当前路径下，可以配置 java.library.path 参数指向路径（JVM 启动时）。</span><br><span class="line"></span><br><span class="line">## JVM 自动查找符合默认命名规范的 C 函数并链接</span><br><span class="line"></span><br><span class="line">- ```javac -h``` 命令可以根据 native 方法声明，自动生成包含符合命名规范的 C 函数的头文件。</span><br><span class="line"></span><br><span class="line">### 命名规范</span><br><span class="line"></span><br><span class="line">-  函数都要以Java_为前缀，后跟完整的包名和方法名。</span><br><span class="line">	- 路径中 / 转换为 \_</span><br><span class="line">	- 原方法名中 \_ 转换为 \_1</span><br><span class="line">- 有重载 native 方法时，自动链接对象时的考虑参数类型。</span><br><span class="line">- 重载方法函数名在原本基础上追加 __ 以及方法描述符作为后缀。</span><br><span class="line">- 方法描述符的特殊符号会被替换。</span><br><span class="line">	- 引用类型中 ; 替换为 \_2</span><br><span class="line">	- 数组类型中 [ 替换为 \_3</span><br><span class="line"></span><br><span class="line">## 在 C 代码中主动链接</span><br><span class="line"></span><br><span class="line">- 对 C 函数名没有要求。</span><br><span class="line">- 通常使用一个名为 registerNatives 的 native 方法，按照第一种链接方式定义所能自动链接的 C 函数。在该函数中，手动链接该类的其他 native 方法。</span><br><span class="line">- 需要在其他 native 方法被调用之前完成链接。</span><br><span class="line">- 通常在类的初始化方法里调用该 registerNatives 方法。</span><br><span class="line"></span><br><span class="line"># JNI 的 API</span><br><span class="line"></span><br><span class="line">- **C 代码中可以使用 Java 的语言特性**（如 instanceof，通过特殊的 JNI 函数实现）。</span><br><span class="line"></span><br><span class="line">## JNIEnv</span><br><span class="line"></span><br><span class="line">- JVM 会将所有 JNI 函数的函数指针聚合到一个名为 JNIEnv 的数据结构中。</span><br><span class="line">- **JNIEnv 线程私有**，每个线程都拥有一个 JNIEnv。</span><br><span class="line">- 规定 C 代码**不能共享 JNIEnv 给其他线程**，否则 JNI 函数无法保证正确性。</span><br><span class="line"></span><br><span class="line">### 原因：</span><br><span class="line"></span><br><span class="line">1. 给 JNI 函数提供一个单独命名空间。</span><br><span class="line">2. 允许 JVM 通过更改函数指针替换 JNI 函数的具体实现。</span><br><span class="line"></span><br><span class="line">## Java 类型与本地类型</span><br><span class="line"></span><br><span class="line">- JNI 会**将 Java 层面的基本类型以及引用类型映射为另一套可供 C 代码使用的数据结构**。</span><br><span class="line"></span><br><span class="line">基本类型对应关系：</span><br><span class="line"></span><br><span class="line">| Java类型 | 本地类型 | 位（bit） |</span><br><span class="line">| --------- | --------- | ---------- |</span><br><span class="line">| boolean | jboolean | 8, unsigned |</span><br><span class="line">| byte | jbyte | 8 |</span><br><span class="line">| char | jchar | 16, unsigned |</span><br><span class="line">| short | jshort | 16 |</span><br><span class="line">| int | jint | 32 |</span><br><span class="line">| long | jlong | 64 |</span><br><span class="line">| float | jfloat | 32 |</span><br><span class="line">| double | jdouble | 64 |</span><br><span class="line">| void | void | n/a |</span><br><span class="line"></span><br><span class="line">引用类型对应数据结构的继承关系：</span><br></pre></td></tr></table></figure></li>
+</ul>
+<p>jobject<br>|- jclass (java.lang.Class objects)<br>|- jstring (java.lang.String objects)<br>|- jthrowable (java.lang.Throwable objects)<br>|- jarray (arrays)<br>   |- jobjectArray (object arrays)<br>   |- jbooleanArray (boolean arrays)<br>   |- jbyteArray (byte arrays)<br>   |- jcharArray (char arrays)<br>   |- jshortArray (short arrays)<br>   |- jintArray (int arrays)<br>   |- jlongArray (long arrays)<br>   |- jfloatArray (float arrays)<br>   |- jdoubleArray (double arrays)<br><code>`</code></p>
+<ul>
+<li>JNI 访问字段类似反射 API。</li>
+</ul>
+<h1 id="异常"><a href="#异常" class="headerlink" title="异常"></a>异常</h1><ul>
+<li><strong>调用 JNI 函数时，JVM 便已生成异常实例，并缓存在内存中。</strong></li>
+<li>不会显式地跳转至异常处理器或者调用者中，而是继续执行接下来的 C 代码。</li>
+<li>从可能触发异常的 JNI 函数返回时，需要<strong>通过 JNI 函数 ExceptionOccurred 检查是否发生了异常</strong>，并且作出相应的处理。</li>
+<li>如果无须抛出该异常，需要<strong>通过 JNI 函数 ExceptionClear 显式地清空已缓存的异常</strong>。</li>
+</ul>
+<h1 id="局部引用（Local-Reference）与全局引用（Global-Reference）"><a href="#局部引用（Local-Reference）与全局引用（Global-Reference）" class="headerlink" title="局部引用（Local Reference）与全局引用（Global Reference）"></a>局部引用（Local Reference）与全局引用（Global Reference）</h1><ul>
+<li>C 代码中可以访问所传入的引用类型参数。</li>
+<li>可以通过 JNI 函数创建新的 Java 对象。</li>
+<li>JVM 需要一种机制告知垃圾回收算法不要回收 C 代码中可能引用到的 Java 对象。</li>
+<li>垃圾回收算法会将被<strong>局部引用</strong>和<strong>全局引用</strong>指向的对象标记为<strong>不可回收</strong>。</li>
+<li>无论是传入的引用类型参数，还是通过 JNI 函数（除NewGlobalRef及NewWeakGlobalRef之外）返回的引用类型对象，都属于局部引用。</li>
+<li><strong>从 C 函数中返回至 Java 方法中，局部引用将失效</strong>。</li>
+<li>不能缓存局部引用，以供另一 C 线程或下一次 native 方法调用时使用。</li>
+<li>通过 JNI 函数 NewGlobalRef，将该局部引用转换为全局引用。</li>
+<li>通过 JNI 函数 DeleteGlobalRef 消除全局引用。</li>
+<li>C 函数运行时间极其长时，应该考虑通过 JNI 函数DeleteLocalRef，消除不再使用的局部引用。</li>
+</ul>
+<h1 id="句柄（handle）"><a href="#句柄（handle）" class="headerlink" title="句柄（handle）"></a>句柄（handle）</h1><blockquote>
+<p>句柄指的是内存中 Java 对象的指针的指针。</p>
+<blockquote>
+<p>垃圾回收器可能会移动对象在内存中的位置，JVM 需要另一种机制保证局部引用或者全局引用将正确地指向移动过后的对象。HotSpot 虚拟机是通过句柄（handle）来完成。</p>
+</blockquote>
+</blockquote>
+<ul>
+<li><strong>局部引用和全局引用都是句柄。</strong></li>
+<li>局部引用句柄的两种存储方式<ol>
+<li>在本地方法栈帧中：主要用于存放 C 函数所接收的来自 Java 层面的引用类型参数。</li>
+<li>在线程私有的句柄块：主要用于存放 C 函数中创建的局部引用。</li>
+</ol>
+</li>
+<li>从 C 函数返回至 Java 方法时，<strong>本地方法栈帧</strong>中的句柄将会被<strong>自动清除</strong>。</li>
+<li><strong>线程私有句柄块</strong>需要 JVM <strong>显式清理</strong>。</li>
+</ul>
+<h1 id="JNI-调用的额外性能开销"><a href="#JNI-调用的额外性能开销" class="headerlink" title="JNI 调用的额外性能开销"></a>JNI 调用的额外性能开销</h1><ul>
+<li><strong>进入 C 函数时对引用类型参数的句柄化。</strong></li>
+<li><strong>调整参数位置</strong>（C 调用和 Java 调用传参的方式不一样）。</li>
+<li><strong>从 C 函数返回时清理线程私有句柄块。</strong></li>
+</ul>
+<h1 id="引用"><a href="#引用" class="headerlink" title="引用"></a>引用</h1><blockquote>
+<p><a href="https://time.geekbang.org/column/article/40839" target="_blank" rel="noopener">https://time.geekbang.org/column/article/40839</a></p>
+</blockquote>
 
       
     </div>
+    
+    
+    
 
+    
+
+    
+      <div>
+        <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+  <div>如果你喜欢这篇文章的话。。。能给我一个小红包吗，爱你呦~(*´∀`)~♥</div>
+  <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+    <span>打赏</span>
+  </button>
+  <div id="QR" style="display: none;">
+
+    
+      <div id="wechat" style="display: inline-block">
+        <img id="wechat_qr" src="http://pcrioz2ch.bkt.clouddn.com/reward_wechatpay.jpg" alt="Ennis L.M. Wu 微信支付"/>
+        <p>微信支付</p>
+      </div>
+    
+
+    
+      <div id="alipay" style="display: inline-block">
+        <img id="alipay_qr" src="http://pcrioz2ch.bkt.clouddn.com/reward_alipay.jpg" alt="Ennis L.M. Wu 支付宝"/>
+        <p>支付宝</p>
+      </div>
+    
+
+    
+
+  </div>
+</div>
+
+      </div>
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/JVM/" rel="tag"># JVM</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/12/04/笔记-深入拆解Java虚拟机-2829基准测试框架JMH/" rel="next" title="笔记-深入拆解Java虚拟机-2829基准测试框架JMH">
+                <i class="fa fa-chevron-left"></i> 笔记-深入拆解Java虚拟机-2829基准测试框架JMH
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
   </div>
   
   
   
-
-  
-  <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/categories/Java虚拟机/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/categories/Java虚拟机/">1</a><span class="page-number current">2</span><a class="page-number" href="/categories/Java虚拟机/page/3/">3</a><a class="extend next" rel="next" href="/categories/Java虚拟机/page/3/"><i class="fa fa-angle-right"></i></a>
-  </nav>
+  </article>
 
 
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
 
 
           </div>
@@ -595,6 +539,10 @@
 
 
           
+
+  
+
+
 
         </div>
         
@@ -615,8 +563,17 @@
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
 
-      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
+      <section class="site-overview-wrap sidebar-panel">
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
             
@@ -721,6 +678,22 @@
         </div>
       </section>
 
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Java-无法表达的场景"><span class="nav-number">1.</span> <span class="nav-text">Java 无法表达的场景</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#native-方法的链接"><span class="nav-number">2.</span> <span class="nav-text">native 方法的链接</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#异常"><span class="nav-number">3.</span> <span class="nav-text">异常</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#局部引用（Local-Reference）与全局引用（Global-Reference）"><span class="nav-number">4.</span> <span class="nav-text">局部引用（Local Reference）与全局引用（Global Reference）</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#句柄（handle）"><span class="nav-number">5.</span> <span class="nav-text">句柄（handle）</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#JNI-调用的额外性能开销"><span class="nav-number">6.</span> <span class="nav-text">JNI 调用的额外性能开销</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#引用"><span class="nav-number">7.</span> <span class="nav-text">引用</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
       
 
       
@@ -862,6 +835,10 @@
 
 
   
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
 
   
 

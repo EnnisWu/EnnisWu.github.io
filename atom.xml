@@ -5,9 +5,9 @@
   <subtitle>ARTPOP = artistic revolution through the potential of pop.</subtitle>
   <link href="/atom.xml" rel="self"/>
   
-  <link href="http://yoursite.com/"/>
-  <updated>2018-12-03T03:42:41.483Z</updated>
-  <id>http://yoursite.com/</id>
+  <link href="http://ennis.info/"/>
+  <updated>2018-12-05T11:15:04.930Z</updated>
+  <id>http://ennis.info/</id>
   
   <author>
     <name>Ennis L.M. Wu</name>
@@ -17,9 +17,62 @@
   <generator uri="http://hexo.io/">Hexo</generator>
   
   <entry>
+    <title>笔记-深入拆解Java虚拟机-32JNI的运行机制</title>
+    <link href="http://ennis.info/2018/12/05/%E7%AC%94%E8%AE%B0-%E6%B7%B1%E5%85%A5%E6%8B%86%E8%A7%A3Java%E8%99%9A%E6%8B%9F%E6%9C%BA-32JNI%E7%9A%84%E8%BF%90%E8%A1%8C%E6%9C%BA%E5%88%B6/"/>
+    <id>http://ennis.info/2018/12/05/笔记-深入拆解Java虚拟机-32JNI的运行机制/</id>
+    <published>2018-12-05T08:27:03.000Z</published>
+    <updated>2018-12-05T11:15:04.930Z</updated>
+    
+    <content type="html"><![CDATA[<h1 id="Java-无法表达的场景"><a href="#Java-无法表达的场景" class="headerlink" title="Java 无法表达的场景"></a>Java 无法表达的场景</h1><ul><li>使用汇编语言提升关键代码的性能。</li><li>调用 Java 核心类库无法提供的，某个体系架构或者操作系统特有的功能。</li><li>牺牲可移植性，在 Java 代码中调用 C/C++ 代码实现。</li></ul><p>这种跨语言调用，需要借助 Java Native Interface 机制。</p><h1 id="native-方法的链接"><a href="#native-方法的链接" class="headerlink" title="native 方法的链接"></a>native 方法的链接</h1><ul><li>动态链接库的名字以 lib 为前缀，以 .dylib 或 .so 为扩展名。</li><li>通过 <figure class="highlight plain"><figcaption><span>方法加载 lib---.dylib。</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br></pre></td><td class="code"><pre><span class="line">- 如果库不在当前路径下，可以配置 java.library.path 参数指向路径（JVM 启动时）。</span><br><span class="line"></span><br><span class="line">## JVM 自动查找符合默认命名规范的 C 函数并链接</span><br><span class="line"></span><br><span class="line">- ```javac -h``` 命令可以根据 native 方法声明，自动生成包含符合命名规范的 C 函数的头文件。</span><br><span class="line"></span><br><span class="line">### 命名规范</span><br><span class="line"></span><br><span class="line">-  函数都要以Java_为前缀，后跟完整的包名和方法名。</span><br><span class="line">- 路径中 / 转换为 \_</span><br><span class="line">- 原方法名中 \_ 转换为 \_1</span><br><span class="line">- 有重载 native 方法时，自动链接对象时的考虑参数类型。</span><br><span class="line">- 重载方法函数名在原本基础上追加 __ 以及方法描述符作为后缀。</span><br><span class="line">- 方法描述符的特殊符号会被替换。</span><br><span class="line">- 引用类型中 ; 替换为 \_2</span><br><span class="line">- 数组类型中 [ 替换为 \_3</span><br><span class="line"></span><br><span class="line">## 在 C 代码中主动链接</span><br><span class="line"></span><br><span class="line">- 对 C 函数名没有要求。</span><br><span class="line">- 通常使用一个名为 registerNatives 的 native 方法，按照第一种链接方式定义所能自动链接的 C 函数。在该函数中，手动链接该类的其他 native 方法。</span><br><span class="line">- 需要在其他 native 方法被调用之前完成链接。</span><br><span class="line">- 通常在类的初始化方法里调用该 registerNatives 方法。</span><br><span class="line"></span><br><span class="line"># JNI 的 API</span><br><span class="line"></span><br><span class="line">- **C 代码中可以使用 Java 的语言特性**（如 instanceof，通过特殊的 JNI 函数实现）。</span><br><span class="line"></span><br><span class="line">## JNIEnv</span><br><span class="line"></span><br><span class="line">- JVM 会将所有 JNI 函数的函数指针聚合到一个名为 JNIEnv 的数据结构中。</span><br><span class="line">- **JNIEnv 线程私有**，每个线程都拥有一个 JNIEnv。</span><br><span class="line">- 规定 C 代码**不能共享 JNIEnv 给其他线程**，否则 JNI 函数无法保证正确性。</span><br><span class="line"></span><br><span class="line">### 原因：</span><br><span class="line"></span><br><span class="line">1. 给 JNI 函数提供一个单独命名空间。</span><br><span class="line">2. 允许 JVM 通过更改函数指针替换 JNI 函数的具体实现。</span><br><span class="line"></span><br><span class="line">## Java 类型与本地类型</span><br><span class="line"></span><br><span class="line">- JNI 会**将 Java 层面的基本类型以及引用类型映射为另一套可供 C 代码使用的数据结构**。</span><br><span class="line"></span><br><span class="line">基本类型对应关系：</span><br><span class="line"></span><br><span class="line">| Java类型 | 本地类型 | 位（bit） |</span><br><span class="line">| --------- | --------- | ---------- |</span><br><span class="line">| boolean | jboolean | 8, unsigned |</span><br><span class="line">| byte | jbyte | 8 |</span><br><span class="line">| char | jchar | 16, unsigned |</span><br><span class="line">| short | jshort | 16 |</span><br><span class="line">| int | jint | 32 |</span><br><span class="line">| long | jlong | 64 |</span><br><span class="line">| float | jfloat | 32 |</span><br><span class="line">| double | jdouble | 64 |</span><br><span class="line">| void | void | n/a |</span><br><span class="line"></span><br><span class="line">引用类型对应数据结构的继承关系：</span><br></pre></td></tr></table></figure></li></ul><p>jobject<br>|- jclass (java.lang.Class objects)<br>|- jstring (java.lang.String objects)<br>|- jthrowable (java.lang.Throwable objects)<br>|- jarray (arrays)<br>   |- jobjectArray (object arrays)<br>   |- jbooleanArray (boolean arrays)<br>   |- jbyteArray (byte arrays)<br>   |- jcharArray (char arrays)<br>   |- jshortArray (short arrays)<br>   |- jintArray (int arrays)<br>   |- jlongArray (long arrays)<br>   |- jfloatArray (float arrays)<br>   |- jdoubleArray (double arrays)<br><code>`</code></p><ul><li>JNI 访问字段类似反射 API。</li></ul><h1 id="异常"><a href="#异常" class="headerlink" title="异常"></a>异常</h1><ul><li><strong>调用 JNI 函数时，JVM 便已生成异常实例，并缓存在内存中。</strong></li><li>不会显式地跳转至异常处理器或者调用者中，而是继续执行接下来的 C 代码。</li><li>从可能触发异常的 JNI 函数返回时，需要<strong>通过 JNI 函数 ExceptionOccurred 检查是否发生了异常</strong>，并且作出相应的处理。</li><li>如果无须抛出该异常，需要<strong>通过 JNI 函数 ExceptionClear 显式地清空已缓存的异常</strong>。</li></ul><h1 id="局部引用（Local-Reference）与全局引用（Global-Reference）"><a href="#局部引用（Local-Reference）与全局引用（Global-Reference）" class="headerlink" title="局部引用（Local Reference）与全局引用（Global Reference）"></a>局部引用（Local Reference）与全局引用（Global Reference）</h1><ul><li>C 代码中可以访问所传入的引用类型参数。</li><li>可以通过 JNI 函数创建新的 Java 对象。</li><li>JVM 需要一种机制告知垃圾回收算法不要回收 C 代码中可能引用到的 Java 对象。</li><li>垃圾回收算法会将被<strong>局部引用</strong>和<strong>全局引用</strong>指向的对象标记为<strong>不可回收</strong>。</li><li>无论是传入的引用类型参数，还是通过 JNI 函数（除NewGlobalRef及NewWeakGlobalRef之外）返回的引用类型对象，都属于局部引用。</li><li><strong>从 C 函数中返回至 Java 方法中，局部引用将失效</strong>。</li><li>不能缓存局部引用，以供另一 C 线程或下一次 native 方法调用时使用。</li><li>通过 JNI 函数 NewGlobalRef，将该局部引用转换为全局引用。</li><li>通过 JNI 函数 DeleteGlobalRef 消除全局引用。</li><li>C 函数运行时间极其长时，应该考虑通过 JNI 函数DeleteLocalRef，消除不再使用的局部引用。</li></ul><h1 id="句柄（handle）"><a href="#句柄（handle）" class="headerlink" title="句柄（handle）"></a>句柄（handle）</h1><blockquote><p>句柄指的是内存中 Java 对象的指针的指针。</p><blockquote><p>垃圾回收器可能会移动对象在内存中的位置，JVM 需要另一种机制保证局部引用或者全局引用将正确地指向移动过后的对象。HotSpot 虚拟机是通过句柄（handle）来完成。</p></blockquote></blockquote><ul><li><strong>局部引用和全局引用都是句柄。</strong></li><li>局部引用句柄的两种存储方式<ol><li>在本地方法栈帧中：主要用于存放 C 函数所接收的来自 Java 层面的引用类型参数。</li><li>在线程私有的句柄块：主要用于存放 C 函数中创建的局部引用。</li></ol></li><li>从 C 函数返回至 Java 方法时，<strong>本地方法栈帧</strong>中的句柄将会被<strong>自动清除</strong>。</li><li><strong>线程私有句柄块</strong>需要 JVM <strong>显式清理</strong>。</li></ul><h1 id="JNI-调用的额外性能开销"><a href="#JNI-调用的额外性能开销" class="headerlink" title="JNI 调用的额外性能开销"></a>JNI 调用的额外性能开销</h1><ul><li><strong>进入 C 函数时对引用类型参数的句柄化。</strong></li><li><strong>调整参数位置</strong>（C 调用和 Java 调用传参的方式不一样）。</li><li><strong>从 C 函数返回时清理线程私有句柄块。</strong></li></ul><h1 id="引用"><a href="#引用" class="headerlink" title="引用"></a>引用</h1><blockquote><p><a href="https://time.geekbang.org/column/article/40839" target="_blank" rel="noopener">https://time.geekbang.org/column/article/40839</a></p></blockquote>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;h1 id=&quot;Java-无法表达的场景&quot;&gt;&lt;a href=&quot;#Java-无法表达的场景&quot; class=&quot;headerlink&quot; title=&quot;Java 无法表达的场景&quot;&gt;&lt;/a&gt;Java 无法表达的场景&lt;/h1&gt;&lt;ul&gt;
+&lt;li&gt;使用汇编语言提升关键代码的性能。&lt;/li&gt;
+&lt;l
+      
+    
+    </summary>
+    
+      <category term="Java虚拟机" scheme="http://ennis.info/categories/Java%E8%99%9A%E6%8B%9F%E6%9C%BA/"/>
+    
+    
+      <category term="JVM" scheme="http://ennis.info/tags/JVM/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>笔记-深入拆解Java虚拟机-2829基准测试框架JMH</title>
+    <link href="http://ennis.info/2018/12/04/%E7%AC%94%E8%AE%B0-%E6%B7%B1%E5%85%A5%E6%8B%86%E8%A7%A3Java%E8%99%9A%E6%8B%9F%E6%9C%BA-2829%E5%9F%BA%E5%87%86%E6%B5%8B%E8%AF%95%E6%A1%86%E6%9E%B6JMH/"/>
+    <id>http://ennis.info/2018/12/04/笔记-深入拆解Java虚拟机-2829基准测试框架JMH/</id>
+    <published>2018-12-04T09:12:22.000Z</published>
+    <updated>2018-12-04T09:25:15.606Z</updated>
+    
+    <content type="html"><![CDATA[<p>通过 <code>System.nanoTime</code> 或者 <code>System.currentTimeMillis</code> 来测量程序所花费的时间过于理性化，忽略了 Java 虚拟机、操作系统，硬件系统所带来的影响。</p><h1 id="性能测试的坑"><a href="#性能测试的坑" class="headerlink" title="性能测试的坑"></a>性能测试的坑</h1><h2 id="Java-虚拟机的影响"><a href="#Java-虚拟机的影响" class="headerlink" title="Java 虚拟机的影响"></a>Java 虚拟机的影响</h2><ul><li>Java 虚拟机堆空间的自适配</li><li>即时编译</li><li>循环展开</li><li>等</li></ul><h2 id="操作系统和硬件系统的影响"><a href="#操作系统和硬件系统的影响" class="headerlink" title="操作系统和硬件系统的影响"></a>操作系统和硬件系统的影响</h2><ul><li>电源管理策略</li><li>CPU 缓存</li><li>分支预测器</li><li>超线程技术</li><li>等</li></ul><h1 id="JMH（Java-Microbenchmark-Harness）"><a href="#JMH（Java-Microbenchmark-Harness）" class="headerlink" title="JMH（Java Microbenchmark Harness）"></a>JMH（Java Microbenchmark Harness）</h1><blockquote><p> OpenJDK 中的开源项目。是一个面向 Java 语言或者其他 Java 虚拟机语言的性能基准测试框架。</p></blockquote><ul><li>JMH 内置许多功能来控制即时编译器的优化。</li><li>其他影响性能评测的因素也提供了不少策略降低影响，甚至彻底解决。</li></ul><h1 id="如何使用-JMH"><a href="#如何使用-JMH" class="headerlink" title="如何使用 JMH"></a>如何使用 JMH</h1><p><a href="http://www.baidu.com" target="_blank" rel="noopener">www.baidu.com</a><br><a href="http://www.google.com" target="_blank" rel="noopener">www.google.com</a></p><h1 id="引用"><a href="#引用" class="headerlink" title="引用"></a>引用</h1><blockquote><p><a href="https://time.geekbang.org/column/article/40275" target="_blank" rel="noopener">https://time.geekbang.org/column/article/40275</a><br><a href="https://time.geekbang.org/column/article/40281" target="_blank" rel="noopener">https://time.geekbang.org/column/article/40281</a></p></blockquote>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;p&gt;通过 &lt;code&gt;System.nanoTime&lt;/code&gt; 或者 &lt;code&gt;System.currentTimeMillis&lt;/code&gt; 来测量程序所花费的时间过于理性化，忽略了 Java 虚拟机、操作系统，硬件系统所带来的影响。&lt;/p&gt;
+&lt;h1 id=&quot;性能测试的
+      
+    
+    </summary>
+    
+      <category term="Java虚拟机" scheme="http://ennis.info/categories/Java%E8%99%9A%E6%8B%9F%E6%9C%BA/"/>
+    
+    
+      <category term="JVM" scheme="http://ennis.info/tags/JVM/"/>
+    
+  </entry>
+  
+  <entry>
     <title>笔记-深入拆解Java虚拟机-26向量化</title>
-    <link href="http://yoursite.com/2018/12/03/%E7%AC%94%E8%AE%B0-%E6%B7%B1%E5%85%A5%E6%8B%86%E8%A7%A3Java%E8%99%9A%E6%8B%9F%E6%9C%BA-26%E5%90%91%E9%87%8F%E5%8C%96/"/>
-    <id>http://yoursite.com/2018/12/03/笔记-深入拆解Java虚拟机-26向量化/</id>
+    <link href="http://ennis.info/2018/12/03/%E7%AC%94%E8%AE%B0-%E6%B7%B1%E5%85%A5%E6%8B%86%E8%A7%A3Java%E8%99%9A%E6%8B%9F%E6%9C%BA-26%E5%90%91%E9%87%8F%E5%8C%96/"/>
+    <id>http://ennis.info/2018/12/03/笔记-深入拆解Java虚拟机-26向量化/</id>
     <published>2018-12-03T02:25:32.000Z</published>
     <updated>2018-12-03T03:42:41.483Z</updated>
     
@@ -40,17 +93,17 @@
     
     </summary>
     
-      <category term="Java虚拟机" scheme="http://yoursite.com/categories/Java%E8%99%9A%E6%8B%9F%E6%9C%BA/"/>
+      <category term="Java虚拟机" scheme="http://ennis.info/categories/Java%E8%99%9A%E6%8B%9F%E6%9C%BA/"/>
     
     
-      <category term="JVM" scheme="http://yoursite.com/tags/JVM/"/>
+      <category term="JVM" scheme="http://ennis.info/tags/JVM/"/>
     
   </entry>
   
   <entry>
     <title>笔记-深入拆解Java虚拟机-25循环优化</title>
-    <link href="http://yoursite.com/2018/11/24/%E7%AC%94%E8%AE%B0-%E6%B7%B1%E5%85%A5%E6%8B%86%E8%A7%A3Java%E8%99%9A%E6%8B%9F%E6%9C%BA-25%E5%BE%AA%E7%8E%AF%E4%BC%98%E5%8C%96/"/>
-    <id>http://yoursite.com/2018/11/24/笔记-深入拆解Java虚拟机-25循环优化/</id>
+    <link href="http://ennis.info/2018/11/24/%E7%AC%94%E8%AE%B0-%E6%B7%B1%E5%85%A5%E6%8B%86%E8%A7%A3Java%E8%99%9A%E6%8B%9F%E6%9C%BA-25%E5%BE%AA%E7%8E%AF%E4%BC%98%E5%8C%96/"/>
+    <id>http://ennis.info/2018/11/24/笔记-深入拆解Java虚拟机-25循环优化/</id>
     <published>2018-11-24T10:59:41.000Z</published>
     <updated>2018-11-24T11:57:51.059Z</updated>
     
@@ -66,17 +119,17 @@
     
     </summary>
     
-      <category term="Java虚拟机" scheme="http://yoursite.com/categories/Java%E8%99%9A%E6%8B%9F%E6%9C%BA/"/>
+      <category term="Java虚拟机" scheme="http://ennis.info/categories/Java%E8%99%9A%E6%8B%9F%E6%9C%BA/"/>
     
     
-      <category term="JVM" scheme="http://yoursite.com/tags/JVM/"/>
+      <category term="JVM" scheme="http://ennis.info/tags/JVM/"/>
     
   </entry>
   
   <entry>
     <title>笔记-深入拆解Java虚拟机-24字段访问相关优化</title>
-    <link href="http://yoursite.com/2018/11/22/%E7%AC%94%E8%AE%B0-%E6%B7%B1%E5%85%A5%E6%8B%86%E8%A7%A3Java%E8%99%9A%E6%8B%9F%E6%9C%BA-24%E5%AD%97%E6%AE%B5%E8%AE%BF%E9%97%AE%E7%9B%B8%E5%85%B3%E4%BC%98%E5%8C%96/"/>
-    <id>http://yoursite.com/2018/11/22/笔记-深入拆解Java虚拟机-24字段访问相关优化/</id>
+    <link href="http://ennis.info/2018/11/22/%E7%AC%94%E8%AE%B0-%E6%B7%B1%E5%85%A5%E6%8B%86%E8%A7%A3Java%E8%99%9A%E6%8B%9F%E6%9C%BA-24%E5%AD%97%E6%AE%B5%E8%AE%BF%E9%97%AE%E7%9B%B8%E5%85%B3%E4%BC%98%E5%8C%96/"/>
+    <id>http://ennis.info/2018/11/22/笔记-深入拆解Java虚拟机-24字段访问相关优化/</id>
     <published>2018-11-22T11:20:50.000Z</published>
     <updated>2018-11-22T12:09:20.398Z</updated>
     
@@ -92,17 +145,17 @@
     
     </summary>
     
-      <category term="Java虚拟机" scheme="http://yoursite.com/categories/Java%E8%99%9A%E6%8B%9F%E6%9C%BA/"/>
+      <category term="Java虚拟机" scheme="http://ennis.info/categories/Java%E8%99%9A%E6%8B%9F%E6%9C%BA/"/>
     
     
-      <category term="JVM" scheme="http://yoursite.com/tags/JVM/"/>
+      <category term="JVM" scheme="http://ennis.info/tags/JVM/"/>
     
   </entry>
   
   <entry>
     <title>笔记-深入拆解Java虚拟机-23逃逸分析</title>
-    <link href="http://yoursite.com/2018/11/15/%E7%AC%94%E8%AE%B0-%E6%B7%B1%E5%85%A5%E6%8B%86%E8%A7%A3Java%E8%99%9A%E6%8B%9F%E6%9C%BA-23%E9%80%83%E9%80%B8%E5%88%86%E6%9E%90/"/>
-    <id>http://yoursite.com/2018/11/15/笔记-深入拆解Java虚拟机-23逃逸分析/</id>
+    <link href="http://ennis.info/2018/11/15/%E7%AC%94%E8%AE%B0-%E6%B7%B1%E5%85%A5%E6%8B%86%E8%A7%A3Java%E8%99%9A%E6%8B%9F%E6%9C%BA-23%E9%80%83%E9%80%B8%E5%88%86%E6%9E%90/"/>
+    <id>http://ennis.info/2018/11/15/笔记-深入拆解Java虚拟机-23逃逸分析/</id>
     <published>2018-11-15T08:40:59.000Z</published>
     <updated>2018-11-15T11:38:41.938Z</updated>
     
@@ -118,17 +171,17 @@
     
     </summary>
     
-      <category term="Java虚拟机" scheme="http://yoursite.com/categories/Java%E8%99%9A%E6%8B%9F%E6%9C%BA/"/>
+      <category term="Java虚拟机" scheme="http://ennis.info/categories/Java%E8%99%9A%E6%8B%9F%E6%9C%BA/"/>
     
     
-      <category term="JVM" scheme="http://yoursite.com/tags/JVM/"/>
+      <category term="JVM" scheme="http://ennis.info/tags/JVM/"/>
     
   </entry>
   
   <entry>
     <title>笔记-深入拆解Java虚拟机-22HotSpot虚拟机的intrinsic</title>
-    <link href="http://yoursite.com/2018/11/14/%E7%AC%94%E8%AE%B0-%E6%B7%B1%E5%85%A5%E6%8B%86%E8%A7%A3Java%E8%99%9A%E6%8B%9F%E6%9C%BA-22HotSpot%E8%99%9A%E6%8B%9F%E6%9C%BA%E7%9A%84intrinsic/"/>
-    <id>http://yoursite.com/2018/11/14/笔记-深入拆解Java虚拟机-22HotSpot虚拟机的intrinsic/</id>
+    <link href="http://ennis.info/2018/11/14/%E7%AC%94%E8%AE%B0-%E6%B7%B1%E5%85%A5%E6%8B%86%E8%A7%A3Java%E8%99%9A%E6%8B%9F%E6%9C%BA-22HotSpot%E8%99%9A%E6%8B%9F%E6%9C%BA%E7%9A%84intrinsic/"/>
+    <id>http://ennis.info/2018/11/14/笔记-深入拆解Java虚拟机-22HotSpot虚拟机的intrinsic/</id>
     <published>2018-11-14T11:14:48.000Z</published>
     <updated>2018-11-14T11:41:12.187Z</updated>
     
@@ -145,17 +198,17 @@
     
     </summary>
     
-      <category term="Java虚拟机" scheme="http://yoursite.com/categories/Java%E8%99%9A%E6%8B%9F%E6%9C%BA/"/>
+      <category term="Java虚拟机" scheme="http://ennis.info/categories/Java%E8%99%9A%E6%8B%9F%E6%9C%BA/"/>
     
     
-      <category term="JVM" scheme="http://yoursite.com/tags/JVM/"/>
+      <category term="JVM" scheme="http://ennis.info/tags/JVM/"/>
     
   </entry>
   
   <entry>
     <title>转-Android学习路线指南</title>
-    <link href="http://yoursite.com/2018/11/14/%E8%BD%AC-Android%E5%AD%A6%E4%B9%A0%E8%B7%AF%E7%BA%BF%E6%8C%87%E5%8D%97/"/>
-    <id>http://yoursite.com/2018/11/14/转-Android学习路线指南/</id>
+    <link href="http://ennis.info/2018/11/14/%E8%BD%AC-Android%E5%AD%A6%E4%B9%A0%E8%B7%AF%E7%BA%BF%E6%8C%87%E5%8D%97/"/>
+    <id>http://ennis.info/2018/11/14/转-Android学习路线指南/</id>
     <published>2018-11-14T05:50:40.000Z</published>
     <updated>2018-11-14T11:45:42.380Z</updated>
     
@@ -171,19 +224,19 @@
     
     </summary>
     
-      <category term="学习指南" scheme="http://yoursite.com/categories/%E5%AD%A6%E4%B9%A0%E6%8C%87%E5%8D%97/"/>
+      <category term="学习指南" scheme="http://ennis.info/categories/%E5%AD%A6%E4%B9%A0%E6%8C%87%E5%8D%97/"/>
     
     
-      <category term="Android" scheme="http://yoursite.com/tags/Android/"/>
+      <category term="Android" scheme="http://ennis.info/tags/Android/"/>
     
-      <category term="指南" scheme="http://yoursite.com/tags/%E6%8C%87%E5%8D%97/"/>
+      <category term="指南" scheme="http://ennis.info/tags/%E6%8C%87%E5%8D%97/"/>
     
   </entry>
   
   <entry>
     <title>笔记-深入拆解Java虚拟机-2021方法内联</title>
-    <link href="http://yoursite.com/2018/11/10/%E7%AC%94%E8%AE%B0-%E6%B7%B1%E5%85%A5%E6%8B%86%E8%A7%A3Java%E8%99%9A%E6%8B%9F%E6%9C%BA-2021%E6%96%B9%E6%B3%95%E5%86%85%E8%81%94/"/>
-    <id>http://yoursite.com/2018/11/10/笔记-深入拆解Java虚拟机-2021方法内联/</id>
+    <link href="http://ennis.info/2018/11/10/%E7%AC%94%E8%AE%B0-%E6%B7%B1%E5%85%A5%E6%8B%86%E8%A7%A3Java%E8%99%9A%E6%8B%9F%E6%9C%BA-2021%E6%96%B9%E6%B3%95%E5%86%85%E8%81%94/"/>
+    <id>http://ennis.info/2018/11/10/笔记-深入拆解Java虚拟机-2021方法内联/</id>
     <published>2018-11-10T10:24:39.000Z</published>
     <updated>2018-11-11T07:55:12.323Z</updated>
     
@@ -203,17 +256,17 @@
     
     </summary>
     
-      <category term="Java虚拟机" scheme="http://yoursite.com/categories/Java%E8%99%9A%E6%8B%9F%E6%9C%BA/"/>
+      <category term="Java虚拟机" scheme="http://ennis.info/categories/Java%E8%99%9A%E6%8B%9F%E6%9C%BA/"/>
     
     
-      <category term="JVM" scheme="http://yoursite.com/tags/JVM/"/>
+      <category term="JVM" scheme="http://ennis.info/tags/JVM/"/>
     
   </entry>
   
   <entry>
     <title>笔记-深入拆解Java虚拟机-19Java字节码（基础篇）</title>
-    <link href="http://yoursite.com/2018/11/08/%E7%AC%94%E8%AE%B0-%E6%B7%B1%E5%85%A5%E6%8B%86%E8%A7%A3Java%E8%99%9A%E6%8B%9F%E6%9C%BA-19Java%E5%AD%97%E8%8A%82%E7%A0%81%EF%BC%88%E5%9F%BA%E7%A1%80%E7%AF%87%EF%BC%89/"/>
-    <id>http://yoursite.com/2018/11/08/笔记-深入拆解Java虚拟机-19Java字节码（基础篇）/</id>
+    <link href="http://ennis.info/2018/11/08/%E7%AC%94%E8%AE%B0-%E6%B7%B1%E5%85%A5%E6%8B%86%E8%A7%A3Java%E8%99%9A%E6%8B%9F%E6%9C%BA-19Java%E5%AD%97%E8%8A%82%E7%A0%81%EF%BC%88%E5%9F%BA%E7%A1%80%E7%AF%87%EF%BC%89/"/>
+    <id>http://ennis.info/2018/11/08/笔记-深入拆解Java虚拟机-19Java字节码（基础篇）/</id>
     <published>2018-11-08T06:42:50.000Z</published>
     <updated>2018-11-10T11:39:23.455Z</updated>
     
@@ -229,17 +282,17 @@
     
     </summary>
     
-      <category term="Java虚拟机" scheme="http://yoursite.com/categories/Java%E8%99%9A%E6%8B%9F%E6%9C%BA/"/>
+      <category term="Java虚拟机" scheme="http://ennis.info/categories/Java%E8%99%9A%E6%8B%9F%E6%9C%BA/"/>
     
     
-      <category term="JVM" scheme="http://yoursite.com/tags/JVM/"/>
+      <category term="JVM" scheme="http://ennis.info/tags/JVM/"/>
     
   </entry>
   
   <entry>
     <title>笔记-深入拆解Java虚拟机-18即时编译器的中间表达形式</title>
-    <link href="http://yoursite.com/2018/11/08/%E7%AC%94%E8%AE%B0-%E6%B7%B1%E5%85%A5%E6%8B%86%E8%A7%A3Java%E8%99%9A%E6%8B%9F%E6%9C%BA-18%E5%8D%B3%E6%97%B6%E7%BC%96%E8%AF%91%E5%99%A8%E7%9A%84%E4%B8%AD%E9%97%B4%E8%A1%A8%E8%BE%BE%E5%BD%A2%E5%BC%8F/"/>
-    <id>http://yoursite.com/2018/11/08/笔记-深入拆解Java虚拟机-18即时编译器的中间表达形式/</id>
+    <link href="http://ennis.info/2018/11/08/%E7%AC%94%E8%AE%B0-%E6%B7%B1%E5%85%A5%E6%8B%86%E8%A7%A3Java%E8%99%9A%E6%8B%9F%E6%9C%BA-18%E5%8D%B3%E6%97%B6%E7%BC%96%E8%AF%91%E5%99%A8%E7%9A%84%E4%B8%AD%E9%97%B4%E8%A1%A8%E8%BE%BE%E5%BD%A2%E5%BC%8F/"/>
+    <id>http://ennis.info/2018/11/08/笔记-深入拆解Java虚拟机-18即时编译器的中间表达形式/</id>
     <published>2018-11-08T06:41:19.000Z</published>
     <updated>2018-11-08T08:31:11.660Z</updated>
     
@@ -256,17 +309,17 @@
     
     </summary>
     
-      <category term="Java虚拟机" scheme="http://yoursite.com/categories/Java%E8%99%9A%E6%8B%9F%E6%9C%BA/"/>
+      <category term="Java虚拟机" scheme="http://ennis.info/categories/Java%E8%99%9A%E6%8B%9F%E6%9C%BA/"/>
     
     
-      <category term="JVM" scheme="http://yoursite.com/tags/JVM/"/>
+      <category term="JVM" scheme="http://ennis.info/tags/JVM/"/>
     
   </entry>
   
   <entry>
     <title>Android的视图优化方法</title>
-    <link href="http://yoursite.com/2018/11/07/Android%E7%9A%84%E8%A7%86%E5%9B%BE%E4%BC%98%E5%8C%96%E6%96%B9%E6%B3%95/"/>
-    <id>http://yoursite.com/2018/11/07/Android的视图优化方法/</id>
+    <link href="http://ennis.info/2018/11/07/Android%E7%9A%84%E8%A7%86%E5%9B%BE%E4%BC%98%E5%8C%96%E6%96%B9%E6%B3%95/"/>
+    <id>http://ennis.info/2018/11/07/Android的视图优化方法/</id>
     <published>2018-11-07T13:31:51.000Z</published>
     <updated>2018-11-08T07:03:24.889Z</updated>
     
@@ -282,21 +335,21 @@
     
     </summary>
     
-      <category term="Android优化" scheme="http://yoursite.com/categories/Android%E4%BC%98%E5%8C%96/"/>
+      <category term="Android优化" scheme="http://ennis.info/categories/Android%E4%BC%98%E5%8C%96/"/>
     
     
-      <category term="Android" scheme="http://yoursite.com/tags/Android/"/>
+      <category term="Android" scheme="http://ennis.info/tags/Android/"/>
     
-      <category term="优化" scheme="http://yoursite.com/tags/%E4%BC%98%E5%8C%96/"/>
+      <category term="优化" scheme="http://ennis.info/tags/%E4%BC%98%E5%8C%96/"/>
     
-      <category term="视图" scheme="http://yoursite.com/tags/%E8%A7%86%E5%9B%BE/"/>
+      <category term="视图" scheme="http://ennis.info/tags/%E8%A7%86%E5%9B%BE/"/>
     
   </entry>
   
   <entry>
     <title>笔记-深入拆解Java虚拟机-1617即时编译</title>
-    <link href="http://yoursite.com/2018/11/06/%E7%AC%94%E8%AE%B0-%E6%B7%B1%E5%85%A5%E6%8B%86%E8%A7%A3Java%E8%99%9A%E6%8B%9F%E6%9C%BA-1617%E5%8D%B3%E6%97%B6%E7%BC%96%E8%AF%91/"/>
-    <id>http://yoursite.com/2018/11/06/笔记-深入拆解Java虚拟机-1617即时编译/</id>
+    <link href="http://ennis.info/2018/11/06/%E7%AC%94%E8%AE%B0-%E6%B7%B1%E5%85%A5%E6%8B%86%E8%A7%A3Java%E8%99%9A%E6%8B%9F%E6%9C%BA-1617%E5%8D%B3%E6%97%B6%E7%BC%96%E8%AF%91/"/>
+    <id>http://ennis.info/2018/11/06/笔记-深入拆解Java虚拟机-1617即时编译/</id>
     <published>2018-11-06T02:03:09.000Z</published>
     <updated>2018-11-10T11:38:36.873Z</updated>
     
@@ -311,17 +364,17 @@
     
     </summary>
     
-      <category term="Java虚拟机" scheme="http://yoursite.com/categories/Java%E8%99%9A%E6%8B%9F%E6%9C%BA/"/>
+      <category term="Java虚拟机" scheme="http://ennis.info/categories/Java%E8%99%9A%E6%8B%9F%E6%9C%BA/"/>
     
     
-      <category term="JVM" scheme="http://yoursite.com/tags/JVM/"/>
+      <category term="JVM" scheme="http://ennis.info/tags/JVM/"/>
     
   </entry>
   
   <entry>
     <title>一些简单的Git命令</title>
-    <link href="http://yoursite.com/2018/10/21/%E4%B8%80%E4%BA%9B%E7%AE%80%E5%8D%95%E7%9A%84Git%E5%91%BD%E4%BB%A4/"/>
-    <id>http://yoursite.com/2018/10/21/一些简单的Git命令/</id>
+    <link href="http://ennis.info/2018/10/21/%E4%B8%80%E4%BA%9B%E7%AE%80%E5%8D%95%E7%9A%84Git%E5%91%BD%E4%BB%A4/"/>
+    <id>http://ennis.info/2018/10/21/一些简单的Git命令/</id>
     <published>2018-10-21T02:21:31.000Z</published>
     <updated>2018-10-21T12:00:09.584Z</updated>
     
@@ -339,17 +392,17 @@
     
     </summary>
     
-      <category term="Git" scheme="http://yoursite.com/categories/Git/"/>
+      <category term="Git" scheme="http://ennis.info/categories/Git/"/>
     
     
-      <category term="Git" scheme="http://yoursite.com/tags/Git/"/>
+      <category term="Git" scheme="http://ennis.info/tags/Git/"/>
     
   </entry>
   
   <entry>
     <title>笔记-深入拆解Java虚拟机-15Java语法糖与Java编译器</title>
-    <link href="http://yoursite.com/2018/10/20/%E7%AC%94%E8%AE%B0-%E6%B7%B1%E5%85%A5%E6%8B%86%E8%A7%A3Java%E8%99%9A%E6%8B%9F%E6%9C%BA-15Java%E8%AF%AD%E6%B3%95%E7%B3%96%E4%B8%8EJava%E7%BC%96%E8%AF%91%E5%99%A8/"/>
-    <id>http://yoursite.com/2018/10/20/笔记-深入拆解Java虚拟机-15Java语法糖与Java编译器/</id>
+    <link href="http://ennis.info/2018/10/20/%E7%AC%94%E8%AE%B0-%E6%B7%B1%E5%85%A5%E6%8B%86%E8%A7%A3Java%E8%99%9A%E6%8B%9F%E6%9C%BA-15Java%E8%AF%AD%E6%B3%95%E7%B3%96%E4%B8%8EJava%E7%BC%96%E8%AF%91%E5%99%A8/"/>
+    <id>http://ennis.info/2018/10/20/笔记-深入拆解Java虚拟机-15Java语法糖与Java编译器/</id>
     <published>2018-10-20T11:02:34.000Z</published>
     <updated>2018-11-10T11:34:52.994Z</updated>
     
@@ -364,17 +417,17 @@
     
     </summary>
     
-      <category term="Java虚拟机" scheme="http://yoursite.com/categories/Java%E8%99%9A%E6%8B%9F%E6%9C%BA/"/>
+      <category term="Java虚拟机" scheme="http://ennis.info/categories/Java%E8%99%9A%E6%8B%9F%E6%9C%BA/"/>
     
     
-      <category term="JVM" scheme="http://yoursite.com/tags/JVM/"/>
+      <category term="JVM" scheme="http://ennis.info/tags/JVM/"/>
     
   </entry>
   
   <entry>
     <title>笔记-深入拆解Java虚拟机-14Java虚拟机是怎么实现synchronized的？</title>
-    <link href="http://yoursite.com/2018/10/17/%E7%AC%94%E8%AE%B0-%E6%B7%B1%E5%85%A5%E6%8B%86%E8%A7%A3Java%E8%99%9A%E6%8B%9F%E6%9C%BA-14Java%E8%99%9A%E6%8B%9F%E6%9C%BA%E6%98%AF%E6%80%8E%E4%B9%88%E5%AE%9E%E7%8E%B0synchronized%E7%9A%84%EF%BC%9F/"/>
-    <id>http://yoursite.com/2018/10/17/笔记-深入拆解Java虚拟机-14Java虚拟机是怎么实现synchronized的？/</id>
+    <link href="http://ennis.info/2018/10/17/%E7%AC%94%E8%AE%B0-%E6%B7%B1%E5%85%A5%E6%8B%86%E8%A7%A3Java%E8%99%9A%E6%8B%9F%E6%9C%BA-14Java%E8%99%9A%E6%8B%9F%E6%9C%BA%E6%98%AF%E6%80%8E%E4%B9%88%E5%AE%9E%E7%8E%B0synchronized%E7%9A%84%EF%BC%9F/"/>
+    <id>http://ennis.info/2018/10/17/笔记-深入拆解Java虚拟机-14Java虚拟机是怎么实现synchronized的？/</id>
     <published>2018-10-17T06:08:55.000Z</published>
     <updated>2018-11-10T11:35:07.959Z</updated>
     
@@ -392,17 +445,17 @@
     
     </summary>
     
-      <category term="Java虚拟机" scheme="http://yoursite.com/categories/Java%E8%99%9A%E6%8B%9F%E6%9C%BA/"/>
+      <category term="Java虚拟机" scheme="http://ennis.info/categories/Java%E8%99%9A%E6%8B%9F%E6%9C%BA/"/>
     
     
-      <category term="JVM" scheme="http://yoursite.com/tags/JVM/"/>
+      <category term="JVM" scheme="http://ennis.info/tags/JVM/"/>
     
   </entry>
   
   <entry>
     <title>笔记-深入拆解Java虚拟机-13Java内存模型</title>
-    <link href="http://yoursite.com/2018/08/31/%E7%AC%94%E8%AE%B0-%E6%B7%B1%E5%85%A5%E6%8B%86%E8%A7%A3Java%E8%99%9A%E6%8B%9F%E6%9C%BA-13Java%E5%86%85%E5%AD%98%E6%A8%A1%E5%9E%8B/"/>
-    <id>http://yoursite.com/2018/08/31/笔记-深入拆解Java虚拟机-13Java内存模型/</id>
+    <link href="http://ennis.info/2018/08/31/%E7%AC%94%E8%AE%B0-%E6%B7%B1%E5%85%A5%E6%8B%86%E8%A7%A3Java%E8%99%9A%E6%8B%9F%E6%9C%BA-13Java%E5%86%85%E5%AD%98%E6%A8%A1%E5%9E%8B/"/>
+    <id>http://ennis.info/2018/08/31/笔记-深入拆解Java虚拟机-13Java内存模型/</id>
     <published>2018-08-31T06:44:23.000Z</published>
     <updated>2018-11-10T11:40:05.318Z</updated>
     
@@ -419,17 +472,17 @@
     
     </summary>
     
-      <category term="Java虚拟机" scheme="http://yoursite.com/categories/Java%E8%99%9A%E6%8B%9F%E6%9C%BA/"/>
+      <category term="Java虚拟机" scheme="http://ennis.info/categories/Java%E8%99%9A%E6%8B%9F%E6%9C%BA/"/>
     
     
-      <category term="JVM" scheme="http://yoursite.com/tags/JVM/"/>
+      <category term="JVM" scheme="http://ennis.info/tags/JVM/"/>
     
   </entry>
   
   <entry>
     <title>笔记-深入拆解Java虚拟机-1112垃圾回收</title>
-    <link href="http://yoursite.com/2018/08/29/%E7%AC%94%E8%AE%B0-%E6%B7%B1%E5%85%A5%E6%8B%86%E8%A7%A3Java%E8%99%9A%E6%8B%9F%E6%9C%BA-1112%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6/"/>
-    <id>http://yoursite.com/2018/08/29/笔记-深入拆解Java虚拟机-1112垃圾回收/</id>
+    <link href="http://ennis.info/2018/08/29/%E7%AC%94%E8%AE%B0-%E6%B7%B1%E5%85%A5%E6%8B%86%E8%A7%A3Java%E8%99%9A%E6%8B%9F%E6%9C%BA-1112%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6/"/>
+    <id>http://ennis.info/2018/08/29/笔记-深入拆解Java虚拟机-1112垃圾回收/</id>
     <published>2018-08-29T07:50:47.000Z</published>
     <updated>2018-08-31T06:43:48.000Z</updated>
     
@@ -444,17 +497,17 @@
     
     </summary>
     
-      <category term="Java虚拟机" scheme="http://yoursite.com/categories/Java%E8%99%9A%E6%8B%9F%E6%9C%BA/"/>
+      <category term="Java虚拟机" scheme="http://ennis.info/categories/Java%E8%99%9A%E6%8B%9F%E6%9C%BA/"/>
     
     
-      <category term="JVM" scheme="http://yoursite.com/tags/JVM/"/>
+      <category term="JVM" scheme="http://ennis.info/tags/JVM/"/>
     
   </entry>
   
   <entry>
     <title>笔记-深入拆解Java虚拟机-10Java对象的内存分布</title>
-    <link href="http://yoursite.com/2018/08/29/%E7%AC%94%E8%AE%B0-%E6%B7%B1%E5%85%A5%E6%8B%86%E8%A7%A3Java%E8%99%9A%E6%8B%9F%E6%9C%BA-10Java%E5%AF%B9%E8%B1%A1%E7%9A%84%E5%86%85%E5%AD%98%E5%88%86%E5%B8%83/"/>
-    <id>http://yoursite.com/2018/08/29/笔记-深入拆解Java虚拟机-10Java对象的内存分布/</id>
+    <link href="http://ennis.info/2018/08/29/%E7%AC%94%E8%AE%B0-%E6%B7%B1%E5%85%A5%E6%8B%86%E8%A7%A3Java%E8%99%9A%E6%8B%9F%E6%9C%BA-10Java%E5%AF%B9%E8%B1%A1%E7%9A%84%E5%86%85%E5%AD%98%E5%88%86%E5%B8%83/"/>
+    <id>http://ennis.info/2018/08/29/笔记-深入拆解Java虚拟机-10Java对象的内存分布/</id>
     <published>2018-08-29T01:38:58.000Z</published>
     <updated>2018-08-29T02:36:31.000Z</updated>
     
@@ -472,17 +525,17 @@
     
     </summary>
     
-      <category term="Java虚拟机" scheme="http://yoursite.com/categories/Java%E8%99%9A%E6%8B%9F%E6%9C%BA/"/>
+      <category term="Java虚拟机" scheme="http://ennis.info/categories/Java%E8%99%9A%E6%8B%9F%E6%9C%BA/"/>
     
     
-      <category term="JVM" scheme="http://yoursite.com/tags/JVM/"/>
+      <category term="JVM" scheme="http://ennis.info/tags/JVM/"/>
     
   </entry>
   
   <entry>
     <title>笔记-深入拆解Java虚拟机-0809JVM是怎么实现invokedynamic的？</title>
-    <link href="http://yoursite.com/2018/08/10/%E7%AC%94%E8%AE%B0-%E6%B7%B1%E5%85%A5%E6%8B%86%E8%A7%A3Java%E8%99%9A%E6%8B%9F%E6%9C%BA-0809JVM%E6%98%AF%E6%80%8E%E4%B9%88%E5%AE%9E%E7%8E%B0invokedynamic%E7%9A%84%EF%BC%9F/"/>
-    <id>http://yoursite.com/2018/08/10/笔记-深入拆解Java虚拟机-0809JVM是怎么实现invokedynamic的？/</id>
+    <link href="http://ennis.info/2018/08/10/%E7%AC%94%E8%AE%B0-%E6%B7%B1%E5%85%A5%E6%8B%86%E8%A7%A3Java%E8%99%9A%E6%8B%9F%E6%9C%BA-0809JVM%E6%98%AF%E6%80%8E%E4%B9%88%E5%AE%9E%E7%8E%B0invokedynamic%E7%9A%84%EF%BC%9F/"/>
+    <id>http://ennis.info/2018/08/10/笔记-深入拆解Java虚拟机-0809JVM是怎么实现invokedynamic的？/</id>
     <published>2018-08-10T07:07:18.000Z</published>
     <updated>2018-08-29T01:14:06.000Z</updated>
     
@@ -499,61 +552,10 @@
     
     </summary>
     
-      <category term="Java虚拟机" scheme="http://yoursite.com/categories/Java%E8%99%9A%E6%8B%9F%E6%9C%BA/"/>
+      <category term="Java虚拟机" scheme="http://ennis.info/categories/Java%E8%99%9A%E6%8B%9F%E6%9C%BA/"/>
     
     
-      <category term="JVM" scheme="http://yoursite.com/tags/JVM/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>笔记-深入拆解Java虚拟机-07JVM是如何实现反射的？</title>
-    <link href="http://yoursite.com/2018/08/06/%E7%AC%94%E8%AE%B0-%E6%B7%B1%E5%85%A5%E6%8B%86%E8%A7%A3Java%E8%99%9A%E6%8B%9F%E6%9C%BA-07JVM%E6%98%AF%E5%A6%82%E4%BD%95%E5%AE%9E%E7%8E%B0%E5%8F%8D%E5%B0%84%E7%9A%84%EF%BC%9F/"/>
-    <id>http://yoursite.com/2018/08/06/笔记-深入拆解Java虚拟机-07JVM是如何实现反射的？/</id>
-    <published>2018-08-06T06:33:36.000Z</published>
-    <updated>2018-08-15T12:44:28.000Z</updated>
-    
-    <content type="html"><![CDATA[<h1 id="反射调用的实现"><a href="#反射调用的实现" class="headerlink" title="反射调用的实现"></a>反射调用的实现</h1><h2 id="Methond-invoke"><a href="#Methond-invoke" class="headerlink" title="Methond.invoke"></a>Methond.invoke</h2><p>委派给MethodAccessor接口处理。</p><p>MethodAccessor两个具体实现：</p><ol><li>本地方法实现反射调用</li><li>委派模式</li></ol><h2 id="委派实现"><a href="#委派实现" class="headerlink" title="委派实现"></a>委派实现</h2><ul><li>每个Method实例的<strong>第一次反射调用</strong>会生成一个委派实现。</li><li>委派的具体实现是一个<strong>本地实现</strong>。</li><li>Java的反射调用机制还设立了另一种动态生成字节码的<strong>动态实现</strong>。</li><li>采用委派实现，是为了能够在本地实现以及动态实现中切换。</li></ul><h3 id="动态实现"><a href="#动态实现" class="headerlink" title="动态实现"></a>动态实现</h3><ul><li><p><strong>运行效率比本地实现要快20倍。</strong><br>因为动态实现无需经过Java到C++再到Java的切换。</p></li><li><p>由于<strong>生成字节码十分耗时</strong>，仅<strong>调用一次</strong>的话，反而是<strong>本地实现要快上3到4倍</strong>。</p></li></ul><h3 id="Inflation"><a href="#Inflation" class="headerlink" title="Inflation"></a>Inflation</h3><p>Java虚拟机设置了一个阈值15（可以通过 -Dsun.reflect.inflationThreshold= 来调整）。<br>当某个反射调用的方法调用次数在 15 之下时，采用本地实现。<br>当达到 15 时，便开始动态生成字节码，并将委派实现的委派对象切换至动态实现，这个过程称之为Inflation。</p><p>反射调用的Inflation机制是可以通过参数（-Dsun.reflect.noInflation=true）关闭。<br>反射调用一开始便会直接生成动态实现，而不会使用委派实现或者本地实现。</p><h1 id="反射调用的开销"><a href="#反射调用的开销" class="headerlink" title="反射调用的开销"></a>反射调用的开销</h1><h2 id="反射api性能开销"><a href="#反射api性能开销" class="headerlink" title="反射api性能开销"></a>反射api性能开销</h2><ul><li>Class.getMethod会遍历该类的公有方法。如果没有匹配到，遍历父类的公有方法。</li><li>以getMethod为代表的查找方法操作，会返回查找得到结果的一份拷贝。<br><strong>避免在热点代码中使用返回Method数组的方法，减少不必要的堆空间消耗。</strong></li></ul><h2 id="反射本身性能开销"><a href="#反射本身性能开销" class="headerlink" title="反射本身性能开销"></a>反射本身性能开销</h2><h3 id="Method-invoke是一个变长参数方法。"><a href="#Method-invoke是一个变长参数方法。" class="headerlink" title="Method.invoke是一个变长参数方法。"></a>Method.invoke是一个变长参数方法。</h3><p>Java编译器会在方法调用处生成一个长度为传入参数个数的Object数组，并将传入参数一一存储进该数组中。</p><h3 id="Java编译器会对传入的基本类型参数自动装箱。"><a href="#Java编译器会对传入的基本类型参数自动装箱。" class="headerlink" title="Java编译器会对传入的基本类型参数自动装箱。"></a>Java编译器会对传入的基本类型参数自动装箱。</h3><p>Java 缓存了 [-128, 127] 中所有整数所对应的 Integer 对象。<br>需要自动装箱的整数在这个范围之内时，返回缓存的 Integer，否则需要新建一个Integer对象。</p><p>解决方法：</p><ul><li><strong>扩大缓存范围</strong>（对应参数-Djava.lang.Integer.IntegerCache.high=128）。</li><li><strong>在外部缓存</strong>自动装箱得到的Integer对象。</li></ul><p><strong>上面两条除了带来性能开销外，还可能占用堆内存，使得 GC 更加频繁。</strong></p><h3 id="权限检查带来的开销"><a href="#权限检查带来的开销" class="headerlink" title="权限检查带来的开销"></a>权限检查带来的开销</h3><ul><li>关闭权限检查。<br>setAccessible(true)</li></ul><h3 id="方法内联"><a href="#方法内联" class="headerlink" title="方法内联"></a>方法内联</h3><ul><li>没有方法内联优化</li><li>逃逸分析不起效</li></ul><p>具体代码具体分析。</p><h1 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h1><blockquote><p><a href="https://time.geekbang.org/column/article/12192" target="_blank" rel="noopener">https://time.geekbang.org/column/article/12192</a></p></blockquote>]]></content>
-    
-    <summary type="html">
-    
-      
-      
-        &lt;h1 id=&quot;反射调用的实现&quot;&gt;&lt;a href=&quot;#反射调用的实现&quot; class=&quot;headerlink&quot; title=&quot;反射调用的实现&quot;&gt;&lt;/a&gt;反射调用的实现&lt;/h1&gt;&lt;h2 id=&quot;Methond-invoke&quot;&gt;&lt;a href=&quot;#Methond-invoke&quot; cla
-      
-    
-    </summary>
-    
-      <category term="Java虚拟机" scheme="http://yoursite.com/categories/Java%E8%99%9A%E6%8B%9F%E6%9C%BA/"/>
-    
-    
-      <category term="JVM" scheme="http://yoursite.com/tags/JVM/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>笔记-深入拆解Java虚拟机-【工具篇】常用工具介绍</title>
-    <link href="http://yoursite.com/2018/08/05/%E7%AC%94%E8%AE%B0-%E6%B7%B1%E5%85%A5%E6%8B%86%E8%A7%A3Java%E8%99%9A%E6%8B%9F%E6%9C%BA-%E3%80%90%E5%B7%A5%E5%85%B7%E7%AF%87%E3%80%91%E5%B8%B8%E7%94%A8%E5%B7%A5%E5%85%B7%E4%BB%8B%E7%BB%8D/"/>
-    <id>http://yoursite.com/2018/08/05/笔记-深入拆解Java虚拟机-【工具篇】常用工具介绍/</id>
-    <published>2018-08-05T06:41:13.000Z</published>
-    <updated>2018-08-15T12:45:47.000Z</updated>
-    
-    <content type="html"><![CDATA[<h1 id="javap：查阅Java字节码"><a href="#javap：查阅Java字节码" class="headerlink" title="javap：查阅Java字节码"></a>javap：查阅Java字节码</h1><blockquote><p>javap是一个能够将class文件反汇编成人类可读格式的工具。</p></blockquote><table><thead><tr><th>选项</th><th>作用</th></tr></thead><tbody><tr><td>-p</td><td>追加打印私有字段和方法</td></tr><tr><td>-v</td><td>尽可能打印所有信息</td></tr><tr><td>-c</td><td>只打印方法</td></tr><tr><td>-g</td></tr></tbody></table><h2 id="v选项输出"><a href="#v选项输出" class="headerlink" title="-v选项输出"></a>-v选项输出</h2><h3 id="基本信息"><a href="#基本信息" class="headerlink" title="基本信息"></a>基本信息</h3><table><thead><tr><th>字段</th><th>作用</th></tr></thead><tbody><tr><td>minor version: 0，major version: 54</td><td>class文件的版本号</td></tr><tr><td>flags: (0x0021) ACC_PUBLIC, ACC_SUPER</td><td>该类的访问权限</td></tr><tr><td>this_class: #7</td><td>该类名字</td></tr><tr><td>super_class: #8</td><td>父类名字</td></tr><tr><td>interfaces: 0</td><td>实现接口数目</td></tr><tr><td>fields: 4</td><td>字段数目</td></tr><tr><td>methods: 2</td><td>方法数目</td></tr><tr><td>attributes: 1</td><td>属性数目</td></tr></tbody></table><ul><li><p>属性：class文件所携带的辅助信息（class文件的源文件的名称）。<br>这类信息通常被用于 Java 虚拟机的验证和运行，以及 Java 程序的调试，一般无须深入了解。</p></li><li><p>class文件的版本号：编译生成该class文件时所用的JRE版本。<br>由较新的JRE版本中的javac编译而成的class文件，不能在旧版本的JRE上跑，否则，会出现异常（java.lang.UnsupportedClassVersionError）。</p></li></ul><h3 id="常量池"><a href="#常量池" class="headerlink" title="常量池"></a>常量池</h3><ul><li>每一项都有一个对应的索引（如 #1）。</li><li>可能引用其他的常量池项（#1 = Methodref #8.#23）。</li></ul><h3 id="字段区域"><a href="#字段区域" class="headerlink" title="字段区域"></a>字段区域</h3><table><thead><tr><th>字段</th><th>作用</th></tr></thead><tbody><tr><td>descriptor: I</td><td>字段的类型</td></tr><tr><td>flags: (0x0002) ACC_PRIVATE</td><td>访问权限</td></tr></tbody></table><ul><li>声明为static final的基本类型或者字符串字段，字段区域包括它的常量值。</li></ul><h3 id="方法区域"><a href="#方法区域" class="headerlink" title="方法区域"></a>方法区域</h3><ul><li>方法描述符</li><li>访问权限</li><li>代码区域</li></ul><h4 id="代码区域"><a href="#代码区域" class="headerlink" title="代码区域"></a>代码区域</h4><h5 id="开头声明"><a href="#开头声明" class="headerlink" title="开头声明"></a>开头声明</h5><table><thead><tr><th>字段</th><th>作用</th></tr></thead><tbody><tr><td>stack=2</td><td>操作数栈</td></tr><tr><td>locals=3</td><td>局部变量数目最大值</td></tr><tr><td>args_size=1</td><td>接收参数的个数</td></tr></tbody></table><ul><li>局部变量指的是字节码中的局部变量。</li><li>后面接着的是字节码，每条字节码均标注了对应的偏移量（bytecode index，BCI）。</li></ul><h5 id="异常表"><a href="#异常表" class="headerlink" title="异常表"></a>异常表</h5><ul><li>使用偏移量定位每个异常处理器所监控的范围（由 from 到 to 的代码区域）。</li><li>异常处理器的起始位置（target）。</li><li>声明所捕获的异常类型（type）。<br>any指代任意异常类型。</li></ul><h5 id="行数表"><a href="#行数表" class="headerlink" title="行数表"></a>行数表</h5><ul><li>Java源程序到字节码偏移量的映射。</li></ul><h6 id="局部变量表"><a href="#局部变量表" class="headerlink" title="局部变量表"></a>局部变量表</h6><ul><li>Java程序中每个局部变量的名字、类型以及作用域。</li></ul><p>注：行数表和局部变量表均属于调试信息。Java虚拟机不要求class文件必备这些信息。</p><h5 id="字节码操作数栈映射表"><a href="#字节码操作数栈映射表" class="headerlink" title="字节码操作数栈映射表"></a>字节码操作数栈映射表</h5><ul><li>字节码跳转后操作数栈的分布情况。<br>一般被Java虚拟机用于验证所加载的类，和即时编译相关的一些操作，正常情况下，无须深入了解。</li></ul><h1 id="OpenJDK项目Code-Tools：实用小工具集"><a href="#OpenJDK项目Code-Tools：实用小工具集" class="headerlink" title="OpenJDK项目Code Tools：实用小工具集"></a>OpenJDK项目Code Tools：实用小工具集</h1><h2 id="ASMTools"><a href="#ASMTools" class="headerlink" title="ASMTools"></a>ASMTools</h2><h3 id="反汇编操作命令"><a href="#反汇编操作命令" class="headerlink" title="反汇编操作命令"></a>反汇编操作命令</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ java -cp /path/to/asmtools.jar org.openjdk.asmtools.jdis.Main Foo.class &gt; Foo.jasm</span><br></pre></td></tr></table></figure><h3 id="汇编操作命令"><a href="#汇编操作命令" class="headerlink" title="汇编操作命令"></a>汇编操作命令</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ java -cp /path/to/asmtools.jar org.openjdk.asmtools.jasm.Main Foo.jasm</span><br></pre></td></tr></table></figure><h2 id="JOL"><a href="#JOL" class="headerlink" title="JOL"></a>JOL</h2><h3 id="查阅Java虚拟机中对象的内存分布"><a href="#查阅Java虚拟机中对象的内存分布" class="headerlink" title="查阅Java虚拟机中对象的内存分布"></a>查阅Java虚拟机中对象的内存分布</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ java -jar /path/to/jol-cli-0.9-full.jar internals java.util.HashMap</span><br><span class="line">$ java -jar /path/to/jol-cli-0.9-full.jar estimates java.util.HashMap</span><br></pre></td></tr></table></figure><h1 id="ASM：Java字节码框架"><a href="#ASM：Java字节码框架" class="headerlink" title="ASM：Java字节码框架"></a>ASM：Java字节码框架</h1><ul><li>ASM既可以生成新的class文件，也可以修改已有的class文件。</li><li>辅助类ASMifier，接收一个 class文件，输出一段生成该class文件原始字节数组的代码。</li></ul><h1 id="附录"><a href="#附录" class="headerlink" title="附录"></a>附录</h1><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Foo</span> </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">int</span> tryBlock;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">int</span> catchBlock;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">int</span> finallyBlock;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">int</span> methodExit;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">test</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            tryBlock = <span class="number">0</span>;</span><br><span class="line">        &#125; <span class="keyword">catch</span> (Exception e) &#123;</span><br><span class="line">            catchBlock = <span class="number">1</span>;</span><br><span class="line">        &#125; <span class="keyword">finally</span> &#123;</span><br><span class="line">            finallyBlock = <span class="number">2</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        methodExit = <span class="number">3</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><p>编译后用javap查阅字节码</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br></pre></td><td class="code"><pre><span class="line">$ javac Foo.java</span><br><span class="line">$ javap -p -v Foo</span><br><span class="line">Classfile ../Foo.class</span><br><span class="line">  Last modified ..; size 541 bytes</span><br><span class="line">  MD5 checksum 3828cdfbba56fea1da6c8d94fd13b20d</span><br><span class="line">  Compiled from &quot;Foo.java&quot;</span><br><span class="line">public class Foo</span><br><span class="line">  minor version: 0</span><br><span class="line">  major version: 54</span><br><span class="line">  flags: (0x0021) ACC_PUBLIC, ACC_SUPER</span><br><span class="line">  this_class: #7                          // Foo</span><br><span class="line">  super_class: #8                         // java/lang/Object</span><br><span class="line">  interfaces: 0, fields: 4, methods: 2, attributes: 1</span><br><span class="line">Constant pool:</span><br><span class="line">   #1 = Methodref          #8.#23         // java/lang/Object.&quot;&lt;init&gt;&quot;:()V</span><br><span class="line">   #2 = Fieldref           #7.#24         // Foo.tryBlock:I</span><br><span class="line">   #3 = Fieldref           #7.#25         // Foo.finallyBlock:I</span><br><span class="line">   #4 = Class              #26            // java/lang/Exception</span><br><span class="line">   #5 = Fieldref           #7.#27         // Foo.catchBlock:I</span><br><span class="line">   #6 = Fieldref           #7.#28         // Foo.methodExit:I</span><br><span class="line">   #7 = Class              #29            // Foo</span><br><span class="line">   #8 = Class              #30            // java/lang/Object</span><br><span class="line">   #9 = Utf8               tryBlock</span><br><span class="line">  #10 = Utf8               I</span><br><span class="line">  #11 = Utf8               catchBlock</span><br><span class="line">  #12 = Utf8               finallyBlock</span><br><span class="line">  #13 = Utf8               methodExit</span><br><span class="line">  #14 = Utf8               &lt;init&gt;</span><br><span class="line">  #15 = Utf8               ()V</span><br><span class="line">  #16 = Utf8               Code</span><br><span class="line">  #17 = Utf8               LineNumberTable</span><br><span class="line">  #18 = Utf8               test</span><br><span class="line">  #19 = Utf8               StackMapTable</span><br><span class="line">  #20 = Class              #31            // java/lang/Throwable</span><br><span class="line">  #21 = Utf8               SourceFile</span><br><span class="line">  #22 = Utf8               Foo.java</span><br><span class="line">  #23 = NameAndType        #14:#15        // &quot;&lt;init&gt;&quot;:()V</span><br><span class="line">  #24 = NameAndType        #9:#10         // tryBlock:I</span><br><span class="line">  #25 = NameAndType        #12:#10        // finallyBlock:I</span><br><span class="line">  #26 = Utf8               java/lang/Exception</span><br><span class="line">  #27 = NameAndType        #11:#10        // catchBlock:I</span><br><span class="line">  #28 = NameAndType        #13:#10        // methodExit:I</span><br><span class="line">  #29 = Utf8               Foo</span><br><span class="line">  #30 = Utf8               java/lang/Object</span><br><span class="line">  #31 = Utf8               java/lang/Throwable</span><br><span class="line">&#123;</span><br><span class="line">  private int tryBlock;</span><br><span class="line">    descriptor: I</span><br><span class="line">    flags: (0x0002) ACC_PRIVATE</span><br><span class="line"></span><br><span class="line">  private int catchBlock;</span><br><span class="line">    descriptor: I</span><br><span class="line">    flags: (0x0002) ACC_PRIVATE</span><br><span class="line"></span><br><span class="line">  private int finallyBlock;</span><br><span class="line">    descriptor: I</span><br><span class="line">    flags: (0x0002) ACC_PRIVATE</span><br><span class="line"></span><br><span class="line">  private int methodExit;</span><br><span class="line">    descriptor: I</span><br><span class="line">    flags: (0x0002) ACC_PRIVATE</span><br><span class="line"></span><br><span class="line">  public Foo();</span><br><span class="line">    descriptor: ()V</span><br><span class="line">    flags: (0x0001) ACC_PUBLIC</span><br><span class="line">    Code:</span><br><span class="line">      stack=1, locals=1, args_size=1</span><br><span class="line">         0: aload_0</span><br><span class="line">         1: invokespecial #1                  // Method java/lang/Object.&quot;&lt;init&gt;&quot;:()V</span><br><span class="line">         4: return</span><br><span class="line">      LineNumberTable:</span><br><span class="line">        line 1: 0</span><br><span class="line"></span><br><span class="line">  public void test();</span><br><span class="line">    descriptor: ()V</span><br><span class="line">    flags: (0x0001) ACC_PUBLIC</span><br><span class="line">    Code:</span><br><span class="line">      stack=2, locals=3, args_size=1</span><br><span class="line">         0: aload_0</span><br><span class="line">         1: iconst_0</span><br><span class="line">         2: putfield      #2                  // Field tryBlock:</span><br><span class="line">         5: aload_0</span><br><span class="line">         6: iconst_2</span><br><span class="line">         7: putfield      #3                  // Field finallyBlock:I</span><br><span class="line">        10: goto          35</span><br><span class="line">        13: astore_1</span><br><span class="line">        14: aload_0</span><br><span class="line">        15: iconst_1</span><br><span class="line">        16: putfield      #5                  // Field catchBlock:I</span><br><span class="line">        19: aload_0</span><br><span class="line">        20: iconst_2</span><br><span class="line">        21: putfield      #3                  // Field finallyBlock:I</span><br><span class="line">        24: goto          35</span><br><span class="line">        27: astore_2</span><br><span class="line">        28: aload_0</span><br><span class="line">        29: iconst_2</span><br><span class="line">        30: putfield      #3                  // Field finallyBlock:I</span><br><span class="line">        33: aload_2</span><br><span class="line">        34: athrow</span><br><span class="line">        35: aload_0</span><br><span class="line">        36: iconst_3</span><br><span class="line">        37: putfield      #6                  // Field methodExit:I</span><br><span class="line">        40: return</span><br><span class="line">      Exception table:</span><br><span class="line">         from    to  target type</span><br><span class="line">             0     5    13   Class java/lang/Exception</span><br><span class="line">             0     5    27   any</span><br><span class="line">            13    19    27   any</span><br><span class="line">      LineNumberTable:</span><br><span class="line">        line 9: 0</span><br><span class="line">        line 13: 5</span><br><span class="line">        line 14: 10</span><br><span class="line">        line 10: 13</span><br><span class="line">        line 11: 14</span><br><span class="line">        line 13: 19</span><br><span class="line">        line 14: 24</span><br><span class="line">        line 13: 27</span><br><span class="line">        line 14: 33</span><br><span class="line">        line 15: 35</span><br><span class="line">        line 16: 40</span><br><span class="line">      StackMapTable: number_of_entries = 3</span><br><span class="line">        frame_type = 77 /* same_locals_1_stack_item */</span><br><span class="line">          stack = [ class java/lang/Exception ]</span><br><span class="line">        frame_type = 77 /* same_locals_1_stack_item */</span><br><span class="line">          stack = [ class java/lang/Throwable ]</span><br><span class="line">        frame_type = 7 /* same */</span><br><span class="line">&#125;</span><br><span class="line">SourceFile: &quot;Foo.java&quot;</span><br></pre></td></tr></table></figure><h1 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h1><blockquote><p><a href="https://time.geekbang.org/column/article/12423" target="_blank" rel="noopener">https://time.geekbang.org/column/article/12423</a></p></blockquote>]]></content>
-    
-    <summary type="html">
-    
-      
-      
-        &lt;h1 id=&quot;javap：查阅Java字节码&quot;&gt;&lt;a href=&quot;#javap：查阅Java字节码&quot; class=&quot;headerlink&quot; title=&quot;javap：查阅Java字节码&quot;&gt;&lt;/a&gt;javap：查阅Java字节码&lt;/h1&gt;&lt;blockquote&gt;
-&lt;p&gt;javap
-      
-    
-    </summary>
-    
-      <category term="Java虚拟机" scheme="http://yoursite.com/categories/Java%E8%99%9A%E6%8B%9F%E6%9C%BA/"/>
-    
-    
-      <category term="JVM" scheme="http://yoursite.com/tags/JVM/"/>
+      <category term="JVM" scheme="http://ennis.info/tags/JVM/"/>
     
   </entry>
   

@@ -84,7 +84,7 @@
 <meta name="description" content="We could, we could belong togeter, ARTPOP.">
 <meta property="og:type" content="website">
 <meta property="og:title" content="Ennis -Little Monster">
-<meta property="og:url" content="http://yoursite.com/index.html">
+<meta property="og:url" content="http://ennis.info/index.html">
 <meta property="og:site_name" content="Ennis -Little Monster">
 <meta property="og:description" content="We could, we could belong togeter, ARTPOP.">
 <meta property="og:locale" content="zh-Hans">
@@ -120,7 +120,7 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/"/>
+  <link rel="canonical" href="http://ennis.info/"/>
 
 
 
@@ -298,7 +298,370 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/12/03/笔记-深入拆解Java虚拟机-26向量化/">
+    <link itemprop="mainEntityOfPage" href="http://ennis.info/2018/12/05/笔记-深入拆解Java虚拟机-32JNI的运行机制/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Ennis L.M. Wu">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="http://pcrioz2ch.bkt.clouddn.com/portrait.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Ennis -Little Monster">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/12/05/笔记-深入拆解Java虚拟机-32JNI的运行机制/" itemprop="url">笔记-深入拆解Java虚拟机-32JNI的运行机制</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-12-05T16:27:03+08:00">
+                2018-12-05
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Java虚拟机/" itemprop="url" rel="index">
+                    <span itemprop="name">Java虚拟机</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h1 id="Java-无法表达的场景"><a href="#Java-无法表达的场景" class="headerlink" title="Java 无法表达的场景"></a>Java 无法表达的场景</h1><ul>
+<li>使用汇编语言提升关键代码的性能。</li>
+<li>调用 Java 核心类库无法提供的，某个体系架构或者操作系统特有的功能。</li>
+<li>牺牲可移植性，在 Java 代码中调用 C/C++ 代码实现。</li>
+</ul>
+<p>这种跨语言调用，需要借助 Java Native Interface 机制。</p>
+<h1 id="native-方法的链接"><a href="#native-方法的链接" class="headerlink" title="native 方法的链接"></a>native 方法的链接</h1><ul>
+<li>动态链接库的名字以 lib 为前缀，以 .dylib 或 .so 为扩展名。</li>
+<li>通过 <figure class="highlight plain"><figcaption><span>方法加载 lib---.dylib。</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br></pre></td><td class="code"><pre><span class="line">- 如果库不在当前路径下，可以配置 java.library.path 参数指向路径（JVM 启动时）。</span><br><span class="line"></span><br><span class="line">## JVM 自动查找符合默认命名规范的 C 函数并链接</span><br><span class="line"></span><br><span class="line">- ```javac -h``` 命令可以根据 native 方法声明，自动生成包含符合命名规范的 C 函数的头文件。</span><br><span class="line"></span><br><span class="line">### 命名规范</span><br><span class="line"></span><br><span class="line">-  函数都要以Java_为前缀，后跟完整的包名和方法名。</span><br><span class="line">	- 路径中 / 转换为 \_</span><br><span class="line">	- 原方法名中 \_ 转换为 \_1</span><br><span class="line">- 有重载 native 方法时，自动链接对象时的考虑参数类型。</span><br><span class="line">- 重载方法函数名在原本基础上追加 __ 以及方法描述符作为后缀。</span><br><span class="line">- 方法描述符的特殊符号会被替换。</span><br><span class="line">	- 引用类型中 ; 替换为 \_2</span><br><span class="line">	- 数组类型中 [ 替换为 \_3</span><br><span class="line"></span><br><span class="line">## 在 C 代码中主动链接</span><br><span class="line"></span><br><span class="line">- 对 C 函数名没有要求。</span><br><span class="line">- 通常使用一个名为 registerNatives 的 native 方法，按照第一种链接方式定义所能自动链接的 C 函数。在该函数中，手动链接该类的其他 native 方法。</span><br><span class="line">- 需要在其他 native 方法被调用之前完成链接。</span><br><span class="line">- 通常在类的初始化方法里调用该 registerNatives 方法。</span><br><span class="line"></span><br><span class="line"># JNI 的 API</span><br><span class="line"></span><br><span class="line">- **C 代码中可以使用 Java 的语言特性**（如 instanceof，通过特殊的 JNI 函数实现）。</span><br><span class="line"></span><br><span class="line">## JNIEnv</span><br><span class="line"></span><br><span class="line">- JVM 会将所有 JNI 函数的函数指针聚合到一个名为 JNIEnv 的数据结构中。</span><br><span class="line">- **JNIEnv 线程私有**，每个线程都拥有一个 JNIEnv。</span><br><span class="line">- 规定 C 代码**不能共享 JNIEnv 给其他线程**，否则 JNI 函数无法保证正确性。</span><br><span class="line"></span><br><span class="line">### 原因：</span><br><span class="line"></span><br><span class="line">1. 给 JNI 函数提供一个单独命名空间。</span><br><span class="line">2. 允许 JVM 通过更改函数指针替换 JNI 函数的具体实现。</span><br><span class="line"></span><br><span class="line">## Java 类型与本地类型</span><br><span class="line"></span><br><span class="line">- JNI 会**将 Java 层面的基本类型以及引用类型映射为另一套可供 C 代码使用的数据结构**。</span><br><span class="line"></span><br><span class="line">基本类型对应关系：</span><br><span class="line"></span><br><span class="line">| Java类型 | 本地类型 | 位（bit） |</span><br><span class="line">| --------- | --------- | ---------- |</span><br><span class="line">| boolean | jboolean | 8, unsigned |</span><br><span class="line">| byte | jbyte | 8 |</span><br><span class="line">| char | jchar | 16, unsigned |</span><br><span class="line">| short | jshort | 16 |</span><br><span class="line">| int | jint | 32 |</span><br><span class="line">| long | jlong | 64 |</span><br><span class="line">| float | jfloat | 32 |</span><br><span class="line">| double | jdouble | 64 |</span><br><span class="line">| void | void | n/a |</span><br><span class="line"></span><br><span class="line">引用类型对应数据结构的继承关系：</span><br></pre></td></tr></table></figure></li>
+</ul>
+<p>jobject<br>|- jclass (java.lang.Class objects)<br>|- jstring (java.lang.String objects)<br>|- jthrowable (java.lang.Throwable objects)<br>|- jarray (arrays)<br>   |- jobjectArray (object arrays)<br>   |- jbooleanArray (boolean arrays)<br>   |- jbyteArray (byte arrays)<br>   |- jcharArray (char arrays)<br>   |- jshortArray (short arrays)<br>   |- jintArray (int arrays)<br>   |- jlongArray (long arrays)<br>   |- jfloatArray (float arrays)<br>   |- jdoubleArray (double arrays)<br><code>`</code></p>
+<ul>
+<li>JNI 访问字段类似反射 API。</li>
+</ul>
+<h1 id="异常"><a href="#异常" class="headerlink" title="异常"></a>异常</h1><ul>
+<li><strong>调用 JNI 函数时，JVM 便已生成异常实例，并缓存在内存中。</strong></li>
+<li>不会显式地跳转至异常处理器或者调用者中，而是继续执行接下来的 C 代码。</li>
+<li>从可能触发异常的 JNI 函数返回时，需要<strong>通过 JNI 函数 ExceptionOccurred 检查是否发生了异常</strong>，并且作出相应的处理。</li>
+<li>如果无须抛出该异常，需要<strong>通过 JNI 函数 ExceptionClear 显式地清空已缓存的异常</strong>。</li>
+</ul>
+<h1 id="局部引用（Local-Reference）与全局引用（Global-Reference）"><a href="#局部引用（Local-Reference）与全局引用（Global-Reference）" class="headerlink" title="局部引用（Local Reference）与全局引用（Global Reference）"></a>局部引用（Local Reference）与全局引用（Global Reference）</h1><ul>
+<li>C 代码中可以访问所传入的引用类型参数。</li>
+<li>可以通过 JNI 函数创建新的 Java 对象。</li>
+<li>JVM 需要一种机制告知垃圾回收算法不要回收 C 代码中可能引用到的 Java 对象。</li>
+<li>垃圾回收算法会将被<strong>局部引用</strong>和<strong>全局引用</strong>指向的对象标记为<strong>不可回收</strong>。</li>
+<li>无论是传入的引用类型参数，还是通过 JNI 函数（除NewGlobalRef及NewWeakGlobalRef之外）返回的引用类型对象，都属于局部引用。</li>
+<li><strong>从 C 函数中返回至 Java 方法中，局部引用将失效</strong>。</li>
+<li>不能缓存局部引用，以供另一 C 线程或下一次 native 方法调用时使用。</li>
+<li>通过 JNI 函数 NewGlobalRef，将该局部引用转换为全局引用。</li>
+<li>通过 JNI 函数 DeleteGlobalRef 消除全局引用。</li>
+<li>C 函数运行时间极其长时，应该考虑通过 JNI 函数DeleteLocalRef，消除不再使用的局部引用。</li>
+</ul>
+<h1 id="句柄（handle）"><a href="#句柄（handle）" class="headerlink" title="句柄（handle）"></a>句柄（handle）</h1><blockquote>
+<p>句柄指的是内存中 Java 对象的指针的指针。</p>
+<blockquote>
+<p>垃圾回收器可能会移动对象在内存中的位置，JVM 需要另一种机制保证局部引用或者全局引用将正确地指向移动过后的对象。HotSpot 虚拟机是通过句柄（handle）来完成。</p>
+</blockquote>
+</blockquote>
+<ul>
+<li><strong>局部引用和全局引用都是句柄。</strong></li>
+<li>局部引用句柄的两种存储方式<ol>
+<li>在本地方法栈帧中：主要用于存放 C 函数所接收的来自 Java 层面的引用类型参数。</li>
+<li>在线程私有的句柄块：主要用于存放 C 函数中创建的局部引用。</li>
+</ol>
+</li>
+<li>从 C 函数返回至 Java 方法时，<strong>本地方法栈帧</strong>中的句柄将会被<strong>自动清除</strong>。</li>
+<li><strong>线程私有句柄块</strong>需要 JVM <strong>显式清理</strong>。</li>
+</ul>
+<h1 id="JNI-调用的额外性能开销"><a href="#JNI-调用的额外性能开销" class="headerlink" title="JNI 调用的额外性能开销"></a>JNI 调用的额外性能开销</h1><ul>
+<li><strong>进入 C 函数时对引用类型参数的句柄化。</strong></li>
+<li><strong>调整参数位置</strong>（C 调用和 Java 调用传参的方式不一样）。</li>
+<li><strong>从 C 函数返回时清理线程私有句柄块。</strong></li>
+</ul>
+<h1 id="引用"><a href="#引用" class="headerlink" title="引用"></a>引用</h1><blockquote>
+<p><a href="https://time.geekbang.org/column/article/40839" target="_blank" rel="noopener">https://time.geekbang.org/column/article/40839</a></p>
+</blockquote>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://ennis.info/2018/12/04/笔记-深入拆解Java虚拟机-2829基准测试框架JMH/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Ennis L.M. Wu">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="http://pcrioz2ch.bkt.clouddn.com/portrait.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Ennis -Little Monster">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/12/04/笔记-深入拆解Java虚拟机-2829基准测试框架JMH/" itemprop="url">笔记-深入拆解Java虚拟机-2829基准测试框架JMH</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-12-04T17:12:22+08:00">
+                2018-12-04
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Java虚拟机/" itemprop="url" rel="index">
+                    <span itemprop="name">Java虚拟机</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>通过 <code>System.nanoTime</code> 或者 <code>System.currentTimeMillis</code> 来测量程序所花费的时间过于理性化，忽略了 Java 虚拟机、操作系统，硬件系统所带来的影响。</p>
+<h1 id="性能测试的坑"><a href="#性能测试的坑" class="headerlink" title="性能测试的坑"></a>性能测试的坑</h1><h2 id="Java-虚拟机的影响"><a href="#Java-虚拟机的影响" class="headerlink" title="Java 虚拟机的影响"></a>Java 虚拟机的影响</h2><ul>
+<li>Java 虚拟机堆空间的自适配</li>
+<li>即时编译</li>
+<li>循环展开</li>
+<li>等</li>
+</ul>
+<h2 id="操作系统和硬件系统的影响"><a href="#操作系统和硬件系统的影响" class="headerlink" title="操作系统和硬件系统的影响"></a>操作系统和硬件系统的影响</h2><ul>
+<li>电源管理策略</li>
+<li>CPU 缓存</li>
+<li>分支预测器</li>
+<li>超线程技术</li>
+<li>等</li>
+</ul>
+<h1 id="JMH（Java-Microbenchmark-Harness）"><a href="#JMH（Java-Microbenchmark-Harness）" class="headerlink" title="JMH（Java Microbenchmark Harness）"></a>JMH（Java Microbenchmark Harness）</h1><blockquote>
+<p> OpenJDK 中的开源项目。是一个面向 Java 语言或者其他 Java 虚拟机语言的性能基准测试框架。</p>
+</blockquote>
+<ul>
+<li>JMH 内置许多功能来控制即时编译器的优化。</li>
+<li>其他影响性能评测的因素也提供了不少策略降低影响，甚至彻底解决。</li>
+</ul>
+<h1 id="如何使用-JMH"><a href="#如何使用-JMH" class="headerlink" title="如何使用 JMH"></a>如何使用 JMH</h1><p><a href="http://www.baidu.com" target="_blank" rel="noopener">www.baidu.com</a><br><a href="http://www.google.com" target="_blank" rel="noopener">www.google.com</a></p>
+<h1 id="引用"><a href="#引用" class="headerlink" title="引用"></a>引用</h1><blockquote>
+<p><a href="https://time.geekbang.org/column/article/40275" target="_blank" rel="noopener">https://time.geekbang.org/column/article/40275</a><br><a href="https://time.geekbang.org/column/article/40281" target="_blank" rel="noopener">https://time.geekbang.org/column/article/40281</a></p>
+</blockquote>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://ennis.info/2018/12/03/笔记-深入拆解Java虚拟机-26向量化/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Ennis L.M. Wu">
@@ -525,7 +888,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/11/24/笔记-深入拆解Java虚拟机-25循环优化/">
+    <link itemprop="mainEntityOfPage" href="http://ennis.info/2018/11/24/笔记-深入拆解Java虚拟机-25循环优化/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Ennis L.M. Wu">
@@ -723,7 +1086,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/11/22/笔记-深入拆解Java虚拟机-24字段访问相关优化/">
+    <link itemprop="mainEntityOfPage" href="http://ennis.info/2018/11/22/笔记-深入拆解Java虚拟机-24字段访问相关优化/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Ennis L.M. Wu">
@@ -897,7 +1260,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/11/15/笔记-深入拆解Java虚拟机-23逃逸分析/">
+    <link itemprop="mainEntityOfPage" href="http://ennis.info/2018/11/15/笔记-深入拆解Java虚拟机-23逃逸分析/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Ennis L.M. Wu">
@@ -1093,7 +1456,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/11/14/笔记-深入拆解Java虚拟机-22HotSpot虚拟机的intrinsic/">
+    <link itemprop="mainEntityOfPage" href="http://ennis.info/2018/11/14/笔记-深入拆解Java虚拟机-22HotSpot虚拟机的intrinsic/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Ennis L.M. Wu">
@@ -1265,7 +1628,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/11/14/转-Android学习路线指南/">
+    <link itemprop="mainEntityOfPage" href="http://ennis.info/2018/11/14/转-Android学习路线指南/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Ennis L.M. Wu">
@@ -1500,7 +1863,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/11/10/笔记-深入拆解Java虚拟机-2021方法内联/">
+    <link itemprop="mainEntityOfPage" href="http://ennis.info/2018/11/10/笔记-深入拆解Java虚拟机-2021方法内联/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Ennis L.M. Wu">
@@ -1762,7 +2125,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/11/08/笔记-深入拆解Java虚拟机-19Java字节码（基础篇）/">
+    <link itemprop="mainEntityOfPage" href="http://ennis.info/2018/11/08/笔记-深入拆解Java虚拟机-19Java字节码（基础篇）/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Ennis L.M. Wu">
@@ -2001,361 +2364,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/11/08/笔记-深入拆解Java虚拟机-18即时编译器的中间表达形式/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Ennis L.M. Wu">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="http://pcrioz2ch.bkt.clouddn.com/portrait.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Ennis -Little Monster">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/11/08/笔记-深入拆解Java虚拟机-18即时编译器的中间表达形式/" itemprop="url">笔记-深入拆解Java虚拟机-18即时编译器的中间表达形式</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-11-08T14:41:19+08:00">
-                2018-11-08
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Java虚拟机/" itemprop="url" rel="index">
-                    <span itemprop="name">Java虚拟机</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>目测太难看不懂。。。</p>
-<p>待更新</p>
-<p><a href="https://time.geekbang.org/column/article/14270" target="_blank" rel="noopener">https://time.geekbang.org/column/article/14270</a></p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/11/07/Android的视图优化方法/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Ennis L.M. Wu">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="http://pcrioz2ch.bkt.clouddn.com/portrait.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Ennis -Little Monster">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/11/07/Android的视图优化方法/" itemprop="url">Android的视图优化方法</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-11-07T21:31:51+08:00">
-                2018-11-07
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Android优化/" itemprop="url" rel="index">
-                    <span itemprop="name">Android优化</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h1 id="过度绘制（Overdraw）"><a href="#过度绘制（Overdraw）" class="headerlink" title="过度绘制（Overdraw）"></a>过度绘制（Overdraw）</h1><blockquote>
-<p>过度绘制（Overdraw）指的是屏幕上的某个像素在同一帧的时间内被绘制了多次。</p>
-</blockquote>
-<h2 id="检测过度绘制"><a href="#检测过度绘制" class="headerlink" title="检测过度绘制"></a>检测过度绘制</h2><p>Android 中打开过度绘制检测工具的方式：</p>
-<ul>
-<li>开发者选项 ➡ 调试GPU过度绘制 ➡ 显示过度绘制区域</li>
-</ul>
-<p>界面中会出现不同颜色的区域，各颜色代表的意思：</p>
-<p><img src="http://pcrioz2ch.bkt.clouddn.com/android/layout/overdraw.webp" alt="image"></p>
-<h2 id="过度绘制优化"><a href="#过度绘制优化" class="headerlink" title="过度绘制优化"></a>过度绘制优化</h2><h3 id="移除布局中不需要的背景"><a href="#移除布局中不需要的背景" class="headerlink" title="移除布局中不需要的背景"></a>移除布局中不需要的背景</h3><h4 id="移除-Window-默认的-Background"><a href="#移除-Window-默认的-Background" class="headerlink" title="移除 Window 默认的 Background"></a>移除 Window 默认的 Background</h4><p>通常使用的 theme 会包含一个 windowBackground。</p>
-<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">item</span> <span class="attr">name</span>=<span class="string">"android:windowBackground"</span>&gt;</span>@color/background_material_light<span class="tag">&lt;/<span class="name">item</span>&gt;</span></span><br></pre></td></tr></table></figure>
-<p>然后又给跟布局添加了一个背景，这会导致整个页面被多绘制一次。</p>
-<p>移掉 windowBackground 即可解决，有两种方法。</p>
-<ul>
-<li>在 theme 中设置</li>
-</ul>
-<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">item</span> <span class="attr">name</span>=<span class="string">"android:windowBackground"</span>&gt;</span>@null<span class="tag">&lt;/<span class="name">item</span>&gt;</span></span><br></pre></td></tr></table></figure>
-<ul>
-<li>在 onCreate() 方法中添加</li>
-</ul>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">getWindow().setBackgroundDrawable(<span class="keyword">null</span>);</span><br></pre></td></tr></table></figure>
-<h4 id="移除控件中不需要的背景"><a href="#移除控件中不需要的背景" class="headerlink" title="移除控件中不需要的背景"></a>移除控件中不需要的背景</h4><ul>
-<li>父布局和子布局设置了相同的 background，选择其一设置即可。</li>
-</ul>
-<h2 id="减少透明度的使用"><a href="#减少透明度的使用" class="headerlink" title="减少透明度的使用"></a>减少透明度的使用</h2><p>View 设置了 alpha 值至少渲染两次。</p>
-<h1 id="布局优化"><a href="#布局优化" class="headerlink" title="布局优化"></a>布局优化</h1><ul>
-<li>LinearLayout 与 RelativeLayout 作用相同时使用 LinearLayout。</li>
-<li>LinearLayout 需要嵌套时使用 RelativeLayout。</li>
-<li>使用 ConstraintLayout。</li>
-</ul>
-<h2 id="使用-Layout-Inspector-查看-layout-层次结构"><a href="#使用-Layout-Inspector-查看-layout-层次结构" class="headerlink" title="使用 Layout Inspector 查看 layout 层次结构"></a>使用 Layout Inspector 查看 layout 层次结构</h2><blockquote>
-<p>Tools &gt; Android &gt; Layout Inspector</p>
-</blockquote>
-<h2 id="使用-lint-优化布局的层次结构"><a href="#使用-lint-优化布局的层次结构" class="headerlink" title="使用 lint 优化布局的层次结构"></a>使用 lint 优化布局的层次结构</h2><blockquote>
-<p>Analyze&gt; Inspect Code</p>
-<blockquote>
-<p>Android&gt; Lint&gt; Performance</p>
-</blockquote>
-</blockquote>
-<h2 id="lt-include-标签"><a href="#lt-include-标签" class="headerlink" title="&lt;include> 标签"></a>&lt;include> 标签</h2><ul>
-<li>只支持 android:layout_ 开头的属性（android:id 是特例）。</li>
-<li>&lt;include> 指定了 id 属性，包含的布局文件根元素也指定了 id 属性，以 &lt;include> 指定的为准。</li>
-</ul>
-<h2 id="lt-merge-标签"><a href="#lt-merge-标签" class="headerlink" title="&lt;merge> 标签"></a>&lt;merge> 标签</h2><ul>
-<li>配合 &lt;include> 标签使用可以减少布局的层级。</li>
-</ul>
-<h2 id="ViewStub"><a href="#ViewStub" class="headerlink" title="ViewStub"></a>ViewStub</h2><ul>
-<li>继承自 View，宽高都是 0，本身不参与任何的布局和绘制过程。</li>
-<li>按需加载所需的布局文件（如网络异常时的界面），使用的时候再加载，提高初始化性能。</li>
-<li>不支持 &lt;merge> 标签。</li>
-<li>使用 inflateedId 属性指定加载的布局 id。</li>
-</ul>
-<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">ViewStub</span></span></span><br><span class="line"><span class="tag">	<span class="attr">android:id</span>=<span class="string">"@+id/stub_import"</span></span></span><br><span class="line"><span class="tag">	<span class="attr">android:inflatedId</span>=<span class="string">"@+id/panel_import"</span> /&gt;</span></span><br></pre></td></tr></table></figure>
-<h3 id="怎样加载？"><a href="#怎样加载？" class="headerlink" title="怎样加载？"></a>怎样加载？</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">((ViewStub) findViewById(R.id.stub_import)).setVisibility(View.VISIBLE);</span><br></pre></td></tr></table></figure>
-<p>或</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">View importPanel = ((ViewStub) findViewById(R.id.stub_import)).inflate();</span><br></pre></td></tr></table></figure>
-<ul>
-<li>加载后 ViewStub 不在属于布局，为 null。</li>
-</ul>
-<h1 id="绘制优化"><a href="#绘制优化" class="headerlink" title="绘制优化"></a>绘制优化</h1><h2 id="onDraw-方法"><a href="#onDraw-方法" class="headerlink" title="onDraw 方法"></a>onDraw 方法</h2><ul>
-<li>不要创建新的布局对象。</li>
-<li>不要做耗时的任务。</li>
-</ul>
-<h3 id="减少自定义-View-的过度绘制"><a href="#减少自定义-View-的过度绘制" class="headerlink" title="减少自定义 View 的过度绘制"></a>减少自定义 View 的过度绘制</h3><ul>
-<li>假如有多张图片叠层显示时，可以使用 <code>Canvas</code> 的 <code>clipRect()</code> 等方法将图片裁剪。</li>
-</ul>
-<h1 id="使用-GPU-呈现模式分析工具"><a href="#使用-GPU-呈现模式分析工具" class="headerlink" title="使用 GPU 呈现模式分析工具"></a>使用 GPU 呈现模式分析工具</h1><p>Android 中打开 GPU 呈现模式分析工具的方式：</p>
-<ul>
-<li>开发者模式 ➡ 监控 ➡ GPU呈现模式</li>
-</ul>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -2410,7 +2418,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">43</span>
+                  <span class="site-state-item-count">45</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>

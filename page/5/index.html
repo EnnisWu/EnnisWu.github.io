@@ -84,7 +84,7 @@
 <meta name="description" content="We could, we could belong togeter, ARTPOP.">
 <meta property="og:type" content="website">
 <meta property="og:title" content="Ennis -Little Monster">
-<meta property="og:url" content="http://yoursite.com/page/5/index.html">
+<meta property="og:url" content="http://ennis.info/page/5/index.html">
 <meta property="og:site_name" content="Ennis -Little Monster">
 <meta property="og:description" content="We could, we could belong togeter, ARTPOP.">
 <meta property="og:locale" content="zh-Hans">
@@ -120,7 +120,7 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/page/5/"/>
+  <link rel="canonical" href="http://ennis.info/page/5/"/>
 
 
 
@@ -298,7 +298,530 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/05/31/《TCPIP详解卷1》002阅读笔记/">
+    <link itemprop="mainEntityOfPage" href="http://ennis.info/2018/06/12/《TCPIP详解卷1》004阅读笔记/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Ennis L.M. Wu">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="http://pcrioz2ch.bkt.clouddn.com/portrait.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Ennis -Little Monster">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/06/12/《TCPIP详解卷1》004阅读笔记/" itemprop="url">《TCPIP详解卷1》004阅读笔记</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-06-12T15:38:11+08:00">
+                2018-06-12
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/TCP-IP/" itemprop="url" rel="index">
+                    <span itemprop="name">TCP/IP</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>RFC 826 [Plummer 1982] 是ARP规范描述文档。<br>ARP（地址解析协议）<br>RARP（逆地址解析协议）<br><br></p>
+<p>ARP为IP地址到对应硬件地址之间提供动态映射，因为是自动完成的。<br>RARP被没有磁盘驱动器的系统使用，需要系统管理员手工设置。<br><br></p>
+<p>ARP发送一份称作ARP请求的以太网数据帧给以太网上的每个主机。称作广播。<br><br></p>
+<p>点对点链路不使用ARP。设置这些链路时，必须告知内核链路每一端的IP地址，而不需要硬件地址。<br><br></p>
+<p>ARP高效运行因为每个主机上都有一个ARP高速缓存<br><br></p>
+<h4 id="ARP的分组格式"><a href="#ARP的分组格式" class="headerlink" title="ARP的分组格式"></a>ARP的分组格式</h4><table>
+<thead>
+<tr>
+<th>以太网目的地址</th>
+<th>以太网源地址</th>
+<th>帧类型</th>
+<th>硬件类型</th>
+<th>协议类型</th>
+<th>硬件地址长度</th>
+<th>协议地址长度</th>
+<th>op</th>
+<th>发送端以太网地址</th>
+<th>发送端IP地址</th>
+<th>目的以太网地址</th>
+<th>目的IP地址</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>6</td>
+<td>6</td>
+<td>2</td>
+<td>2</td>
+<td>2</td>
+<td>1</td>
+<td>1</td>
+<td>2</td>
+<td>6</td>
+<td>4</td>
+<td>6</td>
+<td>4</td>
+</tr>
+<tr>
+<td>全1</td>
+<td></td>
+<td>0x0806</td>
+<td>1</td>
+<td>0x0800</td>
+<td>6 bytes</td>
+<td>4 bytes</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>广播地址</td>
+<td></td>
+<td>ARP请求或应答</td>
+<td>表示以太网地址</td>
+<td>表示IP地址</td>
+<td>MAC地址长度</td>
+<td>IP地址长度</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>目的地址：全1的特殊地址是广播地址，电缆上的所有以太网接口都要接收广播的数据帧。</li>
+<li>操作字段（OP）：ARP请求（1）、ARP应答（2）、RARP请求（3）、RARP应答（4），必须字段，因为ARP请求和应答的帧类型字段相同。<br><br></li>
+</ul>
+<h4 id="ARP高速缓存超时设置"><a href="#ARP高速缓存超时设置" class="headerlink" title="ARP高速缓存超时设置"></a>ARP高速缓存超时设置</h4><ul>
+<li>BSD演变来的系统一般设置完整表项超时20分钟，不完整表项超时3分钟。</li>
+<li>表项再次使用时，超时值重设为20分钟。<br><br></li>
+</ul>
+<h4 id="ARP代理"><a href="#ARP代理" class="headerlink" title="ARP代理"></a>ARP代理</h4><ul>
+<li>路由器相当于目的主机的代理，把分组从其他主机转发给它。<br><br></li>
+</ul>
+<h4 id="免费ARP"><a href="#免费ARP" class="headerlink" title="免费ARP"></a>免费ARP</h4><ul>
+<li>是指发送ARP查找自己的IP地址。</li>
+<li>两方面作用：</li>
+<li><ol>
+<li>验证IP是否冲突，一个主机能够通过它来确定是否还有一个主机设置了相同的IP地址。</li>
+</ol>
+</li>
+<li><ol>
+<li>更换物理网卡，假设发送ARP的主机正好改变了物理地址，能够使用此方法通知网络中其他主机及时更新ARP缓存。<br><br></li>
+</ol>
+</li>
+</ul>
+<h4 id="ARP命令"><a href="#ARP命令" class="headerlink" title="ARP命令"></a>ARP命令</h4><ul>
+<li>arp -a 显示ARP高速缓存。</li>
+<li>arp -d 删除ARP高速缓存中某一项。</li>
+<li>arp -s 增加高速缓存中的内容，是永久性的，除非末尾加上关键字temp。</li>
+</ul>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://ennis.info/2018/06/02/《TCPIP详解卷1》003阅读笔记/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Ennis L.M. Wu">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="http://pcrioz2ch.bkt.clouddn.com/portrait.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Ennis -Little Monster">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/06/02/《TCPIP详解卷1》003阅读笔记/" itemprop="url">《TCP/IP详解卷1》003阅读笔记</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-06-02T15:07:17+08:00">
+                2018-06-02
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/TCP-IP/" itemprop="url" rel="index">
+                    <span itemprop="name">TCP/IP</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>IP的正式规范文件：RFC 791</p>
+<p>所有TCP、UDP、ICMP及IGMP数据都以IP数据报格式传输。<br>不可靠：不能保证IP数据报能够成功到达目的地。可靠性必须由上层提供。<br>无连接：IP不维护后续数据报的状态信息。每个数据报的处理相互独立。IP数据报可以不按发送顺序接收。</p>
+<p>传输次序：网络字节序/big endian（大端）字节序</p>
+<h4 id="IP首部字段"><a href="#IP首部字段" class="headerlink" title="IP首部字段"></a>IP首部字段</h4><table>
+<thead>
+<tr>
+<th>字段名</th>
+<th>长度</th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>版本</td>
+<td>4位</td>
+<td>4</td>
+</tr>
+<tr>
+<td>首部长度</td>
+<td>4位</td>
+<td>首部占32bit字的数目，没有任何选项，值为5，首部最长60字节</td>
+</tr>
+<tr>
+<td>服务类型（TOS）</td>
+<td>8位</td>
+<td>3bit优先权子字段（已忽略），4bitTOS子字段，1bit未用位（置为0）</td>
+</tr>
+<tr>
+<td>总长度</td>
+<td>16位</td>
+<td>字节为单位，最长65535字节。<strong>必要内容</strong></td>
+</tr>
+<tr>
+<td>位标识</td>
+<td>16位</td>
+<td>唯一标识主机发送的每一份数据报</td>
+</tr>
+<tr>
+<td>位标志</td>
+<td>3位</td>
+<td></td>
+</tr>
+<tr>
+<td>位片偏移</td>
+<td>13位</td>
+<td></td>
+</tr>
+<tr>
+<td>生存时间（TTL）</td>
+<td>8位</td>
+<td>经过的最多路由器数，初始值通常为64或32，源主机设置。</td>
+</tr>
+<tr>
+<td>协议</td>
+<td>8位</td>
+<td></td>
+</tr>
+<tr>
+<td>首部校验和</td>
+<td>16位</td>
+<td>根据IP首部计算校验和码。</td>
+</tr>
+<tr>
+<td>选项</td>
+<td></td>
+<td>可选，可变长。32bit为界限，不够时插入值为0的填充字节。</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>首部长度：从包头格式图看出，是以32bit为一行的，一行包括若干字段。首部长度的数值是以32bit为单位来描述的，比如四位全为1，十六进制本来是0X0F，也就是十进制的15但是，<strong>这个字段的1不是数值1，而是指1个单位即一个32bit。</strong>所以如果该字段是1111的话。就是15*32bit=60Byte了。 </li>
+<li>4bit的TOS代表：最小时延、最大吞吐量、最高可靠性、最小费用。</li>
+<li>首部长度、总长度计算数据内容的起始位置和长度。</li>
+<li>TTL为0时丢弃数据报，发送ICMP报文通知源主机。</li>
+<li>首部校验和：如果校验和错误，丢弃数据报，但不生成差错报文，由上层发现并重传。</li>
+</ul>
+<h4 id="IP路由选择"><a href="#IP路由选择" class="headerlink" title="IP路由选择"></a>IP路由选择</h4><p>目的主机与源主机直接相连，或都在一个共享网络上，IP数据报直接送到目的主机。<br>否则发往默认路由，由路由器转发。<br><br></p>
+<h6 id="IP层可以配置成路由器或主机"><a href="#IP层可以配置成路由器或主机" class="headerlink" title="IP层可以配置成路由器或主机"></a>IP层可以配置成路由器或主机</h6><p>主机：不转发<br>路由器：转发<br>内含路由器的主机：不转发<br><br></p>
+<h6 id="收到数据报来自网络接口时（即非本地生成的数据报）"><a href="#收到数据报来自网络接口时（即非本地生成的数据报）" class="headerlink" title="收到数据报来自网络接口时（即非本地生成的数据报）"></a>收到数据报来自网络接口时（即非本地生成的数据报）</h6><ul>
+<li>检查IP地址<ul>
+<li>是本机IP地址之一或IP广播地址：发送到指定协议模块<ul>
+<li>IP层设置为路由器：转发</li>
+<li>否则：丢弃<br><br></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h6 id="路由表"><a href="#路由表" class="headerlink" title="路由表"></a>路由表</h6><table>
+<thead>
+<tr>
+<th>项</th>
+<th>含义</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>目的IP地址</td>
+<td>表中标志字段指定类型。完整的主机地址：非0主机号。网络地址：主机号为0。</td>
+</tr>
+<tr>
+<td>下一跳路由器IP地址</td>
+<td>或者有直接连接的网络IP地址。</td>
+</tr>
+<tr>
+<td>标志</td>
+<td>一个指明目的IP地址类型，==<strong>一个标志下一站路由器时真下一站路由器还是直接相连的接口。</strong>看不懂这句==</td>
+</tr>
+<tr>
+<td>指定网络接口</td>
+</tr>
+</tbody>
+</table>
+<p>IP不知道目的的完整路径<br><br></p>
+<h6 id="IP路由选择主要功能"><a href="#IP路由选择主要功能" class="headerlink" title="IP路由选择主要功能"></a>IP路由选择主要功能</h6><p>搜索路由表</p>
+<ol>
+<li>寻找与目的IP完全匹配（网络号和主机号）的条目</li>
+<li>寻找与目的网络号相匹配的条目（必须考虑子网掩码）</li>
+<li>寻找“默认”的条目</li>
+</ol>
+<p>如果找到，报文发送指定的下一站路由器或直接相连的网络接口。<br>如果都未成功，则不能被传送，向应用返回错误<br><br></p>
+<h4 id="子网寻址"><a href="#子网寻址" class="headerlink" title="子网寻址"></a>子网寻址</h4><p>==看不懂图==</p>
+<ul>
+<li>所有主机都要求支持子网寻址。</li>
+<li>IP地址 = 网络号 + 子网号 + 主机号</li>
+<li>B类IP地址 = 网络号（16位）+ 子网号（8位）+ 主机号（8位）</li>
+<li>子网对外部路由器来说隐藏了内部网络组织。</li>
+<li>子网划分缩减了路由表的规模。</li>
+<li>子网对于子网内部的路由器不透明。==不懂==</li>
+</ul>
+<h4 id="子网掩码"><a href="#子网掩码" class="headerlink" title="子网掩码"></a>子网掩码</h4><ul>
+<li>标识多少bit用于子网号，多少bit用于主机号。</li>
+<li>掩码是32bit的值，值为1留给网络号和子网号，值为0留给主机号。</li>
+<li>给定IP地址和子网掩码后可以确定：</li>
+<li><ol>
+<li>本子网上的主机。</li>
+</ol>
+</li>
+<li><ol start="2">
+<li>本网络中其他子网中的主机。</li>
+</ol>
+</li>
+<li><ol start="3">
+<li>其他网络上的主机。</li>
+</ol>
+</li>
+</ul>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://ennis.info/2018/05/31/《TCPIP详解卷1》002阅读笔记/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Ennis L.M. Wu">
@@ -561,7 +1084,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/04/09/Toolbar的setTitle问题/">
+    <link itemprop="mainEntityOfPage" href="http://ennis.info/2018/04/09/Toolbar的setTitle问题/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Ennis L.M. Wu">
@@ -708,7 +1231,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/02/22/转-Android生成验证码/">
+    <link itemprop="mainEntityOfPage" href="http://ennis.info/2018/02/22/转-Android生成验证码/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Ennis L.M. Wu">
@@ -892,7 +1415,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">43</span>
+                  <span class="site-state-item-count">45</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>

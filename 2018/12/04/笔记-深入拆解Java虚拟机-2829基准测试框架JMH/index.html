@@ -68,7 +68,7 @@
 
 
 
-  <meta name="keywords" content="Hexo, NexT" />
+  <meta name="keywords" content="JVM," />
 
 
 
@@ -81,16 +81,18 @@
 
 
 
-<meta name="description" content="We could, we could belong togeter, ARTPOP.">
-<meta property="og:type" content="website">
-<meta property="og:title" content="Ennis -Little Monster">
-<meta property="og:url" content="http://ennis.info/categories/Java虚拟机/page/2/index.html">
+<meta name="description" content="通过 System.nanoTime 或者 System.currentTimeMillis 来测量程序所花费的时间过于理性化，忽略了 Java 虚拟机、操作系统，硬件系统所带来的影响。 性能测试的坑Java 虚拟机的影响 Java 虚拟机堆空间的自适配 即时编译 循环展开 等  操作系统和硬件系统的影响 电源管理策略 CPU 缓存 分支预测器 超线程技术 等  JMH（Java Microben">
+<meta name="keywords" content="JVM">
+<meta property="og:type" content="article">
+<meta property="og:title" content="笔记-深入拆解Java虚拟机-2829基准测试框架JMH">
+<meta property="og:url" content="http://ennis.info/2018/12/04/笔记-深入拆解Java虚拟机-2829基准测试框架JMH/index.html">
 <meta property="og:site_name" content="Ennis -Little Monster">
-<meta property="og:description" content="We could, we could belong togeter, ARTPOP.">
+<meta property="og:description" content="通过 System.nanoTime 或者 System.currentTimeMillis 来测量程序所花费的时间过于理性化，忽略了 Java 虚拟机、操作系统，硬件系统所带来的影响。 性能测试的坑Java 虚拟机的影响 Java 虚拟机堆空间的自适配 即时编译 循环展开 等  操作系统和硬件系统的影响 电源管理策略 CPU 缓存 分支预测器 超线程技术 等  JMH（Java Microben">
 <meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2018-12-04T09:25:15.606Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Ennis -Little Monster">
-<meta name="twitter:description" content="We could, we could belong togeter, ARTPOP.">
+<meta name="twitter:title" content="笔记-深入拆解Java虚拟机-2829基准测试框架JMH">
+<meta name="twitter:description" content="通过 System.nanoTime 或者 System.currentTimeMillis 来测量程序所花费的时间过于理性化，忽略了 Java 虚拟机、操作系统，硬件系统所带来的影响。 性能测试的坑Java 虚拟机的影响 Java 虚拟机堆空间的自适配 即时编译 循环展开 等  操作系统和硬件系统的影响 电源管理策略 CPU 缓存 分支预测器 超线程技术 等  JMH（Java Microben">
 
 
 
@@ -120,13 +122,13 @@
 
 
 
-  <link rel="canonical" href="http://ennis.info/categories/Java虚拟机/page/2/"/>
+  <link rel="canonical" href="http://ennis.info/2018/12/04/笔记-深入拆解Java虚拟机-2829基准测试框架JMH/"/>
 
 
 
 
 
-  <title>分类: Java虚拟机 | Ennis -Little Monster</title>
+  <title>笔记-深入拆解Java虚拟机-2829基准测试框架JMH | Ennis -Little Monster</title>
   
 
 
@@ -145,7 +147,7 @@
     
   
 
-  <div class="container sidebar-position-left ">
+  <div class="container sidebar-position-left page-post-detail">
     <div class="headband"></div>
 
     <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
@@ -283,311 +285,226 @@
           <div id="content" class="content">
             
 
+  <div id="posts" class="posts-expand">
+    
+
+  
+
   
   
   
-  <div class="post-block category">
-
-    <div id="posts" class="posts-collapse">
-      <div class="collection-title">
-        <h1>Java虚拟机<small>分类</small>
-        </h1>
-      </div>
-
-      
-        
 
   <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://ennis.info/2018/12/04/笔记-深入拆解Java虚拟机-2829基准测试框架JMH/">
 
-      <h2 class="post-title">
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Ennis L.M. Wu">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="http://pcrioz2ch.bkt.clouddn.com/portrait.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Ennis -Little Monster">
+    </span>
+
+    
+      <header class="post-header">
+
         
-            <a class="post-title-link" href="/2018/11/06/笔记-深入拆解Java虚拟机-1617即时编译/" itemprop="url">
-              
-                <span itemprop="name">笔记-深入拆解Java虚拟机-1617即时编译</span>
-              
-            </a>
         
-      </h2>
+          <h1 class="post-title" itemprop="name headline">笔记-深入拆解Java虚拟机-2829基准测试框架JMH</h1>
+        
 
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2018-11-06T10:03:09+08:00"
-              content="2018-11-06" >
-          11-06
-        </time>
-      </div>
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-12-04T17:12:22+08:00">
+                2018-12-04
+              </time>
+            
 
-    </header>
-  </article>
+            
 
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Java虚拟机/" itemprop="url" rel="index">
+                    <span itemprop="name">Java虚拟机</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
 
       
-        
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h2 class="post-title">
-        
-            <a class="post-title-link" href="/2018/10/20/笔记-深入拆解Java虚拟机-15Java语法糖与Java编译器/" itemprop="url">
-              
-                <span itemprop="name">笔记-深入拆解Java虚拟机-15Java语法糖与Java编译器</span>
-              
-            </a>
-        
-      </h2>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2018-10-20T19:02:34+08:00"
-              content="2018-10-20" >
-          10-20
-        </time>
-      </div>
-
-    </header>
-  </article>
-
+      
 
       
-        
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h2 class="post-title">
-        
-            <a class="post-title-link" href="/2018/10/17/笔记-深入拆解Java虚拟机-14Java虚拟机是怎么实现synchronized的？/" itemprop="url">
-              
-                <span itemprop="name">笔记-深入拆解Java虚拟机-14Java虚拟机是怎么实现synchronized的？</span>
-              
-            </a>
-        
-      </h2>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2018-10-17T14:08:55+08:00"
-              content="2018-10-17" >
-          10-17
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-      
-        
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h2 class="post-title">
-        
-            <a class="post-title-link" href="/2018/08/31/笔记-深入拆解Java虚拟机-13Java内存模型/" itemprop="url">
-              
-                <span itemprop="name">笔记-深入拆解Java虚拟机-13Java内存模型</span>
-              
-            </a>
-        
-      </h2>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2018-08-31T14:44:23+08:00"
-              content="2018-08-31" >
-          08-31
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-      
-        
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h2 class="post-title">
-        
-            <a class="post-title-link" href="/2018/08/29/笔记-深入拆解Java虚拟机-1112垃圾回收/" itemprop="url">
-              
-                <span itemprop="name">笔记-深入拆解Java虚拟机-1112垃圾回收</span>
-              
-            </a>
-        
-      </h2>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2018-08-29T15:50:47+08:00"
-              content="2018-08-29" >
-          08-29
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-      
-        
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h2 class="post-title">
-        
-            <a class="post-title-link" href="/2018/08/29/笔记-深入拆解Java虚拟机-10Java对象的内存分布/" itemprop="url">
-              
-                <span itemprop="name">笔记-深入拆解Java虚拟机-10Java对象的内存分布</span>
-              
-            </a>
-        
-      </h2>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2018-08-29T09:38:58+08:00"
-              content="2018-08-29" >
-          08-29
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-      
-        
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h2 class="post-title">
-        
-            <a class="post-title-link" href="/2018/08/10/笔记-深入拆解Java虚拟机-0809JVM是怎么实现invokedynamic的？/" itemprop="url">
-              
-                <span itemprop="name">笔记-深入拆解Java虚拟机-0809JVM是怎么实现invokedynamic的？</span>
-              
-            </a>
-        
-      </h2>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2018-08-10T15:07:18+08:00"
-              content="2018-08-10" >
-          08-10
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-      
-        
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h2 class="post-title">
-        
-            <a class="post-title-link" href="/2018/08/06/笔记-深入拆解Java虚拟机-07JVM是如何实现反射的？/" itemprop="url">
-              
-                <span itemprop="name">笔记-深入拆解Java虚拟机-07JVM是如何实现反射的？</span>
-              
-            </a>
-        
-      </h2>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2018-08-06T14:33:36+08:00"
-              content="2018-08-06" >
-          08-06
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-      
-        
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h2 class="post-title">
-        
-            <a class="post-title-link" href="/2018/08/05/笔记-深入拆解Java虚拟机-【工具篇】常用工具介绍/" itemprop="url">
-              
-                <span itemprop="name">笔记-深入拆解Java虚拟机-【工具篇】常用工具介绍</span>
-              
-            </a>
-        
-      </h2>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2018-08-05T14:41:13+08:00"
-              content="2018-08-05" >
-          08-05
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-      
-        
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h2 class="post-title">
-        
-            <a class="post-title-link" href="/2018/08/01/笔记-深入拆解Java虚拟机-06JVM是如何处理异常的？/" itemprop="url">
-              
-                <span itemprop="name">笔记-深入拆解Java虚拟机-06JVM是如何处理异常的？</span>
-              
-            </a>
-        
-      </h2>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2018-08-01T14:41:48+08:00"
-              content="2018-08-01" >
-          08-01
-        </time>
-      </div>
-
-    </header>
-  </article>
-
+        <p>通过 <code>System.nanoTime</code> 或者 <code>System.currentTimeMillis</code> 来测量程序所花费的时间过于理性化，忽略了 Java 虚拟机、操作系统，硬件系统所带来的影响。</p>
+<h1 id="性能测试的坑"><a href="#性能测试的坑" class="headerlink" title="性能测试的坑"></a>性能测试的坑</h1><h2 id="Java-虚拟机的影响"><a href="#Java-虚拟机的影响" class="headerlink" title="Java 虚拟机的影响"></a>Java 虚拟机的影响</h2><ul>
+<li>Java 虚拟机堆空间的自适配</li>
+<li>即时编译</li>
+<li>循环展开</li>
+<li>等</li>
+</ul>
+<h2 id="操作系统和硬件系统的影响"><a href="#操作系统和硬件系统的影响" class="headerlink" title="操作系统和硬件系统的影响"></a>操作系统和硬件系统的影响</h2><ul>
+<li>电源管理策略</li>
+<li>CPU 缓存</li>
+<li>分支预测器</li>
+<li>超线程技术</li>
+<li>等</li>
+</ul>
+<h1 id="JMH（Java-Microbenchmark-Harness）"><a href="#JMH（Java-Microbenchmark-Harness）" class="headerlink" title="JMH（Java Microbenchmark Harness）"></a>JMH（Java Microbenchmark Harness）</h1><blockquote>
+<p> OpenJDK 中的开源项目。是一个面向 Java 语言或者其他 Java 虚拟机语言的性能基准测试框架。</p>
+</blockquote>
+<ul>
+<li>JMH 内置许多功能来控制即时编译器的优化。</li>
+<li>其他影响性能评测的因素也提供了不少策略降低影响，甚至彻底解决。</li>
+</ul>
+<h1 id="如何使用-JMH"><a href="#如何使用-JMH" class="headerlink" title="如何使用 JMH"></a>如何使用 JMH</h1><p><a href="http://www.baidu.com" target="_blank" rel="noopener">www.baidu.com</a><br><a href="http://www.google.com" target="_blank" rel="noopener">www.google.com</a></p>
+<h1 id="引用"><a href="#引用" class="headerlink" title="引用"></a>引用</h1><blockquote>
+<p><a href="https://time.geekbang.org/column/article/40275" target="_blank" rel="noopener">https://time.geekbang.org/column/article/40275</a><br><a href="https://time.geekbang.org/column/article/40281" target="_blank" rel="noopener">https://time.geekbang.org/column/article/40281</a></p>
+</blockquote>
 
       
     </div>
+    
+    
+    
 
+    
+
+    
+      <div>
+        <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+  <div>如果你喜欢这篇文章的话。。。能给我一个小红包吗，爱你呦~(*´∀`)~♥</div>
+  <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+    <span>打赏</span>
+  </button>
+  <div id="QR" style="display: none;">
+
+    
+      <div id="wechat" style="display: inline-block">
+        <img id="wechat_qr" src="http://pcrioz2ch.bkt.clouddn.com/reward_wechatpay.jpg" alt="Ennis L.M. Wu 微信支付"/>
+        <p>微信支付</p>
+      </div>
+    
+
+    
+      <div id="alipay" style="display: inline-block">
+        <img id="alipay_qr" src="http://pcrioz2ch.bkt.clouddn.com/reward_alipay.jpg" alt="Ennis L.M. Wu 支付宝"/>
+        <p>支付宝</p>
+      </div>
+    
+
+    
+
+  </div>
+</div>
+
+      </div>
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/JVM/" rel="tag"># JVM</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/12/03/笔记-深入拆解Java虚拟机-26向量化/" rel="next" title="笔记-深入拆解Java虚拟机-26向量化">
+                <i class="fa fa-chevron-left"></i> 笔记-深入拆解Java虚拟机-26向量化
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/12/05/笔记-深入拆解Java虚拟机-32JNI的运行机制/" rel="prev" title="笔记-深入拆解Java虚拟机-32JNI的运行机制">
+                笔记-深入拆解Java虚拟机-32JNI的运行机制 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
   </div>
   
   
   
-
-  
-  <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/categories/Java虚拟机/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/categories/Java虚拟机/">1</a><span class="page-number current">2</span><a class="page-number" href="/categories/Java虚拟机/page/3/">3</a><a class="extend next" rel="next" href="/categories/Java虚拟机/page/3/"><i class="fa fa-angle-right"></i></a>
-  </nav>
+  </article>
 
 
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
 
 
           </div>
@@ -595,6 +512,10 @@
 
 
           
+
+  
+
+
 
         </div>
         
@@ -615,8 +536,17 @@
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
 
-      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
+      <section class="site-overview-wrap sidebar-panel">
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
             
@@ -721,6 +651,22 @@
         </div>
       </section>
 
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#性能测试的坑"><span class="nav-number">1.</span> <span class="nav-text">性能测试的坑</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Java-虚拟机的影响"><span class="nav-number">1.1.</span> <span class="nav-text">Java 虚拟机的影响</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#操作系统和硬件系统的影响"><span class="nav-number">1.2.</span> <span class="nav-text">操作系统和硬件系统的影响</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#JMH（Java-Microbenchmark-Harness）"><span class="nav-number">2.</span> <span class="nav-text">JMH（Java Microbenchmark Harness）</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#如何使用-JMH"><span class="nav-number">3.</span> <span class="nav-text">如何使用 JMH</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#引用"><span class="nav-number">4.</span> <span class="nav-text">引用</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
       
 
       
@@ -862,6 +808,10 @@
 
 
   
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
 
   
 
