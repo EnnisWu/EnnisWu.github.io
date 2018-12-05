@@ -81,18 +81,18 @@
 
 
 
-<meta name="description" content="Java 无法表达的场景 使用汇编语言提升关键代码的性能。 调用 Java 核心类库无法提供的，某个体系架构或者操作系统特有的功能。 牺牲可移植性，在 Java 代码中调用 C/C++ 代码实现。  这种跨语言调用，需要借助 Java Native Interface 机制。 native 方法的链接 动态链接库的名字以 lib 为前缀，以 .dylib 或 .so 为扩展名。 通过 方法加载 l">
+<meta name="description" content="Java 无法表达的场景 使用汇编语言提升关键代码的性能。 调用 Java 核心类库无法提供的，某个体系架构或者操作系统特有的功能。 牺牲可移植性，在 Java 代码中调用 C/C++ 代码实现。  这种跨语言调用，需要借助 Java Native Interface 机制。 native 方法的链接 动态链接库的名字以 lib 为前缀，以 .dylib 或 .so 为扩展名。 通过 System">
 <meta name="keywords" content="JVM">
 <meta property="og:type" content="article">
 <meta property="og:title" content="笔记-深入拆解Java虚拟机-32JNI的运行机制">
 <meta property="og:url" content="http://ennis.info/2018/12/05/笔记-深入拆解Java虚拟机-32JNI的运行机制/index.html">
 <meta property="og:site_name" content="Ennis -Little Monster">
-<meta property="og:description" content="Java 无法表达的场景 使用汇编语言提升关键代码的性能。 调用 Java 核心类库无法提供的，某个体系架构或者操作系统特有的功能。 牺牲可移植性，在 Java 代码中调用 C/C++ 代码实现。  这种跨语言调用，需要借助 Java Native Interface 机制。 native 方法的链接 动态链接库的名字以 lib 为前缀，以 .dylib 或 .so 为扩展名。 通过 方法加载 l">
+<meta property="og:description" content="Java 无法表达的场景 使用汇编语言提升关键代码的性能。 调用 Java 核心类库无法提供的，某个体系架构或者操作系统特有的功能。 牺牲可移植性，在 Java 代码中调用 C/C++ 代码实现。  这种跨语言调用，需要借助 Java Native Interface 机制。 native 方法的链接 动态链接库的名字以 lib 为前缀，以 .dylib 或 .so 为扩展名。 通过 System">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-12-05T11:15:04.930Z">
+<meta property="og:updated_time" content="2018-12-05T11:28:29.273Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="笔记-深入拆解Java虚拟机-32JNI的运行机制">
-<meta name="twitter:description" content="Java 无法表达的场景 使用汇编语言提升关键代码的性能。 调用 Java 核心类库无法提供的，某个体系架构或者操作系统特有的功能。 牺牲可移植性，在 Java 代码中调用 C/C++ 代码实现。  这种跨语言调用，需要借助 Java Native Interface 机制。 native 方法的链接 动态链接库的名字以 lib 为前缀，以 .dylib 或 .so 为扩展名。 通过 方法加载 l">
+<meta name="twitter:description" content="Java 无法表达的场景 使用汇编语言提升关键代码的性能。 调用 Java 核心类库无法提供的，某个体系架构或者操作系统特有的功能。 牺牲可移植性，在 Java 代码中调用 C/C++ 代码实现。  这种跨语言调用，需要借助 Java Native Interface 机制。 native 方法的链接 动态链接库的名字以 lib 为前缀，以 .dylib 或 .so 为扩展名。 通过 System">
 
 
 
@@ -396,9 +396,106 @@
 <p>这种跨语言调用，需要借助 Java Native Interface 机制。</p>
 <h1 id="native-方法的链接"><a href="#native-方法的链接" class="headerlink" title="native 方法的链接"></a>native 方法的链接</h1><ul>
 <li>动态链接库的名字以 lib 为前缀，以 .dylib 或 .so 为扩展名。</li>
-<li>通过 <figure class="highlight plain"><figcaption><span>方法加载 lib---.dylib。</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br></pre></td><td class="code"><pre><span class="line">- 如果库不在当前路径下，可以配置 java.library.path 参数指向路径（JVM 启动时）。</span><br><span class="line"></span><br><span class="line">## JVM 自动查找符合默认命名规范的 C 函数并链接</span><br><span class="line"></span><br><span class="line">- ```javac -h``` 命令可以根据 native 方法声明，自动生成包含符合命名规范的 C 函数的头文件。</span><br><span class="line"></span><br><span class="line">### 命名规范</span><br><span class="line"></span><br><span class="line">-  函数都要以Java_为前缀，后跟完整的包名和方法名。</span><br><span class="line">	- 路径中 / 转换为 \_</span><br><span class="line">	- 原方法名中 \_ 转换为 \_1</span><br><span class="line">- 有重载 native 方法时，自动链接对象时的考虑参数类型。</span><br><span class="line">- 重载方法函数名在原本基础上追加 __ 以及方法描述符作为后缀。</span><br><span class="line">- 方法描述符的特殊符号会被替换。</span><br><span class="line">	- 引用类型中 ; 替换为 \_2</span><br><span class="line">	- 数组类型中 [ 替换为 \_3</span><br><span class="line"></span><br><span class="line">## 在 C 代码中主动链接</span><br><span class="line"></span><br><span class="line">- 对 C 函数名没有要求。</span><br><span class="line">- 通常使用一个名为 registerNatives 的 native 方法，按照第一种链接方式定义所能自动链接的 C 函数。在该函数中，手动链接该类的其他 native 方法。</span><br><span class="line">- 需要在其他 native 方法被调用之前完成链接。</span><br><span class="line">- 通常在类的初始化方法里调用该 registerNatives 方法。</span><br><span class="line"></span><br><span class="line"># JNI 的 API</span><br><span class="line"></span><br><span class="line">- **C 代码中可以使用 Java 的语言特性**（如 instanceof，通过特殊的 JNI 函数实现）。</span><br><span class="line"></span><br><span class="line">## JNIEnv</span><br><span class="line"></span><br><span class="line">- JVM 会将所有 JNI 函数的函数指针聚合到一个名为 JNIEnv 的数据结构中。</span><br><span class="line">- **JNIEnv 线程私有**，每个线程都拥有一个 JNIEnv。</span><br><span class="line">- 规定 C 代码**不能共享 JNIEnv 给其他线程**，否则 JNI 函数无法保证正确性。</span><br><span class="line"></span><br><span class="line">### 原因：</span><br><span class="line"></span><br><span class="line">1. 给 JNI 函数提供一个单独命名空间。</span><br><span class="line">2. 允许 JVM 通过更改函数指针替换 JNI 函数的具体实现。</span><br><span class="line"></span><br><span class="line">## Java 类型与本地类型</span><br><span class="line"></span><br><span class="line">- JNI 会**将 Java 层面的基本类型以及引用类型映射为另一套可供 C 代码使用的数据结构**。</span><br><span class="line"></span><br><span class="line">基本类型对应关系：</span><br><span class="line"></span><br><span class="line">| Java类型 | 本地类型 | 位（bit） |</span><br><span class="line">| --------- | --------- | ---------- |</span><br><span class="line">| boolean | jboolean | 8, unsigned |</span><br><span class="line">| byte | jbyte | 8 |</span><br><span class="line">| char | jchar | 16, unsigned |</span><br><span class="line">| short | jshort | 16 |</span><br><span class="line">| int | jint | 32 |</span><br><span class="line">| long | jlong | 64 |</span><br><span class="line">| float | jfloat | 32 |</span><br><span class="line">| double | jdouble | 64 |</span><br><span class="line">| void | void | n/a |</span><br><span class="line"></span><br><span class="line">引用类型对应数据结构的继承关系：</span><br></pre></td></tr></table></figure></li>
+<li>通过 <code>System.loadLibrary(&quot;---&quot;)</code> 方法加载 lib—.dylib。</li>
+<li>如果库不在当前路径下，可以配置 java.library.path 参数指向路径（JVM 启动时）。</li>
 </ul>
-<p>jobject<br>|- jclass (java.lang.Class objects)<br>|- jstring (java.lang.String objects)<br>|- jthrowable (java.lang.Throwable objects)<br>|- jarray (arrays)<br>   |- jobjectArray (object arrays)<br>   |- jbooleanArray (boolean arrays)<br>   |- jbyteArray (byte arrays)<br>   |- jcharArray (char arrays)<br>   |- jshortArray (short arrays)<br>   |- jintArray (int arrays)<br>   |- jlongArray (long arrays)<br>   |- jfloatArray (float arrays)<br>   |- jdoubleArray (double arrays)<br><code>`</code></p>
+<h2 id="JVM-自动查找符合默认命名规范的-C-函数并链接"><a href="#JVM-自动查找符合默认命名规范的-C-函数并链接" class="headerlink" title="JVM 自动查找符合默认命名规范的 C 函数并链接"></a>JVM 自动查找符合默认命名规范的 C 函数并链接</h2><ul>
+<li><code>javac -h</code> 命令可以根据 native 方法声明，自动生成包含符合命名规范的 C 函数的头文件。</li>
+</ul>
+<h3 id="命名规范"><a href="#命名规范" class="headerlink" title="命名规范"></a>命名规范</h3><ul>
+<li>函数都要以Java_为前缀，后跟完整的包名和方法名。<ul>
+<li>路径中 / 转换为 _</li>
+<li>原方法名中 _ 转换为 _1</li>
+</ul>
+</li>
+<li>有重载 native 方法时，自动链接对象时的考虑参数类型。</li>
+<li>重载方法函数名在原本基础上追加 __ 以及方法描述符作为后缀。</li>
+<li>方法描述符的特殊符号会被替换。<ul>
+<li>引用类型中 ; 替换为 _2</li>
+<li>数组类型中 [ 替换为 _3</li>
+</ul>
+</li>
+</ul>
+<h2 id="在-C-代码中主动链接"><a href="#在-C-代码中主动链接" class="headerlink" title="在 C 代码中主动链接"></a>在 C 代码中主动链接</h2><ul>
+<li>对 C 函数名没有要求。</li>
+<li>通常使用一个名为 registerNatives 的 native 方法，按照第一种链接方式定义所能自动链接的 C 函数。在该函数中，手动链接该类的其他 native 方法。</li>
+<li>需要在其他 native 方法被调用之前完成链接。</li>
+<li>通常在类的初始化方法里调用该 registerNatives 方法。</li>
+</ul>
+<h1 id="JNI-的-API"><a href="#JNI-的-API" class="headerlink" title="JNI 的 API"></a>JNI 的 API</h1><ul>
+<li><strong>C 代码中可以使用 Java 的语言特性</strong>（如 instanceof，通过特殊的 JNI 函数实现）。</li>
+</ul>
+<h2 id="JNIEnv"><a href="#JNIEnv" class="headerlink" title="JNIEnv"></a>JNIEnv</h2><ul>
+<li>JVM 会将所有 JNI 函数的函数指针聚合到一个名为 JNIEnv 的数据结构中。</li>
+<li><strong>JNIEnv 线程私有</strong>，每个线程都拥有一个 JNIEnv。</li>
+<li>规定 C 代码<strong>不能共享 JNIEnv 给其他线程</strong>，否则 JNI 函数无法保证正确性。</li>
+</ul>
+<h3 id="原因："><a href="#原因：" class="headerlink" title="原因："></a>原因：</h3><ol>
+<li>给 JNI 函数提供一个单独命名空间。</li>
+<li>允许 JVM 通过更改函数指针替换 JNI 函数的具体实现。</li>
+</ol>
+<h2 id="Java-类型与本地类型"><a href="#Java-类型与本地类型" class="headerlink" title="Java 类型与本地类型"></a>Java 类型与本地类型</h2><ul>
+<li>JNI 会<strong>将 Java 层面的基本类型以及引用类型映射为另一套可供 C 代码使用的数据结构</strong>。</li>
+</ul>
+<p>基本类型对应关系：</p>
+<table>
+<thead>
+<tr>
+<th>Java类型</th>
+<th>本地类型</th>
+<th>位（bit）</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>boolean</td>
+<td>jboolean</td>
+<td>8, unsigned</td>
+</tr>
+<tr>
+<td>byte</td>
+<td>jbyte</td>
+<td>8</td>
+</tr>
+<tr>
+<td>char</td>
+<td>jchar</td>
+<td>16, unsigned</td>
+</tr>
+<tr>
+<td>short</td>
+<td>jshort</td>
+<td>16</td>
+</tr>
+<tr>
+<td>int</td>
+<td>jint</td>
+<td>32</td>
+</tr>
+<tr>
+<td>long</td>
+<td>jlong</td>
+<td>64</td>
+</tr>
+<tr>
+<td>float</td>
+<td>jfloat</td>
+<td>32</td>
+</tr>
+<tr>
+<td>double</td>
+<td>jdouble</td>
+<td>64</td>
+</tr>
+<tr>
+<td>void</td>
+<td>void</td>
+<td>n/a</td>
+</tr>
+</tbody>
+</table>
+<p>引用类型对应数据结构的继承关系：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">jobject</span><br><span class="line">|- jclass (java.lang.Class objects)</span><br><span class="line">|- jstring (java.lang.String objects)</span><br><span class="line">|- jthrowable (java.lang.Throwable objects)</span><br><span class="line">|- jarray (arrays)</span><br><span class="line">   |- jobjectArray (object arrays)</span><br><span class="line">   |- jbooleanArray (boolean arrays)</span><br><span class="line">   |- jbyteArray (byte arrays)</span><br><span class="line">   |- jcharArray (char arrays)</span><br><span class="line">   |- jshortArray (short arrays)</span><br><span class="line">   |- jintArray (int arrays)</span><br><span class="line">   |- jlongArray (long arrays)</span><br><span class="line">   |- jfloatArray (float arrays)</span><br><span class="line">   |- jdoubleArray (double arrays)</span><br></pre></td></tr></table></figure>
 <ul>
 <li>JNI 访问字段类似反射 API。</li>
 </ul>
@@ -688,7 +785,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Java-无法表达的场景"><span class="nav-number">1.</span> <span class="nav-text">Java 无法表达的场景</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#native-方法的链接"><span class="nav-number">2.</span> <span class="nav-text">native 方法的链接</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#异常"><span class="nav-number">3.</span> <span class="nav-text">异常</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#局部引用（Local-Reference）与全局引用（Global-Reference）"><span class="nav-number">4.</span> <span class="nav-text">局部引用（Local Reference）与全局引用（Global Reference）</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#句柄（handle）"><span class="nav-number">5.</span> <span class="nav-text">句柄（handle）</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#JNI-调用的额外性能开销"><span class="nav-number">6.</span> <span class="nav-text">JNI 调用的额外性能开销</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#引用"><span class="nav-number">7.</span> <span class="nav-text">引用</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Java-无法表达的场景"><span class="nav-number">1.</span> <span class="nav-text">Java 无法表达的场景</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#native-方法的链接"><span class="nav-number">2.</span> <span class="nav-text">native 方法的链接</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#JVM-自动查找符合默认命名规范的-C-函数并链接"><span class="nav-number">2.1.</span> <span class="nav-text">JVM 自动查找符合默认命名规范的 C 函数并链接</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#命名规范"><span class="nav-number">2.1.1.</span> <span class="nav-text">命名规范</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#在-C-代码中主动链接"><span class="nav-number">2.2.</span> <span class="nav-text">在 C 代码中主动链接</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#JNI-的-API"><span class="nav-number">3.</span> <span class="nav-text">JNI 的 API</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#JNIEnv"><span class="nav-number">3.1.</span> <span class="nav-text">JNIEnv</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#原因："><span class="nav-number">3.1.1.</span> <span class="nav-text">原因：</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Java-类型与本地类型"><span class="nav-number">3.2.</span> <span class="nav-text">Java 类型与本地类型</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#异常"><span class="nav-number">4.</span> <span class="nav-text">异常</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#局部引用（Local-Reference）与全局引用（Global-Reference）"><span class="nav-number">5.</span> <span class="nav-text">局部引用（Local Reference）与全局引用（Global Reference）</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#句柄（handle）"><span class="nav-number">6.</span> <span class="nav-text">句柄（handle）</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#JNI-调用的额外性能开销"><span class="nav-number">7.</span> <span class="nav-text">JNI 调用的额外性能开销</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#引用"><span class="nav-number">8.</span> <span class="nav-text">引用</span></a></li></ol></div>
             
 
           </div>
