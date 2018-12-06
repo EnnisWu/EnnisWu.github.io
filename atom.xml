@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://ennis.info/"/>
-  <updated>2018-12-05T11:28:29.273Z</updated>
+  <updated>2018-12-06T11:21:51.772Z</updated>
   <id>http://ennis.info/</id>
   
   <author>
@@ -15,6 +15,31 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>笔记-深入拆解Java虚拟机-27注解处理器</title>
+    <link href="http://ennis.info/2018/12/06/%E7%AC%94%E8%AE%B0-%E6%B7%B1%E5%85%A5%E6%8B%86%E8%A7%A3Java%E8%99%9A%E6%8B%9F%E6%9C%BA-27%E6%B3%A8%E8%A7%A3%E5%A4%84%E7%90%86%E5%99%A8/"/>
+    <id>http://ennis.info/2018/12/06/笔记-深入拆解Java虚拟机-27注解处理器/</id>
+    <published>2018-12-06T10:17:16.000Z</published>
+    <updated>2018-12-06T11:21:51.772Z</updated>
+    
+    <content type="html"><![CDATA[<h1 id="注解处理器（annotation-processor）"><a href="#注解处理器（annotation-processor）" class="headerlink" title="注解处理器（annotation processor）"></a>注解处理器（annotation processor）</h1><ul><li>可以为 Java 编译器<strong>添加编译规则</strong>。</li><li>可以<strong>修改</strong>已有的 Java <strong>源文件</strong>。</li><li>可以<strong>生成</strong>新的 Java <strong>源文件</strong>。</li></ul><h1 id="注解处理器的原理"><a href="#注解处理器的原理" class="headerlink" title="注解处理器的原理"></a>注解处理器的原理</h1><h2 id="Java-编译器的工作流程"><a href="#Java-编译器的工作流程" class="headerlink" title="Java 编译器的工作流程"></a>Java 编译器的工作流程</h2><p><img src="" alt="image"></p><ol><li><strong>将源文件解析为抽象语法树。</strong></li><li><strong>调用已注册的注解处理器。</strong></li><li><strong>生成字节码。</strong></li></ol><ul><li>2 调用注解处理器生成了新的源文件将重复 1、2。</li></ul><h2 id="实现注解处理器"><a href="#实现注解处理器" class="headerlink" title="实现注解处理器"></a>实现注解处理器</h2><h3 id="Processor-接口"><a href="#Processor-接口" class="headerlink" title="Processor 接口"></a>Processor 接口</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">Processor</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//不用构造器</span></span><br><span class="line">    <span class="comment">//注解处理器的实例通过反射生成</span></span><br><span class="line">    <span class="comment">//注解处理器类需要定义一个无参数构造器</span></span><br><span class="line">    <span class="comment">//注解处理器通常不声明任何构造器</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">//存放注解处理器的初始化代码</span></span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">init</span><span class="params">(ProcessingEnvironment processingEnv)</span></span>;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">//返回注解处理器所支持的注解类型</span></span><br><span class="line">    <span class="comment">//注解类型用字符串形式表示</span></span><br><span class="line">    <span class="function">Set&lt;String&gt; <span class="title">getSupportedAnnotationTypes</span><span class="params">()</span></span>;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">//返回该处理器支持的 Java 版本</span></span><br><span class="line">    <span class="comment">//通常版本与 Java 编译器版本一致</span></span><br><span class="line">    <span class="function">SourceVersion <span class="title">getSupportedSourceVersion</span><span class="params">()</span></span>;</span><br><span class="line">  </span><br><span class="line">    <span class="comment">//注解处理方法</span></span><br><span class="line">    <span class="function"><span class="keyword">boolean</span> <span class="title">process</span><span class="params">(Set&lt;? extends TypeElement&gt; annotations, RoundEnvironment roundEnv)</span></span>;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//剩余方法略...</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><blockquote><p>JDK 提供了一个实现 Processor 接口的抽象类 AbstractProcessor。</p><blockquote><p>该抽象类实现了 init、getSupportedAnnotationTypes 和 getSupportedSourceVersion方法。<br>它的子类可以通过 @SupportedAnnotationTypes 和 @SupportedSourceVersion 注解来声明所支持的注解类型以及 Java 版本。</p></blockquote></blockquote><ul><li>所有的<strong>注解处理器类需要实现 Processor 接口</strong>。</li></ul><h3 id="注册-Java-编译器的插件"><a href="#注册-Java-编译器的插件" class="headerlink" title="注册 Java 编译器的插件"></a>注册 Java 编译器的插件</h3><ul><li>方法一：直接使用 javac 命令的 -processor 参数。</li><li>方法二：将注解处理器编译生成的 class 文件压缩入 jar 包中，在 jar 包配置文件中记录该注解处理器的包名及类名。</li></ul><p>启动 Java 编译器时，会寻找 classpath 路径上的 jar 包是否包含上述配置文件，并自动注册其中记录的注解处理器。</p><ul><li>方法三：在 IDE 中配置注解处理器。</li></ul><h1 id="利用注解处理器修改已有的源码"><a href="#利用注解处理器修改已有的源码" class="headerlink" title="利用注解处理器修改已有的源码"></a>利用注解处理器修改已有的源码</h1><blockquote><p>注解处理器并不能真正地修改已有源代码。这里指的是修改由 Java 源代码生成的抽象语法树，在其中修改已有树节点或者插入新的树节点，从而使生成的字节码发生变化。</p></blockquote><ul><li><strong>修改抽象语法树</strong>涉及 Java 编译器的内部 API，<strong>可能随着版本变更失效</strong>。</li></ul><h1 id="利用注解处理器生成新的源码"><a href="#利用注解处理器生成新的源码" class="headerlink" title="利用注解处理器生成新的源码"></a>利用注解处理器生成新的源码</h1><ul><li>通过 Filer.createSourceFile 方法获得一个文件的概念。</li><li>并通过 PrintWriter 将具体的内容写入。</li></ul><h1 id="附件"><a href="#附件" class="headerlink" title="附件"></a>附件</h1><ul><li><a href="https://docs.oracle.com/javase/10/docs/api/javax/lang/model/element/package-summary.html" target="_blank" rel="noopener">Element 类 API 3</a></li><li><a href="http://notatube.blogspot.com/2010/11/project-lombok-trick-explained.html" target="_blank" rel="noopener">修改抽象语法树 API</a><ul><li><a href="http://jnb.ociweb.com/jnb/jnbJan2010.html#controversy" target="_blank" rel="noopener">Lombok 的回应</a></li></ul></li></ul><h1 id="引用"><a href="#引用" class="headerlink" title="引用"></a>引用</h1><blockquote><p><a href="https://time.geekbang.org/column/article/40189" target="_blank" rel="noopener">https://time.geekbang.org/column/article/40189</a></p></blockquote>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;h1 id=&quot;注解处理器（annotation-processor）&quot;&gt;&lt;a href=&quot;#注解处理器（annotation-processor）&quot; class=&quot;headerlink&quot; title=&quot;注解处理器（annotation processor）&quot;&gt;&lt;/a&gt;注解处理器
+      
+    
+    </summary>
+    
+      <category term="Java虚拟机" scheme="http://ennis.info/categories/Java%E8%99%9A%E6%8B%9F%E6%9C%BA/"/>
+    
+    
+      <category term="JVM" scheme="http://ennis.info/tags/JVM/"/>
+    
+  </entry>
   
   <entry>
     <title>笔记-深入拆解Java虚拟机-32JNI的运行机制</title>
@@ -521,33 +546,6 @@
 &lt;li&gt;new 语句&lt;/li&gt;
 &lt;li&gt;反射&lt;/li&gt;
 
-      
-    
-    </summary>
-    
-      <category term="Java虚拟机" scheme="http://ennis.info/categories/Java%E8%99%9A%E6%8B%9F%E6%9C%BA/"/>
-    
-    
-      <category term="JVM" scheme="http://ennis.info/tags/JVM/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>笔记-深入拆解Java虚拟机-0809JVM是怎么实现invokedynamic的？</title>
-    <link href="http://ennis.info/2018/08/10/%E7%AC%94%E8%AE%B0-%E6%B7%B1%E5%85%A5%E6%8B%86%E8%A7%A3Java%E8%99%9A%E6%8B%9F%E6%9C%BA-0809JVM%E6%98%AF%E6%80%8E%E4%B9%88%E5%AE%9E%E7%8E%B0invokedynamic%E7%9A%84%EF%BC%9F/"/>
-    <id>http://ennis.info/2018/08/10/笔记-深入拆解Java虚拟机-0809JVM是怎么实现invokedynamic的？/</id>
-    <published>2018-08-10T07:07:18.000Z</published>
-    <updated>2018-08-29T01:14:06.000Z</updated>
-    
-    <content type="html"><![CDATA[<h1 id="invokedynamic"><a href="#invokedynamic" class="headerlink" title="invokedynamic"></a>invokedynamic</h1><ul><li>Java 7 引入的新指令</li><li>调用机制抽象出调用点的概念</li><li>允许将调用点链接至任意符合条件的方法上</li></ul><h1 id="MethodHandle（方法句柄）"><a href="#MethodHandle（方法句柄）" class="headerlink" title="MethodHandle（方法句柄）"></a>MethodHandle（方法句柄）</h1><ul><li>Java 7 引入</li><li>是一个强类型的，能被直接执行的引用</li><li>可以指向静态方法、实例方法、构造器、字段</li></ul><h2 id="方法句柄的类型（MethodType）"><a href="#方法句柄的类型（MethodType）" class="headerlink" title="方法句柄的类型（MethodType）"></a>方法句柄的类型（MethodType）</h2><ul><li>由参数类型、返回类型组成</li><li>确认方法句柄是否适配的唯一关键</li><li>不关心方法的类名或方法名</li></ul><h2 id="方法句柄的创建"><a href="#方法句柄的创建" class="headerlink" title="方法句柄的创建"></a>方法句柄的创建</h2><p>通过 MethodHandles.Lookup 类</p><ul><li>使用反射的 Method 类查找</li><li>Lookup.findStatic 查找调用 invokestatic 的方法</li><li>Lookup.findVirtual 查找调用 invokevirtual 和 invokeinterface 的方法</li><li>Lookup.findSpecial 查找调用 invokespecial 的方法</li></ul><h2 id="方法句柄的权限"><a href="#方法句柄的权限" class="headerlink" title="方法句柄的权限"></a>方法句柄的权限</h2><ul><li>权限检查在创建阶段完成</li><li>实际调用过程中不检查</li><li>取决于 Lookup 对象创建位置（不是方法句柄创建位置）</li></ul><h2 id="方法句柄的操作"><a href="#方法句柄的操作" class="headerlink" title="方法句柄的操作"></a>方法句柄的操作</h2><h3 id="invokeExact"><a href="#invokeExact" class="headerlink" title="invokeExact"></a>invokeExact</h3><ul><li>严格匹配参数类型（需要显示向上转型）</li><li>@PolymorphicSignature 根据传入参数的声明类型来生成方法描述符（而不是目标方法）</li></ul><h3 id="invoke"><a href="#invoke" class="headerlink" title="invoke"></a>invoke</h3><ul><li>自动适配参数类型</li><li>会调用 MethodHandle.asType 方法生成一个适配器方法句柄</li></ul><h3 id="增删改"><a href="#增删改" class="headerlink" title="增删改"></a>增删改</h3><p>通过生成另一个充当适配器的方法句柄来实现</p><p>捕获类型的 Lambda 表达式用增操作实现</p><p>增操作可以实现方法的柯里化</p><h2 id="方法句柄的实现"><a href="#方法句柄的实现" class="headerlink" title="方法句柄的实现"></a>方法句柄的实现</h2><p>HotSpot 虚拟机中方法句柄调用的具体实现，只讨论DirectMethodHandle</p><h3 id="invokeExact-1"><a href="#invokeExact-1" class="headerlink" title="invokeExact"></a>invokeExact</h3><ul><li>调用至一个共享的、与方法句柄类型相关的特殊适配器中</li><li>适配器是一个 LambdaForm</li></ul><h2 id="方法句柄的缺点"><a href="#方法句柄的缺点" class="headerlink" title="方法句柄的缺点"></a>方法句柄的缺点</h2><ul><li>与反射一样是简介调用</li><li>无法内联</li></ul><p><strong>未更新09</strong></p>]]></content>
-    
-    <summary type="html">
-    
-      
-      
-        &lt;h1 id=&quot;invokedynamic&quot;&gt;&lt;a href=&quot;#invokedynamic&quot; class=&quot;headerlink&quot; title=&quot;invokedynamic&quot;&gt;&lt;/a&gt;invokedynamic&lt;/h1&gt;&lt;ul&gt;
-&lt;li&gt;Java 7 引入的新指令&lt;/li&gt;
-&lt;
       
     
     </summary>

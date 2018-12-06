@@ -298,6 +298,199 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://ennis.info/2018/12/06/笔记-深入拆解Java虚拟机-27注解处理器/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Ennis L.M. Wu">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="http://pcrioz2ch.bkt.clouddn.com/portrait.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Ennis -Little Monster">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/12/06/笔记-深入拆解Java虚拟机-27注解处理器/" itemprop="url">笔记-深入拆解Java虚拟机-27注解处理器</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-12-06T18:17:16+08:00">
+                2018-12-06
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Java虚拟机/" itemprop="url" rel="index">
+                    <span itemprop="name">Java虚拟机</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h1 id="注解处理器（annotation-processor）"><a href="#注解处理器（annotation-processor）" class="headerlink" title="注解处理器（annotation processor）"></a>注解处理器（annotation processor）</h1><ul>
+<li>可以为 Java 编译器<strong>添加编译规则</strong>。</li>
+<li>可以<strong>修改</strong>已有的 Java <strong>源文件</strong>。</li>
+<li>可以<strong>生成</strong>新的 Java <strong>源文件</strong>。</li>
+</ul>
+<h1 id="注解处理器的原理"><a href="#注解处理器的原理" class="headerlink" title="注解处理器的原理"></a>注解处理器的原理</h1><h2 id="Java-编译器的工作流程"><a href="#Java-编译器的工作流程" class="headerlink" title="Java 编译器的工作流程"></a>Java 编译器的工作流程</h2><p><img src="" alt="image"></p>
+<ol>
+<li><strong>将源文件解析为抽象语法树。</strong></li>
+<li><strong>调用已注册的注解处理器。</strong></li>
+<li><strong>生成字节码。</strong></li>
+</ol>
+<ul>
+<li>2 调用注解处理器生成了新的源文件将重复 1、2。</li>
+</ul>
+<h2 id="实现注解处理器"><a href="#实现注解处理器" class="headerlink" title="实现注解处理器"></a>实现注解处理器</h2><h3 id="Processor-接口"><a href="#Processor-接口" class="headerlink" title="Processor 接口"></a>Processor 接口</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">Processor</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//不用构造器</span></span><br><span class="line">    <span class="comment">//注解处理器的实例通过反射生成</span></span><br><span class="line">    <span class="comment">//注解处理器类需要定义一个无参数构造器</span></span><br><span class="line">    <span class="comment">//注解处理器通常不声明任何构造器</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">//存放注解处理器的初始化代码</span></span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">init</span><span class="params">(ProcessingEnvironment processingEnv)</span></span>;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">//返回注解处理器所支持的注解类型</span></span><br><span class="line">    <span class="comment">//注解类型用字符串形式表示</span></span><br><span class="line">    <span class="function">Set&lt;String&gt; <span class="title">getSupportedAnnotationTypes</span><span class="params">()</span></span>;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">//返回该处理器支持的 Java 版本</span></span><br><span class="line">    <span class="comment">//通常版本与 Java 编译器版本一致</span></span><br><span class="line">    <span class="function">SourceVersion <span class="title">getSupportedSourceVersion</span><span class="params">()</span></span>;</span><br><span class="line">  </span><br><span class="line">    <span class="comment">//注解处理方法</span></span><br><span class="line">    <span class="function"><span class="keyword">boolean</span> <span class="title">process</span><span class="params">(Set&lt;? extends TypeElement&gt; annotations, RoundEnvironment roundEnv)</span></span>;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//剩余方法略...</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>JDK 提供了一个实现 Processor 接口的抽象类 AbstractProcessor。</p>
+<blockquote>
+<p>该抽象类实现了 init、getSupportedAnnotationTypes 和 getSupportedSourceVersion方法。<br>它的子类可以通过 @SupportedAnnotationTypes 和 @SupportedSourceVersion 注解来声明所支持的注解类型以及 Java 版本。</p>
+</blockquote>
+</blockquote>
+<ul>
+<li>所有的<strong>注解处理器类需要实现 Processor 接口</strong>。</li>
+</ul>
+<h3 id="注册-Java-编译器的插件"><a href="#注册-Java-编译器的插件" class="headerlink" title="注册 Java 编译器的插件"></a>注册 Java 编译器的插件</h3><ul>
+<li>方法一：直接使用 javac 命令的 -processor 参数。</li>
+<li>方法二：将注解处理器编译生成的 class 文件压缩入 jar 包中，在 jar 包配置文件中记录该注解处理器的包名及类名。</li>
+</ul>
+<p>启动 Java 编译器时，会寻找 classpath 路径上的 jar 包是否包含上述配置文件，并自动注册其中记录的注解处理器。</p>
+<ul>
+<li>方法三：在 IDE 中配置注解处理器。</li>
+</ul>
+<h1 id="利用注解处理器修改已有的源码"><a href="#利用注解处理器修改已有的源码" class="headerlink" title="利用注解处理器修改已有的源码"></a>利用注解处理器修改已有的源码</h1><blockquote>
+<p>注解处理器并不能真正地修改已有源代码。这里指的是修改由 Java 源代码生成的抽象语法树，在其中修改已有树节点或者插入新的树节点，从而使生成的字节码发生变化。</p>
+</blockquote>
+<ul>
+<li><strong>修改抽象语法树</strong>涉及 Java 编译器的内部 API，<strong>可能随着版本变更失效</strong>。</li>
+</ul>
+<h1 id="利用注解处理器生成新的源码"><a href="#利用注解处理器生成新的源码" class="headerlink" title="利用注解处理器生成新的源码"></a>利用注解处理器生成新的源码</h1><ul>
+<li>通过 Filer.createSourceFile 方法获得一个文件的概念。</li>
+<li>并通过 PrintWriter 将具体的内容写入。</li>
+</ul>
+<h1 id="附件"><a href="#附件" class="headerlink" title="附件"></a>附件</h1><ul>
+<li><a href="https://docs.oracle.com/javase/10/docs/api/javax/lang/model/element/package-summary.html" target="_blank" rel="noopener">Element 类 API 3</a></li>
+<li><a href="http://notatube.blogspot.com/2010/11/project-lombok-trick-explained.html" target="_blank" rel="noopener">修改抽象语法树 API</a><ul>
+<li><a href="http://jnb.ociweb.com/jnb/jnbJan2010.html#controversy" target="_blank" rel="noopener">Lombok 的回应</a></li>
+</ul>
+</li>
+</ul>
+<h1 id="引用"><a href="#引用" class="headerlink" title="引用"></a>引用</h1><blockquote>
+<p><a href="https://time.geekbang.org/column/article/40189" target="_blank" rel="noopener">https://time.geekbang.org/column/article/40189</a></p>
+</blockquote>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://ennis.info/2018/12/05/笔记-深入拆解Java虚拟机-32JNI的运行机制/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -2209,258 +2402,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://ennis.info/2018/11/08/笔记-深入拆解Java虚拟机-19Java字节码（基础篇）/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Ennis L.M. Wu">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="http://pcrioz2ch.bkt.clouddn.com/portrait.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Ennis -Little Monster">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/11/08/笔记-深入拆解Java虚拟机-19Java字节码（基础篇）/" itemprop="url">笔记-深入拆解Java虚拟机-19Java字节码（基础篇）</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-11-08T14:42:50+08:00">
-                2018-11-08
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Java虚拟机/" itemprop="url" rel="index">
-                    <span itemprop="name">Java虚拟机</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h1 id="操作数栈"><a href="#操作数栈" class="headerlink" title="操作数栈"></a>操作数栈</h1><ul>
-<li><strong>解释执行</strong>过程中，为 Java 方法分配栈桢时，JVM <strong>需要开辟一块额外的空间作为操作数栈</strong>，存放计算的操作数和返回结果。</li>
-<li>执行每一条指令之前，JVM <strong>要求该指令的操作数已被压入操作数栈中</strong>。</li>
-<li>在执行指令时，JVM 会将该指令<strong>所需的操作数弹出</strong>，并且将指令的<strong>结果重新压入栈</strong>中。</li>
-</ul>
-<h2 id="直接作用在操作数栈上的指令"><a href="#直接作用在操作数栈上的指令" class="headerlink" title="直接作用在操作数栈上的指令"></a>直接作用在操作数栈上的指令</h2><h3 id="dup-指令"><a href="#dup-指令" class="headerlink" title="dup 指令"></a>dup 指令</h3><ul>
-<li>复制栈顶元素。</li>
-<li>常用于复制 new 指令所生成的未经初始化的引用。</li>
-</ul>
-<h3 id="pop-指令"><a href="#pop-指令" class="headerlink" title="pop 指令"></a>pop 指令</h3><ul>
-<li>舍弃栈顶元素。</li>
-<li>常用于舍弃调用指令的返回结果。</li>
-</ul>
-<h3 id="dup2-指令和-pop2-指令"><a href="#dup2-指令和-pop2-指令" class="headerlink" title="dup2 指令和 pop2 指令"></a>dup2 指令和 pop2 指令</h3><ul>
-<li>long 类型或 double 类型的值占据两个栈单元。</li>
-<li>dup 指令和 pop 指令只能处理非 long 或非 double 类型的值。</li>
-<li>dup2 指令复制栈顶两个单元。</li>
-<li>pop2 指令弹出栈顶两个单元。</li>
-</ul>
-<h3 id="swap-指令"><a href="#swap-指令" class="headerlink" title="swap 指令"></a>swap 指令</h3><ul>
-<li>交换栈顶两个元素的值。</li>
-</ul>
-<h2 id="直接将常量加载在操作数栈上的指令"><a href="#直接将常量加载在操作数栈上的指令" class="headerlink" title="直接将常量加载在操作数栈上的指令"></a>直接将常量加载在操作数栈上的指令</h2><ul>
-<li><p>常量类型包括</p>
-<ul>
-<li>int 类型</li>
-<li>long 类型</li>
-<li>float 类型</li>
-<li>double 类型</li>
-<li>String 类型</li>
-<li>Class 类型</li>
-</ul>
-</li>
-<li><p>正常情况下，<strong>操作数栈的压入弹出是一条条指令完成</strong>。</p>
-</li>
-<li><strong>例外：抛异常</strong>时会清除操作数栈上的所有内容，然后将异常实例压入操作数栈。</li>
-</ul>
-<p><img src="http://pcrioz2ch.bkt.clouddn.com/JVM/19/instructions_const.jpg" alt="image" title="常数加载指令表"></p>
-<h3 id="int-类型为例"><a href="#int-类型为例" class="headerlink" title="int 类型为例"></a>int 类型为例</h3><ul>
-<li>可以通过 iconst 指令加载 -1 至 5 之间的 int 值。</li>
-<li>可以通过 bipush、sipush 加载一个字节、两个字节所能代表的 int 值。</li>
-<li>可以通过 ldc 加载常量池中的常量值（如 ldc #18 将加载常量池中的第 18 项）。</li>
-</ul>
-<h1 id="局部变量区"><a href="#局部变量区" class="headerlink" title="局部变量区"></a>局部变量区</h1><ul>
-<li>方法栈帧的重要组成部分。</li>
-<li>可以<strong>缓存计算的结果</strong>。</li>
-<li>JVM 将其<strong>当成一个数组</strong>，依次存放 this 指针（仅非静态方法），所传入的参数，字节码中的局部变量。</li>
-<li>long 类型和 double 类型的值占据两个单元，其余类型占据一个单元。</li>
-<li><strong>生命周期没有重合的局部变量可以编排至同一单元。</strong></li>
-<li>存储在局部变量区的值，<strong>需要加载至操作数栈中，才能进行计算</strong>。</li>
-<li>计算得到的<strong>结果再存储至局部变量区</strong>中。</li>
-</ul>
-<p><img src="http://pcrioz2ch.bkt.clouddn.com/JVM/19/instructons_local_variable.jpg" alt="image" title="局部变量区访问指令表"></p>
-<ul>
-<li>局部变量数组的<strong>加载、存储指令</strong>需要<strong>指明</strong>所加载单元的<strong>下标</strong>。</li>
-</ul>
-<h2 id="iinc-M-N-指令"><a href="#iinc-M-N-指令" class="headerlink" title="iinc M N 指令"></a>iinc M N 指令</h2><ul>
-<li>Java 字节码<strong>唯一能够作用于局部变量的指令</strong>。</li>
-<li>M 为非负整数，N 为整数。</li>
-<li>将局部变量数组的第 M 个单元中的 int 值增加 N。</li>
-<li>常用于<strong>更新 for 循环的自增量</strong>。</li>
-</ul>
-<h1 id="Java-字节码简介"><a href="#Java-字节码简介" class="headerlink" title="Java 字节码简介"></a>Java 字节码简介</h1><h2 id="Java-相关指令"><a href="#Java-相关指令" class="headerlink" title="Java 相关指令"></a>Java 相关指令</h2><ul>
-<li>new：后跟目标类，生成该类的未初始化的对象。</li>
-<li>instanceof：后跟目标类，判断栈顶元素是否为目标类 / 接口的实例（是则压入 1，否则压入 0）。</li>
-<li>checkcast：后跟目标类，判断栈顶元素是否为目标类 / 接口的实例（如果不是便抛出异常）。</li>
-<li>athrow：将栈顶异常抛出。</li>
-<li>monitorenter：为栈顶对象加锁。</li>
-<li>monitorexit：为栈顶对象解锁。</li>
-</ul>
-<h2 id="字段访问指令"><a href="#字段访问指令" class="headerlink" title="字段访问指令"></a>字段访问指令</h2><ul>
-<li>静态字段访问指令：getstatic、putstatic。</li>
-<li>实例字段访问指令：getfield、putfield。</li>
-<li>这四条指令均附带用以定位目标字段的信息。</li>
-<li>这四条指令所消耗的操作数栈元素皆不同。</li>
-</ul>
-<h2 id="方法调用指令"><a href="#方法调用指令" class="headerlink" title="方法调用指令"></a>方法调用指令</h2><ul>
-<li>包括 invokestatic，invokespecial，invokevirtual，invokeinterface 和 invokedynamic。</li>
-<li>除 invokedynamic 外，其他的方法调用指令所消耗的操作数栈元素由调用类型和目标方法描述符确定。</li>
-</ul>
-<h2 id="数组相关指令"><a href="#数组相关指令" class="headerlink" title="数组相关指令"></a>数组相关指令</h2><ul>
-<li>newarray：新建基本类型数组。</li>
-<li>anewarray：新建引用类型数组。</li>
-<li>mutianewarray：新建多维数组。</li>
-<li>arraylength：求数组长度。</li>
-<li>数组加载指令。</li>
-<li>数组存储指令。</li>
-</ul>
-<p><img src="http://pcrioz2ch.bkt.clouddn.com/JVM/19/instructions_array.jpg" alt="image" title="数组访问指令表"></p>
-<h2 id="控制流指令"><a href="#控制流指令" class="headerlink" title="控制流指令"></a>控制流指令</h2><ul>
-<li>goto：无条件跳转指令。</li>
-<li>tableswitch：条件跳转指令（针对密集的 cases）。</li>
-<li>lookupswtich：条件跳转指令（针对稀疏的 cases）。</li>
-<li>被废弃的 jsr，ret 指令。</li>
-<li>返回指令。</li>
-</ul>
-<p><img src="http://pcrioz2ch.bkt.clouddn.com/JVM/19/instructons_return.jpg" alt="image" title="返回指令表"></p>
-<ul>
-<li>除返回指令外，其他的控制流指令均附带一个或者多个字节码偏移量，代表需要跳转到的位置。</li>
-</ul>
-<h1 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h1><p>Q：JVM 为什么使用<strong>基于栈的计算模型</strong>？</p>
-<p>A：<strong>实现起来容易</strong>一些，但并<strong>不高效</strong>，因为没有使用底层体系架构的寄存器。在JVM中，只有解释器完整地模拟出该计算模型。即时编译器在解析字节码时会使用一个虚拟的栈计算模型，但是在接下来的编译优化，以及生成的机器码就不用了。</p>
-<hr>
-<p>Q：为什么局部变量要初始化？</p>
-<p>A：①如果是虚拟机初始化局部变量，那么它需要掌握每个变量的生命周期，以便初始化共享同一下标的局部变量。实现起来比较费事。②从代码规范来看，使用未经初始化的局部变量意义不明。</p>
-<hr>
-<p>Q：C/C++ 的汇编指令会有大量寄存器的操作，<strong>Java 的指令会用到寄存器吗</strong>？</p>
-<p>A：<strong>Java 字节码不会</strong>，但是<strong>底下的实现（比如解释执行器，即时编译器）是会的</strong>。</p>
-<h1 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h1><blockquote>
-<p><a href="https://time.geekbang.org/column/article/14794" target="_blank" rel="noopener">https://time.geekbang.org/column/article/14794</a></p>
-</blockquote>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -2515,7 +2456,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">45</span>
+                  <span class="site-state-item-count">46</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
