@@ -1,0 +1,90 @@
+---
+title: 笔记-深入拆解Java虚拟机-27注解处理器
+date: 2018-12-06 18:17:16
+tags: JVM
+categories: Java虚拟机
+---
+
+# 注解处理器（annotation processor）
+
+- 可以为 Java 编译器**添加编译规则**。
+- 可以**修改**已有的 Java **源文件**。
+- 可以**生成**新的 Java **源文件**。
+
+# 注解处理器的原理
+
+## Java 编译器的工作流程
+
+![image]()
+
+1. **将源文件解析为抽象语法树。**
+2. **调用已注册的注解处理器。**
+3. **生成字节码。**
+
+- 2 调用注解处理器生成了新的源文件将重复 1、2。
+
+## 实现注解处理器
+
+### Processor 接口
+
+```java
+public interface Processor {
+
+    //不用构造器
+    //注解处理器的实例通过反射生成
+    //注解处理器类需要定义一个无参数构造器
+    //注解处理器通常不声明任何构造器
+
+    //存放注解处理器的初始化代码
+    void init(ProcessingEnvironment processingEnv);
+    
+    //返回注解处理器所支持的注解类型
+    //注解类型用字符串形式表示
+    Set<String> getSupportedAnnotationTypes();
+    
+    //返回该处理器支持的 Java 版本
+    //通常版本与 Java 编译器版本一致
+    SourceVersion getSupportedSourceVersion();
+  
+    //注解处理方法
+    boolean process(Set<? extends TypeElement> annotations, RoundEnvironment roundEnv);
+
+    //剩余方法略...
+}
+```
+
+> JDK 提供了一个实现 Processor 接口的抽象类 AbstractProcessor。
+>> 该抽象类实现了 init、getSupportedAnnotationTypes 和 getSupportedSourceVersion方法。
+>> 它的子类可以通过 @SupportedAnnotationTypes 和 @SupportedSourceVersion 注解来声明所支持的注解类型以及 Java 版本。
+
+- 所有的**注解处理器类需要实现 Processor 接口**。
+
+### 注册 Java 编译器的插件
+
+- 方法一：直接使用 javac 命令的 -processor 参数。
+- 方法二：将注解处理器编译生成的 class 文件压缩入 jar 包中，在 jar 包配置文件中记录该注解处理器的包名及类名。
+
+启动 Java 编译器时，会寻找 classpath 路径上的 jar 包是否包含上述配置文件，并自动注册其中记录的注解处理器。
+
+- 方法三：在 IDE 中配置注解处理器。
+
+# 利用注解处理器修改已有的源码
+
+> 注解处理器并不能真正地修改已有源代码。这里指的是修改由 Java 源代码生成的抽象语法树，在其中修改已有树节点或者插入新的树节点，从而使生成的字节码发生变化。
+
+- **修改抽象语法树**涉及 Java 编译器的内部 API，**可能随着版本变更失效**。
+
+# 利用注解处理器生成新的源码
+
+- 通过 Filer.createSourceFile 方法获得一个文件的概念。
+- 并通过 PrintWriter 将具体的内容写入。
+
+# 附件
+
+- [Element 类 API 3](https://docs.oracle.com/javase/10/docs/api/javax/lang/model/element/package-summary.html)
+- [修改抽象语法树 API](http://notatube.blogspot.com/2010/11/project-lombok-trick-explained.html)
+	- [Lombok 的回应](http://jnb.ociweb.com/jnb/jnbJan2010.html#controversy)
+
+# 引用
+
+> https://time.geekbang.org/column/article/40189
