@@ -68,7 +68,7 @@
 
 
 
-  <meta name="keywords" content="Hexo, NexT" />
+  <meta name="keywords" content="JVM," />
 
 
 
@@ -81,16 +81,18 @@
 
 
 
-<meta name="description" content="We could, we could belong togeter, ARTPOP.">
-<meta property="og:type" content="website">
-<meta property="og:title" content="Ennis -Little Monster">
-<meta property="og:url" content="http://ennis.info/tags/优化/index.html">
+<meta name="description" content="premain 方法 在 main 方法前执行的方法。 JVM 能识别的 premain 方法参数类型是 String  以 Java agent 方式运行 premain 方法 方法一：打包成 jar 包，在的 MANIFEST.MF 配置文件中，指定的 Premain-class。 方法二：通过 Attach API 远程加载。 不会先于 main 方法执行。 取决于调用 Attach API">
+<meta name="keywords" content="JVM">
+<meta property="og:type" content="article">
+<meta property="og:title" content="笔记-深入拆解Java虚拟机-33JavaAgent与字节码注入">
+<meta property="og:url" content="http://ennis.info/2018/12/08/笔记-深入拆解Java虚拟机-33JavaAgent与字节码注入/index.html">
 <meta property="og:site_name" content="Ennis -Little Monster">
-<meta property="og:description" content="We could, we could belong togeter, ARTPOP.">
+<meta property="og:description" content="premain 方法 在 main 方法前执行的方法。 JVM 能识别的 premain 方法参数类型是 String  以 Java agent 方式运行 premain 方法 方法一：打包成 jar 包，在的 MANIFEST.MF 配置文件中，指定的 Premain-class。 方法二：通过 Attach API 远程加载。 不会先于 main 方法执行。 取决于调用 Attach API">
 <meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2018-12-08T09:26:14.636Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Ennis -Little Monster">
-<meta name="twitter:description" content="We could, we could belong togeter, ARTPOP.">
+<meta name="twitter:title" content="笔记-深入拆解Java虚拟机-33JavaAgent与字节码注入">
+<meta name="twitter:description" content="premain 方法 在 main 方法前执行的方法。 JVM 能识别的 premain 方法参数类型是 String  以 Java agent 方式运行 premain 方法 方法一：打包成 jar 包，在的 MANIFEST.MF 配置文件中，指定的 Premain-class。 方法二：通过 Attach API 远程加载。 不会先于 main 方法执行。 取决于调用 Attach API">
 
 
 
@@ -120,13 +122,13 @@
 
 
 
-  <link rel="canonical" href="http://ennis.info/tags/优化/"/>
+  <link rel="canonical" href="http://ennis.info/2018/12/08/笔记-深入拆解Java虚拟机-33JavaAgent与字节码注入/"/>
 
 
 
 
 
-  <title>标签: 优化 | Ennis -Little Monster</title>
+  <title>笔记-深入拆解Java虚拟机-33JavaAgent与字节码注入 | Ennis -Little Monster</title>
   
 
 
@@ -145,7 +147,7 @@
     
   
 
-  <div class="container sidebar-position-left ">
+  <div class="container sidebar-position-left page-post-detail">
     <div class="headband"></div>
 
     <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
@@ -283,82 +285,269 @@
           <div id="content" class="content">
             
 
-  
-  
-  
-  <div class="post-block tag">
+  <div id="posts" class="posts-expand">
+    
 
-    <div id="posts" class="posts-collapse">
-      <div class="collection-title">
-        <h1>优化<small>标签</small>
-        </h1>
-      </div>
+  
 
-      
-        
+  
+  
+  
 
   <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://ennis.info/2018/12/08/笔记-深入拆解Java虚拟机-33JavaAgent与字节码注入/">
 
-      <h2 class="post-title">
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Ennis L.M. Wu">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="http://pcrioz2ch.bkt.clouddn.com/portrait.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Ennis -Little Monster">
+    </span>
+
+    
+      <header class="post-header">
+
         
-            <a class="post-title-link" href="/2018/11/07/Android的视图优化方法/" itemprop="url">
-              
-                <span itemprop="name">Android的视图优化方法</span>
-              
-            </a>
         
-      </h2>
+          <h1 class="post-title" itemprop="name headline">笔记-深入拆解Java虚拟机-33JavaAgent与字节码注入</h1>
+        
 
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2018-11-07T21:31:51+08:00"
-              content="2018-11-07" >
-          11-07
-        </time>
-      </div>
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-12-08T16:01:16+08:00">
+                2018-12-08
+              </time>
+            
 
-    </header>
-  </article>
+            
 
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Java虚拟机/" itemprop="url" rel="index">
+                    <span itemprop="name">Java虚拟机</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
 
       
-        
+      
 
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h2 class="post-title">
-        
-            <a class="post-title-link" href="/2018/07/23/Android的性能优化方法/" itemprop="url">
-              
-                <span itemprop="name">Android的性能优化方法</span>
-              
-            </a>
-        
-      </h2>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2018-07-23T16:33:07+08:00"
-              content="2018-07-23" >
-          07-23
-        </time>
-      </div>
-
-    </header>
-  </article>
-
+      
+        <h1 id="premain-方法"><a href="#premain-方法" class="headerlink" title="premain 方法"></a>premain 方法</h1><ul>
+<li><strong>在 main 方法前执行的方法。</strong></li>
+<li>JVM 能识别的 premain 方法参数类型是 String</li>
+</ul>
+<h2 id="以-Java-agent-方式运行-premain-方法"><a href="#以-Java-agent-方式运行-premain-方法" class="headerlink" title="以 Java agent 方式运行 premain 方法"></a>以 Java agent 方式运行 premain 方法</h2><ul>
+<li>方法一：打包成 jar 包，在的 MANIFEST.MF 配置文件中，指定的 Premain-class。</li>
+<li>方法二：通过 Attach API 远程加载。<ul>
+<li>不会先于 main 方法执行。</li>
+<li>取决于调用 Attach API 的时机。</li>
+<li>运行不再是 premain 方法，而是 agentmain 方法。</li>
+<li>更新 jar 包的 manifest 文件，包含 Agent-Class 配置。</li>
+</ul>
+</li>
+<li>JVM 不限制 Java agent 的数量。</li>
+</ul>
+<h1 id="字节码注入"><a href="#字节码注入" class="headerlink" title="字节码注入"></a>字节码注入</h1><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> org.example;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> java.lang.instrument.*;</span><br><span class="line"><span class="keyword">import</span> java.security.ProtectionDomain;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">MyAgent</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">premain</span><span class="params">(String args, Instrumentation instrumentation)</span> </span>&#123;</span><br><span class="line">        instrumentation.addTransformer(<span class="keyword">new</span> MyTransformer());</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">static</span> <span class="class"><span class="keyword">class</span> <span class="title">MyTransformer</span> <span class="keyword">implements</span> <span class="title">ClassFileTransformer</span> </span>&#123;</span><br><span class="line">        <span class="keyword">public</span> <span class="keyword">byte</span>[] transform(ClassLoader loader, String className, Class&lt;?&gt; classBeingRedefined,</span><br><span class="line">                                ProtectionDomain protectionDomain, <span class="keyword">byte</span>[] classfileBuffer) <span class="keyword">throws</span> IllegalClassFormatException &#123;</span><br><span class="line">            <span class="comment">//打印该数组的前四个字节，也就是 Java class 文件的魔数（magic number）0xCAFEBABE。</span></span><br><span class="line">            System.out.printf(<span class="string">"Loaded %s: 0x%X%X%X%X\n"</span>, className, classfileBuffer[<span class="number">0</span>], classfileBuffer[<span class="number">1</span>],</span><br><span class="line">                    classfileBuffer[<span class="number">2</span>], classfileBuffer[<span class="number">3</span>]);</span><br><span class="line">            <span class="comment">//如果返回 null 或抛出异常，JVM 使用原来的 byte 数组完成类加载工作。</span></span><br><span class="line">            <span class="keyword">return</span> <span class="keyword">null</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li><code>Instrumentation</code> 接口：注册类加载时间拦截器。</li>
+<li><code>ClassFileTransformer</code> 接口：拦截器需要实现，重写 transform 方法。</li>
+<li><code>transform</code> 方法：<ul>
+<li><code>byte[]</code> 参数：正在被加载的类的字节码。</li>
+<li><code>byte[]</code> 返回值：更新过后的类的字节码。</li>
+</ul>
+</li>
+</ul>
+<h2 id="redefine-和-retransform（不懂，怎么实现？）"><a href="#redefine-和-retransform（不懂，怎么实现？）" class="headerlink" title="redefine 和 retransform（不懂，怎么实现？）"></a>redefine 和 retransform（不懂，怎么实现？）</h2><ul>
+<li>要求传入所需类实例。</li>
+</ul>
+<h3 id="redefine"><a href="#redefine" class="headerlink" title="redefine"></a>redefine</h3><blockquote>
+<p>舍弃原本的字节码，并替换成由用户提供的 byte 数组。</p>
+</blockquote>
+<ul>
+<li><strong>比较危险，一般用于修复出错了的字节码。</strong></li>
+</ul>
+<h3 id="retransform"><a href="#retransform" class="headerlink" title="retransform"></a>retransform</h3><blockquote>
+<p>针对所传入的类，重新调用所有已注册的 ClassFileTransformer 的 transform 方法。</p>
+</blockquote>
+<ul>
+<li>使用 retransform <strong>注入已加载但未注入的类</strong>。</li>
+</ul>
+<p>在执行 premain 或者 agentmain 方法前，JVM 早已加载了不少类，这些类的加载事件并没有被拦截。</p>
+<ul>
+<li>定义了多个 Java agent，多个注入的情况下，移除部分注入。</li>
+</ul>
+<h1 id="JVMTI-agent（不懂）"><a href="#JVMTI-agent（不懂）" class="headerlink" title="JVMTI agent（不懂）"></a>JVMTI agent（不懂）</h1><blockquote>
+<p>JVMTI 是一个事件驱动的工具实现接口。</p>
+</blockquote>
+<ul>
+<li>Java agent 通过 JVMTI agent（C agent）实现。</li>
+<li>在 C agent 加载后的入口方法 Agent_OnLoad 注册各个事件的钩子（hook）方法。</li>
+<li>JVM 触发这些事件时，调用对应的钩子方法。</li>
+</ul>
+<p>为 JVMTI 中的 ClassFileLoadHook 事件设置钩子，在 C 层面拦截所有的类加载事件。</p>
+<p><a href="https://docs.oracle.com/en/java/javase/11/docs/specs/jvmti.html#EventIndex" target="_blank" rel="noopener">关于 JVMTI 的其他事件</a></p>
+<h1 id="基于字节码注入的-profiler"><a href="#基于字节码注入的-profiler" class="headerlink" title="基于字节码注入的 profiler"></a>基于字节码注入的 profiler</h1><ul>
+<li>实现代码覆盖工具，或者各式各样的 profiler。</li>
+<li>在某一程序行为的周围，注入某运行时类方法的调用，表示该程序行为正要发生或已经发生。</li>
+<li>需排除对 JDK 类和运行时类的注入（可能造成死循环调用）。</li>
+<li>设置一个线程私有标识位，区分应用代码上下文和注入代码上下文。（不懂）</li>
+<li>借助自定义类加载器来隔离命名空间。</li>
+<li>观察者效应（observer effect）对所收集的数据造成的影响。</li>
+<li>使用字节码注入开发 profiler 时，需要辩证地看待所收集的数据。</li>
+<li>仅表示在被注入的情况下程序的执行状态，不是没有注入情况下的程序执行状态。</li>
+</ul>
+<h1 id="面向方面（切面）编程（AOP）"><a href="#面向方面（切面）编程（AOP）" class="headerlink" title="面向方面（切面）编程（AOP）"></a>面向方面（切面）编程（AOP）</h1><ul>
+<li>字节码注入实现。</li>
+</ul>
+<h1 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h1><p>Q：如何注入方法出口。除了正常执行路径之外，还需考虑异常执行路径。</p>
+<p>A：不用管有没有 catch 块，有没有 throw，直接给所有代码罩一个 catch any 的异常处理就行了。</p>
+<h1 id="引用"><a href="#引用" class="headerlink" title="引用"></a>引用</h1><blockquote>
+<p><a href="https://time.geekbang.org/column/article/41186" target="_blank" rel="noopener">https://time.geekbang.org/column/article/41186</a></p>
+</blockquote>
 
       
     </div>
+    
+    
+    
 
+    
+
+    
+      <div>
+        <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+  <div>如果你喜欢这篇文章的话。。。能给我一个小红包吗，爱你呦~(*´∀`)~♥</div>
+  <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+    <span>打赏</span>
+  </button>
+  <div id="QR" style="display: none;">
+
+    
+      <div id="wechat" style="display: inline-block">
+        <img id="wechat_qr" src="http://pcrioz2ch.bkt.clouddn.com/reward_wechatpay.jpg" alt="Ennis L.M. Wu 微信支付"/>
+        <p>微信支付</p>
+      </div>
+    
+
+    
+      <div id="alipay" style="display: inline-block">
+        <img id="alipay_qr" src="http://pcrioz2ch.bkt.clouddn.com/reward_alipay.jpg" alt="Ennis L.M. Wu 支付宝"/>
+        <p>支付宝</p>
+      </div>
+    
+
+    
+
+  </div>
+</div>
+
+      </div>
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/JVM/" rel="tag"># JVM</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/12/06/笔记-深入拆解Java虚拟机-27注解处理器/" rel="next" title="笔记-深入拆解Java虚拟机-27注解处理器">
+                <i class="fa fa-chevron-left"></i> 笔记-深入拆解Java虚拟机-27注解处理器
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
   </div>
   
   
   
+  </article>
 
-  
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
 
 
           </div>
@@ -366,6 +555,10 @@
 
 
           
+
+  
+
+
 
         </div>
         
@@ -386,8 +579,17 @@
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
 
-      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
+      <section class="site-overview-wrap sidebar-panel">
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
             
@@ -492,6 +694,22 @@
         </div>
       </section>
 
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#premain-方法"><span class="nav-number">1.</span> <span class="nav-text">premain 方法</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#以-Java-agent-方式运行-premain-方法"><span class="nav-number">1.1.</span> <span class="nav-text">以 Java agent 方式运行 premain 方法</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#字节码注入"><span class="nav-number">2.</span> <span class="nav-text">字节码注入</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#redefine-和-retransform（不懂，怎么实现？）"><span class="nav-number">2.1.</span> <span class="nav-text">redefine 和 retransform（不懂，怎么实现？）</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#redefine"><span class="nav-number">2.1.1.</span> <span class="nav-text">redefine</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#retransform"><span class="nav-number">2.1.2.</span> <span class="nav-text">retransform</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#JVMTI-agent（不懂）"><span class="nav-number">3.</span> <span class="nav-text">JVMTI agent（不懂）</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#基于字节码注入的-profiler"><span class="nav-number">4.</span> <span class="nav-text">基于字节码注入的 profiler</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#面向方面（切面）编程（AOP）"><span class="nav-number">5.</span> <span class="nav-text">面向方面（切面）编程（AOP）</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#问题"><span class="nav-number">6.</span> <span class="nav-text">问题</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#引用"><span class="nav-number">7.</span> <span class="nav-text">引用</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
       
 
       
@@ -633,6 +851,10 @@
 
 
   
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
 
   
 
