@@ -62,7 +62,7 @@ categories: Java虚拟机
 
 基本类型对应关系：
 
-| Java类型 | 本地类型 | 位（bit） |
+| Java 类型 | c 数据结构 | 位（bit） |
 | --------- | --------- | ---------- |
 | boolean | jboolean | 8, unsigned |
 | byte | jbyte | 8 |
