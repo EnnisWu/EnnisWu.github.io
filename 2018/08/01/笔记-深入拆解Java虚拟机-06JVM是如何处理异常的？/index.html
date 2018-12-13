@@ -91,7 +91,7 @@
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="http://pcrioz2ch.bkt.clouddn.com/JVM/06/throwable.png">
 <meta property="og:image" content="http://pcrioz2ch.bkt.clouddn.com/JVM/06/trigger_exception.png">
-<meta property="og:updated_time" content="2018-08-29T07:18:41.000Z">
+<meta property="og:updated_time" content="2018-12-11T12:58:37.163Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="笔记-深入拆解Java虚拟机-06JVM是如何处理异常的？">
 <meta name="twitter:description" content="异常的基本概念  Error：涵盖程序不应捕获的异常（JVM抛出）。程序出发Error时，执行状态已经无法恢复，需要终止线程甚至终止虚拟机。  Exception：涵盖程序可能需要捕获且处理的异常。  RuntimeException：表示“程序虽然无法继续执行，但是还能抢救一下”的情况。 RuntimeException和Error非检查异常（unchecked exception）。其他异常属">
@@ -431,7 +431,7 @@
 <li>如果<strong>遍历完所有</strong>异常表条目，仍<strong>未匹配</strong>到异常处理器，<strong>弹出当前方法对应的Java栈帧，在调用者（caller）中重复上述操作</strong>。</li>
 <li>finally代码块的编译，当前版本Java编译器，是<strong>复制finally代码块的内容，分别放在try-catch代码块所有正常执行路径和异常执行路径的出口中</strong>。</li>
 </ol>
-<p><img src="http://pcrioz2ch.bkt.clouddn.com/JVM/06/trigger_exception.png" alt="iamge"></p>
+<p><img src="http://pcrioz2ch.bkt.clouddn.com/JVM/06/trigger_exception.png" alt="image"></p>
 <p>针对异常执行路径，Java编译器会生成一个或多个异常表条目，监控整个try-catch代码块，并且捕获所有种类的异常（在 javap 中以 any 指代）。</p>
 <p>这些异常表条目的 target 指针将指向另一份复制的finally代码块。</p>
 <p>在这个finally代码块的最后，Java编译器会重新抛出所捕获的异常。</p>
@@ -598,7 +598,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">47</span>
+                  <span class="site-state-item-count">48</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>

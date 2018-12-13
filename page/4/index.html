@@ -298,6 +298,202 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://ennis.info/2018/08/01/笔记-深入拆解Java虚拟机-06JVM是如何处理异常的？/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Ennis L.M. Wu">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="http://pcrioz2ch.bkt.clouddn.com/portrait.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Ennis -Little Monster">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/08/01/笔记-深入拆解Java虚拟机-06JVM是如何处理异常的？/" itemprop="url">笔记-深入拆解Java虚拟机-06JVM是如何处理异常的？</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-08-01T14:41:48+08:00">
+                2018-08-01
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Java虚拟机/" itemprop="url" rel="index">
+                    <span itemprop="name">Java虚拟机</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h1 id="异常的基本概念"><a href="#异常的基本概念" class="headerlink" title="异常的基本概念"></a>异常的基本概念</h1><p><img src="http://pcrioz2ch.bkt.clouddn.com/JVM/06/throwable.png" alt="image"></p>
+<ul>
+<li><p>Error：涵盖程序不应捕获的异常（JVM抛出）。<br>程序出发Error时，执行状态已经无法恢复，需要终止线程甚至终止虚拟机。</p>
+</li>
+<li><p>Exception：涵盖程序可能需要捕获且处理的异常。</p>
+</li>
+<li>RuntimeException：表示“程序虽然无法继续执行，但是还能抢救一下”的情况。</li>
+<li><strong>RuntimeException和Error非检查异常（unchecked exception）。其他异常属于检查异常（checked exception）。</strong></li>
+<li>检查异常需要程序显式地捕获，或者在方法声明中用throws关键字再次抛出。</li>
+</ul>
+<h2 id="常实例的构造十分昂贵。"><a href="#常实例的构造十分昂贵。" class="headerlink" title="常实例的构造十分昂贵。"></a>常实例的构造十分昂贵。</h2><p>在构造异常实例时，Java虚拟机需要<strong>生成该异常的栈轨迹</strong>（stack trace）。</p>
+<ul>
+<li>逐一访问当前线程的Java栈帧。</li>
+<li>记录下各种调试信息（方法名，方法所在类名，文件名，代码中第几行）。</li>
+<li>Java虚拟机会<strong>忽略异常构造器和填充栈帧的Java方法</strong>（Throwable.fillInStackTrace），直接从新建异常位置开始算起。</li>
+<li>Java虚拟机会<strong>忽略标记为不可见的Java方法栈帧</strong>。</li>
+</ul>
+<h3 id="是否可以缓存异常实例，在需要用到的时候直接抛出？"><a href="#是否可以缓存异常实例，在需要用到的时候直接抛出？" class="headerlink" title="是否可以缓存异常实例，在需要用到的时候直接抛出？"></a>是否可以缓存异常实例，在需要用到的时候直接抛出？</h3><ul>
+<li>从语法角度上，是允许的。</li>
+<li><strong>对应的栈轨迹并非throw语句的位置，而是新建异常的位置。</strong></li>
+</ul>
+<h1 id="Java虚拟机是如何捕获异常的？"><a href="#Java虚拟机是如何捕获异常的？" class="headerlink" title="Java虚拟机是如何捕获异常的？"></a>Java虚拟机是如何捕获异常的？</h1><p>编译生成的字节码中，<strong>每个方法都附带一个异常表</strong>。</p>
+<p>异常表中每一个条目代表一个异常处理器。</p>
+<p>异常处理器的组成：</p>
+<ul>
+<li>from指针</li>
+<li>to指针</li>
+<li>target指针</li>
+<li>所捕获的异常类型</li>
+</ul>
+<p>注：指针的值是字节码索引（bytecode index，bci），用来定位字节码。</p>
+<p><strong>from指针和to指针：标示异常处理器所监控的范围（如try代码块范围）。</strong></p>
+<p><strong>target指针：指向异常处理器的起始位置（如catch代码块起始位置）。</strong></p>
+<h2 id="触发异常的处理流程"><a href="#触发异常的处理流程" class="headerlink" title="触发异常的处理流程"></a>触发异常的处理流程</h2><ol>
+<li>Java虚拟机<strong>从上至下遍历异常表</strong>中的所有条目。</li>
+<li><strong>触发异常</strong>的字节码的索引值<strong>在某个异常表条目的监控范围内</strong>，Java虚拟机判断所抛出的异常和该条目想要捕获的异常<strong>是否匹配</strong>。</li>
+<li>如果<strong>匹配</strong>，Java 虚拟机将控制流<strong>转移至该条目target指针指向</strong>的字节码。</li>
+<li>如果<strong>遍历完所有</strong>异常表条目，仍<strong>未匹配</strong>到异常处理器，<strong>弹出当前方法对应的Java栈帧，在调用者（caller）中重复上述操作</strong>。</li>
+<li>finally代码块的编译，当前版本Java编译器，是<strong>复制finally代码块的内容，分别放在try-catch代码块所有正常执行路径和异常执行路径的出口中</strong>。</li>
+</ol>
+<p><img src="http://pcrioz2ch.bkt.clouddn.com/JVM/06/trigger_exception.png" alt="image"></p>
+<p>针对异常执行路径，Java编译器会生成一个或多个异常表条目，监控整个try-catch代码块，并且捕获所有种类的异常（在 javap 中以 any 指代）。</p>
+<p>这些异常表条目的 target 指针将指向另一份复制的finally代码块。</p>
+<p>在这个finally代码块的最后，Java编译器会重新抛出所捕获的异常。</p>
+<p><strong>如果catch代码块捕获了异常，并且触发了另一个异常，那么finally捕获并且重抛后者，忽略前者。</strong></p>
+<h1 id="Java7的Suppressed异常以及语法糖"><a href="#Java7的Suppressed异常以及语法糖" class="headerlink" title="Java7的Suppressed异常以及语法糖"></a>Java7的Suppressed异常以及语法糖</h1><h2 id="Suppressed异常"><a href="#Suppressed异常" class="headerlink" title="Suppressed异常"></a>Suppressed异常</h2><p>允许将一个异常附于另一个异常之上。</p>
+<p><strong>抛出的异常可以附带多个异常信息。</strong></p>
+<p>finally代码块缺少指向所捕获异常的引用，这个新特性使用起来非常繁琐。</p>
+<h2 id="try-with-resources"><a href="#try-with-resources" class="headerlink" title="try-with-resources"></a>try-with-resources</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">try</span> (  ); <span class="comment">// try-with-resources</span></span><br></pre></td></tr></table></figure>
+<p>在字节码层面自动使用Suppressed异常。</p>
+<p><strong>自动关闭资源</strong>（实现AutoCloseable接口）。</p>
+<h2 id="同一catch代码块捕获多种异常"><a href="#同一catch代码块捕获多种异常" class="headerlink" title="同一catch代码块捕获多种异常"></a>同一catch代码块捕获多种异常</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">try</span> &#123;</span><br><span class="line">  </span><br><span class="line">&#125; <span class="keyword">catch</span> (SomeException | OtherException e) &#123;</span><br><span class="line">  </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h1 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h1><blockquote>
+<p><a href="https://time.geekbang.org/column/article/12134" target="_blank" rel="noopener">https://time.geekbang.org/column/article/12134</a></p>
+</blockquote>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://ennis.info/2018/08/01/转-传输层和应用层的协议和作用/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -2514,297 +2710,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://ennis.info/2018/06/13/《TCPIP详解卷1》010阅读笔记/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Ennis L.M. Wu">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="http://pcrioz2ch.bkt.clouddn.com/portrait.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Ennis -Little Monster">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/06/13/《TCPIP详解卷1》010阅读笔记/" itemprop="url">《TCPIP详解卷1》010阅读笔记</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-06-13T20:05:37+08:00">
-                2018-06-13
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/TCP-IP/" itemprop="url" rel="index">
-                    <span itemprop="name">TCP/IP</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h4 id="名词解释"><a href="#名词解释" class="headerlink" title="名词解释"></a>名词解释</h4><table>
-<thead>
-<tr>
-<th>缩写</th>
-<th>英文全称</th>
-<th>中文</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>AS</td>
-<td>Autonomous System</td>
-<td>自治系统</td>
-</tr>
-<tr>
-<td>IGP</td>
-<td>Interior Gateway Protocol</td>
-<td>内部网关协议/域内选路协议</td>
-</tr>
-<tr>
-<td>EGP</td>
-<td>Exterier Gateway Protocol</td>
-<td>外部网关协议/域内选路协议的分隔选路协议</td>
-</tr>
-<tr>
-<td>BGP</td>
-<td>Border Gateway Protocol</td>
-<td>边界网关协议</td>
-</tr>
-<tr>
-<td>RIP</td>
-<td>Routing Infomation Protocol</td>
-<td>选路信息协议</td>
-</tr>
-<tr>
-<td>OSPF</td>
-<td>Open Shortest Path First</td>
-<td>开放最短路径优先协议</td>
-</tr>
-<tr>
-<td>CIDR</td>
-<td>Classless Inter-Domain Routing</td>
-<td>无类别域间路由</td>
-</tr>
-</tbody>
-</table>
-<ul>
-<li>IGP用于自治系统内。</li>
-<li>EGP用于自治系统之间。</li>
-<li>BGP意在取代EGP。<br><br></li>
-</ul>
-<h4 id="动态选路"><a href="#动态选路" class="headerlink" title="动态选路"></a>动态选路</h4><ul>
-<li>相邻路由器之间进行通信，告知对方每个路由器当前所连接的网络。</li>
-<li>路由守护程序根据从相邻路由器收到的信息更新内核中的路由表。</li>
-<li>随时间变化时，路由是由路由守护程序动态地增加或删除。</li>
-<li>如果路由守护程序发现前往同一信宿存在多条路由，选择最佳路由加入内核路由表。</li>
-<li>如果路由守护程序发现一条链路已经断开，删除受影响的路由或增加一条路由绕过。</li>
-<li>每个自治系统由单个<strong>实体</strong>管理。==什么是实体？==<br><br></li>
-</ul>
-<h4 id="RIP：选路信息协议"><a href="#RIP：选路信息协议" class="headerlink" title="RIP：选路信息协议"></a>RIP：选路信息协议</h4><ul>
-<li>正式描述文件RFC 1058 [Hedrick 1988a]。</li>
-<li>RIP报文包含在UDP数据报中。</li>
-<li>RIP的度量是以跳计数的。</li>
-<li>最多携带25个路由。<br><br></li>
-</ul>
-<h6 id="度量"><a href="#度量" class="headerlink" title="度量"></a>度量</h6><ul>
-<li>直接连接接口的跳数为1。</li>
-<li>一个路由器到一个网络有多条路由，路由器选择跳数最小的路由。</li>
-<li>度量为16表示无路由到达该IP地址。<br><br></li>
-</ul>
-<h6 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h6><ul>
-<li>RIP没有子网地址的概念。</li>
-<li>路由器或链路发生故障后在稳定下来这段时间可能发生路由环路。</li>
-<li>度量最大值限制了可以使用RIP的网络的大小。<br><br></li>
-</ul>
-<h4 id="RIP版本2"><a href="#RIP版本2" class="headerlink" title="RIP版本2"></a>RIP版本2</h4><ul>
-<li>RFC 1388 [Malkin 1993a] 对RIP定义进行了扩充。</li>
-<li>路由域字段：数据报的所有者。</li>
-<li>选路标记字段：携带一个EGP和BGP的自治系统号。</li>
-<li>子网掩码字段：应用于相应的IP地址。</li>
-<li>下一站IP地址字段：指明发往目的IP地址的报文应该发往哪里。</li>
-<li>除了支持广播，还支持多播。<br><br></li>
-</ul>
-<h4 id="OSPF：开放最短路径优先"><a href="#OSPF：开放最短路径优先" class="headerlink" title="OSPF：开放最短路径优先"></a>OSPF：开放最短路径优先</h4><ul>
-<li>RFC 1247 [Moy 1991] 对第2版OSPF进行了描述。</li>
-<li>OSPF克服了RIP所有限制。</li>
-<li>路由器不与临站交换距离信息，主动测试与临站相连的链路状态。</li>
-<li>信息发给其他临站，临站将这些信息在自治系统中传播出去。</li>
-<li>路由器接收这些链路状态信息，建立完整的路由表。</li>
-<li>链路状态协议总是比距离向量协议稳定更快。</li>
-<li>OSPF直接使用IP，不使用UDP或TCP。</li>
-<li>优于RIP的特点：</li>
-<li><ol>
-<li>可以对每个IP服务类型计算各自的路由集。</li>
-</ol>
-</li>
-<li><ol start="2">
-<li>给每个接口指派一个无维数的费用。</li>
-</ol>
-</li>
-<li><ol start="3">
-<li>同一个目的地址存在多个相同费用的路由时，平均分配流量。</li>
-</ol>
-</li>
-<li><ol start="4">
-<li>支持子网，子网掩码与每个通告相连。</li>
-</ol>
-</li>
-<li><ol start="5">
-<li>无编号网络。</li>
-</ol>
-</li>
-<li><ol start="6">
-<li>简单鉴别机制。</li>
-</ol>
-</li>
-<li><ol start="7">
-<li>采用多播而不是广播形式，减少系统负载。<br><br></li>
-</ol>
-</li>
-</ul>
-<h4 id="BGP：边界网关协议"><a href="#BGP：边界网关协议" class="headerlink" title="BGP：边界网关协议"></a>BGP：边界网关协议</h4><ul>
-<li>RFC 1267 [Lougheed and Rekhter 1991] 对第3版BGP进行描述。</li>
-<li>BGP系统之间交换网络可到达信息，包括所必须经过的自治系统的所有路径。</li>
-<li>使用BGP的一个目的是减少通过流量。</li>
-<li>允许使用基于策略的选路。</li>
-<li>使用TCP作为其传输层协议。</li>
-<li>BGP是一个距离测量协议，列举了到每个目的地址的路由，排除了一些距离向量协议的问题。</li>
-<li>定期发送keepalive报文给临站来监测TCP连接对端的链路或主机失败。</li>
-<li>应用层的keepalive报文与TCP的keepalive报文选项相互独立。<br><br></li>
-</ul>
-<h4 id="CIDR：无类型域间选路"><a href="#CIDR：无类型域间选路" class="headerlink" title="CIDR：无类型域间选路"></a>CIDR：无类型域间选路</h4><ul>
-<li>RFC 1518 [Rekher and Li 1993], RFC 1519 [Fuller et al. 1993]对它描述。</li>
-<li>[Ford, Rekhter, and Braun 1993] 综述。</li>
-<li>一个防止路由表膨胀的方法，也成为超网。</li>
-<li>采用分配多个IP地址的方式，使许多表项总和成更少的数目</li>
-<li>必须满足3种特性：</li>
-<li><ol>
-<li>IP地址必须具有相同的高位地址比特。</li>
-</ol>
-</li>
-<li><ol start="2">
-<li>路由表和选路算法必须扩展成根据32 bit IP地址和32 bit 掩码做出选路决策。</li>
-</ol>
-</li>
-<li><ol start="3">
-<li>选路协议要有32 bit掩码。</li>
-</ol>
-</li>
-</ul>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -2859,7 +2764,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">47</span>
+                  <span class="site-state-item-count">48</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
