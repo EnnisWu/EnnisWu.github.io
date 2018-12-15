@@ -81,18 +81,18 @@
 
 
 
-<meta name="description" content="注解处理器（annotation processor） 可以为 Java 编译器添加编译规则。 可以修改已有的 Java 源文件。 可以生成新的 Java 源文件。  注解处理器的原理Java 编译器的工作流程  将源文件解析为抽象语法树。 调用已注册的注解处理器。 生成字节码。   2 调用注解处理器生成了新的源文件将重复 1、2。  实现注解处理器Processor 接口12345678910">
+<meta name="description" content="GraalVM GraalVM 是一个高性能的、支持多种编程语言的执行环境。它既可以在传统的 OpenJDK 上运行，也可以通过 AOT（Ahead-Of-Time）编译成可执行文件单独运行，甚至可以集成至数据库中运行。   除此之外，它还移除了编程语言之间的边界，并且支持通过即时编译技术，将混杂了不同的编程语言的代码编译到同一段二进制码之中，从而实现不同语言之间的无缝切换。  Graal 编译器">
 <meta name="keywords" content="JVM">
 <meta property="og:type" content="article">
-<meta property="og:title" content="笔记-深入拆解Java虚拟机-27注解处理器">
-<meta property="og:url" content="http://ennis.info/2018/12/06/笔记-深入拆解Java虚拟机-27注解处理器/index.html">
+<meta property="og:title" content="笔记-深入拆解Java虚拟机-34Graal：用Java编译Java">
+<meta property="og:url" content="http://ennis.info/2018/12/15/笔记-深入拆解Java虚拟机-34Graal：用Java编译Java/index.html">
 <meta property="og:site_name" content="Ennis -Little Monster">
-<meta property="og:description" content="注解处理器（annotation processor） 可以为 Java 编译器添加编译规则。 可以修改已有的 Java 源文件。 可以生成新的 Java 源文件。  注解处理器的原理Java 编译器的工作流程  将源文件解析为抽象语法树。 调用已注册的注解处理器。 生成字节码。   2 调用注解处理器生成了新的源文件将重复 1、2。  实现注解处理器Processor 接口12345678910">
+<meta property="og:description" content="GraalVM GraalVM 是一个高性能的、支持多种编程语言的执行环境。它既可以在传统的 OpenJDK 上运行，也可以通过 AOT（Ahead-Of-Time）编译成可执行文件单独运行，甚至可以集成至数据库中运行。   除此之外，它还移除了编程语言之间的边界，并且支持通过即时编译技术，将混杂了不同的编程语言的代码编译到同一段二进制码之中，从而实现不同语言之间的无缝切换。  Graal 编译器">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-12-06T11:21:51.772Z">
+<meta property="og:updated_time" content="2018-12-15T06:22:23.382Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="笔记-深入拆解Java虚拟机-27注解处理器">
-<meta name="twitter:description" content="注解处理器（annotation processor） 可以为 Java 编译器添加编译规则。 可以修改已有的 Java 源文件。 可以生成新的 Java 源文件。  注解处理器的原理Java 编译器的工作流程  将源文件解析为抽象语法树。 调用已注册的注解处理器。 生成字节码。   2 调用注解处理器生成了新的源文件将重复 1、2。  实现注解处理器Processor 接口12345678910">
+<meta name="twitter:title" content="笔记-深入拆解Java虚拟机-34Graal：用Java编译Java">
+<meta name="twitter:description" content="GraalVM GraalVM 是一个高性能的、支持多种编程语言的执行环境。它既可以在传统的 OpenJDK 上运行，也可以通过 AOT（Ahead-Of-Time）编译成可执行文件单独运行，甚至可以集成至数据库中运行。   除此之外，它还移除了编程语言之间的边界，并且支持通过即时编译技术，将混杂了不同的编程语言的代码编译到同一段二进制码之中，从而实现不同语言之间的无缝切换。  Graal 编译器">
 
 
 
@@ -122,13 +122,13 @@
 
 
 
-  <link rel="canonical" href="http://ennis.info/2018/12/06/笔记-深入拆解Java虚拟机-27注解处理器/"/>
+  <link rel="canonical" href="http://ennis.info/2018/12/15/笔记-深入拆解Java虚拟机-34Graal：用Java编译Java/"/>
 
 
 
 
 
-  <title>笔记-深入拆解Java虚拟机-27注解处理器 | Ennis -Little Monster</title>
+  <title>笔记-深入拆解Java虚拟机-34Graal：用Java编译Java | Ennis -Little Monster</title>
   
 
 
@@ -299,7 +299,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://ennis.info/2018/12/06/笔记-深入拆解Java虚拟机-27注解处理器/">
+    <link itemprop="mainEntityOfPage" href="http://ennis.info/2018/12/15/笔记-深入拆解Java虚拟机-34Graal：用Java编译Java/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Ennis L.M. Wu">
@@ -316,7 +316,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">笔记-深入拆解Java虚拟机-27注解处理器</h1>
+          <h1 class="post-title" itemprop="name headline">笔记-深入拆解Java虚拟机-34Graal：用Java编译Java</h1>
         
 
         <div class="post-meta">
@@ -328,8 +328,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-12-06T18:17:16+08:00">
-                2018-12-06
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-12-15T13:49:51+08:00">
+                2018-12-15
               </time>
             
 
@@ -388,57 +388,59 @@
       
 
       
-        <h1 id="注解处理器（annotation-processor）"><a href="#注解处理器（annotation-processor）" class="headerlink" title="注解处理器（annotation processor）"></a>注解处理器（annotation processor）</h1><ul>
-<li>可以为 Java 编译器<strong>添加编译规则</strong>。</li>
-<li>可以<strong>修改</strong>已有的 Java <strong>源文件</strong>。</li>
-<li>可以<strong>生成</strong>新的 Java <strong>源文件</strong>。</li>
+        <h1 id="GraalVM"><a href="#GraalVM" class="headerlink" title="GraalVM"></a>GraalVM</h1><blockquote>
+<p>GraalVM 是一个高性能的、支持多种编程语言的执行环境。它既可以在传统的 OpenJDK 上运行，也可以通过 AOT（Ahead-Of-Time）编译成可执行文件单独运行，甚至可以集成至数据库中运行。</p>
+</blockquote>
+<blockquote>
+<p>除此之外，它还移除了编程语言之间的边界，并且支持通过即时编译技术，将混杂了不同的编程语言的代码编译到同一段二进制码之中，从而实现不同语言之间的无缝切换。</p>
+</blockquote>
+<h1 id="Graal-编译器"><a href="#Graal-编译器" class="headerlink" title="Graal 编译器"></a>Graal 编译器</h1><blockquote>
+<p>用 Java 写就的即时编译器，它从 Java 9u 开始便被集成自 JDK 中，作为实验性质的即时编译器。</p>
+</blockquote>
+<ul>
+<li>启用时将替换掉 HotSpot 中的 C2 编译器。</li>
+<li>响应原本 C2 负责的编译请求。</li>
 </ul>
-<h1 id="注解处理器的原理"><a href="#注解处理器的原理" class="headerlink" title="注解处理器的原理"></a>注解处理器的原理</h1><h2 id="Java-编译器的工作流程"><a href="#Java-编译器的工作流程" class="headerlink" title="Java 编译器的工作流程"></a>Java 编译器的工作流程</h2><p><img src="" alt="image"></p>
+<h1 id="Graal-和-Java-虚拟机的交互"><a href="#Graal-和-Java-虚拟机的交互" class="headerlink" title="Graal 和 Java 虚拟机的交互"></a>Graal 和 Java 虚拟机的交互</h1><p>即时编译器与 JVM 的交互可以分为三个方面：</p>
 <ol>
-<li><strong>将源文件解析为抽象语法树。</strong></li>
-<li><strong>调用已注册的注解处理器。</strong></li>
-<li><strong>生成字节码。</strong></li>
+<li>响应编译请求。</li>
+<li>获取编译所需的元数据（如类、方法、字段）和反映程序执行状态的 profile。</li>
+<li>将生成的二进制码部署至代码缓存（code cache）里。</li>
 </ol>
 <ul>
-<li>2 调用注解处理器生成了新的源文件将重复 1、2。</li>
+<li>传统情况，<strong>即时编译器是与 JVM 紧耦合</strong>。</li>
+<li>更改即时编译器需要重新编译整个 JVM。</li>
+<li>引入 <a href="http://openjdk.java.net/jeps/243" target="_blank" rel="noopener">JVM 编译器接口</a>（JVM Compiler Interface，JVMCI）解耦合 JVM 和 Graal。</li>
+<li><strong>Java 程序可以直接调用 Graal</strong>，编译并部署指定方法（因为JVMCI）。</li>
+<li>Graal 的单元测试和 Truffle 语言实现框架基于上述技术。</li>
 </ul>
-<h2 id="实现注解处理器"><a href="#实现注解处理器" class="headerlink" title="实现注解处理器"></a>实现注解处理器</h2><h3 id="Processor-接口"><a href="#Processor-接口" class="headerlink" title="Processor 接口"></a>Processor 接口</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">Processor</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//不用构造器</span></span><br><span class="line">    <span class="comment">//注解处理器的实例通过反射生成</span></span><br><span class="line">    <span class="comment">//注解处理器类需要定义一个无参数构造器</span></span><br><span class="line">    <span class="comment">//注解处理器通常不声明任何构造器</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">//存放注解处理器的初始化代码</span></span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">init</span><span class="params">(ProcessingEnvironment processingEnv)</span></span>;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">//返回注解处理器所支持的注解类型</span></span><br><span class="line">    <span class="comment">//注解类型用字符串形式表示</span></span><br><span class="line">    <span class="function">Set&lt;String&gt; <span class="title">getSupportedAnnotationTypes</span><span class="params">()</span></span>;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">//返回该处理器支持的 Java 版本</span></span><br><span class="line">    <span class="comment">//通常版本与 Java 编译器版本一致</span></span><br><span class="line">    <span class="function">SourceVersion <span class="title">getSupportedSourceVersion</span><span class="params">()</span></span>;</span><br><span class="line">  </span><br><span class="line">    <span class="comment">//注解处理方法</span></span><br><span class="line">    <span class="function"><span class="keyword">boolean</span> <span class="title">process</span><span class="params">(Set&lt;? extends TypeElement&gt; annotations, RoundEnvironment roundEnv)</span></span>;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//剩余方法略...</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<blockquote>
-<p>JDK 提供了一个实现 Processor 接口的抽象类 AbstractProcessor。</p>
-<blockquote>
-<p>该抽象类实现了 init、getSupportedAnnotationTypes 和 getSupportedSourceVersion方法。<br>它的子类可以通过 @SupportedAnnotationTypes 和 @SupportedSourceVersion 注解来声明所支持的注解类型以及 Java 版本。</p>
-</blockquote>
-</blockquote>
-<ul>
-<li>所有的<strong>注解处理器类需要实现 Processor 接口</strong>。</li>
+<h1 id="Graal-和-C2-的区别"><a href="#Graal-和-C2-的区别" class="headerlink" title="Graal 和 C2 的区别"></a>Graal 和 C2 的区别</h1><ul>
+<li>Graal 由 <strong>Java 编写</strong>，C2 由 C++ 编写。</li>
+<li>Graal <strong>更加模块化，更容易开发与维护</strong>。</li>
+<li>Graal 中被证实有效的部分逃逸分析（partial escape analysis）未被移植到 C2 中。</li>
+<li>Graal 的<strong>内联算法对新语法、新语言更加友好</strong>。</li>
 </ul>
-<h3 id="注册-Java-编译器的插件"><a href="#注册-Java-编译器的插件" class="headerlink" title="注册 Java 编译器的插件"></a>注册 Java 编译器的插件</h3><ul>
-<li>方法一：直接使用 javac 命令的 -processor 参数。</li>
-<li>方法二：将注解处理器编译生成的 class 文件压缩入 jar 包中，在 jar 包配置文件中记录该注解处理器的包名及类名。</li>
+<h1 id="Graal-的实现"><a href="#Graal-的实现" class="headerlink" title="Graal 的实现"></a>Graal 的实现</h1><ul>
+<li>编译过程分为前端和后端。</li>
+<li><strong>前端</strong>实现<strong>平台无关</strong>的优化（如方法内联），和小部分平台相关的优化。</li>
+<li><strong>后端</strong>实现大部分<strong>平台相关</strong>优化（如寄存器分配），和<strong>生成机器码</strong>。</li>
+<li>前端的 IR 称为 High-level IR（HIR）（如Sea-of-Nodes IR），后端的 IR 称为 Low-level IR（LIR）。</li>
+<li>前端由一个个单独的优化阶段（optimization phase）构成。</li>
+<li>前端编译阶段除了少数几个关键的之外，其余均可以通过配置选项开启或关闭。</li>
+<li><strong>Graal 比 C2 更加激进</strong>，设计上<strong>十分青睐基于假设的优化手段</strong>。</li>
+<li>Graal 支持自定义假设，和直接与去优化节点相关联。</li>
+<li>Graal 实现高性能的 intrinsic 方法相对简单。</li>
 </ul>
-<p>启动 Java 编译器时，会寻找 classpath 路径上的 jar 包是否包含上述配置文件，并自动注册其中记录的注解处理器。</p>
-<ul>
-<li>方法三：在 IDE 中配置注解处理器。</li>
-</ul>
-<h1 id="利用注解处理器修改已有的源码"><a href="#利用注解处理器修改已有的源码" class="headerlink" title="利用注解处理器修改已有的源码"></a>利用注解处理器修改已有的源码</h1><blockquote>
-<p>注解处理器并不能真正地修改已有源代码。这里指的是修改由 Java 源代码生成的抽象语法树，在其中修改已有树节点或者插入新的树节点，从而使生成的字节码发生变化。</p>
-</blockquote>
-<ul>
-<li><strong>修改抽象语法树</strong>涉及 Java 编译器的内部 API，<strong>可能随着版本变更失效</strong>。</li>
-</ul>
-<h1 id="利用注解处理器生成新的源码"><a href="#利用注解处理器生成新的源码" class="headerlink" title="利用注解处理器生成新的源码"></a>利用注解处理器生成新的源码</h1><ul>
-<li>通过 Filer.createSourceFile 方法获得一个文件的概念。</li>
-<li>并通过 PrintWriter 将具体的内容写入。</li>
-</ul>
-<h1 id="附件"><a href="#附件" class="headerlink" title="附件"></a>附件</h1><ul>
-<li><a href="https://docs.oracle.com/javase/10/docs/api/javax/lang/model/element/package-summary.html" target="_blank" rel="noopener">Element 类 API 3</a></li>
-<li><a href="http://notatube.blogspot.com/2010/11/project-lombok-trick-explained.html" target="_blank" rel="noopener">修改抽象语法树 API</a><ul>
-<li><a href="http://jnb.ociweb.com/jnb/jnbJan2010.html#controversy" target="_blank" rel="noopener">Lombok 的回应</a></li>
-</ul>
-</li>
-</ul>
+<h1 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h1><p>Q：GraalVM 和 JVM 是什么关系？</p>
+<p>A：可以将 GraalVM 看成泛指带 Graal 编译器的虚拟机。</p>
+<hr>
+<p>Q：<strong>可不可以把 profile 和编译的机器码保存到磁盘</strong>，在代码和运行平台不变的情况下，下次启动（或部署多实例）的时候直接装载这部分数据？这算作是一种系统预热的可行性方案吗？</p>
+<p>A：<strong>已经有这种做法</strong>，但同时需要承担 profile 不能反映当前执行状态的风险。</p>
+<hr>
+<p>Q：<strong>Graal 自身的及时编译是调用 Graal 自身吗？如果这么做会不会出现无穷递归？</strong></p>
+<p>A：默认情况下，<strong>由 C1 编译Graal。调用 Graal 编译 Graal 并不会造成无穷递归。</strong>因为 JVM 里有解释执行器，能够执行 Graal 代码。</p>
 <h1 id="引用"><a href="#引用" class="headerlink" title="引用"></a>引用</h1><blockquote>
-<p><a href="https://time.geekbang.org/column/article/40189" target="_blank" rel="noopener">https://time.geekbang.org/column/article/40189</a></p>
+<p><a href="https://time.geekbang.org/column/article/41245" target="_blank" rel="noopener">https://time.geekbang.org/column/article/41245</a></p>
 </blockquote>
 
       
@@ -499,8 +501,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2018/12/05/笔记-深入拆解Java虚拟机-32JNI的运行机制/" rel="next" title="笔记-深入拆解Java虚拟机-32JNI的运行机制">
-                <i class="fa fa-chevron-left"></i> 笔记-深入拆解Java虚拟机-32JNI的运行机制
+              <a href="/2018/12/13/笔记-深入拆解Java虚拟机-3031Java虚拟机的监控及诊断工具/" rel="next" title="笔记-深入拆解Java虚拟机-3031Java虚拟机的监控及诊断工具">
+                <i class="fa fa-chevron-left"></i> 笔记-深入拆解Java虚拟机-3031Java虚拟机的监控及诊断工具
               </a>
             
           </div>
@@ -508,10 +510,6 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2018/12/08/笔记-深入拆解Java虚拟机-33JavaAgent与字节码注入/" rel="prev" title="笔记-深入拆解Java虚拟机-33JavaAgent与字节码注入">
-                笔记-深入拆解Java虚拟机-33JavaAgent与字节码注入 <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -688,7 +686,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#注解处理器（annotation-processor）"><span class="nav-number">1.</span> <span class="nav-text">注解处理器（annotation processor）</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#注解处理器的原理"><span class="nav-number">2.</span> <span class="nav-text">注解处理器的原理</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Java-编译器的工作流程"><span class="nav-number">2.1.</span> <span class="nav-text">Java 编译器的工作流程</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#实现注解处理器"><span class="nav-number">2.2.</span> <span class="nav-text">实现注解处理器</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Processor-接口"><span class="nav-number">2.2.1.</span> <span class="nav-text">Processor 接口</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#注册-Java-编译器的插件"><span class="nav-number">2.2.2.</span> <span class="nav-text">注册 Java 编译器的插件</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#利用注解处理器修改已有的源码"><span class="nav-number">3.</span> <span class="nav-text">利用注解处理器修改已有的源码</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#利用注解处理器生成新的源码"><span class="nav-number">4.</span> <span class="nav-text">利用注解处理器生成新的源码</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#附件"><span class="nav-number">5.</span> <span class="nav-text">附件</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#引用"><span class="nav-number">6.</span> <span class="nav-text">引用</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#GraalVM"><span class="nav-number">1.</span> <span class="nav-text">GraalVM</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Graal-编译器"><span class="nav-number">2.</span> <span class="nav-text">Graal 编译器</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Graal-和-Java-虚拟机的交互"><span class="nav-number">3.</span> <span class="nav-text">Graal 和 Java 虚拟机的交互</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Graal-和-C2-的区别"><span class="nav-number">4.</span> <span class="nav-text">Graal 和 C2 的区别</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Graal-的实现"><span class="nav-number">5.</span> <span class="nav-text">Graal 的实现</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#问题"><span class="nav-number">6.</span> <span class="nav-text">问题</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#引用"><span class="nav-number">7.</span> <span class="nav-text">引用</span></a></li></ol></div>
             
 
           </div>

@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://ennis.info/"/>
-  <updated>2018-12-13T08:44:20.442Z</updated>
+  <updated>2018-12-15T06:22:23.382Z</updated>
   <id>http://ennis.info/</id>
   
   <author>
@@ -15,6 +15,32 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>笔记-深入拆解Java虚拟机-34Graal：用Java编译Java</title>
+    <link href="http://ennis.info/2018/12/15/%E7%AC%94%E8%AE%B0-%E6%B7%B1%E5%85%A5%E6%8B%86%E8%A7%A3Java%E8%99%9A%E6%8B%9F%E6%9C%BA-34Graal%EF%BC%9A%E7%94%A8Java%E7%BC%96%E8%AF%91Java/"/>
+    <id>http://ennis.info/2018/12/15/笔记-深入拆解Java虚拟机-34Graal：用Java编译Java/</id>
+    <published>2018-12-15T05:49:51.000Z</published>
+    <updated>2018-12-15T06:22:23.382Z</updated>
+    
+    <content type="html"><![CDATA[<h1 id="GraalVM"><a href="#GraalVM" class="headerlink" title="GraalVM"></a>GraalVM</h1><blockquote><p>GraalVM 是一个高性能的、支持多种编程语言的执行环境。它既可以在传统的 OpenJDK 上运行，也可以通过 AOT（Ahead-Of-Time）编译成可执行文件单独运行，甚至可以集成至数据库中运行。</p></blockquote><blockquote><p>除此之外，它还移除了编程语言之间的边界，并且支持通过即时编译技术，将混杂了不同的编程语言的代码编译到同一段二进制码之中，从而实现不同语言之间的无缝切换。</p></blockquote><h1 id="Graal-编译器"><a href="#Graal-编译器" class="headerlink" title="Graal 编译器"></a>Graal 编译器</h1><blockquote><p>用 Java 写就的即时编译器，它从 Java 9u 开始便被集成自 JDK 中，作为实验性质的即时编译器。</p></blockquote><ul><li>启用时将替换掉 HotSpot 中的 C2 编译器。</li><li>响应原本 C2 负责的编译请求。</li></ul><h1 id="Graal-和-Java-虚拟机的交互"><a href="#Graal-和-Java-虚拟机的交互" class="headerlink" title="Graal 和 Java 虚拟机的交互"></a>Graal 和 Java 虚拟机的交互</h1><p>即时编译器与 JVM 的交互可以分为三个方面：</p><ol><li>响应编译请求。</li><li>获取编译所需的元数据（如类、方法、字段）和反映程序执行状态的 profile。</li><li>将生成的二进制码部署至代码缓存（code cache）里。</li></ol><ul><li>传统情况，<strong>即时编译器是与 JVM 紧耦合</strong>。</li><li>更改即时编译器需要重新编译整个 JVM。</li><li>引入 <a href="http://openjdk.java.net/jeps/243" target="_blank" rel="noopener">JVM 编译器接口</a>（JVM Compiler Interface，JVMCI）解耦合 JVM 和 Graal。</li><li><strong>Java 程序可以直接调用 Graal</strong>，编译并部署指定方法（因为JVMCI）。</li><li>Graal 的单元测试和 Truffle 语言实现框架基于上述技术。</li></ul><h1 id="Graal-和-C2-的区别"><a href="#Graal-和-C2-的区别" class="headerlink" title="Graal 和 C2 的区别"></a>Graal 和 C2 的区别</h1><ul><li>Graal 由 <strong>Java 编写</strong>，C2 由 C++ 编写。</li><li>Graal <strong>更加模块化，更容易开发与维护</strong>。</li><li>Graal 中被证实有效的部分逃逸分析（partial escape analysis）未被移植到 C2 中。</li><li>Graal 的<strong>内联算法对新语法、新语言更加友好</strong>。</li></ul><h1 id="Graal-的实现"><a href="#Graal-的实现" class="headerlink" title="Graal 的实现"></a>Graal 的实现</h1><ul><li>编译过程分为前端和后端。</li><li><strong>前端</strong>实现<strong>平台无关</strong>的优化（如方法内联），和小部分平台相关的优化。</li><li><strong>后端</strong>实现大部分<strong>平台相关</strong>优化（如寄存器分配），和<strong>生成机器码</strong>。</li><li>前端的 IR 称为 High-level IR（HIR）（如Sea-of-Nodes IR），后端的 IR 称为 Low-level IR（LIR）。</li><li>前端由一个个单独的优化阶段（optimization phase）构成。</li><li>前端编译阶段除了少数几个关键的之外，其余均可以通过配置选项开启或关闭。</li><li><strong>Graal 比 C2 更加激进</strong>，设计上<strong>十分青睐基于假设的优化手段</strong>。</li><li>Graal 支持自定义假设，和直接与去优化节点相关联。</li><li>Graal 实现高性能的 intrinsic 方法相对简单。</li></ul><h1 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h1><p>Q：GraalVM 和 JVM 是什么关系？</p><p>A：可以将 GraalVM 看成泛指带 Graal 编译器的虚拟机。</p><hr><p>Q：<strong>可不可以把 profile 和编译的机器码保存到磁盘</strong>，在代码和运行平台不变的情况下，下次启动（或部署多实例）的时候直接装载这部分数据？这算作是一种系统预热的可行性方案吗？</p><p>A：<strong>已经有这种做法</strong>，但同时需要承担 profile 不能反映当前执行状态的风险。</p><hr><p>Q：<strong>Graal 自身的及时编译是调用 Graal 自身吗？如果这么做会不会出现无穷递归？</strong></p><p>A：默认情况下，<strong>由 C1 编译Graal。调用 Graal 编译 Graal 并不会造成无穷递归。</strong>因为 JVM 里有解释执行器，能够执行 Graal 代码。</p><h1 id="引用"><a href="#引用" class="headerlink" title="引用"></a>引用</h1><blockquote><p><a href="https://time.geekbang.org/column/article/41245" target="_blank" rel="noopener">https://time.geekbang.org/column/article/41245</a></p></blockquote>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;h1 id=&quot;GraalVM&quot;&gt;&lt;a href=&quot;#GraalVM&quot; class=&quot;headerlink&quot; title=&quot;GraalVM&quot;&gt;&lt;/a&gt;GraalVM&lt;/h1&gt;&lt;blockquote&gt;
+&lt;p&gt;GraalVM 是一个高性能的、支持多种编程语言的执行环境。它既可以在传统
+      
+    
+    </summary>
+    
+      <category term="Java虚拟机" scheme="http://ennis.info/categories/Java%E8%99%9A%E6%8B%9F%E6%9C%BA/"/>
+    
+    
+      <category term="JVM" scheme="http://ennis.info/tags/JVM/"/>
+    
+  </entry>
   
   <entry>
     <title>笔记-深入拆解Java虚拟机-3031Java虚拟机的监控及诊断工具</title>
@@ -520,33 +546,6 @@
 &lt;li&gt;声明 synchronized 的代码块，字节码包含 monitorenter 和 monitorexit 指令。&lt;/li&gt;
 &lt;li&gt;这两种指令会&lt;strong&gt;消耗&lt;/strong&gt;操作数栈上的&lt;strong&gt;一个引用类型的元素&lt;/strong&gt;。&lt;/li&gt;
 
-      
-    
-    </summary>
-    
-      <category term="Java虚拟机" scheme="http://ennis.info/categories/Java%E8%99%9A%E6%8B%9F%E6%9C%BA/"/>
-    
-    
-      <category term="JVM" scheme="http://ennis.info/tags/JVM/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>笔记-深入拆解Java虚拟机-13Java内存模型</title>
-    <link href="http://ennis.info/2018/08/31/%E7%AC%94%E8%AE%B0-%E6%B7%B1%E5%85%A5%E6%8B%86%E8%A7%A3Java%E8%99%9A%E6%8B%9F%E6%9C%BA-13Java%E5%86%85%E5%AD%98%E6%A8%A1%E5%9E%8B/"/>
-    <id>http://ennis.info/2018/08/31/笔记-深入拆解Java虚拟机-13Java内存模型/</id>
-    <published>2018-08-31T06:44:23.000Z</published>
-    <updated>2018-11-10T11:40:05.318Z</updated>
-    
-    <content type="html"><![CDATA[<h1 id="编译器优化的重排序"><a href="#编译器优化的重排序" class="headerlink" title="编译器优化的重排序"></a>编译器优化的重排序</h1><ul><li>保证遵守 as-if-serial 属性。</li><li>操作之间存在数据依赖，不能调整顺序。</li></ul><h1 id="Java-内存模型与-happens-before-关系"><a href="#Java-内存模型与-happens-before-关系" class="headerlink" title="Java 内存模型与 happens-before 关系"></a>Java 内存模型与 happens-before 关系</h1><ul><li>用来描述两个操作的内存可见性。</li><li>操作 X happens-before 操作 Y，X 的结果对于 Y 可见。</li><li>happens-before 关系具有传递性。</li><li>解决这种数据竞争的关键：构造一个跨线程的 happens-before 关系。</li></ul><p>线程间的 happens-before 关系：</p><ol><li>解锁操作 happens-before 之后（时钟顺序）对同一把锁的加锁操作。</li><li>volatile 字段的写操作 happens-before 之后（时钟顺序）对同一字段的读操作。</li><li>线程的启动操作（Thread.starts()） happens-before 该线程的第一个操作。</li><li>线程的最后一个操作 happens-before 它的终止事件（Thread.isAlive() 或 Thread.join()）。</li><li>线程对其他线程的中断操作 happens-before 被中断线程所收到的中断事件（即被中断线程的 InterruptedException 异常，或者第三个线程针对被中断线程的 Thread.interrupted 或者 Thread.isInterrupted 调用）。</li><li>构造器中的最后一个操作 happens-before 析构器的第一个操作。</li></ol><h1 id="Java-内存模型的底层实现"><a href="#Java-内存模型的底层实现" class="headerlink" title="Java 内存模型的底层实现"></a>Java 内存模型的底层实现</h1><ul><li>通过内存屏障（memory barrier）禁止重排序。</li></ul><p>开不太懂，之后再看</p><h1 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h1><blockquote><p><a href="https://time.geekbang.org/column/article/13484" target="_blank" rel="noopener">https://time.geekbang.org/column/article/13484</a></p></blockquote>]]></content>
-    
-    <summary type="html">
-    
-      
-      
-        &lt;h1 id=&quot;编译器优化的重排序&quot;&gt;&lt;a href=&quot;#编译器优化的重排序&quot; class=&quot;headerlink&quot; title=&quot;编译器优化的重排序&quot;&gt;&lt;/a&gt;编译器优化的重排序&lt;/h1&gt;&lt;ul&gt;
-&lt;li&gt;保证遵守 as-if-serial 属性。&lt;/li&gt;
-&lt;li&gt;操作之间存
       
     
     </summary>
