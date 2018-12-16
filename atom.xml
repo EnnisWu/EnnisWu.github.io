@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://ennis.info/"/>
-  <updated>2018-12-15T06:22:23.382Z</updated>
+  <updated>2018-12-16T06:44:58.962Z</updated>
   <id>http://ennis.info/</id>
   
   <author>
@@ -15,6 +15,31 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>笔记-深入拆解Java虚拟机-35Truffle：语言实现框架</title>
+    <link href="http://ennis.info/2018/12/16/%E7%AC%94%E8%AE%B0-%E6%B7%B1%E5%85%A5%E6%8B%86%E8%A7%A3Java%E8%99%9A%E6%8B%9F%E6%9C%BA-35Truffle%EF%BC%9A%E8%AF%AD%E8%A8%80%E5%AE%9E%E7%8E%B0%E6%A1%86%E6%9E%B6/"/>
+    <id>http://ennis.info/2018/12/16/笔记-深入拆解Java虚拟机-35Truffle：语言实现框架/</id>
+    <published>2018-12-16T03:28:43.000Z</published>
+    <updated>2018-12-16T06:44:58.962Z</updated>
+    
+    <content type="html"><![CDATA[<h1 id="语言实现"><a href="#语言实现" class="headerlink" title="语言实现"></a>语言实现</h1><h2 id="编译型语言"><a href="#编译型语言" class="headerlink" title="编译型语言"></a><a href="https://en.wikipedia.org/wiki/Compiled_language" target="_blank" rel="noopener">编译型语言</a></h2><ul><li>实现一门新编程语言的传统做法是<strong>实现一个编译器</strong>。</li><li>编译器分为前端和后端：<ul><li>前端：负责词法分析、语法分析、类型检查和中间代码生成。</li><li>后端：负责编译优化和目标代码生成。</li></ul></li><li>另一种做法是将新语言<strong>编译成某种已知语言</strong>，或者已知的中间形式（如Java 字节码）。</li><li>可以直接享用 JVM 自带的各项优化（即时编译、自动内存管理等等）。</li></ul><h2 id="解释型语言"><a href="#解释型语言" class="headerlink" title="解释型语言"></a><a href="https://en.wikipedia.org/wiki/Interpreted_language" target="_blank" rel="noopener">解释型语言</a></h2><ul><li>无须编译步骤，依赖于<strong>解释执行器</strong>进行<strong>解析并执行</strong>。</li><li>通常将其包装在虚拟机里（实现如即时编译、垃圾回收等其他组件）。</li><li>理想情况下，希望不同的语言实现中复用这些组件，只要实现解释执行器。</li></ul><h1 id="Truffle-项目简介"><a href="#Truffle-项目简介" class="headerlink" title="Truffle 项目简介"></a>Truffle 项目简介</h1><ul><li><strong>用 Java 写的语言实现框架。</strong></li><li>基于 Truffle 的语言可以享用由 Truffle 提供的各项运行时优化。需实现：<ul><li>用 Java 实现词法分析</li><li>语法分析</li><li>针对语法分析所生成的抽象语法树（Abstract Syntax Tree，AST）的解释执行器</li></ul></li><li><strong>可以运行在任何 JVM 上。</strong></li><li>如果 Truffle 运行在附带了 Graal 编译器的 Java 虚拟机之上，它将调用 Graal 编译器所提供的 API，<strong>主动触发对 Truffle 语言的即时编译</strong>，将对 AST 的解释执行转换为执行即时编译后的机器码。</li><li><strong>对于解释型语言</strong>，经由 Graal 编译器加速的 Truffle 语言解释器的<strong>性能十分优越</strong>。</li><li><strong>对于拥有专业即时编译器语言，仍处于追赶者的位置。</strong></li></ul><h1 id="Partial-Evaluation"><a href="#Partial-Evaluation" class="headerlink" title="Partial Evaluation"></a>Partial Evaluation</h1><ul><li>将 P: I -&gt; O 转化为 P’: ID -&gt; O</li><li>P’ 是 P 的特化（Specialization）。</li></ul><table><thead><tr><th>符号</th><th>含义</th><th>对应关系</th></tr></thead><tbody><tr><td>P</td><td>程序</td><td>Truffle 语言的解释执行器</td></tr><tr><td>P’</td><td>等价的另一段程序</td><td>通过 Partial Evaluation 特化为P’</td></tr><tr><td>I</td><td>输入</td><td></td></tr><tr><td>IS</td><td>已知常量</td><td>Truffle 语言写的程序</td></tr><tr><td>ID</td><td>未知变量</td><td></td></tr><tr><td>O</td><td>输出</td></tr></tbody></table><ul><li>可以利用 Graal 编译器将 P’ 编译为二进制码。</li></ul><h1 id="节点重写（node-rewriting）"><a href="#节点重写（node-rewriting）" class="headerlink" title="节点重写（node rewriting）"></a>节点重写（node rewriting）</h1><ul><li>动态语言中，需要在运行时动态确定操作数的具体类型。</li><li>在运行时选择语义的节点，不利于即时编译，严重影响到程序的性能。</li><li>Truffle 语言解释器会收集每个 AST 节点所代表的操作的类型，<strong>在即时编译时作出 profile 的特化</strong>（specialization）。</li><li>在即时编译过后，如果运行过程中发现<strong>实际类型和假设类型不同</strong>，会<strong>去优化</strong>返回至解释执行状态，并且<strong>重新收集 AST 节点的类型信息</strong>。</li></ul><h1 id="Polyglot"><a href="#Polyglot" class="headerlink" title="Polyglot"></a>Polyglot</h1><ul><li><strong>允许在同一段代码中混用不同的编程语言。</strong></li><li>Truffle 语言之间能够<strong>共用对象</strong>（与其他 Polyglot 框架的区别）。</li><li>Truffle 的 Polyglot 在<strong>切换语言</strong>时，<strong>性能开销非常小</strong>，甚至<strong>零开销</strong>。</li><li>通过 Polyglot API 来实现。</li></ul><h1 id="引用"><a href="#引用" class="headerlink" title="引用"></a>引用</h1><blockquote><p><a href="https://time.geekbang.org/column/article/41347" target="_blank" rel="noopener">https://time.geekbang.org/column/article/41347</a></p></blockquote>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;h1 id=&quot;语言实现&quot;&gt;&lt;a href=&quot;#语言实现&quot; class=&quot;headerlink&quot; title=&quot;语言实现&quot;&gt;&lt;/a&gt;语言实现&lt;/h1&gt;&lt;h2 id=&quot;编译型语言&quot;&gt;&lt;a href=&quot;#编译型语言&quot; class=&quot;headerlink&quot; title=&quot;编译型语言&quot;&gt;
+      
+    
+    </summary>
+    
+      <category term="Java虚拟机" scheme="http://ennis.info/categories/Java%E8%99%9A%E6%8B%9F%E6%9C%BA/"/>
+    
+    
+      <category term="JVM" scheme="http://ennis.info/tags/JVM/"/>
+    
+  </entry>
   
   <entry>
     <title>笔记-深入拆解Java虚拟机-34Graal：用Java编译Java</title>
@@ -518,34 +543,6 @@
       
       
         &lt;h1 id=&quot;自动装箱（auto-boxing）与自动拆箱（auto-unboxing）&quot;&gt;&lt;a href=&quot;#自动装箱（auto-boxing）与自动拆箱（auto-unboxing）&quot; class=&quot;headerlink&quot; title=&quot;自动装箱（auto-boxing）与
-      
-    
-    </summary>
-    
-      <category term="Java虚拟机" scheme="http://ennis.info/categories/Java%E8%99%9A%E6%8B%9F%E6%9C%BA/"/>
-    
-    
-      <category term="JVM" scheme="http://ennis.info/tags/JVM/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>笔记-深入拆解Java虚拟机-14Java虚拟机是怎么实现synchronized的？</title>
-    <link href="http://ennis.info/2018/10/17/%E7%AC%94%E8%AE%B0-%E6%B7%B1%E5%85%A5%E6%8B%86%E8%A7%A3Java%E8%99%9A%E6%8B%9F%E6%9C%BA-14Java%E8%99%9A%E6%8B%9F%E6%9C%BA%E6%98%AF%E6%80%8E%E4%B9%88%E5%AE%9E%E7%8E%B0synchronized%E7%9A%84%EF%BC%9F/"/>
-    <id>http://ennis.info/2018/10/17/笔记-深入拆解Java虚拟机-14Java虚拟机是怎么实现synchronized的？/</id>
-    <published>2018-10-17T06:08:55.000Z</published>
-    <updated>2018-11-10T11:35:07.959Z</updated>
-    
-    <content type="html"><![CDATA[<ul><li>声明 synchronized 的代码块，字节码包含 monitorenter 和 monitorexit 指令。</li><li>这两种指令会<strong>消耗</strong>操作数栈上的<strong>一个引用类型的元素</strong>。</li><li>这个元素是用来加解锁的锁对象。（synchronized 括号里的引用，实例方法是 this，静态方法是 class实例）。</li><li>用 synchronized 标记方法，字节码中方法的访问标记包括 ACC_SYNCHRONIZED。</li></ul><h1 id="monitorenter-和-monitorexit"><a href="#monitorenter-和-monitorexit" class="headerlink" title="monitorenter 和 monitorexit"></a>monitorenter 和 monitorexit</h1><h2 id="作用"><a href="#作用" class="headerlink" title="作用"></a>作用</h2><p>可以<strong>抽象</strong>地理解为<strong>每个锁对象</strong>有：</p><ol><li>一个锁<strong>计数器</strong></li><li>一个指向持有该锁的<strong>线程的指针</strong></li></ol><h2 id="执行-monitorenter"><a href="#执行-monitorenter" class="headerlink" title="执行 monitorenter"></a>执行 monitorenter</h2><ul><li><p>计数器为0</p><ul><li>说明没有被其他线程所持有。</li><li>锁对象的持有线程设置为当前线程。</li><li>计数器加 1。</li></ul></li><li><p>计数器不为0</p><ul><li>如果锁对象的持有当前线程，计数器加 1。</li><li>否则等待，直至锁释放。</li></ul></li></ul><h2 id="执行-monitorexit"><a href="#执行-monitorexit" class="headerlink" title="执行 monitorexit"></a>执行 monitorexit</h2><ul><li>锁对象的计数器减 1。</li><li>减为 0 时，锁被释放。</li></ul><h2 id="为什么采用计数器的方式？"><a href="#为什么采用计数器的方式？" class="headerlink" title="为什么采用计数器的方式？"></a>为什么采用计数器的方式？</h2><ul><li><strong>允许同一个线程重复获取同一把锁。</strong></li></ul><blockquote><p>HotSpot 虚拟机中具体的锁实现。</p></blockquote><h1 id="重量级锁"><a href="#重量级锁" class="headerlink" title="重量级锁"></a>重量级锁</h1><ul><li>JVM中<strong>最基础</strong>的锁实现。</li><li>阻塞加锁失败的线程，锁被释放时唤醒。</li><li>阻塞及唤醒依靠操作系统完成，<strong>开销大</strong>。</li></ul><h2 id="自旋状态"><a href="#自旋状态" class="headerlink" title="自旋状态"></a>自旋状态</h2><ul><li>为了尽量<strong>避免昂贵的线程阻塞、唤醒操作</strong>。</li><li>在线程<strong>进入阻塞状态之前</strong>，或被<strong>唤醒后竞争不到锁</strong>的情况下<strong>进入自旋状态</strong>。</li><li><strong>在处理器上空跑</strong>并且轮询锁是否被释放。</li><li>与线程阻塞相比，<strong>自旋状态可能会浪费大量的处理器资源</strong>。</li><li>JVM 不能根据等待时间的长短来选择自旋还是阻塞。</li><li>JVM 采用<strong>自适应自旋</strong>，根据以往自旋等待时能否获得锁，<strong>动态调整自旋时间</strong>（循环数目）。</li></ul><h3 id="自旋状态的副作用：不公平的锁机制"><a href="#自旋状态的副作用：不公平的锁机制" class="headerlink" title="自旋状态的副作用：不公平的锁机制"></a>自旋状态的副作用：<strong>不公平的锁机制</strong></h3><ul><li>阻塞状态的线程，没有办法立刻竞争被释放的锁。</li><li>自旋状态的线程，很有可能优先获得锁。</li></ul><h1 id="轻量级锁"><a href="#轻量级锁" class="headerlink" title="轻量级锁"></a>轻量级锁</h1><ul><li><strong>没有锁竞争的情况。</strong></li></ul><h2 id="怎样区分轻量级锁和重量级锁？"><a href="#怎样区分轻量级锁和重量级锁？" class="headerlink" title="怎样区分轻量级锁和重量级锁？"></a>怎样区分轻量级锁和重量级锁？</h2><p>对象头的标记字段（mark word）最后两位用来表示该对象的锁状态。</p><table><thead><tr><th>值</th><th>含义</th></tr></thead><tbody><tr><td>00</td><td>轻量级锁</td></tr><tr><td>01</td><td>无锁或偏向锁</td></tr><tr><td>10</td><td>重量级锁</td></tr><tr><td>11</td><td>垃圾回收标记</td></tr></tbody></table><h2 id="加锁操作"><a href="#加锁操作" class="headerlink" title="加锁操作"></a>加锁操作</h2><p>判断是否是重量级锁</p><h3 id="判断为非重量级锁"><a href="#判断为非重量级锁" class="headerlink" title="判断为非重量级锁"></a>判断为非重量级锁</h3><ul><li>在当前线程的当前栈桢中划出一块空间作为该锁的锁记录。</li><li><strong>将锁对象的标记字段复制到锁记录中。</strong></li><li>JVM 尝试<strong>用 CAS 操作替换锁对象的标记字段</strong>。（不懂）<br>比较标记字段是否为X…X01<ul><li>是，替换为锁记录地址，成功获得锁，继续执行。</li><li>否<ul><li>线程重复获得同一把锁，JVM 将锁记录清理，代表锁被重复获取。</li><li><strong>其他线程持有锁，JVM 将该锁膨胀为重量级锁</strong>，阻塞该线程。</li></ul></li></ul></li></ul><h2 id="解锁操作"><a href="#解锁操作" class="headerlink" title="解锁操作"></a>解锁操作</h2><h3 id="锁记录值为-0"><a href="#锁记录值为-0" class="headerlink" title="锁记录值为 0"></a>锁记录值为 0</h3><p>重复进入同一把锁，直接返回。（不懂）</p><h3 id="锁记录值不为-0"><a href="#锁记录值不为-0" class="headerlink" title="锁记录值不为 0"></a>锁记录值不为 0</h3><p>JVM 尝试用 CAS 操作比较标记字段是否为当前锁记录地址</p><ul><li>是，替换为锁记录的值，锁释放。</li><li>否，表示锁已膨胀为重量级锁，进入重量级锁释放过程。</li></ul><h1 id="偏向锁"><a href="#偏向锁" class="headerlink" title="偏向锁"></a>偏向锁</h1><h2 id="加锁操作-1"><a href="#加锁操作-1" class="headerlink" title="加锁操作"></a>加锁操作</h2><ul><li>锁对象支持偏向锁。</li><li>JVM 通过 CAS 操作，将<strong>当前线程地址记录在锁对象的标记字段</strong>，将标记字段<strong>最后三位设为 101</strong>。</li></ul><h3 id="线程请求锁时"><a href="#线程请求锁时" class="headerlink" title="线程请求锁时"></a>线程请求锁时</h3><p>判断锁对象标记字段：</p><ol><li><strong>最后三位是否为 101</strong></li><li>是否<strong>包含当前线程的地址</strong></li><li>epoch 值是否<strong>和锁对象的类的 epoch 值相同</strong></li></ol><ul><li><p>都满足则当前线程持有该偏向锁，直接返回。</p></li><li><p>2 不满足，epoch 值相等时，JVM 需要撤销该偏向锁。</p></li><li><p>2 满足，epoch 值不等时，当前线程可以将该锁重偏向至自己。</p></li></ul><h2 id="epoch-值"><a href="#epoch-值" class="headerlink" title="epoch 值"></a>epoch 值</h2><ul><li>每个类维护一个 epoch 值。</li><li>设置偏向锁时，JVM 要将 epoch 值复制到锁对象标记字段中。</li><li><strong>撤销偏向锁</strong>要求持有偏向锁的<strong>线程到达安全点</strong>，再将偏向锁<strong>替换成轻量级锁</strong>。</li><li>某类锁对象<strong>撤销数超过一个阈值，JVM 宣布该类偏向锁失效</strong>。</li><li>宣布偏向锁失效时，JVM 将该类的 epoch 值加 1。</li><li>为了保证当前持有偏向锁并且已加锁的线程<strong>不丢锁</strong>，<ul><li>JVM <strong>遍历所有线程的 Java 栈</strong>，找出该类已加锁实例，</li><li>将标记字段的 epoch 值加 1（<strong>需要所有线程处于安全点状态</strong>）。</li></ul></li><li><strong>总撤销数超过另一个阈值</strong> JVM 认为<strong>这个类不再适合偏向锁</strong>。<ul><li>JVM 会<strong>撤销该类实例的偏向锁</strong>，</li><li>之后<strong>加锁直接设置轻量级锁</strong>。</li></ul></li></ul><h1 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h1><blockquote><p><a href="https://time.geekbang.org/column/article/13530" target="_blank" rel="noopener">https://time.geekbang.org/column/article/13530</a></p></blockquote>]]></content>
-    
-    <summary type="html">
-    
-      
-      
-        &lt;ul&gt;
-&lt;li&gt;声明 synchronized 的代码块，字节码包含 monitorenter 和 monitorexit 指令。&lt;/li&gt;
-&lt;li&gt;这两种指令会&lt;strong&gt;消耗&lt;/strong&gt;操作数栈上的&lt;strong&gt;一个引用类型的元素&lt;/strong&gt;。&lt;/li&gt;
-
       
     
     </summary>

@@ -298,6 +298,237 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://ennis.info/2018/12/16/笔记-深入拆解Java虚拟机-35Truffle：语言实现框架/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Ennis L.M. Wu">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="http://pcrioz2ch.bkt.clouddn.com/portrait.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Ennis -Little Monster">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/12/16/笔记-深入拆解Java虚拟机-35Truffle：语言实现框架/" itemprop="url">笔记-深入拆解Java虚拟机-35Truffle：语言实现框架</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-12-16T11:28:43+08:00">
+                2018-12-16
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Java虚拟机/" itemprop="url" rel="index">
+                    <span itemprop="name">Java虚拟机</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h1 id="语言实现"><a href="#语言实现" class="headerlink" title="语言实现"></a>语言实现</h1><h2 id="编译型语言"><a href="#编译型语言" class="headerlink" title="编译型语言"></a><a href="https://en.wikipedia.org/wiki/Compiled_language" target="_blank" rel="noopener">编译型语言</a></h2><ul>
+<li>实现一门新编程语言的传统做法是<strong>实现一个编译器</strong>。</li>
+<li>编译器分为前端和后端：<ul>
+<li>前端：负责词法分析、语法分析、类型检查和中间代码生成。</li>
+<li>后端：负责编译优化和目标代码生成。</li>
+</ul>
+</li>
+<li>另一种做法是将新语言<strong>编译成某种已知语言</strong>，或者已知的中间形式（如Java 字节码）。</li>
+<li>可以直接享用 JVM 自带的各项优化（即时编译、自动内存管理等等）。</li>
+</ul>
+<h2 id="解释型语言"><a href="#解释型语言" class="headerlink" title="解释型语言"></a><a href="https://en.wikipedia.org/wiki/Interpreted_language" target="_blank" rel="noopener">解释型语言</a></h2><ul>
+<li>无须编译步骤，依赖于<strong>解释执行器</strong>进行<strong>解析并执行</strong>。</li>
+<li>通常将其包装在虚拟机里（实现如即时编译、垃圾回收等其他组件）。</li>
+<li>理想情况下，希望不同的语言实现中复用这些组件，只要实现解释执行器。</li>
+</ul>
+<h1 id="Truffle-项目简介"><a href="#Truffle-项目简介" class="headerlink" title="Truffle 项目简介"></a>Truffle 项目简介</h1><ul>
+<li><strong>用 Java 写的语言实现框架。</strong></li>
+<li>基于 Truffle 的语言可以享用由 Truffle 提供的各项运行时优化。需实现：<ul>
+<li>用 Java 实现词法分析</li>
+<li>语法分析</li>
+<li>针对语法分析所生成的抽象语法树（Abstract Syntax Tree，AST）的解释执行器</li>
+</ul>
+</li>
+<li><strong>可以运行在任何 JVM 上。</strong></li>
+<li>如果 Truffle 运行在附带了 Graal 编译器的 Java 虚拟机之上，它将调用 Graal 编译器所提供的 API，<strong>主动触发对 Truffle 语言的即时编译</strong>，将对 AST 的解释执行转换为执行即时编译后的机器码。</li>
+<li><strong>对于解释型语言</strong>，经由 Graal 编译器加速的 Truffle 语言解释器的<strong>性能十分优越</strong>。</li>
+<li><strong>对于拥有专业即时编译器语言，仍处于追赶者的位置。</strong></li>
+</ul>
+<h1 id="Partial-Evaluation"><a href="#Partial-Evaluation" class="headerlink" title="Partial Evaluation"></a>Partial Evaluation</h1><ul>
+<li>将 P: I -&gt; O 转化为 P’: ID -&gt; O</li>
+<li>P’ 是 P 的特化（Specialization）。</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>符号</th>
+<th>含义</th>
+<th>对应关系</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>P</td>
+<td>程序</td>
+<td>Truffle 语言的解释执行器</td>
+</tr>
+<tr>
+<td>P’</td>
+<td>等价的另一段程序</td>
+<td>通过 Partial Evaluation 特化为P’</td>
+</tr>
+<tr>
+<td>I</td>
+<td>输入</td>
+<td></td>
+</tr>
+<tr>
+<td>IS</td>
+<td>已知常量</td>
+<td>Truffle 语言写的程序</td>
+</tr>
+<tr>
+<td>ID</td>
+<td>未知变量</td>
+<td></td>
+</tr>
+<tr>
+<td>O</td>
+<td>输出</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>可以利用 Graal 编译器将 P’ 编译为二进制码。</li>
+</ul>
+<h1 id="节点重写（node-rewriting）"><a href="#节点重写（node-rewriting）" class="headerlink" title="节点重写（node rewriting）"></a>节点重写（node rewriting）</h1><ul>
+<li>动态语言中，需要在运行时动态确定操作数的具体类型。</li>
+<li>在运行时选择语义的节点，不利于即时编译，严重影响到程序的性能。</li>
+<li>Truffle 语言解释器会收集每个 AST 节点所代表的操作的类型，<strong>在即时编译时作出 profile 的特化</strong>（specialization）。</li>
+<li>在即时编译过后，如果运行过程中发现<strong>实际类型和假设类型不同</strong>，会<strong>去优化</strong>返回至解释执行状态，并且<strong>重新收集 AST 节点的类型信息</strong>。</li>
+</ul>
+<h1 id="Polyglot"><a href="#Polyglot" class="headerlink" title="Polyglot"></a>Polyglot</h1><ul>
+<li><strong>允许在同一段代码中混用不同的编程语言。</strong></li>
+<li>Truffle 语言之间能够<strong>共用对象</strong>（与其他 Polyglot 框架的区别）。</li>
+<li>Truffle 的 Polyglot 在<strong>切换语言</strong>时，<strong>性能开销非常小</strong>，甚至<strong>零开销</strong>。</li>
+<li>通过 Polyglot API 来实现。</li>
+</ul>
+<h1 id="引用"><a href="#引用" class="headerlink" title="引用"></a>引用</h1><blockquote>
+<p><a href="https://time.geekbang.org/column/article/41347" target="_blank" rel="noopener">https://time.geekbang.org/column/article/41347</a></p>
+</blockquote>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://ennis.info/2018/12/15/笔记-深入拆解Java虚拟机-34Graal：用Java编译Java/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -2292,202 +2523,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://ennis.info/2018/11/15/笔记-深入拆解Java虚拟机-23逃逸分析/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Ennis L.M. Wu">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="http://pcrioz2ch.bkt.clouddn.com/portrait.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Ennis -Little Monster">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/11/15/笔记-深入拆解Java虚拟机-23逃逸分析/" itemprop="url">笔记-深入拆解Java虚拟机-23逃逸分析</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-11-15T16:40:59+08:00">
-                2018-11-15
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Java虚拟机/" itemprop="url" rel="index">
-                    <span itemprop="name">Java虚拟机</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h1 id="逃逸分析"><a href="#逃逸分析" class="headerlink" title="逃逸分析"></a>逃逸分析</h1><blockquote>
-<p>一种确定<strong>指针动态范围</strong>的<strong>静态分析</strong>，它可以分析在程序的哪些地方可以访问到指针。</p>
-</blockquote>
-<ul>
-<li>在 JVM 的<strong>即时编译</strong>语境下，逃逸分析将<strong>判断新建的对象是否逃逸</strong>。</li>
-</ul>
-<h2 id="判断对象是否逃逸的依据"><a href="#判断对象是否逃逸的依据" class="headerlink" title="判断对象是否逃逸的依据"></a>判断对象是否逃逸的依据</h2><ul>
-<li>对象是否被<strong>存入堆</strong>中（静态字段或者堆中对象的实例字段）。</li>
-<li><p>对象是否被<strong>传入未知代码</strong>中（对象是否作为方法调用的调用者或者参数）。</p>
-<ul>
-<li>方法中未被内联的方法调用当成未知代码。</li>
-<li>可以认为<strong>方法调用的调用者以及参数是逃逸的</strong>。</li>
-</ul>
-</li>
-<li><p>通常<strong>逃逸分析</strong>放在<strong>方法内联之后</strong>。</p>
-</li>
-</ul>
-<h1 id="基于逃逸分析的优化"><a href="#基于逃逸分析的优化" class="headerlink" title="基于逃逸分析的优化"></a>基于逃逸分析的优化</h1><h2 id="锁消除"><a href="#锁消除" class="headerlink" title="锁消除"></a>锁消除</h2><ul>
-<li><p>如果能证明<strong>锁对象不逃逸</strong>，对该锁对象的<strong>加锁、解锁</strong>操作<strong>没有意义</strong>。</p>
-<ul>
-<li>因为其他线程不能获得该所对象，即时编译器可以消除加锁、解锁操作。</li>
-<li>传统编译器仅需证明锁对象不逃逸出线程，便可以进行锁消除。</li>
-<li>由于即时编译的限制，条件被强化为证明锁<strong>对象不逃逸</strong>出当前编译的<strong>方法</strong>。</li>
-</ul>
-</li>
-<li><p>基于逃逸分析的锁消除实际上不多见。</p>
-</li>
-</ul>
-<h2 id="栈上分配（HotSpot-虚拟机未采用）"><a href="#栈上分配（HotSpot-虚拟机未采用）" class="headerlink" title="栈上分配（HotSpot 虚拟机未采用）"></a>栈上分配（HotSpot 虚拟机未采用）</h2><ul>
-<li>如果逃逸分析能证明某些<strong>新建的对象不逃逸</strong>，可以将其<strong>分配至栈上</strong>。</li>
-<li>new 语句所在的方法退出时，<strong>弹出</strong>当前方法的<strong>栈桢自动回收内存空间</strong>。</li>
-<li>无须借助垃圾回收器处理。</li>
-<li>实现需要<strong>更改大量</strong>假设“对象只能堆分配”的<strong>代码</strong>。</li>
-</ul>
-<h2 id="标量替换"><a href="#标量替换" class="headerlink" title="标量替换"></a>标量替换</h2><blockquote>
-<p>标量：就是仅能存储一个值的变量，如局部变量。<br>聚合量：可能同时存储多个值，如 Java 对象。</p>
-</blockquote>
-<ul>
-<li>可以看成将原本<strong>对对象的字段的访问，替换为一个个局部变量的访问</strong>。</li>
-<li>对象没有被实际分配，和栈上分配一样。</li>
-<li>可以减轻垃圾回收的压力。</li>
-<li>与栈上分配相比，<strong>对字段的内存连续性不做要求</strong>。</li>
-<li>字段甚至可以<strong>直接在寄存器中维护</strong>，无须浪费任何内存空间。</li>
-</ul>
-<h1 id="部分逃逸分析（partial-escape-analysis）"><a href="#部分逃逸分析（partial-escape-analysis）" class="headerlink" title="部分逃逸分析（partial escape analysis）"></a>部分逃逸分析（partial escape analysis）</h1><ul>
-<li>C2 的逃逸分析与控制流无关。</li>
-<li>Graal 引入一个<strong>与控制流有关</strong>的逃逸分析，即部分逃逸分析。</li>
-<li>部分逃逸分析能够<strong>优化更多的情况，编译时间更长</strong>。</li>
-<li><strong>解决</strong>所新建的实例仅在<strong>部分程序路径中逃逸</strong>的情况。</li>
-<li>根据控制流信息，判断出新建对象仅在部分分支中逃逸，<strong>将对象的新建操作推延至对象逃逸的分支中</strong>。</li>
-<li>使得原本因对象逃逸而无法避免的新建对象操作，不再出现在只执行 if-else 分支的程序路径之中。（不懂）</li>
-</ul>
-<h1 id="引用"><a href="#引用" class="headerlink" title="引用"></a>引用</h1><blockquote>
-<p><a href="https://time.geekbang.org/column/article/18048" target="_blank" rel="noopener">https://time.geekbang.org/column/article/18048</a></p>
-</blockquote>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -2542,7 +2577,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">49</span>
+                  <span class="site-state-item-count">50</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>

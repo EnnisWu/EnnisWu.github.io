@@ -1,6 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title><![CDATA[笔记-深入拆解Java虚拟机-35Truffle：语言实现框架]]></title>
+    <url>%2F2018%2F12%2F16%2F%E7%AC%94%E8%AE%B0-%E6%B7%B1%E5%85%A5%E6%8B%86%E8%A7%A3Java%E8%99%9A%E6%8B%9F%E6%9C%BA-35Truffle%EF%BC%9A%E8%AF%AD%E8%A8%80%E5%AE%9E%E7%8E%B0%E6%A1%86%E6%9E%B6%2F</url>
+    <content type="text"><![CDATA[语言实现编译型语言 实现一门新编程语言的传统做法是实现一个编译器。 编译器分为前端和后端： 前端：负责词法分析、语法分析、类型检查和中间代码生成。 后端：负责编译优化和目标代码生成。 另一种做法是将新语言编译成某种已知语言，或者已知的中间形式（如Java 字节码）。 可以直接享用 JVM 自带的各项优化（即时编译、自动内存管理等等）。 解释型语言 无须编译步骤，依赖于解释执行器进行解析并执行。 通常将其包装在虚拟机里（实现如即时编译、垃圾回收等其他组件）。 理想情况下，希望不同的语言实现中复用这些组件，只要实现解释执行器。 Truffle 项目简介 用 Java 写的语言实现框架。 基于 Truffle 的语言可以享用由 Truffle 提供的各项运行时优化。需实现： 用 Java 实现词法分析 语法分析 针对语法分析所生成的抽象语法树（Abstract Syntax Tree，AST）的解释执行器 可以运行在任何 JVM 上。 如果 Truffle 运行在附带了 Graal 编译器的 Java 虚拟机之上，它将调用 Graal 编译器所提供的 API，主动触发对 Truffle 语言的即时编译，将对 AST 的解释执行转换为执行即时编译后的机器码。 对于解释型语言，经由 Graal 编译器加速的 Truffle 语言解释器的性能十分优越。 对于拥有专业即时编译器语言，仍处于追赶者的位置。 Partial Evaluation 将 P: I -&gt; O 转化为 P’: ID -&gt; O P’ 是 P 的特化（Specialization）。 符号 含义 对应关系 P 程序 Truffle 语言的解释执行器 P’ 等价的另一段程序 通过 Partial Evaluation 特化为P’ I 输入 IS 已知常量 Truffle 语言写的程序 ID 未知变量 O 输出 可以利用 Graal 编译器将 P’ 编译为二进制码。 节点重写（node rewriting） 动态语言中，需要在运行时动态确定操作数的具体类型。 在运行时选择语义的节点，不利于即时编译，严重影响到程序的性能。 Truffle 语言解释器会收集每个 AST 节点所代表的操作的类型，在即时编译时作出 profile 的特化（specialization）。 在即时编译过后，如果运行过程中发现实际类型和假设类型不同，会去优化返回至解释执行状态，并且重新收集 AST 节点的类型信息。 Polyglot 允许在同一段代码中混用不同的编程语言。 Truffle 语言之间能够共用对象（与其他 Polyglot 框架的区别）。 Truffle 的 Polyglot 在切换语言时，性能开销非常小，甚至零开销。 通过 Polyglot API 来实现。 引用 https://time.geekbang.org/column/article/41347]]></content>
+      <categories>
+        <category>Java虚拟机</category>
+      </categories>
+      <tags>
+        <tag>JVM</tag>
+      </tags>
+  </entry>
+  <entry>
     <title><![CDATA[笔记-深入拆解Java虚拟机-34Graal：用Java编译Java]]></title>
     <url>%2F2018%2F12%2F15%2F%E7%AC%94%E8%AE%B0-%E6%B7%B1%E5%85%A5%E6%8B%86%E8%A7%A3Java%E8%99%9A%E6%8B%9F%E6%9C%BA-34Graal%EF%BC%9A%E7%94%A8Java%E7%BC%96%E8%AF%91Java%2F</url>
     <content type="text"><![CDATA[GraalVM GraalVM 是一个高性能的、支持多种编程语言的执行环境。它既可以在传统的 OpenJDK 上运行，也可以通过 AOT（Ahead-Of-Time）编译成可执行文件单独运行，甚至可以集成至数据库中运行。 除此之外，它还移除了编程语言之间的边界，并且支持通过即时编译技术，将混杂了不同的编程语言的代码编译到同一段二进制码之中，从而实现不同语言之间的无缝切换。 Graal 编译器 用 Java 写就的即时编译器，它从 Java 9u 开始便被集成自 JDK 中，作为实验性质的即时编译器。 启用时将替换掉 HotSpot 中的 C2 编译器。 响应原本 C2 负责的编译请求。 Graal 和 Java 虚拟机的交互即时编译器与 JVM 的交互可以分为三个方面： 响应编译请求。 获取编译所需的元数据（如类、方法、字段）和反映程序执行状态的 profile。 将生成的二进制码部署至代码缓存（code cache）里。 传统情况，即时编译器是与 JVM 紧耦合。 更改即时编译器需要重新编译整个 JVM。 引入 JVM 编译器接口（JVM Compiler Interface，JVMCI）解耦合 JVM 和 Graal。 Java 程序可以直接调用 Graal，编译并部署指定方法（因为JVMCI）。 Graal 的单元测试和 Truffle 语言实现框架基于上述技术。 Graal 和 C2 的区别 Graal 由 Java 编写，C2 由 C++ 编写。 Graal 更加模块化，更容易开发与维护。 Graal 中被证实有效的部分逃逸分析（partial escape analysis）未被移植到 C2 中。 Graal 的内联算法对新语法、新语言更加友好。 Graal 的实现 编译过程分为前端和后端。 前端实现平台无关的优化（如方法内联），和小部分平台相关的优化。 后端实现大部分平台相关优化（如寄存器分配），和生成机器码。 前端的 IR 称为 High-level IR（HIR）（如Sea-of-Nodes IR），后端的 IR 称为 Low-level IR（LIR）。 前端由一个个单独的优化阶段（optimization phase）构成。 前端编译阶段除了少数几个关键的之外，其余均可以通过配置选项开启或关闭。 Graal 比 C2 更加激进，设计上十分青睐基于假设的优化手段。 Graal 支持自定义假设，和直接与去优化节点相关联。 Graal 实现高性能的 intrinsic 方法相对简单。 问题Q：GraalVM 和 JVM 是什么关系？ A：可以将 GraalVM 看成泛指带 Graal 编译器的虚拟机。 Q：可不可以把 profile 和编译的机器码保存到磁盘，在代码和运行平台不变的情况下，下次启动（或部署多实例）的时候直接装载这部分数据？这算作是一种系统预热的可行性方案吗？ A：已经有这种做法，但同时需要承担 profile 不能反映当前执行状态的风险。 Q：Graal 自身的及时编译是调用 Graal 自身吗？如果这么做会不会出现无穷递归？ A：默认情况下，由 C1 编译Graal。调用 Graal 编译 Graal 并不会造成无穷递归。因为 JVM 里有解释执行器，能够执行 Graal 代码。 引用 https://time.geekbang.org/column/article/41245]]></content>
