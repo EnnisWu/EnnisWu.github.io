@@ -298,6 +298,228 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://ennis.info/2018/12/19/笔记-深入拆解Java虚拟机-36SubstrateVM：AOT编译框架/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Ennis L.M. Wu">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="http://pcrioz2ch.bkt.clouddn.com/portrait.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Ennis -Little Monster">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/12/19/笔记-深入拆解Java虚拟机-36SubstrateVM：AOT编译框架/" itemprop="url">笔记-深入拆解Java虚拟机-36SubstrateVM：AOT编译框架</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-12-19T10:54:30+08:00">
+                2018-12-19
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Java虚拟机/" itemprop="url" rel="index">
+                    <span itemprop="name">Java虚拟机</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h1 id="AOT（Ahead-Of-Time）编译"><a href="#AOT（Ahead-Of-Time）编译" class="headerlink" title="AOT（Ahead-Of-Time）编译"></a>AOT（Ahead-Of-Time）编译</h1><ul>
+<li><strong>程序运行之前，将字节码转换为机器码的过程。</strong></li>
+<li>编译后可以需要链接至托管环境中的动态共享库，也可以是独立运行的可执行文件。</li>
+<li>狭义的 AOT 编译针对的目标代码是可以被即时编译的代码。</li>
+<li>可以简单地理解为类似 GCC 的静态编译器。</li>
+</ul>
+<h2 id="优点"><a href="#优点" class="headerlink" title="优点"></a>优点</h2><ul>
+<li>无须在运行时耗费 CPU 资源进行即时编译。</li>
+<li>程序能在<strong>启动时就达到理想的性能</strong>。</li>
+</ul>
+<h2 id="缺点"><a href="#缺点" class="headerlink" title="缺点"></a>缺点</h2><ul>
+<li>无法得知程序运行时的信息。</li>
+<li>无法进行基于类层次分析的完全虚方法内联。（不懂）</li>
+<li>无法进行基于程序 profile 的投机性优化。（不懂）</li>
+<li><strong>影响程序的峰值性能。</strong></li>
+</ul>
+<h1 id="jaotc"><a href="#jaotc" class="headerlink" title="jaotc"></a><a href="http://openjdk.java.net/jeps/295" target="_blank" rel="noopener">jaotc</a></h1><blockquote>
+<p>Java 9 引入的实验性 AOT 编译工具。</p>
+</blockquote>
+<ul>
+<li>借助 Graal 编译器，将类文件转换为机器码，存放在生成的动态共享库中。</li>
+<li><strong>在方法调用时切入</strong>，能够去优化至解释执行。</li>
+<li>由于 JVM 可能通过 Java agent 或者 C agent 改动加载的字节码，或者这份 AOT 编译生成的机器码针对的是旧版本的 Java 类，因此它<strong>需要额外的验证机制</strong>，来保证即将链接的机器码的语义与对应的 Java 类的语义是一致的。</li>
+</ul>
+<h2 id="类指纹（class-fingerprinting）"><a href="#类指纹（class-fingerprinting）" class="headerlink" title="类指纹（class fingerprinting）"></a>类指纹（class fingerprinting）</h2><ul>
+<li>在动态共享库中保存被编译的 Java 类的摘要信息。</li>
+<li>JVM 比较摘要信息和已加载的 Java 类。</li>
+<li>不匹配则舍弃。</li>
+</ul>
+<h2 id="应用"><a href="#应用" class="headerlink" title="应用"></a>应用</h2><ul>
+<li><strong>编译 java.base module</strong>（Java 核心类库中最为基础的类）。</li>
+<li>这些类可能被应用程序调用，但频率未必高到能触发即时编译。</li>
+<li>将它们<strong>提前编译为机器码</strong>，<strong>避免</strong>在执行即时编译生成的机器码时，因为调用到这些基础类，而需要<strong>切换至解释执行的性能惩罚</strong>。</li>
+</ul>
+<h1 id="SubstrateVM-的设计与实现"><a href="#SubstrateVM-的设计与实现" class="headerlink" title="SubstrateVM 的设计与实现"></a>SubstrateVM 的设计与实现</h1><blockquote>
+<p>设计初衷是提供一个高启动性能、低内存开销，并且能够无缝衔接 C 代码的 Java 运行时。</p>
+</blockquote>
+<h2 id="SubstrateVM-的限制"><a href="#SubstrateVM-的限制" class="headerlink" title="SubstrateVM 的限制"></a>SubstrateVM 的限制</h2><blockquote>
+<p><a href="https://github.com/oracle/graal/blob/master/substratevm/LIMITATIONS.md" target="_blank" rel="noopener">文档</a></p>
+</blockquote>
+<ul>
+<li><strong>脱离 HotSpot 虚拟机，拥有独立运行时</strong>（包含异常处理，同步，线程管理，内存管理（垃圾回收）和 JNI 等组件）。</li>
+<li><strong>要求目标程序是封闭的，不能动态加载其他类库等。</strong></li>
+<li>探索整个编译空间，通过静态分析推算所有虚方法调用的目标方法。</li>
+<li>将所有可能执行到的方法都纳入编译范围，避免实现解释执行器。</li>
+<li>主要用于 JVM 语言的 AOT 编译。</li>
+<li>Truffle 语言实现可以在 SubstrateVM 上运行，但不会 AOT 编译。</li>
+</ul>
+<h2 id="native-image-generator"><a href="#native-image-generator" class="headerlink" title="native image generator"></a>native image generator</h2><ul>
+<li>是一个 Java 程序。</li>
+<li>包含 AOT 编译逻辑。</li>
+<li>采用指针分析（points-to analysis），从程序入口出发，探索所有可达代码。</li>
+<li>执行初始化代码。</li>
+<li>最终生成可执行文件时，将已初始化的堆保存至一个堆快照之中。</li>
+</ul>
+<h2 id="SubstrateVM-运行时"><a href="#SubstrateVM-运行时" class="headerlink" title="SubstrateVM 运行时"></a>SubstrateVM 运行时</h2><ul>
+<li>精简运行时，经过 AOT 编译的目标程序将跑在该运行时之上。</li>
+<li>直接从目标程序开始运行，无须进行 JVM 初始化。</li>
+</ul>
+<h1 id="SubstrateVM-的启动时间与内存开销"><a href="#SubstrateVM-的启动时间与内存开销" class="headerlink" title="SubstrateVM 的启动时间与内存开销"></a>SubstrateVM 的启动时间与内存开销</h1><ul>
+<li><strong>启动时间和内存开销非常少。</strong></li>
+<li>适合嵌入其他系统中。</li>
+</ul>
+<h1 id="Metropolis-项目"><a href="#Metropolis-项目" class="headerlink" title="Metropolis 项目"></a><a href="http://openjdk.java.net/projects/metropolis/" target="_blank" rel="noopener">Metropolis 项目</a></h1><blockquote>
+<p>实现<strong>“Java-on-Java”</strong>的目标。</p>
+</blockquote>
+<p>Oracle 的架构师 John Rose 提出的使用 Java 开发 Java 虚拟机的好处：</p>
+<ol>
+<li>能够完全控制编译 Java 虚拟机时所使用的优化技术。</li>
+<li>能够与 C++ 语言的更新解耦合。</li>
+<li>能够减轻开发人员以及维护人员的负担。</li>
+<li>能够以更为敏捷的方式实现 Java 的新功能。</li>
+</ol>
+<ul>
+<li><a href="https://www.jikesrvm.org/" target="_blank" rel="noopener">JikesRVM 项目</a>和<a href="https://github.com/beehive-lab/Maxine-VM" target="_blank" rel="noopener">Maxine VM 项目</a>已用 Java 完整地实现了一套 Java 虚拟机（后者的即时编译器 C1X 是 Graal 编译器的前身）。</li>
+<li>Java-on-Java 技术通常会干扰应用程序的垃圾回收、即时编译优化。</li>
+<li>严重影响 JVM 的启动性能。</li>
+</ul>
+<h1 id="引用"><a href="#引用" class="headerlink" title="引用"></a>引用</h1><blockquote>
+<p><a href="https://time.geekbang.org/column/article/41582" target="_blank" rel="noopener">https://time.geekbang.org/column/article/41582</a></p>
+</blockquote>
+<h1 id="深入拆解Java虚拟机完结"><a href="#深入拆解Java虚拟机完结" class="headerlink" title="深入拆解Java虚拟机完结"></a>深入拆解Java虚拟机完结</h1>
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://ennis.info/2018/12/16/笔记-深入拆解Java虚拟机-35Truffle：语言实现框架/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -2349,185 +2571,11 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://ennis.info/2018/11/22/笔记-深入拆解Java虚拟机-24字段访问相关优化/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Ennis L.M. Wu">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="http://pcrioz2ch.bkt.clouddn.com/portrait.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Ennis -Little Monster">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/11/22/笔记-深入拆解Java虚拟机-24字段访问相关优化/" itemprop="url">笔记-深入拆解Java虚拟机-24字段访问相关优化</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-11-22T19:20:50+08:00">
-                2018-11-22
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Java虚拟机/" itemprop="url" rel="index">
-                    <span itemprop="name">Java虚拟机</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h1 id="字段读取优化"><a href="#字段读取优化" class="headerlink" title="字段读取优化"></a>字段读取优化</h1><ul>
-<li><p>即时编译器会<strong>优化实例字段和静态字段访问</strong>，以减少总的内存访问数目。</p>
-<ul>
-<li>沿控制流，缓存各个字段存储节点将要存储的值，或者字段读取节点所得到的值。</li>
-<li>遇到对同一字段的读取节点时，如果缓存值还没有失效，将读取节点替换为该缓存值。</li>
-<li>遇到对同一字段的存储节点时，更新所缓存的值。</li>
-<li>遇到可能更新字段的节点时，采取保守策略，舍弃所有缓存值。</li>
-</ul>
-</li>
-<li><p>如果字段读取节点被替换成一个常量，将进一步触发更多优化。</p>
-<ul>
-<li>删除不可达条件分支代码，死循环后的代码。</li>
-</ul>
-</li>
-<li><p>即时编译器将在 volatile 字段访问前后插入内存屏障节点。</p>
-</li>
-<li><strong>内存屏障节点会阻止即时编译器将屏障之前所缓存的值用于屏障之后的读取节点之上。</strong></li>
-<li><strong>加锁、解锁操作会阻止即时编译器的字段读取优化。</strong></li>
-</ul>
-<h1 id="字段存储优化"><a href="#字段存储优化" class="headerlink" title="字段存储优化"></a>字段存储优化</h1><ul>
-<li>即时编译器会<strong>消除冗余的存储节点</strong>。</li>
-<li>如果字段被标记为 <strong>volatile</strong>，即时编译器<strong>不能</strong>将冗余的存储操作<strong>消除</strong>掉。</li>
-</ul>
-<h1 id="死代码消除（dead-code-eliminiation）"><a href="#死代码消除（dead-code-eliminiation）" class="headerlink" title="死代码消除（dead code eliminiation）"></a>死代码消除（dead code eliminiation）</h1><ul>
-<li><strong>消除局部变量的死存储</strong>（dead store）（涉及冗余存储）。</li>
-<li><strong>消除不可达分支。</strong></li>
-</ul>
-<h1 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h1><p>Q：思考即时编译器会怎么优化下面代码中的除法操作？</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">bar</span><span class="params">(<span class="keyword">int</span> x, <span class="keyword">int</span> y)</span> </span>&#123;</span><br><span class="line">	<span class="keyword">int</span> t = x/y;</span><br><span class="line">	t = x+y;</span><br><span class="line">	<span class="keyword">return</span> t;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>A：<strong>除法无法优化，因为可能存在除零异常。</strong>s即时编译器需要判断除数是否为 0。</p>
-<h1 id="引用"><a href="#引用" class="headerlink" title="引用"></a>引用</h1><blockquote>
-<p><a href="https://time.geekbang.org/column/article/39683" target="_blank" rel="noopener">https://time.geekbang.org/column/article/39683</a></p>
-</blockquote>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
   <nav class="pagination">
-    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><span class="space">&hellip;</span><a class="page-number" href="/page/5/">5</a><a class="extend next" rel="next" href="/page/2/"><i class="fa fa-angle-right"></i></a>
+    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><span class="space">&hellip;</span><a class="page-number" href="/page/6/">6</a><a class="extend next" rel="next" href="/page/2/"><i class="fa fa-angle-right"></i></a>
   </nav>
 
 
@@ -2577,7 +2625,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">50</span>
+                  <span class="site-state-item-count">51</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
