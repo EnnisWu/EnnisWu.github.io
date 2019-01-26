@@ -14,4 +14,4 @@ date: 2018-08-04 09:57:53
 转载请联系作者！
 
 如果你喜欢我的文章的话。。。能给我一个小红包吗，爱你呦 \~(*´∀`)\~♥
-![image](http://pcrioz2ch.bkt.clouddn.com/reward.jpg)
+![打赏](/images/about/reward.jpg)

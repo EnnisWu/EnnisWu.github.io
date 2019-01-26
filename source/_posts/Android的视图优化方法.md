@@ -17,7 +17,7 @@ Android 中打开过度绘制检测工具的方式：
 
 界面中会出现不同颜色的区域，各颜色代表的意思：
 
-![image](http://pcrioz2ch.bkt.clouddn.com/android/layout/overdraw.webp)
+![overdraw](/images/posts/android/Android的视图优化方法/overdraw.webp)
 
 ## 过度绘制优化
 

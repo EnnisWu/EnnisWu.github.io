@@ -7,7 +7,7 @@ categories: Java虚拟机
 
 # 异常的基本概念
 
-![image](http://pcrioz2ch.bkt.clouddn.com/JVM/06/throwable.png)
+![throwable](/images/posts/JVM/06/throwable.png)
 
 - Error：涵盖程序不应捕获的异常（JVM抛出）。
 程序出发Error时，执行状态已经无法恢复，需要终止线程甚至终止虚拟机。
@@ -59,7 +59,7 @@ categories: Java虚拟机
 3. 如果**遍历完所有**异常表条目，仍**未匹配**到异常处理器，**弹出当前方法对应的Java栈帧，在调用者（caller）中重复上述操作**。
 4. finally代码块的编译，当前版本Java编译器，是**复制finally代码块的内容，分别放在try-catch代码块所有正常执行路径和异常执行路径的出口中**。
 
-![image](http://pcrioz2ch.bkt.clouddn.com/JVM/06/trigger_exception.png)
+![trigger_exception](/images/posts/JVM/06/trigger_exception.png)
 
 针对异常执行路径，Java编译器会生成一个或多个异常表条目，监控整个try-catch代码块，并且捕获所有种类的异常（在 javap 中以 any 指代）。
 

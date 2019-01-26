@@ -15,7 +15,7 @@ categories: Java虚拟机
 
 ## Java 编译器的工作流程
 
-![image]()
+![compilation_process](/images/posts/JVM/27/compilation_process.png)
 
 1. **将源文件解析为抽象语法树。**
 2. **调用已注册的注解处理器。**

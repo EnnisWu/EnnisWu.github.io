@@ -47,7 +47,7 @@ categories: Java虚拟机
 - 正常情况下，**操作数栈的压入弹出是一条条指令完成**。
 - **例外：抛异常**时会清除操作数栈上的所有内容，然后将异常实例压入操作数栈。
 
-![image](http://pcrioz2ch.bkt.clouddn.com/JVM/19/instructions_const.jpg "常数加载指令表")
+![instructions_const](/images/posts/JVM/19/instructions_const.jpg "常数加载指令表")
 
 ### int 类型为例
 
@@ -65,7 +65,7 @@ categories: Java虚拟机
 - 存储在局部变量区的值，**需要加载至操作数栈中，才能进行计算**。
 - 计算得到的**结果再存储至局部变量区**中。
 
-![image](http://pcrioz2ch.bkt.clouddn.com/JVM/19/instructons_local_variable.jpg "局部变量区访问指令表")
+![instructons_local_variable](/images/posts/JVM/19/instructons_local_variable.jpg "局部变量区访问指令表")
 
 - 局部变量数组的**加载、存储指令**需要**指明**所加载单元的**下标**。
 
@@ -108,7 +108,7 @@ categories: Java虚拟机
 - 数组加载指令。
 - 数组存储指令。
 
-![image](http://pcrioz2ch.bkt.clouddn.com/JVM/19/instructions_array.jpg "数组访问指令表")
+![instructions_array](/images/posts/JVM/19/instructions_array.jpg "数组访问指令表")
 
 ## 控制流指令
 
@@ -118,7 +118,7 @@ categories: Java虚拟机
 - 被废弃的 jsr，ret 指令。
 - 返回指令。
 
-![image](http://pcrioz2ch.bkt.clouddn.com/JVM/19/instructons_return.jpg "返回指令表")
+![instructons_return](/images/posts/JVM/19/instructons_return.jpg "返回指令表")
 
 - 除返回指令外，其他的控制流指令均附带一个或者多个字节码偏移量，代表需要跳转到的位置。
 

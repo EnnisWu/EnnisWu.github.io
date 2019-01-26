@@ -24,7 +24,7 @@ Java虚拟机会在**内存中划分出堆（stack）、栈（heap）和方法�
 
 class文件加载后存放于方法区，运行时执行方法区内的代码。
 
-![image](http://pcrioz2ch.bkt.clouddn.com/JVM/01/ram.png)
+![ram](/images/posts/JVM/01/ram.png)
 
 ## 堆区
 
@@ -63,7 +63,7 @@ Just-In-Time compilation, JIT
 将方法中包含的所有字节码编译成机器码后再执行。
 实际运行速度更快。
 
-![image](http://pcrioz2ch.bkt.clouddn.com/JVM/01/execute_code.png)
+![execute_code](/images/posts/JVM/01/execute_code.png)
 
 HotSpot默认采用**混合模式**。先解释执行，热点代码以方法为单位即时编译。
 

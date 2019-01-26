@@ -15,7 +15,7 @@ categories: Android架构
 Clean的主要思想是外层依赖内层，**内层完全不依赖外层**（或者说内层不知道外层的存在，可以独立开发，复用性强）。
 
 # Clean架构解析
-![image](http://pcrioz2ch.bkt.clouddn.com/android/architecture/clean/CleanArchitecture-c.jpg)
+![CleanArchitecture](/images/posts/android/architecture/clean/CleanArchitecture-c.jpg)
 
 - Enterprise Business Rules：业务对象
 - Application Business Rules：用于处理我们的业务对象，业务逻辑所在，也称为Interactor
@@ -29,7 +29,7 @@ Clean框架不一定只有4层，这里以4层为例。
 - 第三层：如果是MVP这一层为Presenter，MVC这一层为Controller。
 - 第四层：具体实现。
 
-![image](http://pcrioz2ch.bkt.clouddn.com/android/architecture/clean/CleanSimple.jpg)
+![CleanSimple](/images/posts/android/architecture/clean/CleanSimple.jpg)
 
 1. **内层均为纯Java代码**，只需要jvm便可以运行。
 2. 内层代码不仅可以在Android平台，还可以在别的Java平台复用。
@@ -45,7 +45,7 @@ Clean框架不一定只有4层，这里以4层为例。
 mvp-clean基于mvp，加了 domain layer 介于 presentation 和 repositories。同时也将整个app 分为三个层次处理。
 
 ## mvp-clean层次图
-![image](http://pcrioz2ch.bkt.clouddn.com/android/architecture/clean/mvp-clean.png)
+![mvp-clean](/images/posts/android/architecture/clean/mvp-clean.png)
 
 - Presentation层 : MVP 设计准则。
 - Domain层 : 处理所有的业务逻辑，注意是所有的业务逻辑。对应use case（interactors）。
@@ -59,7 +59,7 @@ mvp-clean基于mvp，加了 domain layer 介于 presentation 和 repositories。
 - 我们使用异步的repositories 。 但是现在没有必要这么做了。因为UseCase 已经从主线程里剥离出来了。这是尽量保持 samples 和原来的是一致的。
 
 ## 项目主要关系图
-![image](http://pcrioz2ch.bkt.clouddn.com/android/architecture/clean/mvpcleanproject.png)
+![mvpcleanproject](/images/posts/android/architecture/clean/mvpcleanproject.png)
 
 ## 具体用例流程
 

@@ -13,6 +13,8 @@ categories: Java虚拟机
 | YMM 寄存器 | AVX（Advanced Vector Extensions）指令集 | 256 位 | XMM升级版 |
 | ZMM 寄存器 | AVX512 指令集 | 512 位 | YMM升级版 |
 
+![registers](/images/posts/JVM/26/registers.png)
+
 原本使用 XMM 寄存器的指令，使用 YMM 寄存器的低 128 位。
 
 支持 AVX512 指令集的 CPU 都比较贵，目前在生产环境中很少见到。
@@ -23,9 +25,13 @@ HotSpot 虚拟机更新了不少基于 AVX512 指令集以及 ZMM 寄存器的�
 
 - SIMD 指令将上述寄存器中的**值看成多个整数或者浮点数组成的向量**，进行**批量计算**。
 
+	![XMM_register](/images/posts/JVM/26/XMM_register.png)
+	
 	- 128 位 XMM 寄存器里的值可以看成 16 个 byte 值组成的向量，或者 8 个 short 值组成的向量，4 个 int 值组成的向量，两个 long 值组成的向量。
 
 - SIMD 指令PADDB、PADDW、PADDD以及PADDQ，将分别实现 byte 值、short 值、int 值或者 long 值的向量加法。
+
+![PADDD](/images/posts/JVM/26/PADDD.png)
 
 - SIMD 指令也被看成 **CPU 指令级别的并行**。
 

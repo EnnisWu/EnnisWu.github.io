@@ -51,7 +51,7 @@ Java语言规范中，boolean类型的值只有两种，用“true”和“false
 
 # Java的基本类型
 
-![image](http://pcrioz2ch.bkt.clouddn.com/JVM/02/primitive%20_types.png)
+![primitive_types](/images/posts/JVM/02/primitive_types.png)
 
 ## 默认值
 

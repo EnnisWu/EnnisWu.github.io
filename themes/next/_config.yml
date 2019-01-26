@@ -127,7 +127,7 @@ scheme: Pisces
 # Value before `||` delimeter is the target permalink.
 # Value after `||` delimeter is the name of FontAwesome icon. If icon (with or without delimeter) is not specified, globe icon will be loaded.
 social:
-  E-Mail: mailto:wkf1997@gmail.com || envelope
+  E-Mail: mailto:ennis.lm.wu@gmail.com || envelope
   GitHub: https://github.com/EnnisWu || github
   #Google: https://plus.google.com/yourname || google
   Twitter: https://twitter.com/EnnisWu || twitter
@@ -154,7 +154,7 @@ links_layout: block
 # Sidebar Avatar
 # in theme directory(source/images): /images/avatar.gif
 # in site  directory(source/uploads): /uploads/avatar.gif
-avatar: http://pcrioz2ch.bkt.clouddn.com/portrait.png
+avatar: /images/avatar/portrait.png
 
 # Table Of Contents in the Sidebar
 toc:
@@ -243,8 +243,8 @@ post_wordcount:
 
 # Reward
 reward_comment: 如果你喜欢这篇文章的话。。。能给我一个小红包吗，爱你呦~(*´∀`)~♥
-wechatpay: http://pcrioz2ch.bkt.clouddn.com/reward_wechatpay.jpg
-alipay: http://pcrioz2ch.bkt.clouddn.com/reward_alipay.jpg
+wechatpay: /images/reward/reward_wechatpay.jpg
+alipay: /images/reward/reward_alipay.jpg
 #bitcoin: /images/bitcoin.png
 
 # Declare license on posts
