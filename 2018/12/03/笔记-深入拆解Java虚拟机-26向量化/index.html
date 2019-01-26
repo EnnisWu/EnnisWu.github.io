@@ -81,18 +81,22 @@
 
 
 
-<meta name="description" content="SIMD   寄存器名称 所属指令集 位数 备注     XMM 寄存器 SSE（Streaming SIMD Extensions）指令集 128 位    YMM 寄存器 AVX（Advanced Vector Extensions）指令集 256 位 XMM升级版   ZMM 寄存器 AVX512 指令集 512 位 YMM升级版    原本使用 XMM 寄存器的指令，使用 YMM 寄存器的">
+<meta name="description" content="SIMD   寄存器名称 所属指令集 位数 备注     XMM 寄存器 SSE（Streaming SIMD Extensions）指令集 128 位    YMM 寄存器 AVX（Advanced Vector Extensions）指令集 256 位 XMM升级版   ZMM 寄存器 AVX512 指令集 512 位 YMM升级版     原本使用 XMM 寄存器的指令，使用 YMM 寄存器">
 <meta name="keywords" content="JVM">
 <meta property="og:type" content="article">
 <meta property="og:title" content="笔记-深入拆解Java虚拟机-26向量化">
 <meta property="og:url" content="http://ennis.info/2018/12/03/笔记-深入拆解Java虚拟机-26向量化/index.html">
 <meta property="og:site_name" content="Ennis -Little Monster">
-<meta property="og:description" content="SIMD   寄存器名称 所属指令集 位数 备注     XMM 寄存器 SSE（Streaming SIMD Extensions）指令集 128 位    YMM 寄存器 AVX（Advanced Vector Extensions）指令集 256 位 XMM升级版   ZMM 寄存器 AVX512 指令集 512 位 YMM升级版    原本使用 XMM 寄存器的指令，使用 YMM 寄存器的">
+<meta property="og:description" content="SIMD   寄存器名称 所属指令集 位数 备注     XMM 寄存器 SSE（Streaming SIMD Extensions）指令集 128 位    YMM 寄存器 AVX（Advanced Vector Extensions）指令集 256 位 XMM升级版   ZMM 寄存器 AVX512 指令集 512 位 YMM升级版     原本使用 XMM 寄存器的指令，使用 YMM 寄存器">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-12-03T03:42:41.483Z">
+<meta property="og:image" content="http://ennis.info/images/posts/JVM/26/registers.png">
+<meta property="og:image" content="http://ennis.info/images/posts/JVM/26/XMM_register.png">
+<meta property="og:image" content="http://ennis.info/images/posts/JVM/26/PADDD.png">
+<meta property="og:updated_time" content="2019-01-26T12:24:53.875Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="笔记-深入拆解Java虚拟机-26向量化">
-<meta name="twitter:description" content="SIMD   寄存器名称 所属指令集 位数 备注     XMM 寄存器 SSE（Streaming SIMD Extensions）指令集 128 位    YMM 寄存器 AVX（Advanced Vector Extensions）指令集 256 位 XMM升级版   ZMM 寄存器 AVX512 指令集 512 位 YMM升级版    原本使用 XMM 寄存器的指令，使用 YMM 寄存器的">
+<meta name="twitter:description" content="SIMD   寄存器名称 所属指令集 位数 备注     XMM 寄存器 SSE（Streaming SIMD Extensions）指令集 128 位    YMM 寄存器 AVX（Advanced Vector Extensions）指令集 256 位 XMM升级版   ZMM 寄存器 AVX512 指令集 512 位 YMM升级版     原本使用 XMM 寄存器的指令，使用 YMM 寄存器">
+<meta name="twitter:image" content="http://ennis.info/images/posts/JVM/26/registers.png">
 
 
 
@@ -304,7 +308,7 @@
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Ennis L.M. Wu">
       <meta itemprop="description" content="">
-      <meta itemprop="image" content="http://pcrioz2ch.bkt.clouddn.com/portrait.png">
+      <meta itemprop="image" content="/images/avatar/portrait.png">
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
@@ -418,6 +422,7 @@
 </tr>
 </tbody>
 </table>
+<p><img src="/images/posts/JVM/26/registers.png" alt="registers"></p>
 <p>原本使用 XMM 寄存器的指令，使用 YMM 寄存器的低 128 位。</p>
 <p>支持 AVX512 指令集的 CPU 都比较贵，目前在生产环境中很少见到。</p>
 <p>HotSpot 虚拟机更新了不少基于 AVX512 指令集以及 ZMM 寄存器的优化。</p>
@@ -426,14 +431,17 @@
 </blockquote>
 <ul>
 <li><p>SIMD 指令将上述寄存器中的<strong>值看成多个整数或者浮点数组成的向量</strong>，进行<strong>批量计算</strong>。</p>
+<p>  <img src="/images/posts/JVM/26/XMM_register.png" alt="XMM_register"></p>
 <ul>
 <li>128 位 XMM 寄存器里的值可以看成 16 个 byte 值组成的向量，或者 8 个 short 值组成的向量，4 个 int 值组成的向量，两个 long 值组成的向量。</li>
 </ul>
 </li>
 <li><p>SIMD 指令PADDB、PADDW、PADDD以及PADDQ，将分别实现 byte 值、short 值、int 值或者 long 值的向量加法。</p>
 </li>
-<li><p>SIMD 指令也被看成 <strong>CPU 指令级别的并行</strong>。</p>
-</li>
+</ul>
+<p><img src="/images/posts/JVM/26/PADDD.png" alt="PADDD"></p>
+<ul>
+<li>SIMD 指令也被看成 <strong>CPU 指令级别的并行</strong>。</li>
 </ul>
 <h1 id="使用-SIMD-指令的-HotSpot-Intrinsic"><a href="#使用-SIMD-指令的-HotSpot-Intrinsic" class="headerlink" title="使用 SIMD 指令的 HotSpot Intrinsic"></a>使用 SIMD 指令的 HotSpot Intrinsic</h1><ul>
 <li><p>SIMD 指令虽然非常高效，但是<strong>使用很麻烦</strong>。</p>
@@ -494,14 +502,14 @@
 
     
       <div id="wechat" style="display: inline-block">
-        <img id="wechat_qr" src="http://pcrioz2ch.bkt.clouddn.com/reward_wechatpay.jpg" alt="Ennis L.M. Wu 微信支付"/>
+        <img id="wechat_qr" src="/images/reward/reward_wechatpay.jpg" alt="Ennis L.M. Wu 微信支付"/>
         <p>微信支付</p>
       </div>
     
 
     
       <div id="alipay" style="display: inline-block">
-        <img id="alipay_qr" src="http://pcrioz2ch.bkt.clouddn.com/reward_alipay.jpg" alt="Ennis L.M. Wu 支付宝"/>
+        <img id="alipay_qr" src="/images/reward/reward_alipay.jpg" alt="Ennis L.M. Wu 支付宝"/>
         <p>支付宝</p>
       </div>
     
@@ -612,7 +620,7 @@
           <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
             
               <img class="site-author-image" itemprop="image"
-                src="http://pcrioz2ch.bkt.clouddn.com/portrait.png"
+                src="/images/avatar/portrait.png"
                 alt="Ennis L.M. Wu" />
             
               <p class="site-author-name" itemprop="name">Ennis L.M. Wu</p>
@@ -669,7 +677,7 @@
             <div class="links-of-author motion-element">
                 
                   <span class="links-of-author-item">
-                    <a href="mailto:wkf1997@gmail.com" target="_blank" title="E-Mail">
+                    <a href="mailto:ennis.lm.wu@gmail.com" target="_blank" title="E-Mail">
                       
                         <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
                   </span>

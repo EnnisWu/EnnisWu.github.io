@@ -89,15 +89,15 @@
 <meta property="og:site_name" content="Ennis -Little Monster">
 <meta property="og:description" content="Clean架构的主要特点： 框架独立 容易测试 UI独立 数据库独立 不依赖任何中介  Clean的主要思想是外层依赖内层，内层完全不依赖外层（或者说内层不知道外层的存在，可以独立开发，复用性强）。 Clean架构解析  Enterprise Business Rules：业务对象 Application Business Rules：用于处理我们的业务对象，业务逻辑所在，也称为Interacto">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:image" content="http://pcrioz2ch.bkt.clouddn.com/android/architecture/clean/CleanArchitecture-c.jpg">
-<meta property="og:image" content="http://pcrioz2ch.bkt.clouddn.com/android/architecture/clean/CleanSimple.jpg">
-<meta property="og:image" content="http://pcrioz2ch.bkt.clouddn.com/android/architecture/clean/mvp-clean.png">
-<meta property="og:image" content="http://pcrioz2ch.bkt.clouddn.com/android/architecture/clean/mvpcleanproject.png">
-<meta property="og:updated_time" content="2018-08-29T07:30:11.000Z">
+<meta property="og:image" content="http://ennis.info/images/posts/android/architecture/clean/CleanArchitecture-c.jpg">
+<meta property="og:image" content="http://ennis.info/images/posts/android/architecture/clean/CleanSimple.jpg">
+<meta property="og:image" content="http://ennis.info/images/posts/android/architecture/clean/mvp-clean.png">
+<meta property="og:image" content="http://ennis.info/images/posts/android/architecture/clean/mvpcleanproject.png">
+<meta property="og:updated_time" content="2019-01-26T10:54:38.737Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Android架构——Clean">
 <meta name="twitter:description" content="Clean架构的主要特点： 框架独立 容易测试 UI独立 数据库独立 不依赖任何中介  Clean的主要思想是外层依赖内层，内层完全不依赖外层（或者说内层不知道外层的存在，可以独立开发，复用性强）。 Clean架构解析  Enterprise Business Rules：业务对象 Application Business Rules：用于处理我们的业务对象，业务逻辑所在，也称为Interacto">
-<meta name="twitter:image" content="http://pcrioz2ch.bkt.clouddn.com/android/architecture/clean/CleanArchitecture-c.jpg">
+<meta name="twitter:image" content="http://ennis.info/images/posts/android/architecture/clean/CleanArchitecture-c.jpg">
 
 
 
@@ -309,7 +309,7 @@
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Ennis L.M. Wu">
       <meta itemprop="description" content="">
-      <meta itemprop="image" content="http://pcrioz2ch.bkt.clouddn.com/portrait.png">
+      <meta itemprop="image" content="/images/avatar/portrait.png">
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
@@ -401,7 +401,7 @@
 <li>不依赖任何中介</li>
 </ul>
 <p>Clean的主要思想是外层依赖内层，<strong>内层完全不依赖外层</strong>（或者说内层不知道外层的存在，可以独立开发，复用性强）。</p>
-<h1 id="Clean架构解析"><a href="#Clean架构解析" class="headerlink" title="Clean架构解析"></a>Clean架构解析</h1><p><img src="http://pcrioz2ch.bkt.clouddn.com/android/architecture/clean/CleanArchitecture-c.jpg" alt="image"></p>
+<h1 id="Clean架构解析"><a href="#Clean架构解析" class="headerlink" title="Clean架构解析"></a>Clean架构解析</h1><p><img src="/images/posts/android/architecture/clean/CleanArchitecture-c.jpg" alt="CleanArchitecture"></p>
 <ul>
 <li>Enterprise Business Rules：业务对象</li>
 <li>Application Business Rules：用于处理我们的业务对象，业务逻辑所在，也称为Interactor</li>
@@ -415,7 +415,7 @@
 <li>第三层：如果是MVP这一层为Presenter，MVC这一层为Controller。</li>
 <li>第四层：具体实现。</li>
 </ul>
-<p><img src="http://pcrioz2ch.bkt.clouddn.com/android/architecture/clean/CleanSimple.jpg" alt="image"></p>
+<p><img src="/images/posts/android/architecture/clean/CleanSimple.jpg" alt="CleanSimple"></p>
 <ol>
 <li><strong>内层均为纯Java代码</strong>，只需要jvm便可以运行。</li>
 <li>内层代码不仅可以在Android平台，还可以在别的Java平台复用。</li>
@@ -427,7 +427,7 @@
 <h1 id="Google-Demo-——-todo-mvp-clean-解析"><a href="#Google-Demo-——-todo-mvp-clean-解析" class="headerlink" title="Google Demo —— todo-mvp-clean 解析"></a>Google Demo —— todo-mvp-clean 解析</h1><blockquote>
 <p>demo地址：<a href="https://github.com/googlesamples/android-architecture/tree/todo-mvp-clean/" target="_blank" rel="noopener">https://github.com/googlesamples/android-architecture/tree/todo-mvp-clean/</a><br>mvp-clean基于mvp，加了 domain layer 介于 presentation 和 repositories。同时也将整个app 分为三个层次处理。</p>
 </blockquote>
-<h2 id="mvp-clean层次图"><a href="#mvp-clean层次图" class="headerlink" title="mvp-clean层次图"></a>mvp-clean层次图</h2><p><img src="http://pcrioz2ch.bkt.clouddn.com/android/architecture/clean/mvp-clean.png" alt="image"></p>
+<h2 id="mvp-clean层次图"><a href="#mvp-clean层次图" class="headerlink" title="mvp-clean层次图"></a>mvp-clean层次图</h2><p><img src="/images/posts/android/architecture/clean/mvp-clean.png" alt="mvp-clean"></p>
 <ul>
 <li>Presentation层 : MVP 设计准则。</li>
 <li>Domain层 : 处理所有的业务逻辑，注意是所有的业务逻辑。对应use case（interactors）。</li>
@@ -440,7 +440,7 @@
 <li><strong>UseCase 从主线程剥离出来</strong>，对于Android app是个好的操作。这种操作是尽可能的减少占用UI 线程。我们决定使用 command pattern 将use case 在线程池里执行操作。同样的我们可以用RxJava 或者 Promises实现同样的功能。</li>
 <li>我们使用异步的repositories 。 但是现在没有必要这么做了。因为UseCase 已经从主线程里剥离出来了。这是尽量保持 samples 和原来的是一致的。</li>
 </ul>
-<h2 id="项目主要关系图"><a href="#项目主要关系图" class="headerlink" title="项目主要关系图"></a>项目主要关系图</h2><p><img src="http://pcrioz2ch.bkt.clouddn.com/android/architecture/clean/mvpcleanproject.png" alt="image"></p>
+<h2 id="项目主要关系图"><a href="#项目主要关系图" class="headerlink" title="项目主要关系图"></a>项目主要关系图</h2><p><img src="/images/posts/android/architecture/clean/mvpcleanproject.png" alt="mvpcleanproject"></p>
 <h2 id="具体用例流程"><a href="#具体用例流程" class="headerlink" title="具体用例流程"></a>具体用例流程</h2><p>未完待续。。。</p>
 <h1 id="思考"><a href="#思考" class="headerlink" title="思考"></a>思考</h1><p>纯MVP架构会使项目变得复杂，Clean架构则会更复杂，大项目可以使项目的结构清晰，内层复用性强，便于测试。<br>小项目则会使项目过于复杂，反而使项目结构显得不清晰，就像MVVM不适合小型项目一样。MVP作为万金油可以说适合大部分项目，我个人的思考是小型项目使用MVP架构，但在MVP的基础上加入部分Clean的思想。</p>
 <ol>
@@ -477,14 +477,14 @@
 
     
       <div id="wechat" style="display: inline-block">
-        <img id="wechat_qr" src="http://pcrioz2ch.bkt.clouddn.com/reward_wechatpay.jpg" alt="Ennis L.M. Wu 微信支付"/>
+        <img id="wechat_qr" src="/images/reward/reward_wechatpay.jpg" alt="Ennis L.M. Wu 微信支付"/>
         <p>微信支付</p>
       </div>
     
 
     
       <div id="alipay" style="display: inline-block">
-        <img id="alipay_qr" src="http://pcrioz2ch.bkt.clouddn.com/reward_alipay.jpg" alt="Ennis L.M. Wu 支付宝"/>
+        <img id="alipay_qr" src="/images/reward/reward_alipay.jpg" alt="Ennis L.M. Wu 支付宝"/>
         <p>支付宝</p>
       </div>
     
@@ -599,7 +599,7 @@
           <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
             
               <img class="site-author-image" itemprop="image"
-                src="http://pcrioz2ch.bkt.clouddn.com/portrait.png"
+                src="/images/avatar/portrait.png"
                 alt="Ennis L.M. Wu" />
             
               <p class="site-author-name" itemprop="name">Ennis L.M. Wu</p>
@@ -656,7 +656,7 @@
             <div class="links-of-author motion-element">
                 
                   <span class="links-of-author-item">
-                    <a href="mailto:wkf1997@gmail.com" target="_blank" title="E-Mail">
+                    <a href="mailto:ennis.lm.wu@gmail.com" target="_blank" title="E-Mail">
                       
                         <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
                   </span>

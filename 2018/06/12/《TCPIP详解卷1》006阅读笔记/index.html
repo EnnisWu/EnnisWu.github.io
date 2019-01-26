@@ -89,18 +89,18 @@
 <meta property="og:site_name" content="Ennis -Little Monster">
 <meta property="og:description" content="ICMP的正式规范参见 RFC 792 ICMP是IP层的一个组成部分，传递差错报文和其他需要注意的信息。通常被IP层或更高层协议使用。   校验和覆盖整个ICMP报文，算法与IP首部相同 不同类型和代码有不同的内容  ICMP报文的类型 类型字段和代码字段共同决定。 ICMO差错报文始终包含IP首部和产生差错的IP数据报的前8个字节。接收ICMP差错报文的模块可以与某个协议和用户进程联系起来。">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:image" content="http://pcrioz2ch.bkt.clouddn.com/TCPIP1/06/ICMP.png">
-<meta property="og:image" content="http://pcrioz2ch.bkt.clouddn.com/TCPIP1/06/mask.png">
-<meta property="og:image" content="http://pcrioz2ch.bkt.clouddn.com/TCPIP1/06/time_stamp_request_response.png">
-<meta property="og:image" content="http://pcrioz2ch.bkt.clouddn.com/TCPIP1/06/time_stamp_request.png">
-<meta property="og:image" content="http://pcrioz2ch.bkt.clouddn.com/TCPIP1/06/RTT.png">
-<meta property="og:image" content="http://pcrioz2ch.bkt.clouddn.com/TCPIP1/06/unreachable_response.png">
-<meta property="og:image" content="http://pcrioz2ch.bkt.clouddn.com/TCPIP1/06/unreachable.png">
-<meta property="og:updated_time" content="2018-08-29T07:41:53.000Z">
+<meta property="og:image" content="http://ennis.info/images/posts/TCPIP/006/ICMP.png">
+<meta property="og:image" content="http://ennis.info/images/posts/TCPIP/006/mask.png">
+<meta property="og:image" content="http://ennis.info/images/posts/TCPIP/006/time_stamp_request_response.png">
+<meta property="og:image" content="http://ennis.info/images/posts/TCPIP/006/time_stamp_request.png">
+<meta property="og:image" content="http://ennis.info/images/posts/TCPIP/006/RTT.png">
+<meta property="og:image" content="http://ennis.info/images/posts/TCPIP/006/unreachable_response.png">
+<meta property="og:image" content="http://ennis.info/images/posts/TCPIP/006/unreachable.png">
+<meta property="og:updated_time" content="2019-01-26T11:11:35.602Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="《TCPIP详解卷1》006阅读笔记">
 <meta name="twitter:description" content="ICMP的正式规范参见 RFC 792 ICMP是IP层的一个组成部分，传递差错报文和其他需要注意的信息。通常被IP层或更高层协议使用。   校验和覆盖整个ICMP报文，算法与IP首部相同 不同类型和代码有不同的内容  ICMP报文的类型 类型字段和代码字段共同决定。 ICMO差错报文始终包含IP首部和产生差错的IP数据报的前8个字节。接收ICMP差错报文的模块可以与某个协议和用户进程联系起来。">
-<meta name="twitter:image" content="http://pcrioz2ch.bkt.clouddn.com/TCPIP1/06/ICMP.png">
+<meta name="twitter:image" content="http://ennis.info/images/posts/TCPIP/006/ICMP.png">
 
 
 
@@ -312,7 +312,7 @@
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Ennis L.M. Wu">
       <meta itemprop="description" content="">
-      <meta itemprop="image" content="http://pcrioz2ch.bkt.clouddn.com/portrait.png">
+      <meta itemprop="image" content="/images/avatar/portrait.png">
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
@@ -398,7 +398,7 @@
       
         <p>ICMP的正式规范参见 RFC 792<br><br></p>
 <p>ICMP是IP层的一个组成部分，传递差错报文和其他需要注意的信息。<br>通常被IP层或更高层协议使用。<br><br></p>
-<p><img src="http://pcrioz2ch.bkt.clouddn.com/TCPIP1/06/ICMP.png" alt="image"></p>
+<p><img src="/images/posts/TCPIP/006/ICMP.png" alt="ICMP"></p>
 <ul>
 <li>校验和覆盖整个ICMP报文，算法与IP首部相同</li>
 <li>不同类型和代码有不同的内容<br><br></li>
@@ -430,23 +430,23 @@
 </ol>
 </li>
 </ul>
-<h4 id="ICMP地址掩码请求与应答"><a href="#ICMP地址掩码请求与应答" class="headerlink" title="ICMP地址掩码请求与应答"></a>ICMP地址掩码请求与应答</h4><p><img src="http://pcrioz2ch.bkt.clouddn.com/TCPIP1/06/mask.png" alt="iamge"></p>
+<h4 id="ICMP地址掩码请求与应答"><a href="#ICMP地址掩码请求与应答" class="headerlink" title="ICMP地址掩码请求与应答"></a>ICMP地址掩码请求与应答</h4><p><img src="/images/posts/TCPIP/006/mask.png" alt="mask"></p>
 <ul>
 <li>用于无盘系统在引导过程中获取自己的子网掩码。</li>
 <li>系统广播他的ICMP请求报文（类似RARP获取IP地址）。</li>
 <li>标识符和序列号由发送端任意设定，在应答中返回进行匹配。<br><br></li>
 </ul>
-<h4 id="ICMP时间戳请求与应答"><a href="#ICMP时间戳请求与应答" class="headerlink" title="ICMP时间戳请求与应答"></a>ICMP时间戳请求与应答</h4><p><img src="http://pcrioz2ch.bkt.clouddn.com/TCPIP1/06/time_stamp_request_response.png" alt="image"></p>
+<h4 id="ICMP时间戳请求与应答"><a href="#ICMP时间戳请求与应答" class="headerlink" title="ICMP时间戳请求与应答"></a>ICMP时间戳请求与应答</h4><p><img src="/images/posts/TCPIP/006/time_stamp_request_response.png" alt="time_stamp_request_response"></p>
 <ul>
 <li>请求允许系统向另一个系统查询当前时间。</li>
 <li>返回的建议值是自午夜计算的毫秒数，协调的统一时间。</li>
 <li>缺陷：必须通过其他方法获知当时的日期。</li>
-<li>请求端填写发起时间戳，应答系统收到时填写接收时间戳，发送时填写传送时间戳。<br><img src="http://pcrioz2ch.bkt.clouddn.com/TCPIP1/06/time_stamp_request.png" alt="image"><br><img src="http://pcrioz2ch.bkt.clouddn.com/TCPIP1/06/RTT.png" alt="image"></li>
+<li>请求端填写发起时间戳，应答系统收到时填写接收时间戳，发送时填写传送时间戳。<br><img src="/images/posts/TCPIP/006/time_stamp_request.png" alt="time_stamp_request"><br><img src="/images/posts/TCPIP/006/RTT.png" alt="RTT"></li>
 <li>调整值是difference - RTT / 2。<br><br></li>
 </ul>
-<h4 id="ICMP端口不可达差错"><a href="#ICMP端口不可达差错" class="headerlink" title="ICMP端口不可达差错"></a>ICMP端口不可达差错</h4><p>以UDP端口不可达为例。<br><img src="http://pcrioz2ch.bkt.clouddn.com/TCPIP1/06/unreachable_response.png" alt="image"></p>
+<h4 id="ICMP端口不可达差错"><a href="#ICMP端口不可达差错" class="headerlink" title="ICMP端口不可达差错"></a>ICMP端口不可达差错</h4><p>以UDP端口不可达为例。<br><img src="/images/posts/TCPIP/006/unreachable_response.png" alt="unreachable_response"></p>
 <ul>
-<li>IP首部后面前8个字节是UDP首部（源端口号和目的端口号）。<br><img src="http://pcrioz2ch.bkt.clouddn.com/TCPIP1/06/unreachable.png" alt="image"></li>
+<li>IP首部后面前8个字节是UDP首部（源端口号和目的端口号）。<br><img src="/images/posts/TCPIP/006/unreachable.png" alt="unreachable"></li>
 </ul>
 
       
@@ -468,14 +468,14 @@
 
     
       <div id="wechat" style="display: inline-block">
-        <img id="wechat_qr" src="http://pcrioz2ch.bkt.clouddn.com/reward_wechatpay.jpg" alt="Ennis L.M. Wu 微信支付"/>
+        <img id="wechat_qr" src="/images/reward/reward_wechatpay.jpg" alt="Ennis L.M. Wu 微信支付"/>
         <p>微信支付</p>
       </div>
     
 
     
       <div id="alipay" style="display: inline-block">
-        <img id="alipay_qr" src="http://pcrioz2ch.bkt.clouddn.com/reward_alipay.jpg" alt="Ennis L.M. Wu 支付宝"/>
+        <img id="alipay_qr" src="/images/reward/reward_alipay.jpg" alt="Ennis L.M. Wu 支付宝"/>
         <p>支付宝</p>
       </div>
     
@@ -588,7 +588,7 @@
           <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
             
               <img class="site-author-image" itemprop="image"
-                src="http://pcrioz2ch.bkt.clouddn.com/portrait.png"
+                src="/images/avatar/portrait.png"
                 alt="Ennis L.M. Wu" />
             
               <p class="site-author-name" itemprop="name">Ennis L.M. Wu</p>
@@ -645,7 +645,7 @@
             <div class="links-of-author motion-element">
                 
                   <span class="links-of-author-item">
-                    <a href="mailto:wkf1997@gmail.com" target="_blank" title="E-Mail">
+                    <a href="mailto:ennis.lm.wu@gmail.com" target="_blank" title="E-Mail">
                       
                         <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
                   </span>

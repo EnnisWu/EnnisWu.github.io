@@ -303,7 +303,7 @@
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Ennis L.M. Wu">
       <meta itemprop="description" content="">
-      <meta itemprop="image" content="http://pcrioz2ch.bkt.clouddn.com/portrait.png">
+      <meta itemprop="image" content="/images/avatar/portrait.png">
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
@@ -399,7 +399,7 @@
 <li>不依赖任何中介</li>
 </ul>
 <p>Clean的主要思想是外层依赖内层，<strong>内层完全不依赖外层</strong>（或者说内层不知道外层的存在，可以独立开发，复用性强）。</p>
-<h1 id="Clean架构解析"><a href="#Clean架构解析" class="headerlink" title="Clean架构解析"></a>Clean架构解析</h1><p><img src="http://pcrioz2ch.bkt.clouddn.com/android/architecture/clean/CleanArchitecture-c.jpg" alt="image"></p>
+<h1 id="Clean架构解析"><a href="#Clean架构解析" class="headerlink" title="Clean架构解析"></a>Clean架构解析</h1><p><img src="/images/posts/android/architecture/clean/CleanArchitecture-c.jpg" alt="CleanArchitecture"></p>
 <ul>
 <li>Enterprise Business Rules：业务对象</li>
 <li>Application Business Rules：用于处理我们的业务对象，业务逻辑所在，也称为Interactor</li>
@@ -413,7 +413,7 @@
 <li>第三层：如果是MVP这一层为Presenter，MVC这一层为Controller。</li>
 <li>第四层：具体实现。</li>
 </ul>
-<p><img src="http://pcrioz2ch.bkt.clouddn.com/android/architecture/clean/CleanSimple.jpg" alt="image"></p>
+<p><img src="/images/posts/android/architecture/clean/CleanSimple.jpg" alt="CleanSimple"></p>
 <ol>
 <li><strong>内层均为纯Java代码</strong>，只需要jvm便可以运行。</li>
 <li>内层代码不仅可以在Android平台，还可以在别的Java平台复用。</li>
@@ -425,7 +425,7 @@
 <h1 id="Google-Demo-——-todo-mvp-clean-解析"><a href="#Google-Demo-——-todo-mvp-clean-解析" class="headerlink" title="Google Demo —— todo-mvp-clean 解析"></a>Google Demo —— todo-mvp-clean 解析</h1><blockquote>
 <p>demo地址：<a href="https://github.com/googlesamples/android-architecture/tree/todo-mvp-clean/" target="_blank" rel="noopener">https://github.com/googlesamples/android-architecture/tree/todo-mvp-clean/</a><br>mvp-clean基于mvp，加了 domain layer 介于 presentation 和 repositories。同时也将整个app 分为三个层次处理。</p>
 </blockquote>
-<h2 id="mvp-clean层次图"><a href="#mvp-clean层次图" class="headerlink" title="mvp-clean层次图"></a>mvp-clean层次图</h2><p><img src="http://pcrioz2ch.bkt.clouddn.com/android/architecture/clean/mvp-clean.png" alt="image"></p>
+<h2 id="mvp-clean层次图"><a href="#mvp-clean层次图" class="headerlink" title="mvp-clean层次图"></a>mvp-clean层次图</h2><p><img src="/images/posts/android/architecture/clean/mvp-clean.png" alt="mvp-clean"></p>
 <ul>
 <li>Presentation层 : MVP 设计准则。</li>
 <li>Domain层 : 处理所有的业务逻辑，注意是所有的业务逻辑。对应use case（interactors）。</li>
@@ -438,7 +438,7 @@
 <li><strong>UseCase 从主线程剥离出来</strong>，对于Android app是个好的操作。这种操作是尽可能的减少占用UI 线程。我们决定使用 command pattern 将use case 在线程池里执行操作。同样的我们可以用RxJava 或者 Promises实现同样的功能。</li>
 <li>我们使用异步的repositories 。 但是现在没有必要这么做了。因为UseCase 已经从主线程里剥离出来了。这是尽量保持 samples 和原来的是一致的。</li>
 </ul>
-<h2 id="项目主要关系图"><a href="#项目主要关系图" class="headerlink" title="项目主要关系图"></a>项目主要关系图</h2><p><img src="http://pcrioz2ch.bkt.clouddn.com/android/architecture/clean/mvpcleanproject.png" alt="image"></p>
+<h2 id="项目主要关系图"><a href="#项目主要关系图" class="headerlink" title="项目主要关系图"></a>项目主要关系图</h2><p><img src="/images/posts/android/architecture/clean/mvpcleanproject.png" alt="mvpcleanproject"></p>
 <h2 id="具体用例流程"><a href="#具体用例流程" class="headerlink" title="具体用例流程"></a>具体用例流程</h2><p>未完待续。。。</p>
 <h1 id="思考"><a href="#思考" class="headerlink" title="思考"></a>思考</h1><p>纯MVP架构会使项目变得复杂，Clean架构则会更复杂，大项目可以使项目的结构清晰，内层复用性强，便于测试。<br>小项目则会使项目过于复杂，反而使项目结构显得不清晰，就像MVVM不适合小型项目一样。MVP作为万金油可以说适合大部分项目，我个人的思考是小型项目使用MVP架构，但在MVP的基础上加入部分Clean的思想。</p>
 <ol>
@@ -508,7 +508,7 @@
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Ennis L.M. Wu">
       <meta itemprop="description" content="">
-      <meta itemprop="image" content="http://pcrioz2ch.bkt.clouddn.com/portrait.png">
+      <meta itemprop="image" content="/images/avatar/portrait.png">
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
@@ -710,7 +710,7 @@
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Ennis L.M. Wu">
       <meta itemprop="description" content="">
-      <meta itemprop="image" content="http://pcrioz2ch.bkt.clouddn.com/portrait.png">
+      <meta itemprop="image" content="/images/avatar/portrait.png">
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
@@ -1173,7 +1173,7 @@
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Ennis L.M. Wu">
       <meta itemprop="description" content="">
-      <meta itemprop="image" content="http://pcrioz2ch.bkt.clouddn.com/portrait.png">
+      <meta itemprop="image" content="/images/avatar/portrait.png">
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
@@ -1464,7 +1464,7 @@
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Ennis L.M. Wu">
       <meta itemprop="description" content="">
-      <meta itemprop="image" content="http://pcrioz2ch.bkt.clouddn.com/portrait.png">
+      <meta itemprop="image" content="/images/avatar/portrait.png">
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
@@ -1669,7 +1669,7 @@
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Ennis L.M. Wu">
       <meta itemprop="description" content="">
-      <meta itemprop="image" content="http://pcrioz2ch.bkt.clouddn.com/portrait.png">
+      <meta itemprop="image" content="/images/avatar/portrait.png">
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
@@ -1759,7 +1759,7 @@
           
             <p>ICMP的正式规范参见 RFC 792<br><br></p>
 <p>ICMP是IP层的一个组成部分，传递差错报文和其他需要注意的信息。<br>通常被IP层或更高层协议使用。<br><br></p>
-<p><img src="http://pcrioz2ch.bkt.clouddn.com/TCPIP1/06/ICMP.png" alt="image"></p>
+<p><img src="/images/posts/TCPIP/006/ICMP.png" alt="ICMP"></p>
 <ul>
 <li>校验和覆盖整个ICMP报文，算法与IP首部相同</li>
 <li>不同类型和代码有不同的内容<br><br></li>
@@ -1791,23 +1791,23 @@
 </ol>
 </li>
 </ul>
-<h4 id="ICMP地址掩码请求与应答"><a href="#ICMP地址掩码请求与应答" class="headerlink" title="ICMP地址掩码请求与应答"></a>ICMP地址掩码请求与应答</h4><p><img src="http://pcrioz2ch.bkt.clouddn.com/TCPIP1/06/mask.png" alt="iamge"></p>
+<h4 id="ICMP地址掩码请求与应答"><a href="#ICMP地址掩码请求与应答" class="headerlink" title="ICMP地址掩码请求与应答"></a>ICMP地址掩码请求与应答</h4><p><img src="/images/posts/TCPIP/006/mask.png" alt="mask"></p>
 <ul>
 <li>用于无盘系统在引导过程中获取自己的子网掩码。</li>
 <li>系统广播他的ICMP请求报文（类似RARP获取IP地址）。</li>
 <li>标识符和序列号由发送端任意设定，在应答中返回进行匹配。<br><br></li>
 </ul>
-<h4 id="ICMP时间戳请求与应答"><a href="#ICMP时间戳请求与应答" class="headerlink" title="ICMP时间戳请求与应答"></a>ICMP时间戳请求与应答</h4><p><img src="http://pcrioz2ch.bkt.clouddn.com/TCPIP1/06/time_stamp_request_response.png" alt="image"></p>
+<h4 id="ICMP时间戳请求与应答"><a href="#ICMP时间戳请求与应答" class="headerlink" title="ICMP时间戳请求与应答"></a>ICMP时间戳请求与应答</h4><p><img src="/images/posts/TCPIP/006/time_stamp_request_response.png" alt="time_stamp_request_response"></p>
 <ul>
 <li>请求允许系统向另一个系统查询当前时间。</li>
 <li>返回的建议值是自午夜计算的毫秒数，协调的统一时间。</li>
 <li>缺陷：必须通过其他方法获知当时的日期。</li>
-<li>请求端填写发起时间戳，应答系统收到时填写接收时间戳，发送时填写传送时间戳。<br><img src="http://pcrioz2ch.bkt.clouddn.com/TCPIP1/06/time_stamp_request.png" alt="image"><br><img src="http://pcrioz2ch.bkt.clouddn.com/TCPIP1/06/RTT.png" alt="image"></li>
+<li>请求端填写发起时间戳，应答系统收到时填写接收时间戳，发送时填写传送时间戳。<br><img src="/images/posts/TCPIP/006/time_stamp_request.png" alt="time_stamp_request"><br><img src="/images/posts/TCPIP/006/RTT.png" alt="RTT"></li>
 <li>调整值是difference - RTT / 2。<br><br></li>
 </ul>
-<h4 id="ICMP端口不可达差错"><a href="#ICMP端口不可达差错" class="headerlink" title="ICMP端口不可达差错"></a>ICMP端口不可达差错</h4><p>以UDP端口不可达为例。<br><img src="http://pcrioz2ch.bkt.clouddn.com/TCPIP1/06/unreachable_response.png" alt="image"></p>
+<h4 id="ICMP端口不可达差错"><a href="#ICMP端口不可达差错" class="headerlink" title="ICMP端口不可达差错"></a>ICMP端口不可达差错</h4><p>以UDP端口不可达为例。<br><img src="/images/posts/TCPIP/006/unreachable_response.png" alt="unreachable_response"></p>
 <ul>
-<li>IP首部后面前8个字节是UDP首部（源端口号和目的端口号）。<br><img src="http://pcrioz2ch.bkt.clouddn.com/TCPIP1/06/unreachable.png" alt="image"></li>
+<li>IP首部后面前8个字节是UDP首部（源端口号和目的端口号）。<br><img src="/images/posts/TCPIP/006/unreachable.png" alt="unreachable"></li>
 </ul>
 
           
@@ -1862,7 +1862,7 @@
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Ennis L.M. Wu">
       <meta itemprop="description" content="">
-      <meta itemprop="image" content="http://pcrioz2ch.bkt.clouddn.com/portrait.png">
+      <meta itemprop="image" content="/images/avatar/portrait.png">
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
@@ -2097,7 +2097,7 @@
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Ennis L.M. Wu">
       <meta itemprop="description" content="">
-      <meta itemprop="image" content="http://pcrioz2ch.bkt.clouddn.com/portrait.png">
+      <meta itemprop="image" content="/images/avatar/portrait.png">
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
@@ -2385,7 +2385,7 @@
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Ennis L.M. Wu">
       <meta itemprop="description" content="">
-      <meta itemprop="image" content="http://pcrioz2ch.bkt.clouddn.com/portrait.png">
+      <meta itemprop="image" content="/images/avatar/portrait.png">
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
@@ -2648,7 +2648,7 @@
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Ennis L.M. Wu">
       <meta itemprop="description" content="">
-      <meta itemprop="image" content="http://pcrioz2ch.bkt.clouddn.com/portrait.png">
+      <meta itemprop="image" content="/images/avatar/portrait.png">
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
@@ -2817,7 +2817,7 @@
           <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
             
               <img class="site-author-image" itemprop="image"
-                src="http://pcrioz2ch.bkt.clouddn.com/portrait.png"
+                src="/images/avatar/portrait.png"
                 alt="Ennis L.M. Wu" />
             
               <p class="site-author-name" itemprop="name">Ennis L.M. Wu</p>
@@ -2874,7 +2874,7 @@
             <div class="links-of-author motion-element">
                 
                   <span class="links-of-author-item">
-                    <a href="mailto:wkf1997@gmail.com" target="_blank" title="E-Mail">
+                    <a href="mailto:ennis.lm.wu@gmail.com" target="_blank" title="E-Mail">
                       
                         <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
                   </span>

@@ -89,12 +89,12 @@
 <meta property="og:site_name" content="Ennis -Little Monster">
 <meta property="og:description" content="分层编译模式HotSpot 包含的即时编译器： C1 C2 Graal（实验性质的即时编译器）  Java 7 以前需要根据程序特性选择对应的即使编译器C1 执行时间较短的程序。 对启动性能有要求的程序。 C1 编译效率较快。 对应参数 -client  C2 执行时间较长的程序。 对峰值性能有要求的程序。 C2 生成代码的执行效率较快。 对应参数 -server  Java 7 引入分层编译 综">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:image" content="http://pcrioz2ch.bkt.clouddn.com/JVM/16/compile_path.png">
-<meta property="og:updated_time" content="2018-11-10T11:38:36.873Z">
+<meta property="og:image" content="http://ennis.info/images/posts/JVM/1617/compile_path.png">
+<meta property="og:updated_time" content="2019-01-26T11:04:30.790Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="笔记-深入拆解Java虚拟机-1617即时编译">
 <meta name="twitter:description" content="分层编译模式HotSpot 包含的即时编译器： C1 C2 Graal（实验性质的即时编译器）  Java 7 以前需要根据程序特性选择对应的即使编译器C1 执行时间较短的程序。 对启动性能有要求的程序。 C1 编译效率较快。 对应参数 -client  C2 执行时间较长的程序。 对峰值性能有要求的程序。 C2 生成代码的执行效率较快。 对应参数 -server  Java 7 引入分层编译 综">
-<meta name="twitter:image" content="http://pcrioz2ch.bkt.clouddn.com/JVM/16/compile_path.png">
+<meta name="twitter:image" content="http://ennis.info/images/posts/JVM/1617/compile_path.png">
 
 
 
@@ -306,7 +306,7 @@
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Ennis L.M. Wu">
       <meta itemprop="description" content="">
-      <meta itemprop="image" content="http://pcrioz2ch.bkt.clouddn.com/portrait.png">
+      <meta itemprop="image" content="/images/avatar/portrait.png">
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
@@ -489,7 +489,7 @@
 <li><strong>1 层和 4 层为终止状态。</strong></li>
 <li>一个方法被终止状态编译后，如果编译后的代码没有失效，JVM 不再发出该方法的编译请求。</li>
 </ul>
-<p><img src="http://pcrioz2ch.bkt.clouddn.com/JVM/16/compile_path.png" alt="image"></p>
+<p><img src="/images/posts/JVM/1617/compile_path.png" alt="compile_path"></p>
 <h3 id="通常情况"><a href="#通常情况" class="headerlink" title="通常情况"></a>通常情况</h3><ul>
 <li>热点方法会被第 3 层的 C1 编译，再被第 4 层的 C2 编译。</li>
 </ul>
@@ -567,14 +567,14 @@
 
     
       <div id="wechat" style="display: inline-block">
-        <img id="wechat_qr" src="http://pcrioz2ch.bkt.clouddn.com/reward_wechatpay.jpg" alt="Ennis L.M. Wu 微信支付"/>
+        <img id="wechat_qr" src="/images/reward/reward_wechatpay.jpg" alt="Ennis L.M. Wu 微信支付"/>
         <p>微信支付</p>
       </div>
     
 
     
       <div id="alipay" style="display: inline-block">
-        <img id="alipay_qr" src="http://pcrioz2ch.bkt.clouddn.com/reward_alipay.jpg" alt="Ennis L.M. Wu 支付宝"/>
+        <img id="alipay_qr" src="/images/reward/reward_alipay.jpg" alt="Ennis L.M. Wu 支付宝"/>
         <p>支付宝</p>
       </div>
     
@@ -685,7 +685,7 @@
           <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
             
               <img class="site-author-image" itemprop="image"
-                src="http://pcrioz2ch.bkt.clouddn.com/portrait.png"
+                src="/images/avatar/portrait.png"
                 alt="Ennis L.M. Wu" />
             
               <p class="site-author-name" itemprop="name">Ennis L.M. Wu</p>
@@ -742,7 +742,7 @@
             <div class="links-of-author motion-element">
                 
                   <span class="links-of-author-item">
-                    <a href="mailto:wkf1997@gmail.com" target="_blank" title="E-Mail">
+                    <a href="mailto:ennis.lm.wu@gmail.com" target="_blank" title="E-Mail">
                       
                         <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
                   </span>

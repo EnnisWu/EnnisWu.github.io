@@ -89,13 +89,13 @@
 <meta property="og:site_name" content="Ennis -Little Monster">
 <meta property="og:description" content="为什么Java要在虚拟机里运行？ Java作为一门高级程序语言，语法复杂，抽象程度高，直接在硬件上运行这种复杂的程序不现实。 Java虚拟机既可以硬件实现也可以软件实现，常见平台上都是软件实现，意义：“一次编写，到处运行”。 虚拟机提供了托管环境。能代替我们处理一些代码中冗长而且容易出错的部分。如：自动内存管理，垃圾回收，提供如数组越界、动态类型、安全权限等的动态检测。  Java虚拟机具体怎样运">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:image" content="http://pcrioz2ch.bkt.clouddn.com/JVM/01/ram.png">
-<meta property="og:image" content="http://pcrioz2ch.bkt.clouddn.com/JVM/01/execute_code.png">
-<meta property="og:updated_time" content="2018-08-29T07:24:11.000Z">
+<meta property="og:image" content="http://ennis.info/images/posts/JVM/01/ram.png">
+<meta property="og:image" content="http://ennis.info/images/posts/JVM/01/execute_code.png">
+<meta property="og:updated_time" content="2019-01-26T11:00:55.398Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="笔记-深入拆解Java虚拟机-01Java代码是怎么运行的？">
 <meta name="twitter:description" content="为什么Java要在虚拟机里运行？ Java作为一门高级程序语言，语法复杂，抽象程度高，直接在硬件上运行这种复杂的程序不现实。 Java虚拟机既可以硬件实现也可以软件实现，常见平台上都是软件实现，意义：“一次编写，到处运行”。 虚拟机提供了托管环境。能代替我们处理一些代码中冗长而且容易出错的部分。如：自动内存管理，垃圾回收，提供如数组越界、动态类型、安全权限等的动态检测。  Java虚拟机具体怎样运">
-<meta name="twitter:image" content="http://pcrioz2ch.bkt.clouddn.com/JVM/01/ram.png">
+<meta name="twitter:image" content="http://ennis.info/images/posts/JVM/01/ram.png">
 
 
 
@@ -307,7 +307,7 @@
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Ennis L.M. Wu">
       <meta itemprop="description" content="">
-      <meta itemprop="image" content="http://pcrioz2ch.bkt.clouddn.com/portrait.png">
+      <meta itemprop="image" content="/images/avatar/portrait.png">
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
@@ -405,7 +405,7 @@
 <li>各个线程执行位置的<strong>PC寄存器</strong></li>
 </ol>
 <p>class文件加载后存放于方法区，运行时执行方法区内的代码。</p>
-<p><img src="http://pcrioz2ch.bkt.clouddn.com/JVM/01/ram.png" alt="image"></p>
+<p><img src="/images/posts/JVM/01/ram.png" alt="ram"></p>
 <h2 id="堆区"><a href="#堆区" class="headerlink" title="堆区"></a>堆区</h2><ul>
 <li>提供所有<strong>类实例</strong>和<strong>数组对象</strong>存储区域。</li>
 <li>JVM只有一个堆区(heap)被所有<strong>线程共享</strong>，堆中不存放基本类型和对象引用，只存放对象本身。</li>
@@ -428,7 +428,7 @@
 <p>Java字节码无法直接执行，要翻译成机器码。</p>
 <h2 id="HotSpot翻译字节码的两种形式"><a href="#HotSpot翻译字节码的两种形式" class="headerlink" title="HotSpot翻译字节码的两种形式"></a>HotSpot翻译字节码的两种形式</h2><h3 id="解释执行"><a href="#解释执行" class="headerlink" title="解释执行"></a>解释执行</h3><p>逐条将字节码翻译成机器码并执行。<br>无需等待编译。</p>
 <h3 id="即时编译"><a href="#即时编译" class="headerlink" title="即时编译"></a>即时编译</h3><p>Just-In-Time compilation, JIT<br>将方法中包含的所有字节码编译成机器码后再执行。<br>实际运行速度更快。</p>
-<p><img src="http://pcrioz2ch.bkt.clouddn.com/JVM/01/execute_code.png" alt="image"></p>
+<p><img src="/images/posts/JVM/01/execute_code.png" alt="execute_code"></p>
 <p>HotSpot默认采用<strong>混合模式</strong>。先解释执行，热点代码以方法为单位即时编译。</p>
 <h1 id="Java虚拟机的运行效率究竟是怎样的？"><a href="#Java虚拟机的运行效率究竟是怎样的？" class="headerlink" title="Java虚拟机的运行效率究竟是怎样的？"></a>Java虚拟机的运行效率究竟是怎样的？</h1><p><strong>即时编译</strong>建立再程序符合<strong>二八定律</strong>的假设上。</p>
 <p>HotSpot内置了多个即时编译器：C1、C2和Graal。</p>
@@ -484,14 +484,14 @@
 
     
       <div id="wechat" style="display: inline-block">
-        <img id="wechat_qr" src="http://pcrioz2ch.bkt.clouddn.com/reward_wechatpay.jpg" alt="Ennis L.M. Wu 微信支付"/>
+        <img id="wechat_qr" src="/images/reward/reward_wechatpay.jpg" alt="Ennis L.M. Wu 微信支付"/>
         <p>微信支付</p>
       </div>
     
 
     
       <div id="alipay" style="display: inline-block">
-        <img id="alipay_qr" src="http://pcrioz2ch.bkt.clouddn.com/reward_alipay.jpg" alt="Ennis L.M. Wu 支付宝"/>
+        <img id="alipay_qr" src="/images/reward/reward_alipay.jpg" alt="Ennis L.M. Wu 支付宝"/>
         <p>支付宝</p>
       </div>
     
@@ -602,7 +602,7 @@
           <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
             
               <img class="site-author-image" itemprop="image"
-                src="http://pcrioz2ch.bkt.clouddn.com/portrait.png"
+                src="/images/avatar/portrait.png"
                 alt="Ennis L.M. Wu" />
             
               <p class="site-author-name" itemprop="name">Ennis L.M. Wu</p>
@@ -659,7 +659,7 @@
             <div class="links-of-author motion-element">
                 
                   <span class="links-of-author-item">
-                    <a href="mailto:wkf1997@gmail.com" target="_blank" title="E-Mail">
+                    <a href="mailto:ennis.lm.wu@gmail.com" target="_blank" title="E-Mail">
                       
                         <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
                   </span>

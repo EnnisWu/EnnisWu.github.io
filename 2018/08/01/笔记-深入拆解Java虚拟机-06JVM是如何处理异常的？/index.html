@@ -89,13 +89,13 @@
 <meta property="og:site_name" content="Ennis -Little Monster">
 <meta property="og:description" content="异常的基本概念  Error：涵盖程序不应捕获的异常（JVM抛出）。程序出发Error时，执行状态已经无法恢复，需要终止线程甚至终止虚拟机。  Exception：涵盖程序可能需要捕获且处理的异常。  RuntimeException：表示“程序虽然无法继续执行，但是还能抢救一下”的情况。 RuntimeException和Error非检查异常（unchecked exception）。其他异常属">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:image" content="http://pcrioz2ch.bkt.clouddn.com/JVM/06/throwable.png">
-<meta property="og:image" content="http://pcrioz2ch.bkt.clouddn.com/JVM/06/trigger_exception.png">
-<meta property="og:updated_time" content="2018-12-11T12:58:37.163Z">
+<meta property="og:image" content="http://ennis.info/images/posts/JVM/06/throwable.png">
+<meta property="og:image" content="http://ennis.info/images/posts/JVM/06/trigger_exception.png">
+<meta property="og:updated_time" content="2019-01-26T11:03:33.401Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="笔记-深入拆解Java虚拟机-06JVM是如何处理异常的？">
 <meta name="twitter:description" content="异常的基本概念  Error：涵盖程序不应捕获的异常（JVM抛出）。程序出发Error时，执行状态已经无法恢复，需要终止线程甚至终止虚拟机。  Exception：涵盖程序可能需要捕获且处理的异常。  RuntimeException：表示“程序虽然无法继续执行，但是还能抢救一下”的情况。 RuntimeException和Error非检查异常（unchecked exception）。其他异常属">
-<meta name="twitter:image" content="http://pcrioz2ch.bkt.clouddn.com/JVM/06/throwable.png">
+<meta name="twitter:image" content="http://ennis.info/images/posts/JVM/06/throwable.png">
 
 
 
@@ -307,7 +307,7 @@
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Ennis L.M. Wu">
       <meta itemprop="description" content="">
-      <meta itemprop="image" content="http://pcrioz2ch.bkt.clouddn.com/portrait.png">
+      <meta itemprop="image" content="/images/avatar/portrait.png">
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
@@ -391,7 +391,7 @@
       
 
       
-        <h1 id="异常的基本概念"><a href="#异常的基本概念" class="headerlink" title="异常的基本概念"></a>异常的基本概念</h1><p><img src="http://pcrioz2ch.bkt.clouddn.com/JVM/06/throwable.png" alt="image"></p>
+        <h1 id="异常的基本概念"><a href="#异常的基本概念" class="headerlink" title="异常的基本概念"></a>异常的基本概念</h1><p><img src="/images/posts/JVM/06/throwable.png" alt="throwable"></p>
 <ul>
 <li><p>Error：涵盖程序不应捕获的异常（JVM抛出）。<br>程序出发Error时，执行状态已经无法恢复，需要终止线程甚至终止虚拟机。</p>
 </li>
@@ -431,7 +431,7 @@
 <li>如果<strong>遍历完所有</strong>异常表条目，仍<strong>未匹配</strong>到异常处理器，<strong>弹出当前方法对应的Java栈帧，在调用者（caller）中重复上述操作</strong>。</li>
 <li>finally代码块的编译，当前版本Java编译器，是<strong>复制finally代码块的内容，分别放在try-catch代码块所有正常执行路径和异常执行路径的出口中</strong>。</li>
 </ol>
-<p><img src="http://pcrioz2ch.bkt.clouddn.com/JVM/06/trigger_exception.png" alt="image"></p>
+<p><img src="/images/posts/JVM/06/trigger_exception.png" alt="trigger_exception"></p>
 <p>针对异常执行路径，Java编译器会生成一个或多个异常表条目，监控整个try-catch代码块，并且捕获所有种类的异常（在 javap 中以 any 指代）。</p>
 <p>这些异常表条目的 target 指针将指向另一份复制的finally代码块。</p>
 <p>在这个finally代码块的最后，Java编译器会重新抛出所捕获的异常。</p>
@@ -466,14 +466,14 @@
 
     
       <div id="wechat" style="display: inline-block">
-        <img id="wechat_qr" src="http://pcrioz2ch.bkt.clouddn.com/reward_wechatpay.jpg" alt="Ennis L.M. Wu 微信支付"/>
+        <img id="wechat_qr" src="/images/reward/reward_wechatpay.jpg" alt="Ennis L.M. Wu 微信支付"/>
         <p>微信支付</p>
       </div>
     
 
     
       <div id="alipay" style="display: inline-block">
-        <img id="alipay_qr" src="http://pcrioz2ch.bkt.clouddn.com/reward_alipay.jpg" alt="Ennis L.M. Wu 支付宝"/>
+        <img id="alipay_qr" src="/images/reward/reward_alipay.jpg" alt="Ennis L.M. Wu 支付宝"/>
         <p>支付宝</p>
       </div>
     
@@ -584,7 +584,7 @@
           <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
             
               <img class="site-author-image" itemprop="image"
-                src="http://pcrioz2ch.bkt.clouddn.com/portrait.png"
+                src="/images/avatar/portrait.png"
                 alt="Ennis L.M. Wu" />
             
               <p class="site-author-name" itemprop="name">Ennis L.M. Wu</p>
@@ -641,7 +641,7 @@
             <div class="links-of-author motion-element">
                 
                   <span class="links-of-author-item">
-                    <a href="mailto:wkf1997@gmail.com" target="_blank" title="E-Mail">
+                    <a href="mailto:ennis.lm.wu@gmail.com" target="_blank" title="E-Mail">
                       
                         <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
                   </span>
