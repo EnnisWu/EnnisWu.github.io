@@ -298,6 +298,364 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://ennis.info/2019/02/16/HashSet为什么要使用Object对象填充value而不是null/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Ennis L.M. Wu">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar/portrait.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Ennis -Little Monster">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2019/02/16/HashSet为什么要使用Object对象填充value而不是null/" itemprop="url">HashSet为什么要使用Object对象填充value而不是null</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-02-16T23:25:02+08:00">
+                2019-02-16
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Java集合/" itemprop="url" rel="index">
+                    <span itemprop="name">Java集合</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>我们知道 HashSet 内部使用 HashMap 实现，HashSet 的元素存储在 HashMap 的 key 中（唯一），value 使用了一个 Object 对象填充。为什么 HashSet 不使用 null 去填充 value 呢？</p>
+<p>以下所有原代码基于 JDK 1.10</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">private</span> <span class="keyword">transient</span> HashMap&lt;E,Object&gt; map;</span><br><span class="line"></span><br><span class="line"> <span class="comment">// Dummy value to associate with an Object in the backing Map</span></span><br><span class="line"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> Object PRESENT = <span class="keyword">new</span> Object();</span><br></pre></td></tr></table></figure>
+<h1 id="从-remove-的角度"><a href="#从-remove-的角度" class="headerlink" title="从 remove 的角度"></a>从 remove 的角度</h1><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">remove</span><span class="params">(Object o)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> map.remove(o)==PRESENT;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ol>
+<li><p>HashSet 使用 HashMap 的 <code>remove(Object) : Object</code> 方法移除元素，如果使用 null 作为 value 填充，其返回值始终为 null，因为当存在该 key 并移除成功使返回原 value 为 null，当不存在该 key 时返回 null ，即无法判断是否移除成功。</p>
+</li>
+<li><p>HashMap 存在 <code>remove(Object, Object) : boolean</code> 方法，但该方法在 JDK 1.8 才出现。并且该方法相对于上一个方法更加耗时。</p>
+</li>
+</ol>
+<h1 id="从-add-的角度"><a href="#从-add-的角度" class="headerlink" title="从 add 的角度"></a>从 add 的角度</h1><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">add</span><span class="params">(E e)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> map.put(e, PRESENT)==<span class="keyword">null</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ol>
+<li><p>HashSet 使用 HashMap 的 <code>put(Object, Object) : Object</code> 方法添加元素，但该方法无法判断是否添加成功。HashSet 的 add 方法添加元素时若该元素之前未被添加则返回 true，若该元素之前已被添加则返回 false。HashMap 的 put 添加键值对时若该键值对的 key 未被添加则返回 null，若该键值对的 key 已被添加则返回原 value。即当使用 null 作为 value 填充，其返回值始终为 null，无法判断是否添加成功。</p>
+</li>
+<li><p>可以使用 HashMap 的 <code>containsKey(Object) : boolean</code>    方法加以条件判断，但这样会更加耗时。并且若添加一个之前未被添加的元素需要遍历整个 HashMap。而添加元素是一个使用频繁的方法，尤其是添加新元素更为频繁，每次都加以判断并不是一个明智的选择。</p>
+</li>
+</ol>
+<h1 id="从消耗内存的角度"><a href="#从消耗内存的角度" class="headerlink" title="从消耗内存的角度"></a>从消耗内存的角度</h1><p>HashSet 使用的填充对象 PRESENT 用 static 修饰，所有 HashSet 的所有元素都使用该对象作为 value 填充，并不会消耗多大内存，可以忽略不计。</p>
+<h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><p>综上，HashSet 使用一个 Object 对象而不是 null 作为 value 填充 HashMap 在时间上效率会更优越，并且消耗的内存可以忽略不计。</p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://ennis.info/2019/02/16/HashMap的相关问题/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Ennis L.M. Wu">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar/portrait.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Ennis -Little Monster">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2019/02/16/HashMap的相关问题/" itemprop="url">HashMap的相关问题</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-02-16T22:35:53+08:00">
+                2019-02-16
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Java集合/" itemprop="url" rel="index">
+                    <span itemprop="name">Java集合</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h1 id="HashMap-扩容机制"><a href="#HashMap-扩容机制" class="headerlink" title="HashMap 扩容机制"></a>HashMap 扩容机制</h1><h2 id="扩容时机"><a href="#扩容时机" class="headerlink" title="扩容时机"></a>扩容时机</h2><h3 id="基于-JDK-1-7"><a href="#基于-JDK-1-7" class="headerlink" title="基于 JDK 1.7"></a>基于 JDK 1.7</h3><ol>
+<li><p>添加元素前容器元素的个数 >= 阈值（<code>size &gt;= threshold</code>）。</p>
+</li>
+<li><p>当前要添加元素所在数组（桶）的位置（index）不等于null。</p>
+<p> 也就是说发生了 hash 冲突。</p>
+</li>
+<li><p>以上两个条件都满足时触发 HashMap 扩容。</p>
+</li>
+</ol>
+<h3 id="基于-JDK-1-10"><a href="#基于-JDK-1-10" class="headerlink" title="基于 JDK 1.10"></a>基于 JDK 1.10</h3><ol>
+<li>添加元素后容器的元素个数 > 阈值（<code>++size &gt; threshold</code>）</li>
+</ol>
+<h3 id="thresold-说明"><a href="#thresold-说明" class="headerlink" title="thresold 说明"></a>thresold 说明</h3><ol>
+<li><p>threshold = 数组（桶）的长度。</p>
+</li>
+<li><p>当扩容到最大值时，threshold = int 最大值。</p>
+</li>
+<li><p>使用提供初始值的构造方法时，threshold = 初始值最接近的 2 的 n 次幂的值。</p>
+</li>
+</ol>
+<h2 id="扩容大小"><a href="#扩容大小" class="headerlink" title="扩容大小"></a>扩容大小</h2><ol>
+<li><p>扩容大小为当前数组（桶）的 2 倍（HashMap 中数组的大小始终为 2 的 n 次幂）。</p>
+</li>
+<li><p>扩容时触发 rehash ，也就是重新计算每个元素的位置。</p>
+</li>
+<li><p>经过 rehash 后，元素在原位置或者在原位置移动 2 次幂的位置。</p>
+</li>
+</ol>
+<h2 id="原代码"><a href="#原代码" class="headerlink" title="原代码"></a>原代码</h2><p>以下原代码基于 JDK 1.7</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/** </span></span><br><span class="line"><span class="comment"> * HashMap 添加节点 </span></span><br><span class="line"><span class="comment"> * </span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param</span> hash        当前key生成的hashcode </span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param</span> key         要添加到 HashMap 的key </span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param</span> value       要添加到 HashMap 的value </span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param</span> bucketIndex 桶，也就是这个要添加 HashMap 里的这个数据对应到数组的位置下标 </span></span><br><span class="line"><span class="comment"> */</span>  </span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">addEntry</span><span class="params">(<span class="keyword">int</span> hash, K key, V value, <span class="keyword">int</span> bucketIndex)</span> </span>&#123;  </span><br><span class="line">    <span class="comment">//size：The number of key-value mappings contained in this map.  </span></span><br><span class="line">    <span class="comment">//threshold：The next size value at which to resize (capacity * load factor)  </span></span><br><span class="line">    <span class="comment">//数组扩容条件：1.已经存在的key-value mappings的个数大于等于阈值  </span></span><br><span class="line">    <span class="comment">//             2.底层数组的bucketIndex坐标处不等于null  </span></span><br><span class="line">    <span class="keyword">if</span> ((size &gt;= threshold) &amp;&amp; (<span class="keyword">null</span> != table[bucketIndex])) &#123;  </span><br><span class="line">        resize(<span class="number">2</span> * table.length);<span class="comment">//扩容之后，数组长度变了  </span></span><br><span class="line">        hash = (<span class="keyword">null</span> != key) ? hash(key) : <span class="number">0</span>;<span class="comment">//为什么要再次计算一下hash值呢？  </span></span><br><span class="line">        bucketIndex = indexFor(hash, table.length);<span class="comment">//扩容之后，数组长度变了，在数组的下标跟数组长度有关，得重算。  </span></span><br><span class="line">    &#125;  </span><br><span class="line">    createEntry(hash, key, value, bucketIndex);  </span><br><span class="line">&#125;  </span><br><span class="line">  </span><br><span class="line"><span class="comment">/** </span></span><br><span class="line"><span class="comment"> * 这地方就是链表出现的地方，有2种情况 </span></span><br><span class="line"><span class="comment"> * 1，原来的桶bucketIndex处是没值的，那么就不会有链表出来啦 </span></span><br><span class="line"><span class="comment"> * 2，原来这地方有值，那么根据Entry的构造函数，把新传进来的key-value mapping放在数组上，原来的就挂在这个新来的next属性上了 </span></span><br><span class="line"><span class="comment"> */</span>  </span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">createEntry</span><span class="params">(<span class="keyword">int</span> hash, K key, V value, <span class="keyword">int</span> bucketIndex)</span> </span>&#123;  </span><br><span class="line">    HashMap.Entry&lt;K, V&gt; e = table[bucketIndex];  </span><br><span class="line">    table[bucketIndex] = <span class="keyword">new</span> HashMap.Entry&lt;&gt;(hash, key, value, e);  </span><br><span class="line">    size++;  </span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">resize</span><span class="params">(<span class="keyword">int</span> newCapacity)</span> </span>&#123;   <span class="comment">//传入新的容量</span></span><br><span class="line">    Entry[] oldTable = table;    <span class="comment">//引用扩容前的Entry数组</span></span><br><span class="line">    <span class="keyword">int</span> oldCapacity = oldTable.length;</span><br><span class="line">    <span class="keyword">if</span> (oldCapacity == MAXIMUM_CAPACITY) &#123;  <span class="comment">//扩容前的数组大小如果已经达到最大(2^30)了</span></span><br><span class="line">        threshold = Integer.MAX_VALUE; <span class="comment">//修改阈值为int的最大值(2^31-1)，这样以后就不会扩容了</span></span><br><span class="line">        <span class="keyword">return</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    Entry[] newTable = <span class="keyword">new</span> Entry[newCapacity];  <span class="comment">//初始化一个新的Entry数组</span></span><br><span class="line">    transfer(newTable);                         <span class="comment">//！！将数据转移到新的Entry数组里</span></span><br><span class="line">    table = newTable;                           <span class="comment">//HashMap的table属性引用新的Entry数组</span></span><br><span class="line">    threshold = (<span class="keyword">int</span>) (newCapacity * loadFactor);<span class="comment">//修改阈值</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">transfer</span><span class="params">(Entry[] newTable)</span> </span>&#123;</span><br><span class="line">    Entry[] src = table;                   <span class="comment">//src引用了旧的Entry数组</span></span><br><span class="line">    <span class="keyword">int</span> newCapacity = newTable.length;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> j = <span class="number">0</span>; j &lt; src.length; j++) &#123; <span class="comment">//遍历旧的Entry数组</span></span><br><span class="line">        Entry&lt;K, V&gt; e = src[j];             <span class="comment">//取得旧Entry数组的每个元素</span></span><br><span class="line">        <span class="keyword">if</span> (e != <span class="keyword">null</span>) &#123;</span><br><span class="line">            src[j] = <span class="keyword">null</span>;<span class="comment">//释放旧Entry数组的对象引用（for循环后，旧的Entry数组不再引用任何对象）</span></span><br><span class="line">            <span class="keyword">do</span> &#123;</span><br><span class="line">                Entry&lt;K, V&gt; next = e.next;</span><br><span class="line">                <span class="keyword">int</span> i = indexFor(e.hash, newCapacity); <span class="comment">//！！重新计算每个元素在数组中的位置</span></span><br><span class="line">                e.next = newTable[i]; <span class="comment">//标记[1]</span></span><br><span class="line">                newTable[i] = e;      <span class="comment">//将元素放在数组上</span></span><br><span class="line">                e = next;             <span class="comment">//访问下一个Entry链上的元素</span></span><br><span class="line">            &#125; <span class="keyword">while</span> (e != <span class="keyword">null</span>);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>以下原代码基于 JDK 1.10</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * Associates the specified value with the specified key in this map.</span></span><br><span class="line"><span class="comment"> * If the map previously contained a mapping for the key, the old</span></span><br><span class="line"><span class="comment"> * value is replaced.</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param</span> key key with which the specified value is to be associated</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param</span> value value to be associated with the specified key</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@return</span> the previous value associated with &#123;<span class="doctag">@code</span> key&#125;, or</span></span><br><span class="line"><span class="comment"> *         &#123;<span class="doctag">@code</span> null&#125; if there was no mapping for &#123;<span class="doctag">@code</span> key&#125;.</span></span><br><span class="line"><span class="comment"> *         (A &#123;<span class="doctag">@code</span> null&#125; return can also indicate that the map</span></span><br><span class="line"><span class="comment"> *         previously associated &#123;<span class="doctag">@code</span> null&#125; with &#123;<span class="doctag">@code</span> key&#125;.)</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> V <span class="title">put</span><span class="params">(K key, V value)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> putVal(hash(key), key, value, <span class="keyword">false</span>, <span class="keyword">true</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * Implements Map.put and related methods.</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param</span> hash hash for key</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param</span> key the key</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param</span> value the value to put</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param</span> onlyIfAbsent if true, don't change existing value</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param</span> evict if false, the table is in creation mode.</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@return</span> previous value, or null if none</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="function"><span class="keyword">final</span> V <span class="title">putVal</span><span class="params">(<span class="keyword">int</span> hash, K key, V value, <span class="keyword">boolean</span> onlyIfAbsent,</span></span></span><br><span class="line"><span class="function"><span class="params">               <span class="keyword">boolean</span> evict)</span> </span>&#123;</span><br><span class="line">    Node&lt;K,V&gt;[] tab; Node&lt;K,V&gt; p; <span class="keyword">int</span> n, i;</span><br><span class="line">    <span class="keyword">if</span> ((tab = table) == <span class="keyword">null</span> || (n = tab.length) == <span class="number">0</span>)</span><br><span class="line">        n = (tab = resize()).length;</span><br><span class="line">    <span class="keyword">if</span> ((p = tab[i = (n - <span class="number">1</span>) &amp; hash]) == <span class="keyword">null</span>)</span><br><span class="line">        tab[i] = newNode(hash, key, value, <span class="keyword">null</span>);</span><br><span class="line">    <span class="keyword">else</span> &#123;</span><br><span class="line">        Node&lt;K,V&gt; e; K k;</span><br><span class="line">        <span class="keyword">if</span> (p.hash == hash &amp;&amp;</span><br><span class="line">            ((k = p.key) == key || (key != <span class="keyword">null</span> &amp;&amp; key.equals(k))))</span><br><span class="line">            e = p;</span><br><span class="line">        <span class="keyword">else</span> <span class="keyword">if</span> (p <span class="keyword">instanceof</span> TreeNode)</span><br><span class="line">            e = ((TreeNode&lt;K,V&gt;)p).putTreeVal(<span class="keyword">this</span>, tab, hash, key, value);</span><br><span class="line">        <span class="keyword">else</span> &#123;</span><br><span class="line">            <span class="keyword">for</span> (<span class="keyword">int</span> binCount = <span class="number">0</span>; ; ++binCount) &#123;</span><br><span class="line">                <span class="keyword">if</span> ((e = p.next) == <span class="keyword">null</span>) &#123;</span><br><span class="line">                    p.next = newNode(hash, key, value, <span class="keyword">null</span>);</span><br><span class="line">                    <span class="keyword">if</span> (binCount &gt;= TREEIFY_THRESHOLD - <span class="number">1</span>) <span class="comment">// -1 for 1st</span></span><br><span class="line">                        treeifyBin(tab, hash);</span><br><span class="line">                    <span class="keyword">break</span>;</span><br><span class="line">                &#125;</span><br><span class="line">                <span class="keyword">if</span> (e.hash == hash &amp;&amp;</span><br><span class="line">                    ((k = e.key) == key || (key != <span class="keyword">null</span> &amp;&amp; key.equals(k))))</span><br><span class="line">                    <span class="keyword">break</span>;</span><br><span class="line">                p = e;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span> (e != <span class="keyword">null</span>) &#123; <span class="comment">// existing mapping for key</span></span><br><span class="line">            V oldValue = e.value;</span><br><span class="line">            <span class="keyword">if</span> (!onlyIfAbsent || oldValue == <span class="keyword">null</span>)</span><br><span class="line">                e.value = value;</span><br><span class="line">            afterNodeAccess(e);</span><br><span class="line">            <span class="keyword">return</span> oldValue;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    ++modCount;</span><br><span class="line">    <span class="keyword">if</span> (++size &gt; threshold)</span><br><span class="line">        resize();</span><br><span class="line">    afterNodeInsertion(evict);</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">null</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * Initializes or doubles table size.  If null, allocates in</span></span><br><span class="line"><span class="comment"> * accord with initial capacity target held in field threshold.</span></span><br><span class="line"><span class="comment"> * Otherwise, because we are using power-of-two expansion, the</span></span><br><span class="line"><span class="comment"> * elements from each bin must either stay at same index, or move</span></span><br><span class="line"><span class="comment"> * with a power of two offset in the new table.</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@return</span> the table</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">final</span> Node&lt;K,V&gt;[] resize() &#123;</span><br><span class="line">    Node&lt;K,V&gt;[] oldTab = table;</span><br><span class="line">    <span class="keyword">int</span> oldCap = (oldTab == <span class="keyword">null</span>) ? <span class="number">0</span> : oldTab.length;</span><br><span class="line">    <span class="keyword">int</span> oldThr = threshold;</span><br><span class="line">    <span class="keyword">int</span> newCap, newThr = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">if</span> (oldCap &gt; <span class="number">0</span>) &#123;</span><br><span class="line">        <span class="keyword">if</span> (oldCap &gt;= MAXIMUM_CAPACITY) &#123;</span><br><span class="line">            threshold = Integer.MAX_VALUE;</span><br><span class="line">            <span class="keyword">return</span> oldTab;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">else</span> <span class="keyword">if</span> ((newCap = oldCap &lt;&lt; <span class="number">1</span>) &lt; MAXIMUM_CAPACITY &amp;&amp;</span><br><span class="line">                 oldCap &gt;= DEFAULT_INITIAL_CAPACITY)</span><br><span class="line">            newThr = oldThr &lt;&lt; <span class="number">1</span>; <span class="comment">// double threshold</span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">else</span> <span class="keyword">if</span> (oldThr &gt; <span class="number">0</span>) <span class="comment">// initial capacity was placed in threshold</span></span><br><span class="line">        newCap = oldThr;</span><br><span class="line">    <span class="keyword">else</span> &#123;               <span class="comment">// zero initial threshold signifies using defaults</span></span><br><span class="line">        newCap = DEFAULT_INITIAL_CAPACITY;</span><br><span class="line">        newThr = (<span class="keyword">int</span>)(DEFAULT_LOAD_FACTOR * DEFAULT_INITIAL_CAPACITY);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span> (newThr == <span class="number">0</span>) &#123;</span><br><span class="line">        <span class="keyword">float</span> ft = (<span class="keyword">float</span>)newCap * loadFactor;</span><br><span class="line">        newThr = (newCap &lt; MAXIMUM_CAPACITY &amp;&amp; ft &lt; (<span class="keyword">float</span>)MAXIMUM_CAPACITY ?</span><br><span class="line">                  (<span class="keyword">int</span>)ft : Integer.MAX_VALUE);</span><br><span class="line">    &#125;</span><br><span class="line">    threshold = newThr;</span><br><span class="line">    <span class="meta">@SuppressWarnings</span>(&#123;<span class="string">"rawtypes"</span>,<span class="string">"unchecked"</span>&#125;)</span><br><span class="line">    Node&lt;K,V&gt;[] newTab = (Node&lt;K,V&gt;[])<span class="keyword">new</span> Node[newCap];</span><br><span class="line">    table = newTab;</span><br><span class="line">    <span class="keyword">if</span> (oldTab != <span class="keyword">null</span>) &#123;</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> j = <span class="number">0</span>; j &lt; oldCap; ++j) &#123;</span><br><span class="line">            Node&lt;K,V&gt; e;</span><br><span class="line">            <span class="keyword">if</span> ((e = oldTab[j]) != <span class="keyword">null</span>) &#123;</span><br><span class="line">                oldTab[j] = <span class="keyword">null</span>;</span><br><span class="line">                <span class="keyword">if</span> (e.next == <span class="keyword">null</span>)</span><br><span class="line">                    newTab[e.hash &amp; (newCap - <span class="number">1</span>)] = e;</span><br><span class="line">                <span class="keyword">else</span> <span class="keyword">if</span> (e <span class="keyword">instanceof</span> TreeNode)</span><br><span class="line">                    ((TreeNode&lt;K,V&gt;)e).split(<span class="keyword">this</span>, newTab, j, oldCap);</span><br><span class="line">                <span class="keyword">else</span> &#123; <span class="comment">// preserve order</span></span><br><span class="line">                    Node&lt;K,V&gt; loHead = <span class="keyword">null</span>, loTail = <span class="keyword">null</span>;</span><br><span class="line">                    Node&lt;K,V&gt; hiHead = <span class="keyword">null</span>, hiTail = <span class="keyword">null</span>;</span><br><span class="line">                    Node&lt;K,V&gt; next;</span><br><span class="line">                    <span class="keyword">do</span> &#123;</span><br><span class="line">                        next = e.next;</span><br><span class="line">                        <span class="keyword">if</span> ((e.hash &amp; oldCap) == <span class="number">0</span>) &#123;</span><br><span class="line">                            <span class="keyword">if</span> (loTail == <span class="keyword">null</span>)</span><br><span class="line">                                loHead = e;</span><br><span class="line">                            <span class="keyword">else</span></span><br><span class="line">                                loTail.next = e;</span><br><span class="line">                            loTail = e;</span><br><span class="line">                        &#125;</span><br><span class="line">                        <span class="keyword">else</span> &#123;</span><br><span class="line">                            <span class="keyword">if</span> (hiTail == <span class="keyword">null</span>)</span><br><span class="line">                                hiHead = e;</span><br><span class="line">                            <span class="keyword">else</span></span><br><span class="line">                                hiTail.next = e;</span><br><span class="line">                            hiTail = e;</span><br><span class="line">                        &#125;</span><br><span class="line">                    &#125; <span class="keyword">while</span> ((e = next) != <span class="keyword">null</span>);</span><br><span class="line">                    <span class="keyword">if</span> (loTail != <span class="keyword">null</span>) &#123;</span><br><span class="line">                        loTail.next = <span class="keyword">null</span>;</span><br><span class="line">                        newTab[j] = loHead;</span><br><span class="line">                    &#125;</span><br><span class="line">                    <span class="keyword">if</span> (hiTail != <span class="keyword">null</span>) &#123;</span><br><span class="line">                        hiTail.next = <span class="keyword">null</span>;</span><br><span class="line">                        newTab[j + oldCap] = hiHead;</span><br><span class="line">                    &#125;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> newTab;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h1 id="HashMap-插入链表时是头插还是尾插"><a href="#HashMap-插入链表时是头插还是尾插" class="headerlink" title="HashMap 插入链表时是头插还是尾插"></a>HashMap 插入链表时是头插还是尾插</h1><p>其实这个问题很简单，只需要观察 HashMap 的 Node 节点类的字段。</p>
+<p>Node 类仅保存了它的下一个节点，也就是说这个链表是单向的，并且只保存了头节点，所以肯定是头插法性能较高。</p>
+<h1 id="LinkedHashMap-是怎样实现有序的"><a href="#LinkedHashMap-是怎样实现有序的" class="headerlink" title="LinkedHashMap 是怎样实现有序的"></a>LinkedHashMap 是怎样实现有序的</h1><p>我们知道 HashMap 中保存的元素是无序的，并且 HashMap 不保证其元素的位置不变，而 Map 接口的另一个实现类 LinkedHashMap 则可以保证其遍历时以添加的顺序返回，那它是怎样实现的？</p>
+<blockquote>
+<p>注意 LinkedHashMap 不可以随机访问，其内部元素仍无序，只是通过迭代器遍历时返回顺序与添加顺序相同。</p>
+</blockquote>
+<p>以下代码基于 JDK 1.10</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">static</span> <span class="class"><span class="keyword">class</span> <span class="title">Entry</span>&lt;<span class="title">K</span>,<span class="title">V</span>&gt; <span class="keyword">extends</span> <span class="title">HashMap</span>.<span class="title">Node</span>&lt;<span class="title">K</span>,<span class="title">V</span>&gt; </span>&#123;</span><br><span class="line">    Entry&lt;K,V&gt; before, after;</span><br><span class="line">    Entry(<span class="keyword">int</span> hash, K key, V value, Node&lt;K,V&gt; next) &#123;</span><br><span class="line">        <span class="keyword">super</span>(hash, key, value, next);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">static</span> <span class="class"><span class="keyword">class</span> <span class="title">Node</span>&lt;<span class="title">K</span>,<span class="title">V</span>&gt; <span class="keyword">implements</span> <span class="title">Map</span>.<span class="title">Entry</span>&lt;<span class="title">K</span>,<span class="title">V</span>&gt; </span>&#123;</span><br><span class="line">    <span class="keyword">final</span> <span class="keyword">int</span> hash;</span><br><span class="line">    <span class="keyword">final</span> K key;</span><br><span class="line">    V value;</span><br><span class="line">    Node&lt;K,V&gt; next;</span><br><span class="line"></span><br><span class="line">    Node(<span class="keyword">int</span> hash, K key, V value, Node&lt;K,V&gt; next) &#123;</span><br><span class="line">        <span class="keyword">this</span>.hash = hash;</span><br><span class="line">        <span class="keyword">this</span>.key = key;</span><br><span class="line">        <span class="keyword">this</span>.value = value;</span><br><span class="line">        <span class="keyword">this</span>.next = next;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">//其余方法省略</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>LinkedHashMap 直接继承于 HashMap，其源代码非常短，仅对 HashMap 做了少量更改。LinkedHashMap 中的节点 Node 也直接继承于 HashMap 中的节点 Node。</p>
+<p>从节点代码中我们可以了解到 LinkHashMap 中节点添加了前驱、后继两个新字段，其他不变。</p>
+<p>正如官方文档所说 LinkedHashMap 是哈希表和双向链表的实现。</p>
+<p><img src="/images/posts/Java/Collection/linkedhashmap.png" alt="LinkedHashMap 数据结构"></p>
+<p><a href="https://yikun.github.io/2015/04/02/Java-LinkedHashMap%E5%B7%A5%E4%BD%9C%E5%8E%9F%E7%90%86%E5%8F%8A%E5%AE%9E%E7%8E%B0/" target="_blank" rel="noopener">图片来自</a></p>
+<h1 id="HashMap-与-HashTable-的区别"><a href="#HashMap-与-HashTable-的区别" class="headerlink" title="HashMap 与 HashTable 的区别"></a>HashMap 与 HashTable 的区别</h1><h2 id="继承不同"><a href="#继承不同" class="headerlink" title="继承不同"></a>继承不同</h2><p>HashMap 与 HashTable 都实现了 Map 接口，但是 HashMap 直接继承于 AbstractMap 类，HashTable 直接继承于 Dictionary 类。</p>
+<h2 id="迭代器不同"><a href="#迭代器不同" class="headerlink" title="迭代器不同"></a>迭代器不同</h2><p>HashMap 与 HashTable 的迭代器都实现了 Iterator 接口，但是 HashTable 的迭代器还实现了 Enumeration 接口。</p>
+<h2 id="线程安全不同"><a href="#线程安全不同" class="headerlink" title="线程安全不同"></a>线程安全不同</h2><p>HashMap 是线程不安全的，而 HashTable 是线程安全的。</p>
+<p>在单线程情况下，HashMap 效率高于 HashTable。</p>
+<h2 id="哈希算法不同"><a href="#哈希算法不同" class="headerlink" title="哈希算法不同"></a>哈希算法不同</h2><p>HashMap 中元素的 hash 值使用 key 的 hashcode 值经过一定的算法计算得到。以减少哈希冲突。</p>
+<p>HashTable 中元素的 hash 值直接使用 key 的 hashcode 值。</p>
+<h2 id="允不允许-null-值不同"><a href="#允不允许-null-值不同" class="headerlink" title="允不允许 null 值不同"></a>允不允许 null 值不同</h2><p>HashMap 可以使用 null 作为键和值。HashTable 均不允许。</p>
+<h2 id="扩容大小不同"><a href="#扩容大小不同" class="headerlink" title="扩容大小不同"></a>扩容大小不同</h2><p>HashMap 扩容为原数组（桶）的 2 倍，HashTable 扩容为原数组（桶）的 2 倍 + 1。</p>
+<h1 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h1><blockquote>
+<p><a href="https://www.cnblogs.com/chengxiao/p/6059914.html" target="_blank" rel="noopener">https://www.cnblogs.com/chengxiao/p/6059914.html</a><br><a href="https://blog.csdn.net/qq_27093465/article/details/52270519" target="_blank" rel="noopener">https://blog.csdn.net/qq_27093465/article/details/52270519</a><br><a href="https://blog.csdn.net/mgl934973491/article/details/60466487" target="_blank" rel="noopener">https://blog.csdn.net/mgl934973491/article/details/60466487</a><br><a href="https://blog.csdn.net/u014532901/article/details/78936283" target="_blank" rel="noopener">https://blog.csdn.net/u014532901/article/details/78936283</a><br><a href="https://yikun.github.io/2015/04/02/Java-LinkedHashMap%E5%B7%A5%E4%BD%9C%E5%8E%9F%E7%90%86%E5%8F%8A%E5%AE%9E%E7%8E%B0/" target="_blank" rel="noopener">https://yikun.github.io/2015/04/02/Java-LinkedHashMap%E5%B7%A5%E4%BD%9C%E5%8E%9F%E7%90%86%E5%8F%8A%E5%AE%9E%E7%8E%B0/</a></p>
+</blockquote>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://ennis.info/2018/12/19/笔记-深入拆解Java虚拟机-36SubstrateVM：AOT编译框架/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -2146,435 +2504,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://ennis.info/2018/12/03/笔记-深入拆解Java虚拟机-26向量化/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Ennis L.M. Wu">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar/portrait.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Ennis -Little Monster">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/12/03/笔记-深入拆解Java虚拟机-26向量化/" itemprop="url">笔记-深入拆解Java虚拟机-26向量化</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-12-03T10:25:32+08:00">
-                2018-12-03
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Java虚拟机/" itemprop="url" rel="index">
-                    <span itemprop="name">Java虚拟机</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h1 id="SIMD"><a href="#SIMD" class="headerlink" title="SIMD"></a>SIMD</h1><table>
-<thead>
-<tr>
-<th>寄存器名称</th>
-<th>所属指令集</th>
-<th>位数</th>
-<th>备注</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>XMM 寄存器</td>
-<td>SSE（Streaming SIMD Extensions）指令集</td>
-<td>128 位</td>
-<td></td>
-</tr>
-<tr>
-<td>YMM 寄存器</td>
-<td>AVX（Advanced Vector Extensions）指令集</td>
-<td>256 位</td>
-<td>XMM升级版</td>
-</tr>
-<tr>
-<td>ZMM 寄存器</td>
-<td>AVX512 指令集</td>
-<td>512 位</td>
-<td>YMM升级版</td>
-</tr>
-</tbody>
-</table>
-<p><img src="/images/posts/JVM/26/registers.png" alt="registers"></p>
-<p>原本使用 XMM 寄存器的指令，使用 YMM 寄存器的低 128 位。</p>
-<p>支持 AVX512 指令集的 CPU 都比较贵，目前在生产环境中很少见到。</p>
-<p>HotSpot 虚拟机更新了不少基于 AVX512 指令集以及 ZMM 寄存器的优化。</p>
-<blockquote>
-<p>单指令流多数据流（Single Instruction Multiple Data，SIMD）：即通过单条指令操控多组数据的计算操作。这些指令称之为 SIMD 指令。</p>
-</blockquote>
-<ul>
-<li><p>SIMD 指令将上述寄存器中的<strong>值看成多个整数或者浮点数组成的向量</strong>，进行<strong>批量计算</strong>。</p>
-<p>  <img src="/images/posts/JVM/26/XMM_register.png" alt="XMM_register"></p>
-<ul>
-<li>128 位 XMM 寄存器里的值可以看成 16 个 byte 值组成的向量，或者 8 个 short 值组成的向量，4 个 int 值组成的向量，两个 long 值组成的向量。</li>
-</ul>
-</li>
-<li><p>SIMD 指令PADDB、PADDW、PADDD以及PADDQ，将分别实现 byte 值、short 值、int 值或者 long 值的向量加法。</p>
-</li>
-</ul>
-<p><img src="/images/posts/JVM/26/PADDD.png" alt="PADDD"></p>
-<ul>
-<li>SIMD 指令也被看成 <strong>CPU 指令级别的并行</strong>。</li>
-</ul>
-<h1 id="使用-SIMD-指令的-HotSpot-Intrinsic"><a href="#使用-SIMD-指令的-HotSpot-Intrinsic" class="headerlink" title="使用 SIMD 指令的 HotSpot Intrinsic"></a>使用 SIMD 指令的 HotSpot Intrinsic</h1><ul>
-<li><p>SIMD 指令虽然非常高效，但是<strong>使用很麻烦</strong>。</p>
-</li>
-<li><p>不同的 CPU 所支持的 SIMD 指令可能不同。</p>
-</li>
-<li><p><strong>Java 程序无法像 C++ 程序那样</strong>，直接<strong>使用由 Intel 提供的</strong>，将被替换为具体 SIMD 指令的 <strong>intrinsic 方法</strong>。</p>
-</li>
-<li><p><strong>HotSpot 虚拟机提供 Java 层面的 intrinsic 方法</strong>，这些 intrinsic 方法的语义要<strong>比单个 SIMD 指令复杂得多</strong>。</p>
-</li>
-<li><p>使用 SIMD 指令的 HotSpot intrinsic 是虚拟机开发人员根据其语义定制的，因而性能相当优越。</p>
-</li>
-<li><p>由于<strong>开发及维护成本较高</strong>，这种类型的 intrinsic 屈指可数。</p>
-</li>
-<li><p><strong>intrinsic 方法只能做到点覆盖</strong>，在多数情况下，应用程序不会用到这些 intrinsic 的语义，却又存在向量化优化的机会（借助自动向量化）。</p>
-</li>
-</ul>
-<h1 id="自动向量化（auto-vectorization）"><a href="#自动向量化（auto-vectorization）" class="headerlink" title="自动向量化（auto vectorization）"></a>自动向量化（auto vectorization）</h1><ul>
-<li><p>即时编译器的自动向量化将针对<strong>能够展开的计数循环，进行向量化优化</strong>。</p>
-</li>
-<li><p><a href="/2018/11/24/笔记-深入拆解Java虚拟机-25循环优化/#计数循环需满足的-4-个条件">计数循环的判定</a></p>
-</li>
-<li><p>自动向量化的条件较为苛刻。</p>
-</li>
-<li><p><strong>C2 支持的整数向量化操作不多</strong>（加法，减法，按位与、或、异或，以及批量移位和批量乘法）。</p>
-</li>
-<li><p>C2 支持<strong>向量点积的自动向量化</strong>，需要多条 SIMD 指令完成，并不是十分高效。</p>
-</li>
-</ul>
-<!-- - 为了解决向量化 intrinsic 以及自动向量化覆盖面过窄的问题，在 OpenJDK 的 [Paname 项目](http://openjdk.java.net/projects/panama/) 中尝试引入开发人员可控的向量化抽象（[参考 Vladimir Ivanov 2018 年在 JVMLS 上的演讲](http://cr.openjdk.java.net/~vlivanov/talks/2018_JVMLS_VectorAPI.pdf)）。-->
-<h2 id="自动向量化的条件"><a href="#自动向量化的条件" class="headerlink" title="自动向量化的条件"></a>自动向量化的条件</h2><ol>
-<li>循环变量的<strong>增量为 1</strong>（能够遍历整个数组）。</li>
-<li>循环变量<strong>不能为 long 类型</strong>（ C2 无法将循环识别为计数循环）。</li>
-<li>循环<strong>迭代之间最好不要有数据依赖</strong>（循环展开之后，循环体内存在数据依赖，C2 无法进行自动向量化）。</li>
-<li>循环体内<strong>不要有分支跳转</strong>。</li>
-<li><strong>不要手工进行循环展开</strong>（如果 C2 无法自动展开，也无法进行自动向量化）。</li>
-</ol>
-<h1 id="引用"><a href="#引用" class="headerlink" title="引用"></a>引用</h1><blockquote>
-<p><a href="https://time.geekbang.org/column/article/39838" target="_blank" rel="noopener">https://time.geekbang.org/column/article/39838</a></p>
-</blockquote>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://ennis.info/2018/11/24/笔记-深入拆解Java虚拟机-25循环优化/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Ennis L.M. Wu">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar/portrait.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Ennis -Little Monster">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/11/24/笔记-深入拆解Java虚拟机-25循环优化/" itemprop="url">笔记-深入拆解Java虚拟机-25循环优化</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-11-24T18:59:41+08:00">
-                2018-11-24
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Java虚拟机/" itemprop="url" rel="index">
-                    <span itemprop="name">Java虚拟机</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h1 id="循环无关代码外提"><a href="#循环无关代码外提" class="headerlink" title="循环无关代码外提"></a>循环无关代码外提</h1><blockquote>
-<p>所谓的循环无关代码（Loop-invariant Code），指的是循环中值不变的表达式。</p>
-</blockquote>
-<ul>
-<li>在<strong>不改变程序语义</strong>的情况下，将<strong>循环无关代码提出循环之外</strong>。</li>
-</ul>
-<h2 id="外提循环中值不变的表达式"><a href="#外提循环中值不变的表达式" class="headerlink" title="外提循环中值不变的表达式"></a>外提循环中值不变的表达式</h2><ul>
-<li>通过 Sea-of-Nodes IR 以及节点调度共同完成。</li>
-</ul>
-<h2 id="外提循环无关检测"><a href="#外提循环无关检测" class="headerlink" title="外提循环无关检测"></a>外提循环无关检测</h2><ul>
-<li>通过循环预测（Loop Prediction）完成。</li>
-</ul>
-<p>比如 null 检测（null check），数组下标范围检测（range check）。</p>
-<p>null 检测涉及控制流依赖，无法通过 Sea-of-Nodes IR 转换以及节点调度外提。</p>
-<h1 id="循环展开（Loop-Unrolling）"><a href="#循环展开（Loop-Unrolling）" class="headerlink" title="循环展开（Loop Unrolling）"></a>循环展开（Loop Unrolling）</h1><blockquote>
-<p>指的是在循环体中重复多次循环迭代，并<strong>减少循环次数</strong>的编译优化。</p>
-</blockquote>
-<ul>
-<li>在 C2 中，<strong>只有计数循环</strong>（Counted Loop）才能被展开。</li>
-<li>随着循环体的增大，优化机会不断增加。</li>
-<li>如果循环展开能够触发进一步优化，总体的代码复杂度将降低。</li>
-<li>缺点：可能会<strong>增加代码的冗余度</strong>，导致所生成机器码的长度大幅上涨。</li>
-</ul>
-<h2 id="循环完全展开（Full-Unroll）"><a href="#循环完全展开（Full-Unroll）" class="headerlink" title="循环完全展开（Full Unroll）"></a>循环完全展开（Full Unroll）</h2><ul>
-<li>当<strong>循环数目</strong>是<strong>固定值</strong>而且<strong>非常小</strong>时，会将<strong>循环全部展开</strong>（Full Unroll）。</li>
-<li>仅迭代三次（或以下）的循环，即时编译器将进行完全展开。</li>
-<li>循环体 IR 节点数目超过阈值的循环，即时编译器不会进行任何循环展开。</li>
-</ul>
-<h2 id="计数循环需满足的-4-个条件"><a href="#计数循环需满足的-4-个条件" class="headerlink" title="计数循环需满足的 4 个条件"></a>计数循环需满足的 4 个条件</h2><ol>
-<li>维护一个循环计数器，并且基于计数器的循环出口只有一个（但可以有基于其他判断条件的出口）。</li>
-<li>循环计数器的类型为 int、short 或者 char（即不能是 byte、long，更不能是 float 或者 double）。</li>
-<li>每个迭代循环计数器的增量为常数。</li>
-<li>循环计数器的上限（增量为正数）或下限（增量为负数）是循环无关的数值。</li>
-</ol>
-<h1 id="循环判断外提（loop-unswitching）"><a href="#循环判断外提（loop-unswitching）" class="headerlink" title="循环判断外提（loop unswitching）"></a>循环判断外提（loop unswitching）</h1><blockquote>
-<p>指的是<strong>将循环中的 if 语句外提至循环之前</strong>，并且在该 if 语句的两个分支中分别放置一份循环代码。</p>
-</blockquote>
-<ul>
-<li>与循环无关检测外提所针对的代码模式比较类似。</li>
-</ul>
-<h1 id="循环剥离（loop-peeling）"><a href="#循环剥离（loop-peeling）" class="headerlink" title="循环剥离（loop peeling）"></a>循环剥离（loop peeling）</h1><blockquote>
-<p>指的是将循环的前几个迭代或者后几个迭代剥离出循环的优化方式。</p>
-</blockquote>
-<ul>
-<li>一般来说，循环的<strong>前几个迭代</strong>或者<strong>后几个迭代</strong>都包含<strong>特殊处理</strong>。</li>
-<li>剥离出去后，可以<strong>使原本的循环体的规律性更加明显</strong>，触发进一步的优化。</li>
-</ul>
-<h1 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h1><p>Q：</p>
-<p>如果有这样一段代码：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> ( ... ) &#123;</span><br><span class="line">	sum += x + y + a[i];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>借助 Sea-of-Nodes IR 能把 x + y 表达式外提出去。但，如果表达式变成如下：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sum += x + a[i] + y;</span><br></pre></td></tr></table></figure>
-<p>也能借助 IR 外提  x + y 吗？</p>
-<p>A：能。</p>
-<h1 id="引用"><a href="#引用" class="headerlink" title="引用"></a>引用</h1><blockquote>
-<p><a href="https://time.geekbang.org/column/article/39814" target="_blank" rel="noopener">https://time.geekbang.org/column/article/39814</a></p>
-</blockquote>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -2629,7 +2558,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">51</span>
+                  <span class="site-state-item-count">53</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -2640,7 +2569,7 @@
               
               <div class="site-state-item site-state-categories">
                 <a href="/categories/index.html">
-                  <span class="site-state-item-count">11</span>
+                  <span class="site-state-item-count">12</span>
                   <span class="site-state-item-name">分类</span>
                 </a>
               </div>
@@ -2651,7 +2580,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">20</span>
+                  <span class="site-state-item-count">23</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>
