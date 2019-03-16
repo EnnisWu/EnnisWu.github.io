@@ -89,7 +89,7 @@
 <meta property="og:site_name" content="Ennis -Little Monster">
 <meta property="og:description" content="我们知道 HashSet 内部使用 HashMap 实现，HashSet 的元素存储在 HashMap 的 key 中（唯一），value 使用了一个 Object 对象填充。为什么 HashSet 不使用 null 去填充 value 呢？ 以下所有原代码基于 JDK 1.10 1234private transient HashMap&amp;lt;E,Object&amp;gt; map; // Dummy">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2019-03-14T13:14:53.172Z">
+<meta property="og:updated_time" content="2019-03-16T06:36:43.034Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="HashSet为什么要使用Object对象填充value而不是null">
 <meta name="twitter:description" content="我们知道 HashSet 内部使用 HashMap 实现，HashSet 的元素存储在 HashMap 的 key 中（唯一），value 使用了一个 Object 对象填充。为什么 HashSet 不使用 null 去填充 value 呢？ 以下所有原代码基于 JDK 1.10 1234private transient HashMap&amp;lt;E,Object&amp;gt; map; // Dummy">
@@ -393,14 +393,22 @@
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">private</span> <span class="keyword">transient</span> HashMap&lt;E,Object&gt; map;</span><br><span class="line"></span><br><span class="line"> <span class="comment">// Dummy value to associate with an Object in the backing Map</span></span><br><span class="line"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> Object PRESENT = <span class="keyword">new</span> Object();</span><br></pre></td></tr></table></figure>
 <h1 id="从-remove-的角度"><a href="#从-remove-的角度" class="headerlink" title="从 remove 的角度"></a>从 remove 的角度</h1><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">remove</span><span class="params">(Object o)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> map.remove(o)==PRESENT;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <ol>
-<li><p>HashSet 使用 HashMap 的 <code>remove(Object) : Object</code> 方法移除元素，如果使用 null 作为 value 填充，其返回值始终为 null，因为当存在该 key 并移除成功使返回原 value 为 null，当不存在该 key 时返回 null ，即无法判断是否移除成功。</p>
+<li><p>HashSet 使用 HashMap 的 <code>remove(Object) : Object</code> 方法移除元素，如果使用 null 作为 value 填充，其返回值始终为 null，因为当存在该 key 并移除成功使返回原 value 为 null，当不存在该 key 时返回 null ，即<strong>无法判断是否移除成功</strong>。</p>
 </li>
 <li><p>HashMap 存在 <code>remove(Object, Object) : boolean</code> 方法，但该方法在 JDK 1.8 才出现。并且该方法相对于上一个方法更加耗时。</p>
 </li>
 </ol>
 <h1 id="从-add-的角度"><a href="#从-add-的角度" class="headerlink" title="从 add 的角度"></a>从 add 的角度</h1><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">add</span><span class="params">(E e)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> map.put(e, PRESENT)==<span class="keyword">null</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <ol>
-<li><p>HashSet 使用 HashMap 的 <code>put(Object, Object) : Object</code> 方法添加元素，但该方法无法判断是否添加成功。HashSet 的 add 方法添加元素时若该元素之前未被添加则返回 true，若该元素之前已被添加则返回 false。HashMap 的 put 添加键值对时若该键值对的 key 未被添加则返回 null，若该键值对的 key 已被添加则返回原 value。即当使用 null 作为 value 填充，其返回值始终为 null，无法判断是否添加成功。</p>
+<li><p>HashSet 使用 HashMap 的 <code>put(Object, Object) : Object</code> 方法添加元素，但该方法无法判断是否添加成功。</p>
+<ul>
+<li><p>HashSet 的 add 方法添加元素时若该元素之前未被添加则返回 true，若该元素之前已被添加则返回 false。</p>
+</li>
+<li><p>HashMap 的 put 添加键值对时若该键值对的 key 未被添加则返回 null，若该键值对的 key 已被添加则返回原 value。</p>
+</li>
+<li><p>即当使用 null 作为 value 填充，其返回值始终为 null，<strong>无法判断是否添加成功</strong>。</p>
+</li>
+</ul>
 </li>
 <li><p>可以使用 HashMap 的 <code>containsKey(Object) : boolean</code>    方法加以条件判断，但这样会更加耗时。并且若添加一个之前未被添加的元素需要遍历整个 HashMap。而添加元素是一个使用频繁的方法，尤其是添加新元素更为频繁，每次都加以判断并不是一个明智的选择。</p>
 </li>
@@ -561,7 +569,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">53</span>
+                  <span class="site-state-item-count">54</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -572,7 +580,7 @@
               
               <div class="site-state-item site-state-categories">
                 <a href="/categories/index.html">
-                  <span class="site-state-item-count">12</span>
+                  <span class="site-state-item-count">13</span>
                   <span class="site-state-item-name">分类</span>
                 </a>
               </div>

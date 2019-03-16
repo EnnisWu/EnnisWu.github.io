@@ -298,6 +298,172 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://ennis.info/2018/12/04/笔记-深入拆解Java虚拟机-2829基准测试框架JMH/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Ennis L.M. Wu">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar/portrait.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Ennis -Little Monster">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/12/04/笔记-深入拆解Java虚拟机-2829基准测试框架JMH/" itemprop="url">笔记-深入拆解Java虚拟机-2829基准测试框架JMH</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-12-04T17:12:22+08:00">
+                2018-12-04
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Java虚拟机/" itemprop="url" rel="index">
+                    <span itemprop="name">Java虚拟机</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>通过 <code>System.nanoTime</code> 或者 <code>System.currentTimeMillis</code> 来测量程序所花费的时间过于理性化，忽略了 Java 虚拟机、操作系统，硬件系统所带来的影响。</p>
+<h1 id="性能测试的坑"><a href="#性能测试的坑" class="headerlink" title="性能测试的坑"></a>性能测试的坑</h1><h2 id="Java-虚拟机的影响"><a href="#Java-虚拟机的影响" class="headerlink" title="Java 虚拟机的影响"></a>Java 虚拟机的影响</h2><ul>
+<li>Java 虚拟机堆空间的自适配</li>
+<li>即时编译</li>
+<li>循环展开</li>
+<li>等</li>
+</ul>
+<h2 id="操作系统和硬件系统的影响"><a href="#操作系统和硬件系统的影响" class="headerlink" title="操作系统和硬件系统的影响"></a>操作系统和硬件系统的影响</h2><ul>
+<li>电源管理策略</li>
+<li>CPU 缓存</li>
+<li>分支预测器</li>
+<li>超线程技术</li>
+<li>等</li>
+</ul>
+<h1 id="JMH（Java-Microbenchmark-Harness）"><a href="#JMH（Java-Microbenchmark-Harness）" class="headerlink" title="JMH（Java Microbenchmark Harness）"></a>JMH（Java Microbenchmark Harness）</h1><blockquote>
+<p> OpenJDK 中的开源项目。是一个面向 Java 语言或者其他 Java 虚拟机语言的性能基准测试框架。</p>
+</blockquote>
+<ul>
+<li>JMH 内置许多功能来控制即时编译器的优化。</li>
+<li>其他影响性能评测的因素也提供了不少策略降低影响，甚至彻底解决。</li>
+</ul>
+<h1 id="如何使用-JMH"><a href="#如何使用-JMH" class="headerlink" title="如何使用 JMH"></a>如何使用 JMH</h1><p><a href="http://www.baidu.com" target="_blank" rel="noopener">www.baidu.com</a><br><a href="http://www.google.com" target="_blank" rel="noopener">www.google.com</a></p>
+<h1 id="引用"><a href="#引用" class="headerlink" title="引用"></a>引用</h1><blockquote>
+<p><a href="https://time.geekbang.org/column/article/40275" target="_blank" rel="noopener">https://time.geekbang.org/column/article/40275</a><br><a href="https://time.geekbang.org/column/article/40281" target="_blank" rel="noopener">https://time.geekbang.org/column/article/40281</a></p>
+</blockquote>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://ennis.info/2018/12/03/笔记-深入拆解Java虚拟机-26向量化/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -2149,217 +2315,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://ennis.info/2018/11/07/Android的视图优化方法/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Ennis L.M. Wu">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar/portrait.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Ennis -Little Monster">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/11/07/Android的视图优化方法/" itemprop="url">Android的视图优化方法</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-11-07T21:31:51+08:00">
-                2018-11-07
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Android优化/" itemprop="url" rel="index">
-                    <span itemprop="name">Android优化</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h1 id="过度绘制（Overdraw）"><a href="#过度绘制（Overdraw）" class="headerlink" title="过度绘制（Overdraw）"></a>过度绘制（Overdraw）</h1><blockquote>
-<p>过度绘制（Overdraw）指的是屏幕上的某个像素在同一帧的时间内被绘制了多次。</p>
-</blockquote>
-<h2 id="检测过度绘制"><a href="#检测过度绘制" class="headerlink" title="检测过度绘制"></a>检测过度绘制</h2><p>Android 中打开过度绘制检测工具的方式：</p>
-<ul>
-<li>开发者选项 ➡ 调试GPU过度绘制 ➡ 显示过度绘制区域</li>
-</ul>
-<p>界面中会出现不同颜色的区域，各颜色代表的意思：</p>
-<p><img src="/images/posts/android/Android的视图优化方法/overdraw.webp" alt="overdraw"></p>
-<h2 id="过度绘制优化"><a href="#过度绘制优化" class="headerlink" title="过度绘制优化"></a>过度绘制优化</h2><h3 id="移除布局中不需要的背景"><a href="#移除布局中不需要的背景" class="headerlink" title="移除布局中不需要的背景"></a>移除布局中不需要的背景</h3><h4 id="移除-Window-默认的-Background"><a href="#移除-Window-默认的-Background" class="headerlink" title="移除 Window 默认的 Background"></a>移除 Window 默认的 Background</h4><p>通常使用的 theme 会包含一个 windowBackground。</p>
-<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">item</span> <span class="attr">name</span>=<span class="string">"android:windowBackground"</span>&gt;</span>@color/background_material_light<span class="tag">&lt;/<span class="name">item</span>&gt;</span></span><br></pre></td></tr></table></figure>
-<p>然后又给跟布局添加了一个背景，这会导致整个页面被多绘制一次。</p>
-<p>移掉 windowBackground 即可解决，有两种方法。</p>
-<ul>
-<li>在 theme 中设置</li>
-</ul>
-<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">item</span> <span class="attr">name</span>=<span class="string">"android:windowBackground"</span>&gt;</span>@null<span class="tag">&lt;/<span class="name">item</span>&gt;</span></span><br></pre></td></tr></table></figure>
-<ul>
-<li>在 onCreate() 方法中添加</li>
-</ul>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">getWindow().setBackgroundDrawable(<span class="keyword">null</span>);</span><br></pre></td></tr></table></figure>
-<h4 id="移除控件中不需要的背景"><a href="#移除控件中不需要的背景" class="headerlink" title="移除控件中不需要的背景"></a>移除控件中不需要的背景</h4><ul>
-<li>父布局和子布局设置了相同的 background，选择其一设置即可。</li>
-</ul>
-<h2 id="减少透明度的使用"><a href="#减少透明度的使用" class="headerlink" title="减少透明度的使用"></a>减少透明度的使用</h2><p>View 设置了 alpha 值至少渲染两次。</p>
-<h1 id="布局优化"><a href="#布局优化" class="headerlink" title="布局优化"></a>布局优化</h1><ul>
-<li>LinearLayout 与 RelativeLayout 作用相同时使用 LinearLayout。</li>
-<li>LinearLayout 需要嵌套时使用 RelativeLayout。</li>
-<li>使用 ConstraintLayout。</li>
-</ul>
-<h2 id="使用-Layout-Inspector-查看-layout-层次结构"><a href="#使用-Layout-Inspector-查看-layout-层次结构" class="headerlink" title="使用 Layout Inspector 查看 layout 层次结构"></a>使用 Layout Inspector 查看 layout 层次结构</h2><blockquote>
-<p>Tools &gt; Android &gt; Layout Inspector</p>
-</blockquote>
-<h2 id="使用-lint-优化布局的层次结构"><a href="#使用-lint-优化布局的层次结构" class="headerlink" title="使用 lint 优化布局的层次结构"></a>使用 lint 优化布局的层次结构</h2><blockquote>
-<p>Analyze&gt; Inspect Code</p>
-<blockquote>
-<p>Android&gt; Lint&gt; Performance</p>
-</blockquote>
-</blockquote>
-<h2 id="lt-include-标签"><a href="#lt-include-标签" class="headerlink" title="&lt;include> 标签"></a>&lt;include> 标签</h2><ul>
-<li>只支持 android:layout_ 开头的属性（android:id 是特例）。</li>
-<li>&lt;include> 指定了 id 属性，包含的布局文件根元素也指定了 id 属性，以 &lt;include> 指定的为准。</li>
-</ul>
-<h2 id="lt-merge-标签"><a href="#lt-merge-标签" class="headerlink" title="&lt;merge> 标签"></a>&lt;merge> 标签</h2><ul>
-<li>配合 &lt;include> 标签使用可以减少布局的层级。</li>
-</ul>
-<h2 id="ViewStub"><a href="#ViewStub" class="headerlink" title="ViewStub"></a>ViewStub</h2><ul>
-<li>继承自 View，宽高都是 0，本身不参与任何的布局和绘制过程。</li>
-<li>按需加载所需的布局文件（如网络异常时的界面），使用的时候再加载，提高初始化性能。</li>
-<li>不支持 &lt;merge> 标签。</li>
-<li>使用 inflateedId 属性指定加载的布局 id。</li>
-</ul>
-<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">ViewStub</span></span></span><br><span class="line"><span class="tag">	<span class="attr">android:id</span>=<span class="string">"@+id/stub_import"</span></span></span><br><span class="line"><span class="tag">	<span class="attr">android:inflatedId</span>=<span class="string">"@+id/panel_import"</span> /&gt;</span></span><br></pre></td></tr></table></figure>
-<h3 id="怎样加载？"><a href="#怎样加载？" class="headerlink" title="怎样加载？"></a>怎样加载？</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">((ViewStub) findViewById(R.id.stub_import)).setVisibility(View.VISIBLE);</span><br></pre></td></tr></table></figure>
-<p>或</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">View importPanel = ((ViewStub) findViewById(R.id.stub_import)).inflate();</span><br></pre></td></tr></table></figure>
-<ul>
-<li>加载后 ViewStub 不在属于布局，为 null。</li>
-</ul>
-<h1 id="绘制优化"><a href="#绘制优化" class="headerlink" title="绘制优化"></a>绘制优化</h1><h2 id="onDraw-方法"><a href="#onDraw-方法" class="headerlink" title="onDraw 方法"></a>onDraw 方法</h2><ul>
-<li>不要创建新的布局对象。</li>
-<li>不要做耗时的任务。</li>
-</ul>
-<h3 id="减少自定义-View-的过度绘制"><a href="#减少自定义-View-的过度绘制" class="headerlink" title="减少自定义 View 的过度绘制"></a>减少自定义 View 的过度绘制</h3><ul>
-<li>假如有多张图片叠层显示时，可以使用 <code>Canvas</code> 的 <code>clipRect()</code> 等方法将图片裁剪。</li>
-</ul>
-<h1 id="使用-GPU-呈现模式分析工具"><a href="#使用-GPU-呈现模式分析工具" class="headerlink" title="使用 GPU 呈现模式分析工具"></a>使用 GPU 呈现模式分析工具</h1><p>Android 中打开 GPU 呈现模式分析工具的方式：</p>
-<ul>
-<li>开发者模式 ➡ 监控 ➡ GPU呈现模式</li>
-</ul>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -2414,7 +2369,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">53</span>
+                  <span class="site-state-item-count">54</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -2425,7 +2380,7 @@
               
               <div class="site-state-item site-state-categories">
                 <a href="/categories/index.html">
-                  <span class="site-state-item-count">12</span>
+                  <span class="site-state-item-count">13</span>
                   <span class="site-state-item-name">分类</span>
                 </a>
               </div>
