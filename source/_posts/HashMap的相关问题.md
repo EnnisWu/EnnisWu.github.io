@@ -11,9 +11,9 @@ categories: Java集合
 
 ### 基于 JDK 1.7
 
-1. 添加元素前容器元素的个数 \>= 阈值（`size >= threshold`）。
+1. **添加元素前容器元素的个数 \>= 阈值**（`size >= threshold`）。
 
-2. 当前要添加元素所在数组（桶）的位置（index）不等于null。
+2. 当前要添加元素所在**数组（桶）的位置（index）不等于null**。
 
 	也就是说发生了 hash 冲突。
 
@@ -21,7 +21,7 @@ categories: Java集合
 
 ### 基于 JDK 1.10
 
-1. 添加元素后容器的元素个数 \> 阈值（`++size > threshold`）
+1. **添加元素后容器的元素个数 \> 阈值**（`++size > threshold`）
 
 ### thresold 说明
 
@@ -33,11 +33,11 @@ categories: Java集合
 
 ## 扩容大小
 
-1. 扩容大小为当前数组（桶）的 2 倍（HashMap 中数组的大小始终为 2 的 n 次幂）。
+1. 扩容大小为当前数组（桶）的 **2 倍**（HashMap 中数组的大小始终为 2 的 n 次幂）。
 
 2. 扩容时触发 rehash ，也就是重新计算每个元素的位置。
 
-3. 经过 rehash 后，元素在原位置或者在原位置移动 2 次幂的位置。
+3. 经过 rehash 后，**元素在原位置或者在原位置移动 2 次幂的位置**。
 
 ## 原代码
 
@@ -270,7 +270,7 @@ final Node<K,V>[] resize() {
 
 其实这个问题很简单，只需要观察 HashMap 的 Node 节点类的字段。
 
-Node 类仅保存了它的下一个节点，也就是说这个链表是单向的，并且只保存了头节点，所以肯定是头插法性能较高。
+Node 类仅保存了它的下一个节点，也就是说这个**链表是单向的**，并且只保存了头节点，所以肯定是**头插法**性能较高。
 
 # LinkedHashMap 是怎样实现有序的
 
@@ -311,7 +311,7 @@ LinkedHashMap 直接继承于 HashMap，其源代码非常短，仅对 HashMap �
 
 从节点代码中我们可以了解到 LinkHashMap 中节点添加了前驱、后继两个新字段，其他不变。
 
-正如官方文档所说 LinkedHashMap 是哈希表和双向链表的实现。
+正如官方文档所说 **LinkedHashMap 是哈希表和双向链表的实现**。
 
 ![LinkedHashMap 数据结构](/images/posts/Java/Collection/linkedhashmap.png)
 
@@ -337,11 +337,11 @@ HashMap 是线程不安全的，而 HashTable 是线程安全的。
 
 HashMap 中元素的 hash 值使用 key 的 hashcode 值经过一定的算法计算得到。以减少哈希冲突。
 
-HashTable 中元素的 hash 值直接使用 key 的 hashcode 值。
+**HashTable 中元素的 hash 值直接使用 key 的 hashcode 值。**
 
 ## 允不允许 null 值不同
 
-HashMap 可以使用 null 作为键和值。HashTable 均不允许。
+**HashMap 可以使用 null 作为键和值。HashTable 均不允许。**
 
 ## 扩容大小不同
 
