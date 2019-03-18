@@ -298,6 +298,190 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://ennis.info/2018/08/06/笔记-深入拆解Java虚拟机-07JVM是如何实现反射的？/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Ennis L.M. Wu">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar/portrait.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Ennis -Little Monster">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/08/06/笔记-深入拆解Java虚拟机-07JVM是如何实现反射的？/" itemprop="url">笔记-深入拆解Java虚拟机-07JVM是如何实现反射的？</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-08-06T14:33:36+08:00">
+                2018-08-06
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Java虚拟机/" itemprop="url" rel="index">
+                    <span itemprop="name">Java虚拟机</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h1 id="反射调用的实现"><a href="#反射调用的实现" class="headerlink" title="反射调用的实现"></a>反射调用的实现</h1><h2 id="Methond-invoke"><a href="#Methond-invoke" class="headerlink" title="Methond.invoke"></a>Methond.invoke</h2><p>委派给MethodAccessor接口处理。</p>
+<p>MethodAccessor两个具体实现：</p>
+<ol>
+<li>本地方法实现反射调用</li>
+<li>委派模式</li>
+</ol>
+<h2 id="委派实现"><a href="#委派实现" class="headerlink" title="委派实现"></a>委派实现</h2><ul>
+<li>每个Method实例的<strong>第一次反射调用</strong>会生成一个委派实现。</li>
+<li>委派的具体实现是一个<strong>本地实现</strong>。</li>
+<li>Java的反射调用机制还设立了另一种动态生成字节码的<strong>动态实现</strong>。</li>
+<li>采用委派实现，是为了能够在本地实现以及动态实现中切换。</li>
+</ul>
+<h3 id="动态实现"><a href="#动态实现" class="headerlink" title="动态实现"></a>动态实现</h3><ul>
+<li><p><strong>运行效率比本地实现要快20倍。</strong><br>因为动态实现无需经过Java到C++再到Java的切换。</p>
+</li>
+<li><p>由于<strong>生成字节码十分耗时</strong>，仅<strong>调用一次</strong>的话，反而是<strong>本地实现要快上3到4倍</strong>。</p>
+</li>
+</ul>
+<h3 id="Inflation"><a href="#Inflation" class="headerlink" title="Inflation"></a>Inflation</h3><p>Java虚拟机设置了一个阈值15（可以通过 -Dsun.reflect.inflationThreshold= 来调整）。<br>当某个反射调用的方法调用次数在 15 之下时，采用本地实现。<br>当达到 15 时，便开始动态生成字节码，并将委派实现的委派对象切换至动态实现，这个过程称之为Inflation。</p>
+<p>反射调用的Inflation机制是可以通过参数（-Dsun.reflect.noInflation=true）关闭。<br>反射调用一开始便会直接生成动态实现，而不会使用委派实现或者本地实现。</p>
+<h1 id="反射调用的开销"><a href="#反射调用的开销" class="headerlink" title="反射调用的开销"></a>反射调用的开销</h1><h2 id="反射api性能开销"><a href="#反射api性能开销" class="headerlink" title="反射api性能开销"></a>反射api性能开销</h2><ul>
+<li>Class.getMethod会遍历该类的公有方法。如果没有匹配到，遍历父类的公有方法。</li>
+<li>以getMethod为代表的查找方法操作，会返回查找得到结果的一份拷贝。<br><strong>避免在热点代码中使用返回Method数组的方法，减少不必要的堆空间消耗。</strong></li>
+</ul>
+<h2 id="反射本身性能开销"><a href="#反射本身性能开销" class="headerlink" title="反射本身性能开销"></a>反射本身性能开销</h2><h3 id="Method-invoke是一个变长参数方法。"><a href="#Method-invoke是一个变长参数方法。" class="headerlink" title="Method.invoke是一个变长参数方法。"></a>Method.invoke是一个变长参数方法。</h3><p>Java编译器会在方法调用处生成一个长度为传入参数个数的Object数组，并将传入参数一一存储进该数组中。</p>
+<h3 id="Java编译器会对传入的基本类型参数自动装箱。"><a href="#Java编译器会对传入的基本类型参数自动装箱。" class="headerlink" title="Java编译器会对传入的基本类型参数自动装箱。"></a>Java编译器会对传入的基本类型参数自动装箱。</h3><p>Java 缓存了 [-128, 127] 中所有整数所对应的 Integer 对象。<br>需要自动装箱的整数在这个范围之内时，返回缓存的 Integer，否则需要新建一个Integer对象。</p>
+<p>解决方法：</p>
+<ul>
+<li><strong>扩大缓存范围</strong>（对应参数-Djava.lang.Integer.IntegerCache.high=128）。</li>
+<li><strong>在外部缓存</strong>自动装箱得到的Integer对象。</li>
+</ul>
+<p><strong>上面两条除了带来性能开销外，还可能占用堆内存，使得 GC 更加频繁。</strong></p>
+<h3 id="权限检查带来的开销"><a href="#权限检查带来的开销" class="headerlink" title="权限检查带来的开销"></a>权限检查带来的开销</h3><ul>
+<li>关闭权限检查。<br>setAccessible(true)</li>
+</ul>
+<h3 id="方法内联"><a href="#方法内联" class="headerlink" title="方法内联"></a>方法内联</h3><ul>
+<li>没有方法内联优化</li>
+<li>逃逸分析不起效</li>
+</ul>
+<p>具体代码具体分析。</p>
+<h1 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h1><blockquote>
+<p><a href="https://time.geekbang.org/column/article/12192" target="_blank" rel="noopener">https://time.geekbang.org/column/article/12192</a></p>
+</blockquote>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://ennis.info/2018/08/05/笔记-深入拆解Java虚拟机-【工具篇】常用工具介绍/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -2103,229 +2287,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://ennis.info/2018/07/29/笔记-深入拆解Java虚拟机-03Java虚拟机是如何加载Java类的？/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Ennis L.M. Wu">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar/portrait.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Ennis -Little Monster">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/07/29/笔记-深入拆解Java虚拟机-03Java虚拟机是如何加载Java类的？/" itemprop="url">笔记-深入拆解Java虚拟机-03Java虚拟机是如何加载Java类的？</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-07-29T15:02:28+08:00">
-                2018-07-29
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Java虚拟机/" itemprop="url" rel="index">
-                    <span itemprop="name">Java虚拟机</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>Java语言的类型：基本类型（primitive types）和引用类型（reference types<br>）。</p>
-<ul>
-<li>基本类型由Java虚拟机预先定义好。</li>
-<li>引用类型：类、接口、数组类和泛型参数。</li>
-<li>泛型参数会在编译过程中被擦除，Java虚拟机上实际只有三种。</li>
-<li>数组类是由Java虚拟机直接生成，其他两种有对应的字节流。</li>
-</ul>
-<p>字节流形式：</p>
-<ul>
-<li>class文件。</li>
-<li>程序内部直接生成。</li>
-<li>从网络中获取。</li>
-</ul>
-<p>字节流加载到Java虚拟机中，成为类或接口。</p>
-<h1 id="加载"><a href="#加载" class="headerlink" title="加载"></a>加载</h1><blockquote>
-<p>查找字节流，并且据此创建类的过程。</p>
-</blockquote>
-<ul>
-<li>对于数组类，它没有对应的字节流，由Java虚拟机直接生成。</li>
-<li>对于其他类，Java虚拟机需要借助类加载器完成查找字节流的过程。</li>
-</ul>
-<h2 id="java9之前"><a href="#java9之前" class="headerlink" title="java9之前"></a>java9之前</h2><h3 id="启动类加载器（boot-class-loader）"><a href="#启动类加载器（boot-class-loader）" class="headerlink" title="启动类加载器（boot class loader）"></a>启动类加载器（boot class loader）</h3><p><strong>启动类加载器由C++实现</strong>，没有对应的Java对象，Java中只能用null来指代。</p>
-<p><strong>启动类加载器加载最为基础、最为重要的类。</strong>如：存放在jre的lib目录加jar包中的类（以及由虚拟机参数-Xbootclasspath指定的类）</p>
-<p><strong>其他类加载器都是java.lang.ClassLoader的子类。</strong>类加载器需要先由另一个类加载器加载至Java虚拟机中，才能执行类加载。</p>
-<h3 id="扩展类加载器（extension-class-loader）"><a href="#扩展类加载器（extension-class-loader）" class="headerlink" title="扩展类加载器（extension class loader）"></a>扩展类加载器（extension class loader）</h3><p>父类加载器：启动类加载器。</p>
-<p><strong>加载相对次要、但又通用的类。</strong>如：存放在jre的 lib/ext 目录下 jar 包中的类（以及由系统变量 java.ext.dirs 指定的类）。</p>
-<h3 id="应用类加载器（application-class-loader）"><a href="#应用类加载器（application-class-loader）" class="headerlink" title="应用类加载器（application class loader）"></a>应用类加载器（application class loader）</h3><p>父类加载器：扩展类加载器。</p>
-<p><strong>加载应用程序路径下的类。</strong>（这里的应用程序路径，便是指虚拟机参数 -cp/-classpath、系统变量 java.class.path 或环境变量 CLASSPATH 所指定的路径。）默认情况下，应用程序中包含的类便是由应用类加载器加载的。</p>
-<h2 id="java9之后"><a href="#java9之后" class="headerlink" title="java9之后"></a>java9之后</h2><p>Java9引入了模块系统，并且略微更改了上述的类加载器。</p>
-<p>扩展类加载器被改名为平台类加载器（platform class loader）。</p>
-<p>Java SE中除了少数几个关键模块，比如说 java.base 是由启动类加载器加载之外，其他的模块均由平台类加载器所加载。</p>
-<h2 id="双亲委派模型"><a href="#双亲委派模型" class="headerlink" title="双亲委派模型"></a>双亲委派模型</h2><p><strong>没当一个类加载器接收到加载请求时，它会先将请求转发给父类加载器。在父类加载器没有找到所请求的类情况下，该类加载器才会尝试去加载。</strong></p>
-<p><strong>注：父类加载器不是继承关系！！！</strong></p>
-<h2 id="其他"><a href="#其他" class="headerlink" title="其他"></a>其他</h2><ul>
-<li><p><strong>可以加入自定义的类加载器</strong>，来实现特殊的加载方式。<br>如：可以对 class 文件进行加密，加载时再利用自定义的类加载器对其解密。</p>
-</li>
-<li><p>类加载器还提供了命名空间的作用。</p>
-</li>
-<li>在 Java 虚拟机中，<strong>类的唯一性是由类加载器实例以及类的全名一同确定的</strong>。<br>即便是同一串字节流，经由不同的类加载器加载，也会得到两个不同的类。</li>
-</ul>
-<h1 id="链接"><a href="#链接" class="headerlink" title="链接"></a>链接</h1><blockquote>
-<p>将创建成的类合并至Java虚拟机中，使之能够只够执行的过程。它可分为验证、准备以及解析三个阶段。</p>
-</blockquote>
-<h2 id="验证"><a href="#验证" class="headerlink" title="验证"></a>验证</h2><blockquote>
-<p>确保被加载类能够满足Java虚拟机的约束条件。</p>
-</blockquote>
-<p>通常而言，Java编译器生成的类文件必然满足Java虚拟机的约束条件。</p>
-<h2 id="准备"><a href="#准备" class="headerlink" title="准备"></a>准备</h2><blockquote>
-<p>为被加载类的静态字段分配内存。</p>
-</blockquote>
-<p>部分Java虚拟机会在此阶段构造其他跟类层次相关的数据结构，比如用来实现虚方法的动态绑定的方法表。</p>
-<h2 id="解析（非必需）"><a href="#解析（非必需）" class="headerlink" title="解析（非必需）"></a>解析（非必需）</h2><p>在class文件被加载至Java虚拟机之前，这个类无法知道其他类（甚至自己）的方法、字段所对应的具体地址。引用时，Java编译器会生成一个符号引用。在运行阶段，这个符号引用一般都能无歧义地定位到具体目标上。</p>
-<p><strong>将这些符号引用解析成为实际引用。</strong></p>
-<p>如果符号引用指向一个未被加载的类，或者未被加载类的字段或方法，那么解析将触发这个类的加载（但未必触发这个类的链接以及初始化。）</p>
-<p><strong>Java 虚拟机规范并没有要求在链接过程中完成解析。</strong>它仅规定了：如果某些字节码使用了符号引用，那么在执行这些字节码之前，需要完成对这些符号引用的解析。</p>
-<h1 id="初始化"><a href="#初始化" class="headerlink" title="初始化"></a>初始化</h1><p>如果直接赋值的静态字段：</p>
-<ul>
-<li>被 final 所修饰</li>
-<li>类型是基本类型或字符串时</li>
-</ul>
-<p>该字段便会被 Java 编译器标记成<strong>常量值（ConstantValue），初始化直接由 Java 虚拟机完成</strong>。</p>
-<p><strong>除此之外的直接赋值操作，所有静态代码块中的代码，会被 Java 编译器置于同一方法中，并把它命名为&lt;clinit>。</strong></p>
-<p>&lt;clinit>方法仅被执行一次。</p>
-<p><strong>JVM 规范枚举了下述多种触发类初始化的情况：</strong></p>
-<ol>
-<li>当虚拟机启动时，初始化用户指定的主类。</li>
-<li>当遇到用以新建目标类实例的 new 指令时，初始化 new 指令的目标类。</li>
-<li>当遇到调用静态方法的指令时，初始化该静态方法所在的类。</li>
-<li>当遇到访问静态字段的指令时，初始化该静态字段所在的类。</li>
-<li>子类的初始化会触发父类的初始化。</li>
-<li>如果一个接口定义了 default 方法，那么直接实现或者间接实现该接口的类的初始化，会触发该接口的初始化。</li>
-<li>使用反射 API 对某个类进行反射调用时，初始化这个类。</li>
-<li>当初次调用 MethodHandle 实例时，初始化该 MethodHandle 指向的方法所在的类。</li>
-</ol>
-<h1 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h1><p>Q：<strong>加载阶段都加载哪些类呢，那么多类，全部加载吗？</strong></p>
-<p>A：<strong>加载阶段是针对单个类的</strong>，一般用到的类才会被加载。大部分情况下，不同类的加载阶段是不同的。</p>
-<hr>
-<p>Q：有一个零值(0/null)初始化，针对于类的静态成员变量，如果是final修饰的静态成员变量，也就是常量，是初始化为代码中指定的值比如10。非final修饰的静态成员变量，在clinit执行过程中赋值为代码中指定的值，是这样的吗？</p>
-<p>A：<strong>被final修饰的静态成员变量，如果不是基本类型或者字符串，也会放在clinit 来做。</strong></p>
-<h1 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h1><blockquote>
-<p><a href="https://time.geekbang.org/column/article/11523" target="_blank" rel="noopener">https://time.geekbang.org/column/article/11523</a></p>
-</blockquote>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -2380,7 +2341,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">54</span>
+                  <span class="site-state-item-count">55</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -2391,7 +2352,7 @@
               
               <div class="site-state-item site-state-categories">
                 <a href="/categories/index.html">
-                  <span class="site-state-item-count">13</span>
+                  <span class="site-state-item-count">14</span>
                   <span class="site-state-item-name">分类</span>
                 </a>
               </div>

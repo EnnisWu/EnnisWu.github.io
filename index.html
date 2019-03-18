@@ -298,6 +298,280 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://ennis.info/2019/03/18/转-Android类加载/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Ennis L.M. Wu">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar/portrait.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Ennis -Little Monster">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2019/03/18/转-Android类加载/" itemprop="url">转-Android类加载</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-03-18T19:11:04+08:00">
+                2019-03-18
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Android/" itemprop="url" rel="index">
+                    <span itemprop="name">Android</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>转自：<a href="https://juejin.im/post/5c31c3ebf265da614e2c3b68" target="_blank" rel="noopener">https://juejin.im/post/5c31c3ebf265da614e2c3b68</a></p>
+<h1 id="JVM-类加载机制"><a href="#JVM-类加载机制" class="headerlink" title="JVM 类加载机制"></a>JVM 类加载机制</h1><p>JVM 将描述类的数据从 Class 文件加载到内存，并对数据进行校验、转换解析和初始化，最终形成可以被虚拟机直接使用的 Java 类型。</p>
+<h2 id="类的生命周期"><a href="#类的生命周期" class="headerlink" title="类的生命周期"></a>类的生命周期</h2><blockquote>
+<p>类从被加载到虚拟机内存中开始，到卸载出内存为止。</p>
+</blockquote>
+<p>整个生命周期包括 7 个阶段：<strong>加载（Loading）、验证（Verification）、准备（Preparation）、解析（Resolution）、初始化（Initialization）、使用（Using）和卸载（Unloading）</strong>。</p>
+<p>验证、准备、解析3个部分统称为连接（Linking）。</p>
+<p><img src="/images/posts/android/类加载/class_lifecycle.jpg" alt="各阶段发生顺序" title="各阶段发生顺序"></p>
+<h2 id="类加载器"><a href="#类加载器" class="headerlink" title="类加载器"></a>类加载器</h2><ul>
+<li><p><strong>对于任意一个类，需要由加载它的类加载器和这个类本身一同确立其在 JVM 中的唯一性。</strong></p>
+</li>
+<li><p>每一个类加载器，都拥有一个独立的类名称空间。</p>
+</li>
+</ul>
+<blockquote>
+<p>比较两个类是否“相等”，只有在这两个类是由同一个类加载器加载的前提下才有意义，否则，即使这两个类来源于同一个 Class 文件，被同一个虚拟机加载，只要加载它们的类加载器不同，那这两个类就必定不相等。 </p>
+</blockquote>
+<h2 id="JDK-8-及之前的双亲委派模型"><a href="#JDK-8-及之前的双亲委派模型" class="headerlink" title="JDK 8 及之前的双亲委派模型"></a>JDK 8 及之前的双亲委派模型</h2><ul>
+<li><p>Java 应用程序一般由 3 种类加载器互相配合进行加载。</p>
+</li>
+<li><p>如果有必要，可以自定义的类加载器。</p>
+</li>
+</ul>
+<p><img src="/images/posts/android/类加载/jvm_classloader.jpg" alt="类加载器之间的关系" title="类加载器之间的关系"></p>
+<ul>
+<li><p>这种层次关系称为类加载器的双亲委派模型（Parents Delegation Model）。</p>
+</li>
+<li><p><strong>双亲委派模型要求除了顶层的启动类加载器外，其余的类加载器都应当有父类加载器。</strong></p>
+</li>
+<li><p><strong>父子关系一般不会以继承（Inheritance）的关系来实现，而是都使用组合（Composition）关系来复用父加载器的代码。</strong></p>
+</li>
+</ul>
+<h3 id="双亲委派模型的工作过程"><a href="#双亲委派模型的工作过程" class="headerlink" title="双亲委派模型的工作过程"></a>双亲委派模型的工作过程</h3><ol>
+<li><p>一个类加载器收到类加载的请求。</p>
+</li>
+<li><p><strong>把这个请求委派给父类加载器去完成。</strong></p>
+</li>
+<li><p>父加载器反馈自己无法完成这个加载请求（它的搜索范围中没有找到所需的类）。</p>
+</li>
+<li><p>子加载器尝试自己加载。</p>
+</li>
+</ol>
+<h3 id="启动类加载器（Bootstrap-ClassLoader）"><a href="#启动类加载器（Bootstrap-ClassLoader）" class="headerlink" title="启动类加载器（Bootstrap ClassLoader）"></a>启动类加载器（Bootstrap ClassLoader）</h3><ul>
+<li><p>加载以下类库到 JVM 内存</p>
+<ul>
+<li><p>存放在 ＜JAVA_HOME＞\lib 目录中的</p>
+</li>
+<li><p>或者被 -Xbootclasspath 参数所指定的路径中的</p>
+</li>
+<li><p>并且是虚拟机识别的类库</p>
+</li>
+</ul>
+</li>
+<li><p>无法被 Java 程序直接引用。</p>
+</li>
+<li><p>把加载请求委派给引导类加载器，直接使用 null 代替。</p>
+</li>
+</ul>
+<h3 id="扩展类加载器（Extension-ClassLoader）"><a href="#扩展类加载器（Extension-ClassLoader）" class="headerlink" title="扩展类加载器（Extension ClassLoader）"></a>扩展类加载器（Extension ClassLoader）</h3><ul>
+<li><p>由 sun.misc.Launcher $ExtClassLoader 实现。</p>
+</li>
+<li><p>加载以下类库到 JVM 内存</p>
+<ul>
+<li><p>存放在＜JAVA_HOME＞\lib\ext目录中的</p>
+</li>
+<li><p>或者被 java.ext.dirs 系统变量所指定的路径中的所有类库</p>
+</li>
+</ul>
+</li>
+<li><p>开发者可以直接使用扩展类加载器。</p>
+</li>
+</ul>
+<h3 id="应用程序类加载器（Application-ClassLoader）"><a href="#应用程序类加载器（Application-ClassLoader）" class="headerlink" title="应用程序类加载器（Application ClassLoader）"></a>应用程序类加载器（Application ClassLoader）</h3><blockquote>
+<p>也称为系统类加载器</p>
+</blockquote>
+<ul>
+<li><p>由 sun.misc.Launcher $App-ClassLoader 实现。</p>
+</li>
+<li><p>加载以下类库到 JVM 内存</p>
+<ul>
+<li>用户类路径（ClassPath）上所指定的类库</li>
+</ul>
+</li>
+<li><p>开发者可以直接使用这个类加载器。</p>
+</li>
+<li><p>如果应用程序中没有自定义过自己的类加载器，一般情况下这个就是程序中默认的类加载器。</p>
+</li>
+</ul>
+<h3 id="JDK-9-双亲委派模型的更改"><a href="#JDK-9-双亲委派模型的更改" class="headerlink" title="JDK 9 双亲委派模型的更改"></a>JDK 9 双亲委派模型的更改</h3><ul>
+<li><p>Java9 引入了模块系统，并且略微更改了上述的类加载器。</p>
+</li>
+<li><p>扩展类加载器被改名为平台类加载器（platform class loader）。</p>
+</li>
+<li><p>Java SE中除了少数几个关键模块，比如说 java.base 是由启动类加载器加载之外，其他的模块均由平台类加载器所加载。</p>
+</li>
+</ul>
+<h1 id="Android-类加载机制"><a href="#Android-类加载机制" class="headerlink" title="Android 类加载机制"></a>Android 类加载机制</h1><ul>
+<li><p><strong>本质上 Android 和传统的 JVM 是一样的。</strong></p>
+<ul>
+<li><p>需要通过类加载器将目标类加载到内存</p>
+</li>
+<li><p>类加载器之间符合双亲委派模型</p>
+</li>
+<li><p>类有对应的生命周期</p>
+</li>
+</ul>
+</li>
+<li><p>基于移动设备的特点，如内存以及电量等诸多方面跟一般的 PC 设备都有本质的区别，Google 开发了更符合移动设备的用于执行 Java 代码的虚拟机，即 Dalvik 和 ART。</p>
+</li>
+<li><p>Android 5.0 开始采用 ART 虚拟机替代 Dalvik。</p>
+</li>
+<li><p><strong>ART 从 dex 字节码加载类。将多个 Class 文件合并成一个 classes.dex 文件。</strong></p>
+</li>
+</ul>
+<p><img src="/images/posts/android/类加载/android_classloader.jpg" alt="类加载器关系图" title="类加载器关系图"></p>
+<ul>
+<li><p>在 8.0 之前</p>
+<ul>
+<li><p>DexClassLoader：能够加载未安装的 apk</p>
+</li>
+<li><p>PathClassLoader：只能加载系统中已经安装过的 apk</p>
+</li>
+</ul>
+</li>
+<li><p>从 8.0 开始</p>
+<ul>
+<li><p>PathClassLoader 也可以加载未安装的 apk</p>
+</li>
+<li><p>PathClassLoader 可以完全替代 DexClassLoader</p>
+</li>
+</ul>
+</li>
+</ul>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://ennis.info/2019/02/16/HashSet为什么要使用Object对象填充value而不是null/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -664,7 +938,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://ennis.info/2019/02/05/Java内部类中private的探讨/">
+    <link itemprop="mainEntityOfPage" href="http://ennis.info/2019/02/15/Java内部类中private的探讨/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Ennis L.M. Wu">
@@ -683,7 +957,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2019/02/05/Java内部类中private的探讨/" itemprop="url">Java内部类中private的探讨</a></h1>
+                <a class="post-title-link" href="/2019/02/15/Java内部类中private的探讨/" itemprop="url">Java内部类中private的探讨</a></h1>
         
 
         <div class="post-meta">
@@ -695,8 +969,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-02-05T11:48:23+08:00">
-                2019-02-05
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-02-15T11:48:23+08:00">
+                2019-02-15
               </time>
             
 
@@ -2218,300 +2492,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://ennis.info/2018/12/05/笔记-深入拆解Java虚拟机-32JNI的运行机制/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Ennis L.M. Wu">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar/portrait.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Ennis -Little Monster">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/12/05/笔记-深入拆解Java虚拟机-32JNI的运行机制/" itemprop="url">笔记-深入拆解Java虚拟机-32JNI的运行机制</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-12-05T16:27:03+08:00">
-                2018-12-05
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Java虚拟机/" itemprop="url" rel="index">
-                    <span itemprop="name">Java虚拟机</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h1 id="Java-无法表达的场景"><a href="#Java-无法表达的场景" class="headerlink" title="Java 无法表达的场景"></a>Java 无法表达的场景</h1><ul>
-<li>使用汇编语言提升关键代码的性能。</li>
-<li>调用 Java 核心类库无法提供的，某个体系架构或者操作系统特有的功能。</li>
-<li>牺牲可移植性，在 Java 代码中调用 C/C++ 代码实现。</li>
-</ul>
-<p>这种跨语言调用，需要借助 Java Native Interface 机制。</p>
-<h1 id="native-方法的链接"><a href="#native-方法的链接" class="headerlink" title="native 方法的链接"></a>native 方法的链接</h1><ul>
-<li>动态链接库的名字以 lib 为前缀，以 .dylib 或 .so 为扩展名。</li>
-<li>通过 <code>System.loadLibrary(&quot;---&quot;)</code> 方法加载 lib—.dylib。</li>
-<li>如果库不在当前路径下，可以配置 java.library.path 参数指向路径（JVM 启动时）。</li>
-</ul>
-<h2 id="JVM-自动查找符合默认命名规范的-C-函数并链接"><a href="#JVM-自动查找符合默认命名规范的-C-函数并链接" class="headerlink" title="JVM 自动查找符合默认命名规范的 C 函数并链接"></a>JVM 自动查找符合默认命名规范的 C 函数并链接</h2><ul>
-<li><code>javac -h</code> 命令可以根据 native 方法声明，自动生成包含符合命名规范的 C 函数的头文件。</li>
-</ul>
-<h3 id="命名规范"><a href="#命名规范" class="headerlink" title="命名规范"></a>命名规范</h3><ul>
-<li>函数都要以Java_为前缀，后跟完整的包名和方法名。<ul>
-<li>路径中 / 转换为 _</li>
-<li>原方法名中 _ 转换为 _1</li>
-</ul>
-</li>
-<li>有重载 native 方法时，自动链接对象时的考虑参数类型。</li>
-<li>重载方法函数名在原本基础上追加 __ 以及方法描述符作为后缀。</li>
-<li>方法描述符的特殊符号会被替换。<ul>
-<li>引用类型中 ; 替换为 _2</li>
-<li>数组类型中 [ 替换为 _3</li>
-</ul>
-</li>
-</ul>
-<h2 id="在-C-代码中主动链接"><a href="#在-C-代码中主动链接" class="headerlink" title="在 C 代码中主动链接"></a>在 C 代码中主动链接</h2><ul>
-<li>对 C 函数名没有要求。</li>
-<li>通常使用一个名为 registerNatives 的 native 方法，按照第一种链接方式定义所能自动链接的 C 函数。在该函数中，手动链接该类的其他 native 方法。</li>
-<li>需要在其他 native 方法被调用之前完成链接。</li>
-<li>通常在类的初始化方法里调用该 registerNatives 方法。</li>
-</ul>
-<h1 id="JNI-的-API"><a href="#JNI-的-API" class="headerlink" title="JNI 的 API"></a>JNI 的 API</h1><ul>
-<li><strong>C 代码中可以使用 Java 的语言特性</strong>（如 instanceof，通过特殊的 JNI 函数实现）。</li>
-</ul>
-<h2 id="JNIEnv"><a href="#JNIEnv" class="headerlink" title="JNIEnv"></a>JNIEnv</h2><ul>
-<li>JVM 会将所有 JNI 函数的函数指针聚合到一个名为 JNIEnv 的数据结构中。</li>
-<li><strong>JNIEnv 线程私有</strong>，每个线程都拥有一个 JNIEnv。</li>
-<li>规定 C 代码<strong>不能共享 JNIEnv 给其他线程</strong>，否则 JNI 函数无法保证正确性。</li>
-</ul>
-<h3 id="原因："><a href="#原因：" class="headerlink" title="原因："></a>原因：</h3><ol>
-<li>给 JNI 函数提供一个单独命名空间。</li>
-<li>允许 JVM 通过更改函数指针替换 JNI 函数的具体实现。</li>
-</ol>
-<h2 id="Java-类型与本地类型"><a href="#Java-类型与本地类型" class="headerlink" title="Java 类型与本地类型"></a>Java 类型与本地类型</h2><ul>
-<li>JNI 会<strong>将 Java 层面的基本类型以及引用类型映射为另一套可供 C 代码使用的数据结构</strong>。</li>
-</ul>
-<p>基本类型对应关系：</p>
-<table>
-<thead>
-<tr>
-<th>Java 类型</th>
-<th>c 数据结构</th>
-<th>位（bit）</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>boolean</td>
-<td>jboolean</td>
-<td>8, unsigned</td>
-</tr>
-<tr>
-<td>byte</td>
-<td>jbyte</td>
-<td>8</td>
-</tr>
-<tr>
-<td>char</td>
-<td>jchar</td>
-<td>16, unsigned</td>
-</tr>
-<tr>
-<td>short</td>
-<td>jshort</td>
-<td>16</td>
-</tr>
-<tr>
-<td>int</td>
-<td>jint</td>
-<td>32</td>
-</tr>
-<tr>
-<td>long</td>
-<td>jlong</td>
-<td>64</td>
-</tr>
-<tr>
-<td>float</td>
-<td>jfloat</td>
-<td>32</td>
-</tr>
-<tr>
-<td>double</td>
-<td>jdouble</td>
-<td>64</td>
-</tr>
-<tr>
-<td>void</td>
-<td>void</td>
-<td>n/a</td>
-</tr>
-</tbody>
-</table>
-<p>引用类型对应数据结构的继承关系：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">jobject</span><br><span class="line">|- jclass (java.lang.Class objects)</span><br><span class="line">|- jstring (java.lang.String objects)</span><br><span class="line">|- jthrowable (java.lang.Throwable objects)</span><br><span class="line">|- jarray (arrays)</span><br><span class="line">   |- jobjectArray (object arrays)</span><br><span class="line">   |- jbooleanArray (boolean arrays)</span><br><span class="line">   |- jbyteArray (byte arrays)</span><br><span class="line">   |- jcharArray (char arrays)</span><br><span class="line">   |- jshortArray (short arrays)</span><br><span class="line">   |- jintArray (int arrays)</span><br><span class="line">   |- jlongArray (long arrays)</span><br><span class="line">   |- jfloatArray (float arrays)</span><br><span class="line">   |- jdoubleArray (double arrays)</span><br></pre></td></tr></table></figure>
-<ul>
-<li>JNI 访问字段类似反射 API。</li>
-</ul>
-<h1 id="异常"><a href="#异常" class="headerlink" title="异常"></a>异常</h1><ul>
-<li><strong>调用 JNI 函数时，JVM 便已生成异常实例，并缓存在内存中。</strong></li>
-<li>不会显式地跳转至异常处理器或者调用者中，而是继续执行接下来的 C 代码。</li>
-<li>从可能触发异常的 JNI 函数返回时，需要<strong>通过 JNI 函数 ExceptionOccurred 检查是否发生了异常</strong>，并且作出相应的处理。</li>
-<li>如果无须抛出该异常，需要<strong>通过 JNI 函数 ExceptionClear 显式地清空已缓存的异常</strong>。</li>
-</ul>
-<h1 id="局部引用（Local-Reference）与全局引用（Global-Reference）"><a href="#局部引用（Local-Reference）与全局引用（Global-Reference）" class="headerlink" title="局部引用（Local Reference）与全局引用（Global Reference）"></a>局部引用（Local Reference）与全局引用（Global Reference）</h1><ul>
-<li>C 代码中可以访问所传入的引用类型参数。</li>
-<li>可以通过 JNI 函数创建新的 Java 对象。</li>
-<li>JVM 需要一种机制告知垃圾回收算法不要回收 C 代码中可能引用到的 Java 对象。</li>
-<li>垃圾回收算法会将被<strong>局部引用</strong>和<strong>全局引用</strong>指向的对象标记为<strong>不可回收</strong>。</li>
-<li>无论是传入的引用类型参数，还是通过 JNI 函数（除NewGlobalRef及NewWeakGlobalRef之外）返回的引用类型对象，都属于局部引用。</li>
-<li><strong>从 C 函数中返回至 Java 方法中，局部引用将失效</strong>。</li>
-<li>不能缓存局部引用，以供另一 C 线程或下一次 native 方法调用时使用。</li>
-<li>通过 JNI 函数 NewGlobalRef，将该局部引用转换为全局引用。</li>
-<li>通过 JNI 函数 DeleteGlobalRef 消除全局引用。</li>
-<li>C 函数运行时间极其长时，应该考虑通过 JNI 函数DeleteLocalRef，消除不再使用的局部引用。</li>
-</ul>
-<h1 id="句柄（handle）"><a href="#句柄（handle）" class="headerlink" title="句柄（handle）"></a>句柄（handle）</h1><blockquote>
-<p>句柄指的是内存中 Java 对象的指针的指针。</p>
-<blockquote>
-<p>垃圾回收器可能会移动对象在内存中的位置，JVM 需要另一种机制保证局部引用或者全局引用将正确地指向移动过后的对象。HotSpot 虚拟机是通过句柄（handle）来完成。</p>
-</blockquote>
-</blockquote>
-<ul>
-<li><strong>局部引用和全局引用都是句柄。</strong></li>
-<li>局部引用句柄的两种存储方式<ol>
-<li>在本地方法栈帧中：主要用于存放 C 函数所接收的来自 Java 层面的引用类型参数。</li>
-<li>在线程私有的句柄块：主要用于存放 C 函数中创建的局部引用。</li>
-</ol>
-</li>
-<li>从 C 函数返回至 Java 方法时，<strong>本地方法栈帧</strong>中的句柄将会被<strong>自动清除</strong>。</li>
-<li><strong>线程私有句柄块</strong>需要 JVM <strong>显式清理</strong>。</li>
-</ul>
-<h1 id="JNI-调用的额外性能开销"><a href="#JNI-调用的额外性能开销" class="headerlink" title="JNI 调用的额外性能开销"></a>JNI 调用的额外性能开销</h1><ul>
-<li><strong>进入 C 函数时对引用类型参数的句柄化。</strong></li>
-<li><strong>调整参数位置</strong>（C 调用和 Java 调用传参的方式不一样）。</li>
-<li><strong>从 C 函数返回时清理线程私有句柄块。</strong></li>
-</ul>
-<h1 id="引用"><a href="#引用" class="headerlink" title="引用"></a>引用</h1><blockquote>
-<p><a href="https://time.geekbang.org/column/article/40839" target="_blank" rel="noopener">https://time.geekbang.org/column/article/40839</a></p>
-</blockquote>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -2566,7 +2546,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">54</span>
+                  <span class="site-state-item-count">55</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -2577,7 +2557,7 @@
               
               <div class="site-state-item site-state-categories">
                 <a href="/categories/index.html">
-                  <span class="site-state-item-count">13</span>
+                  <span class="site-state-item-count">14</span>
                   <span class="site-state-item-name">分类</span>
                 </a>
               </div>
