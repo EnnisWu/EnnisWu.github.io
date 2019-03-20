@@ -298,6 +298,258 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://ennis.info/2018/11/08/笔记-深入拆解Java虚拟机-19Java字节码（基础篇）/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Ennis L.M. Wu">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar/portrait.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Ennis -Little Monster">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/11/08/笔记-深入拆解Java虚拟机-19Java字节码（基础篇）/" itemprop="url">笔记-深入拆解Java虚拟机-19Java字节码（基础篇）</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-11-08T14:42:50+08:00">
+                2018-11-08
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Java虚拟机/" itemprop="url" rel="index">
+                    <span itemprop="name">Java虚拟机</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h1 id="操作数栈"><a href="#操作数栈" class="headerlink" title="操作数栈"></a>操作数栈</h1><ul>
+<li><strong>解释执行</strong>过程中，为 Java 方法分配栈桢时，JVM <strong>需要开辟一块额外的空间作为操作数栈</strong>，存放计算的操作数和返回结果。</li>
+<li>执行每一条指令之前，JVM <strong>要求该指令的操作数已被压入操作数栈中</strong>。</li>
+<li>在执行指令时，JVM 会将该指令<strong>所需的操作数弹出</strong>，并且将指令的<strong>结果重新压入栈</strong>中。</li>
+</ul>
+<h2 id="直接作用在操作数栈上的指令"><a href="#直接作用在操作数栈上的指令" class="headerlink" title="直接作用在操作数栈上的指令"></a>直接作用在操作数栈上的指令</h2><h3 id="dup-指令"><a href="#dup-指令" class="headerlink" title="dup 指令"></a>dup 指令</h3><ul>
+<li>复制栈顶元素。</li>
+<li>常用于复制 new 指令所生成的未经初始化的引用。</li>
+</ul>
+<h3 id="pop-指令"><a href="#pop-指令" class="headerlink" title="pop 指令"></a>pop 指令</h3><ul>
+<li>舍弃栈顶元素。</li>
+<li>常用于舍弃调用指令的返回结果。</li>
+</ul>
+<h3 id="dup2-指令和-pop2-指令"><a href="#dup2-指令和-pop2-指令" class="headerlink" title="dup2 指令和 pop2 指令"></a>dup2 指令和 pop2 指令</h3><ul>
+<li>long 类型或 double 类型的值占据两个栈单元。</li>
+<li>dup 指令和 pop 指令只能处理非 long 或非 double 类型的值。</li>
+<li>dup2 指令复制栈顶两个单元。</li>
+<li>pop2 指令弹出栈顶两个单元。</li>
+</ul>
+<h3 id="swap-指令"><a href="#swap-指令" class="headerlink" title="swap 指令"></a>swap 指令</h3><ul>
+<li>交换栈顶两个元素的值。</li>
+</ul>
+<h2 id="直接将常量加载在操作数栈上的指令"><a href="#直接将常量加载在操作数栈上的指令" class="headerlink" title="直接将常量加载在操作数栈上的指令"></a>直接将常量加载在操作数栈上的指令</h2><ul>
+<li><p>常量类型包括</p>
+<ul>
+<li>int 类型</li>
+<li>long 类型</li>
+<li>float 类型</li>
+<li>double 类型</li>
+<li>String 类型</li>
+<li>Class 类型</li>
+</ul>
+</li>
+<li><p>正常情况下，<strong>操作数栈的压入弹出是一条条指令完成</strong>。</p>
+</li>
+<li><strong>例外：抛异常</strong>时会清除操作数栈上的所有内容，然后将异常实例压入操作数栈。</li>
+</ul>
+<p><img src="/images/posts/JVM/19/instructions_const.jpg" alt="instructions_const" title="常数加载指令表"></p>
+<h3 id="int-类型为例"><a href="#int-类型为例" class="headerlink" title="int 类型为例"></a>int 类型为例</h3><ul>
+<li>可以通过 iconst 指令加载 -1 至 5 之间的 int 值。</li>
+<li>可以通过 bipush、sipush 加载一个字节、两个字节所能代表的 int 值。</li>
+<li>可以通过 ldc 加载常量池中的常量值（如 ldc #18 将加载常量池中的第 18 项）。</li>
+</ul>
+<h1 id="局部变量区"><a href="#局部变量区" class="headerlink" title="局部变量区"></a>局部变量区</h1><ul>
+<li>方法栈帧的重要组成部分。</li>
+<li>可以<strong>缓存计算的结果</strong>。</li>
+<li>JVM 将其<strong>当成一个数组</strong>，依次存放 this 指针（仅非静态方法），所传入的参数，字节码中的局部变量。</li>
+<li>long 类型和 double 类型的值占据两个单元，其余类型占据一个单元。</li>
+<li><strong>生命周期没有重合的局部变量可以编排至同一单元。</strong></li>
+<li>存储在局部变量区的值，<strong>需要加载至操作数栈中，才能进行计算</strong>。</li>
+<li>计算得到的<strong>结果再存储至局部变量区</strong>中。</li>
+</ul>
+<p><img src="/images/posts/JVM/19/instructons_local_variable.jpg" alt="instructons_local_variable" title="局部变量区访问指令表"></p>
+<ul>
+<li>局部变量数组的<strong>加载、存储指令</strong>需要<strong>指明</strong>所加载单元的<strong>下标</strong>。</li>
+</ul>
+<h2 id="iinc-M-N-指令"><a href="#iinc-M-N-指令" class="headerlink" title="iinc M N 指令"></a>iinc M N 指令</h2><ul>
+<li>Java 字节码<strong>唯一能够作用于局部变量的指令</strong>。</li>
+<li>M 为非负整数，N 为整数。</li>
+<li>将局部变量数组的第 M 个单元中的 int 值增加 N。</li>
+<li>常用于<strong>更新 for 循环的自增量</strong>。</li>
+</ul>
+<h1 id="Java-字节码简介"><a href="#Java-字节码简介" class="headerlink" title="Java 字节码简介"></a>Java 字节码简介</h1><h2 id="Java-相关指令"><a href="#Java-相关指令" class="headerlink" title="Java 相关指令"></a>Java 相关指令</h2><ul>
+<li>new：后跟目标类，生成该类的未初始化的对象。</li>
+<li>instanceof：后跟目标类，判断栈顶元素是否为目标类 / 接口的实例（是则压入 1，否则压入 0）。</li>
+<li>checkcast：后跟目标类，判断栈顶元素是否为目标类 / 接口的实例（如果不是便抛出异常）。</li>
+<li>athrow：将栈顶异常抛出。</li>
+<li>monitorenter：为栈顶对象加锁。</li>
+<li>monitorexit：为栈顶对象解锁。</li>
+</ul>
+<h2 id="字段访问指令"><a href="#字段访问指令" class="headerlink" title="字段访问指令"></a>字段访问指令</h2><ul>
+<li>静态字段访问指令：getstatic、putstatic。</li>
+<li>实例字段访问指令：getfield、putfield。</li>
+<li>这四条指令均附带用以定位目标字段的信息。</li>
+<li>这四条指令所消耗的操作数栈元素皆不同。</li>
+</ul>
+<h2 id="方法调用指令"><a href="#方法调用指令" class="headerlink" title="方法调用指令"></a>方法调用指令</h2><ul>
+<li>包括 invokestatic，invokespecial，invokevirtual，invokeinterface 和 invokedynamic。</li>
+<li>除 invokedynamic 外，其他的方法调用指令所消耗的操作数栈元素由调用类型和目标方法描述符确定。</li>
+</ul>
+<h2 id="数组相关指令"><a href="#数组相关指令" class="headerlink" title="数组相关指令"></a>数组相关指令</h2><ul>
+<li>newarray：新建基本类型数组。</li>
+<li>anewarray：新建引用类型数组。</li>
+<li>mutianewarray：新建多维数组。</li>
+<li>arraylength：求数组长度。</li>
+<li>数组加载指令。</li>
+<li>数组存储指令。</li>
+</ul>
+<p><img src="/images/posts/JVM/19/instructions_array.jpg" alt="instructions_array" title="数组访问指令表"></p>
+<h2 id="控制流指令"><a href="#控制流指令" class="headerlink" title="控制流指令"></a>控制流指令</h2><ul>
+<li>goto：无条件跳转指令。</li>
+<li>tableswitch：条件跳转指令（针对密集的 cases）。</li>
+<li>lookupswtich：条件跳转指令（针对稀疏的 cases）。</li>
+<li>被废弃的 jsr，ret 指令。</li>
+<li>返回指令。</li>
+</ul>
+<p><img src="/images/posts/JVM/19/instructons_return.jpg" alt="instructons_return" title="返回指令表"></p>
+<ul>
+<li>除返回指令外，其他的控制流指令均附带一个或者多个字节码偏移量，代表需要跳转到的位置。</li>
+</ul>
+<h1 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h1><p>Q：JVM 为什么使用<strong>基于栈的计算模型</strong>？</p>
+<p>A：<strong>实现起来容易</strong>一些，但并<strong>不高效</strong>，因为没有使用底层体系架构的寄存器。在JVM中，只有解释器完整地模拟出该计算模型。即时编译器在解析字节码时会使用一个虚拟的栈计算模型，但是在接下来的编译优化，以及生成的机器码就不用了。</p>
+<hr>
+<p>Q：为什么局部变量要初始化？</p>
+<p>A：①如果是虚拟机初始化局部变量，那么它需要掌握每个变量的生命周期，以便初始化共享同一下标的局部变量。实现起来比较费事。②从代码规范来看，使用未经初始化的局部变量意义不明。</p>
+<hr>
+<p>Q：C/C++ 的汇编指令会有大量寄存器的操作，<strong>Java 的指令会用到寄存器吗</strong>？</p>
+<p>A：<strong>Java 字节码不会</strong>，但是<strong>底下的实现（比如解释执行器，即时编译器）是会的</strong>。</p>
+<h1 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h1><blockquote>
+<p><a href="https://time.geekbang.org/column/article/14794" target="_blank" rel="noopener">https://time.geekbang.org/column/article/14794</a></p>
+</blockquote>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://ennis.info/2018/11/08/笔记-深入拆解Java虚拟机-18即时编译器的中间表达形式/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -2277,195 +2529,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://ennis.info/2018/08/10/笔记-深入拆解Java虚拟机-0809JVM是怎么实现invokedynamic的？/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Ennis L.M. Wu">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar/portrait.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Ennis -Little Monster">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/08/10/笔记-深入拆解Java虚拟机-0809JVM是怎么实现invokedynamic的？/" itemprop="url">笔记-深入拆解Java虚拟机-0809JVM是怎么实现invokedynamic的？</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-08-10T15:07:18+08:00">
-                2018-08-10
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Java虚拟机/" itemprop="url" rel="index">
-                    <span itemprop="name">Java虚拟机</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h1 id="invokedynamic"><a href="#invokedynamic" class="headerlink" title="invokedynamic"></a>invokedynamic</h1><ul>
-<li>Java 7 引入的新指令</li>
-<li>调用机制抽象出调用点的概念</li>
-<li>允许将调用点链接至任意符合条件的方法上</li>
-</ul>
-<h1 id="MethodHandle（方法句柄）"><a href="#MethodHandle（方法句柄）" class="headerlink" title="MethodHandle（方法句柄）"></a>MethodHandle（方法句柄）</h1><ul>
-<li>Java 7 引入</li>
-<li>是一个强类型的，能被直接执行的引用</li>
-<li>可以指向静态方法、实例方法、构造器、字段</li>
-</ul>
-<h2 id="方法句柄的类型（MethodType）"><a href="#方法句柄的类型（MethodType）" class="headerlink" title="方法句柄的类型（MethodType）"></a>方法句柄的类型（MethodType）</h2><ul>
-<li>由参数类型、返回类型组成</li>
-<li>确认方法句柄是否适配的唯一关键</li>
-<li>不关心方法的类名或方法名</li>
-</ul>
-<h2 id="方法句柄的创建"><a href="#方法句柄的创建" class="headerlink" title="方法句柄的创建"></a>方法句柄的创建</h2><p>通过 MethodHandles.Lookup 类</p>
-<ul>
-<li>使用反射的 Method 类查找</li>
-<li>Lookup.findStatic 查找调用 invokestatic 的方法</li>
-<li>Lookup.findVirtual 查找调用 invokevirtual 和 invokeinterface 的方法</li>
-<li>Lookup.findSpecial 查找调用 invokespecial 的方法</li>
-</ul>
-<h2 id="方法句柄的权限"><a href="#方法句柄的权限" class="headerlink" title="方法句柄的权限"></a>方法句柄的权限</h2><ul>
-<li>权限检查在创建阶段完成</li>
-<li>实际调用过程中不检查</li>
-<li>取决于 Lookup 对象创建位置（不是方法句柄创建位置）</li>
-</ul>
-<h2 id="方法句柄的操作"><a href="#方法句柄的操作" class="headerlink" title="方法句柄的操作"></a>方法句柄的操作</h2><h3 id="invokeExact"><a href="#invokeExact" class="headerlink" title="invokeExact"></a>invokeExact</h3><ul>
-<li>严格匹配参数类型（需要显示向上转型）</li>
-<li>@PolymorphicSignature 根据传入参数的声明类型来生成方法描述符（而不是目标方法）</li>
-</ul>
-<h3 id="invoke"><a href="#invoke" class="headerlink" title="invoke"></a>invoke</h3><ul>
-<li>自动适配参数类型</li>
-<li>会调用 MethodHandle.asType 方法生成一个适配器方法句柄</li>
-</ul>
-<h3 id="增删改"><a href="#增删改" class="headerlink" title="增删改"></a>增删改</h3><p>通过生成另一个充当适配器的方法句柄来实现</p>
-<p>捕获类型的 Lambda 表达式用增操作实现</p>
-<p>增操作可以实现方法的柯里化</p>
-<h2 id="方法句柄的实现"><a href="#方法句柄的实现" class="headerlink" title="方法句柄的实现"></a>方法句柄的实现</h2><p>HotSpot 虚拟机中方法句柄调用的具体实现，只讨论DirectMethodHandle</p>
-<h3 id="invokeExact-1"><a href="#invokeExact-1" class="headerlink" title="invokeExact"></a>invokeExact</h3><ul>
-<li>调用至一个共享的、与方法句柄类型相关的特殊适配器中</li>
-<li>适配器是一个 LambdaForm</li>
-</ul>
-<h2 id="方法句柄的缺点"><a href="#方法句柄的缺点" class="headerlink" title="方法句柄的缺点"></a>方法句柄的缺点</h2><ul>
-<li>与反射一样是简介调用</li>
-<li>无法内联</li>
-</ul>
-<p><strong>未更新09</strong></p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -2520,7 +2583,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">55</span>
+                  <span class="site-state-item-count">56</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -2542,7 +2605,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">23</span>
+                  <span class="site-state-item-count">24</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>

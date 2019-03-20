@@ -298,6 +298,181 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://ennis.info/2019/03/20/Android在子线程中更新UI/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Ennis L.M. Wu">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar/portrait.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Ennis -Little Monster">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2019/03/20/Android在子线程中更新UI/" itemprop="url">Android在子线程中更新UI</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-03-20T14:38:11+08:00">
+                2019-03-20
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Android/" itemprop="url" rel="index">
+                    <span itemprop="name">Android</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>源码版本 SDK 28</p>
+<p>Android 中控件都是线程不安全的，Google <strong>规范</strong>只能在主线程中更新 UI，在子线程中发送网络请求。假如在子线程中更新 UI，会抛出异常</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">android.view.ViewRootImpl$CalledFromWrongThreadException: Only the original thread that created a view hierarchy can touch its views.</span><br><span class="line">        at android.view.ViewRootImpl.checkThread(ViewRootImpl.java:7753)</span><br></pre></td></tr></table></figure>
+<p>但如果运行下面这段代码，你会发现程序完美运行，没有任何问题，为什么这时却又可以在子线程更新 UI 了呢？</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Override</span></span><br><span class="line"><span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">onCreate</span><span class="params">(Bundle savedInstanceState)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">super</span>.onCreate(savedInstanceState);</span><br><span class="line">    Log.d(<span class="string">"子线程更新UI"</span>, <span class="string">"onCreate"</span>);</span><br><span class="line">    Log.d(<span class="string">"子线程更新UI"</span>, Thread.currentThread().getId()</span><br><span class="line">            + Thread.currentThread().getName());</span><br><span class="line">    setContentView(R.layout.activity_main);</span><br><span class="line"></span><br><span class="line">    textView = findViewById(R.id.text_view);</span><br><span class="line">    <span class="keyword">new</span> Thread(<span class="keyword">new</span> Runnable() &#123;</span><br><span class="line">        <span class="meta">@Override</span></span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">()</span> </span>&#123;</span><br><span class="line">            Log.d(<span class="string">"子线程更新UI"</span>, Thread.currentThread().getId()</span><br><span class="line">                    + Thread.currentThread().getName());</span><br><span class="line">            textView.setText(String.valueOf(System.currentTimeMillis()));</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;).start();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>如果我们将子线程 sleep 1 秒呢，这时便抛出了上述不能更新 UI 的异常。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Override</span></span><br><span class="line"><span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">onCreate</span><span class="params">(Bundle savedInstanceState)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">super</span>.onCreate(savedInstanceState);</span><br><span class="line">    Log.d(<span class="string">"子线程更新UI"</span>, <span class="string">"onCreate"</span>);</span><br><span class="line">    Log.d(<span class="string">"子线程更新UI"</span>, Thread.currentThread().getId()</span><br><span class="line">            + Thread.currentThread().getName());</span><br><span class="line">    setContentView(R.layout.activity_main);</span><br><span class="line"></span><br><span class="line">    textView = findViewById(R.id.text_view);</span><br><span class="line">    <span class="keyword">new</span> Thread(<span class="keyword">new</span> Runnable() &#123;</span><br><span class="line">        <span class="meta">@Override</span></span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">()</span> </span>&#123;</span><br><span class="line">            <span class="keyword">try</span> &#123;</span><br><span class="line">                Thread.sleep(<span class="number">1000</span>);</span><br><span class="line">            &#125; <span class="keyword">catch</span> (InterruptedException e) &#123;</span><br><span class="line">                e.printStackTrace();</span><br><span class="line">            &#125;</span><br><span class="line">            Log.d(<span class="string">"子线程更新UI"</span>, Thread.currentThread().getId()</span><br><span class="line">                    + Thread.currentThread().getName());</span><br><span class="line">            textView.setText(String.valueOf(System.currentTimeMillis()));</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;).start();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h1 id="为什么在-onCreate-中在子线程可以更新-UI"><a href="#为什么在-onCreate-中在子线程可以更新-UI" class="headerlink" title="为什么在 onCreate 中在子线程可以更新 UI"></a>为什么在 onCreate 中在子线程可以更新 UI</h1><p>TextView.setText 的调用过程是这样的</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">TextView.setText </span><br><span class="line">-&gt; TextView.checkForRelayout</span><br><span class="line">-&gt; View.invalidate </span><br><span class="line">-&gt; View.invalidateInternal </span><br><span class="line">-&gt; ViewGroup.invalidateChild</span><br><span class="line">-&gt; ViewParent.invalidateChildInParent <span class="comment">//这里会不断Loop去取上一个结点的mParent</span></span><br><span class="line">-&gt; ViewRootImpl.invalidateChildInParent <span class="comment">//DecorView的mParent是ViewRootImpl</span></span><br><span class="line">-&gt; ViewRootImpl.checkThread <span class="comment">//在这里执行checkThread，如果非UI线程则抛出异常</span></span><br></pre></td></tr></table></figure>
+<h2 id="ViewRootImpl-checkThread"><a href="#ViewRootImpl-checkThread" class="headerlink" title="ViewRootImpl.checkThread"></a>ViewRootImpl.checkThread</h2><p>检查线程的逻辑是<strong>检查当前线程是否为创建 ViewRootImpl 对象的线程</strong>，因为一般情况 ViewRootImpl 对象由系统在主线程中创建，<strong>即一般情况检查是否为主线程</strong>。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">checkThread</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (mThread != Thread.currentThread()) &#123;</span><br><span class="line">        <span class="keyword">throw</span> <span class="keyword">new</span> CalledFromWrongThreadException(</span><br><span class="line">                <span class="string">"Only the original thread that created a view hierarchy can touch its views."</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="title">ViewRootImpl</span><span class="params">(Context context, Display display)</span> </span>&#123;</span><br><span class="line">    mThread = Thread.currentThread();</span><br></pre></td></tr></table></figure>
+<h2 id="View-invalidateInternal"><a href="#View-invalidateInternal" class="headerlink" title="View.invalidateInternal"></a>View.invalidateInternal</h2><p><code>View.invalidateInternal</code> 方法中有这样一段，它会判断 mAttachInfo 和 mParent 均不为空时才会调用 <code>ViewGroup.invalidateChild</code> ，onCreate 时 View 的 mAttachInfo 字段还未被赋值，此时为 null，所以<strong>此时更新 UI 未执行到 ViewRootImpl.checkThread 方法，未检查线程，所以更新 UI 成功</strong>。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">...</span><br><span class="line"><span class="keyword">final</span> AttachInfo ai = mAttachInfo;</span><br><span class="line"><span class="keyword">final</span> ViewParent p = mParent;</span><br><span class="line"><span class="keyword">if</span> (p != <span class="keyword">null</span> &amp;&amp; ai != <span class="keyword">null</span> &amp;&amp; l &lt; r &amp;&amp; t &lt; b) &#123;</span><br><span class="line">    <span class="keyword">final</span> Rect damage = ai.mTmpInvalRect;</span><br><span class="line">    damage.set(l, t, r, b);</span><br><span class="line">    p.invalidateChild(<span class="keyword">this</span>, damage);</span><br><span class="line">&#125;</span><br><span class="line">...</span><br></pre></td></tr></table></figure>
+<h1 id="mAttachInfo-什么时候被赋值？"><a href="#mAttachInfo-什么时候被赋值？" class="headerlink" title="mAttachInfo 什么时候被赋值？"></a>mAttachInfo 什么时候被赋值？</h1><p>当我们将子线程 sleep 一定时间后更新 UI 发现抛出异常，最简单的解释就是 View 的 mAttachInfo 字段已被赋值。</p>
+<p>那 mAttachInfo 是何时被赋值的？</p>
+<p>ViewRootImpl 对根节点 DecorView <strong>执行 performTraversals 时</strong>，调用 dispatchAttachedToWindow 对所有 View 赋值 mAttachInfo。（类似 measure，layout，draw 的递归调用）。</p>
+<p>而 ViewRootImpl 执行 performTraversals 是<strong>在 Activity.onResume 之后</strong>，所以当子线程试图更新 UI 时，如果在 performTraversals 之前更新 UI 是可以成功的，当 mAttachInfo 字段已被赋值后便会抛出异常。</p>
+<p>我们可以通过打印日志验证</p>
+<p><img src="/images/posts/android/UI/子线程/logcat1.png" alt=""></p>
+<h1 id="在子线程中更新-UI"><a href="#在子线程中更新-UI" class="headerlink" title="在子线程中更新 UI"></a>在子线程中更新 UI</h1><p>由上述可知<strong>子线程中可以更新 UI</strong>，如下面这段代码就可以完美运行</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">runOnChildThread</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="keyword">new</span> Thread(<span class="keyword">new</span> Runnable() &#123;</span><br><span class="line">        <span class="meta">@Override</span></span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">()</span> </span>&#123;</span><br><span class="line">            Looper.prepare();</span><br><span class="line">            <span class="keyword">final</span> TextView textView = <span class="keyword">new</span> MyTextView(MainActivity.<span class="keyword">this</span>);</span><br><span class="line">            Log.d(<span class="string">"子线程更新UI"</span>, Thread.currentThread().getId()</span><br><span class="line">                    + Thread.currentThread().getName() + <span class="string">"创建TextView"</span>);</span><br><span class="line">            textView.setText(<span class="string">"子线程"</span> + System.currentTimeMillis());</span><br><span class="line">            textView.setOnClickListener(<span class="keyword">new</span> View.OnClickListener() &#123;</span><br><span class="line">                <span class="meta">@Override</span></span><br><span class="line">                <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onClick</span><span class="params">(View v)</span> </span>&#123;</span><br><span class="line">                    Log.d(<span class="string">"子线程更新UI"</span>, Thread.currentThread().getId()</span><br><span class="line">                            + Thread.currentThread().getName() + <span class="string">"点击TextView"</span>);</span><br><span class="line">                    textView.setText(<span class="string">"子线程"</span> + System.currentTimeMillis());</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;);</span><br><span class="line">            WindowManager.LayoutParams layoutParams = <span class="keyword">new</span> WindowManager.LayoutParams();</span><br><span class="line">            <span class="comment">//设置为透明，默认效果是黑色</span></span><br><span class="line">            layoutParams.format = PixelFormat.TRANSPARENT;</span><br><span class="line">            layoutParams.height = WindowManager.LayoutParams.WRAP_CONTENT;</span><br><span class="line">            layoutParams.width = WindowManager.LayoutParams.WRAP_CONTENT;</span><br><span class="line">            <span class="comment">//设置window透传，也就是当前view所在的window不阻碍底层的window获得触摸事件</span></span><br><span class="line">            layoutParams.flags = WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE</span><br><span class="line">                    | WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL;</span><br><span class="line">            MainActivity.<span class="keyword">this</span>.getWindowManager().addView(textView, layoutParams);</span><br><span class="line">            Looper.loop();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;).start();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>我们可以打印日志验证，点击 TextView 时，UI 在子线程中更新。</p>
+<p><img src="/images/posts/android/UI/子线程/logcat2.png" alt=""></p>
+<p>当子线程满足以下条件时便可以在子线程中更新 UI</p>
+<ol>
+<li><p><strong>创建子线程的根视图</strong></p>
+</li>
+<li><p><strong>根视图添加到 WindowManager</strong></p>
+</li>
+<li><p><strong>创建子线程的 Looper</strong></p>
+</li>
+</ol>
+<h1 id="实际项目请在主线程中更新-UI！！！"><a href="#实际项目请在主线程中更新-UI！！！" class="headerlink" title="实际项目请在主线程中更新 UI！！！"></a><strong>实际项目请在主线程中更新 UI！！！</strong></h1><h1 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h1><p><a href="https://www.zhihu.com/question/24764972" target="_blank" rel="noopener">https://www.zhihu.com/question/24764972</a><br><a href="https://ivanljt.github.io/blog/2017/08/16/Android%20%E4%B8%AD%E5%AD%90%E7%BA%BF%E7%A8%8B%E7%9C%9F%E7%9A%84%E4%B8%8D%E8%83%BD%E6%9B%B4%E6%96%B0UI%E5%90%97/" target="_blank" rel="noopener">https://ivanljt.github.io/blog/2017/08/16/Android%20%E4%B8%AD%E5%AD%90%E7%BA%BF%E7%A8%8B%E7%9C%9F%E7%9A%84%E4%B8%8D%E8%83%BD%E6%9B%B4%E6%96%B0UI%E5%90%97/</a></p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://ennis.info/2019/03/18/转-Android类加载/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -2299,199 +2474,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://ennis.info/2018/12/06/笔记-深入拆解Java虚拟机-27注解处理器/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Ennis L.M. Wu">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar/portrait.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Ennis -Little Monster">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/12/06/笔记-深入拆解Java虚拟机-27注解处理器/" itemprop="url">笔记-深入拆解Java虚拟机-27注解处理器</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-12-06T18:17:16+08:00">
-                2018-12-06
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Java虚拟机/" itemprop="url" rel="index">
-                    <span itemprop="name">Java虚拟机</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h1 id="注解处理器（annotation-processor）"><a href="#注解处理器（annotation-processor）" class="headerlink" title="注解处理器（annotation processor）"></a>注解处理器（annotation processor）</h1><ul>
-<li>可以为 Java 编译器<strong>添加编译规则</strong>。</li>
-<li>可以<strong>修改</strong>已有的 Java <strong>源文件</strong>。</li>
-<li>可以<strong>生成</strong>新的 Java <strong>源文件</strong>。</li>
-</ul>
-<h1 id="注解处理器的原理"><a href="#注解处理器的原理" class="headerlink" title="注解处理器的原理"></a>注解处理器的原理</h1><h2 id="Java-编译器的工作流程"><a href="#Java-编译器的工作流程" class="headerlink" title="Java 编译器的工作流程"></a>Java 编译器的工作流程</h2><p><img src="/images/posts/JVM/27/compilation_process.png" alt="compilation_process"></p>
-<ol>
-<li><strong>将源文件解析为抽象语法树。</strong></li>
-<li><strong>调用已注册的注解处理器。</strong></li>
-<li><strong>生成字节码。</strong></li>
-</ol>
-<ul>
-<li>2 调用注解处理器生成了新的源文件将重复 1、2。</li>
-</ul>
-<h2 id="实现注解处理器"><a href="#实现注解处理器" class="headerlink" title="实现注解处理器"></a>实现注解处理器</h2><h3 id="Processor-接口"><a href="#Processor-接口" class="headerlink" title="Processor 接口"></a>Processor 接口</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">Processor</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//不用构造器</span></span><br><span class="line">    <span class="comment">//注解处理器的实例通过反射生成</span></span><br><span class="line">    <span class="comment">//注解处理器类需要定义一个无参数构造器</span></span><br><span class="line">    <span class="comment">//注解处理器通常不声明任何构造器</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">//存放注解处理器的初始化代码</span></span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">init</span><span class="params">(ProcessingEnvironment processingEnv)</span></span>;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">//返回注解处理器所支持的注解类型</span></span><br><span class="line">    <span class="comment">//注解类型用字符串形式表示</span></span><br><span class="line">    <span class="function">Set&lt;String&gt; <span class="title">getSupportedAnnotationTypes</span><span class="params">()</span></span>;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">//返回该处理器支持的 Java 版本</span></span><br><span class="line">    <span class="comment">//通常版本与 Java 编译器版本一致</span></span><br><span class="line">    <span class="function">SourceVersion <span class="title">getSupportedSourceVersion</span><span class="params">()</span></span>;</span><br><span class="line">  </span><br><span class="line">    <span class="comment">//注解处理方法</span></span><br><span class="line">    <span class="function"><span class="keyword">boolean</span> <span class="title">process</span><span class="params">(Set&lt;? extends TypeElement&gt; annotations, RoundEnvironment roundEnv)</span></span>;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//剩余方法略...</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<blockquote>
-<p>JDK 提供了一个实现 Processor 接口的抽象类 AbstractProcessor。</p>
-<blockquote>
-<p>该抽象类实现了 init、getSupportedAnnotationTypes 和 getSupportedSourceVersion方法。<br>它的子类可以通过 @SupportedAnnotationTypes 和 @SupportedSourceVersion 注解来声明所支持的注解类型以及 Java 版本。</p>
-</blockquote>
-</blockquote>
-<ul>
-<li>所有的<strong>注解处理器类需要实现 Processor 接口</strong>。</li>
-</ul>
-<h3 id="注册-Java-编译器的插件"><a href="#注册-Java-编译器的插件" class="headerlink" title="注册 Java 编译器的插件"></a>注册 Java 编译器的插件</h3><ul>
-<li>方法一：直接使用 javac 命令的 -processor 参数。</li>
-<li>方法二：将注解处理器编译生成的 class 文件压缩入 jar 包中，在 jar 包配置文件中记录该注解处理器的包名及类名。</li>
-</ul>
-<p>启动 Java 编译器时，会寻找 classpath 路径上的 jar 包是否包含上述配置文件，并自动注册其中记录的注解处理器。</p>
-<ul>
-<li>方法三：在 IDE 中配置注解处理器。</li>
-</ul>
-<h1 id="利用注解处理器修改已有的源码"><a href="#利用注解处理器修改已有的源码" class="headerlink" title="利用注解处理器修改已有的源码"></a>利用注解处理器修改已有的源码</h1><blockquote>
-<p>注解处理器并不能真正地修改已有源代码。这里指的是修改由 Java 源代码生成的抽象语法树，在其中修改已有树节点或者插入新的树节点，从而使生成的字节码发生变化。</p>
-</blockquote>
-<ul>
-<li><strong>修改抽象语法树</strong>涉及 Java 编译器的内部 API，<strong>可能随着版本变更失效</strong>。</li>
-</ul>
-<h1 id="利用注解处理器生成新的源码"><a href="#利用注解处理器生成新的源码" class="headerlink" title="利用注解处理器生成新的源码"></a>利用注解处理器生成新的源码</h1><ul>
-<li>通过 Filer.createSourceFile 方法获得一个文件的概念。</li>
-<li>并通过 PrintWriter 将具体的内容写入。</li>
-</ul>
-<h1 id="附件"><a href="#附件" class="headerlink" title="附件"></a>附件</h1><ul>
-<li><a href="https://docs.oracle.com/javase/10/docs/api/javax/lang/model/element/package-summary.html" target="_blank" rel="noopener">Element 类 API 3</a></li>
-<li><a href="http://notatube.blogspot.com/2010/11/project-lombok-trick-explained.html" target="_blank" rel="noopener">修改抽象语法树 API</a><ul>
-<li><a href="http://jnb.ociweb.com/jnb/jnbJan2010.html#controversy" target="_blank" rel="noopener">Lombok 的回应</a></li>
-</ul>
-</li>
-</ul>
-<h1 id="引用"><a href="#引用" class="headerlink" title="引用"></a>引用</h1><blockquote>
-<p><a href="https://time.geekbang.org/column/article/40189" target="_blank" rel="noopener">https://time.geekbang.org/column/article/40189</a></p>
-</blockquote>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -2546,7 +2528,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">55</span>
+                  <span class="site-state-item-count">56</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -2568,7 +2550,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">23</span>
+                  <span class="site-state-item-count">24</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>
