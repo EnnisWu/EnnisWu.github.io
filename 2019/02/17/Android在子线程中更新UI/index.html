@@ -68,7 +68,7 @@
 
 
 
-  <meta name="keywords" content="JVM," />
+  <meta name="keywords" content="Android,AndroidUI," />
 
 
 
@@ -81,20 +81,21 @@
 
 
 
-<meta name="description" content="分层编译模式HotSpot 包含的即时编译器： C1 C2 Graal（实验性质的即时编译器）  Java 7 以前需要根据程序特性选择对应的即使编译器C1 执行时间较短的程序。 对启动性能有要求的程序。 C1 编译效率较快。 对应参数 -client  C2 执行时间较长的程序。 对峰值性能有要求的程序。 C2 生成代码的执行效率较快。 对应参数 -server  Java 7 引入分层编译 综">
-<meta name="keywords" content="JVM">
+<meta name="description" content="源码版本 SDK 28 Android 中控件都是线程不安全的，Google 规范只能在主线程中更新 UI，在子线程中发送网络请求。假如在子线程中更新 UI，会抛出异常 12android.view.ViewRootImpl$CalledFromWrongThreadException: Only the original thread that created a view hierarchy">
+<meta name="keywords" content="Android,AndroidUI">
 <meta property="og:type" content="article">
-<meta property="og:title" content="笔记-深入拆解Java虚拟机-1617即时编译">
-<meta property="og:url" content="http://ennis.info/2018/11/06/笔记-深入拆解Java虚拟机-1617即时编译/index.html">
+<meta property="og:title" content="Android在子线程中更新UI">
+<meta property="og:url" content="http://ennis.info/2019/02/17/Android在子线程中更新UI/index.html">
 <meta property="og:site_name" content="Ennis -Little Monster">
-<meta property="og:description" content="分层编译模式HotSpot 包含的即时编译器： C1 C2 Graal（实验性质的即时编译器）  Java 7 以前需要根据程序特性选择对应的即使编译器C1 执行时间较短的程序。 对启动性能有要求的程序。 C1 编译效率较快。 对应参数 -client  C2 执行时间较长的程序。 对峰值性能有要求的程序。 C2 生成代码的执行效率较快。 对应参数 -server  Java 7 引入分层编译 综">
+<meta property="og:description" content="源码版本 SDK 28 Android 中控件都是线程不安全的，Google 规范只能在主线程中更新 UI，在子线程中发送网络请求。假如在子线程中更新 UI，会抛出异常 12android.view.ViewRootImpl$CalledFromWrongThreadException: Only the original thread that created a view hierarchy">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:image" content="http://ennis.info/images/posts/JVM/1617/compile_path.png">
-<meta property="og:updated_time" content="2019-01-26T13:26:29.105Z">
+<meta property="og:image" content="http://ennis.info/images/posts/android/UI/子线程/logcat1.png">
+<meta property="og:image" content="http://ennis.info/images/posts/android/UI/子线程/logcat2.png">
+<meta property="og:updated_time" content="2019-03-24T07:37:35.489Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="笔记-深入拆解Java虚拟机-1617即时编译">
-<meta name="twitter:description" content="分层编译模式HotSpot 包含的即时编译器： C1 C2 Graal（实验性质的即时编译器）  Java 7 以前需要根据程序特性选择对应的即使编译器C1 执行时间较短的程序。 对启动性能有要求的程序。 C1 编译效率较快。 对应参数 -client  C2 执行时间较长的程序。 对峰值性能有要求的程序。 C2 生成代码的执行效率较快。 对应参数 -server  Java 7 引入分层编译 综">
-<meta name="twitter:image" content="http://ennis.info/images/posts/JVM/1617/compile_path.png">
+<meta name="twitter:title" content="Android在子线程中更新UI">
+<meta name="twitter:description" content="源码版本 SDK 28 Android 中控件都是线程不安全的，Google 规范只能在主线程中更新 UI，在子线程中发送网络请求。假如在子线程中更新 UI，会抛出异常 12android.view.ViewRootImpl$CalledFromWrongThreadException: Only the original thread that created a view hierarchy">
+<meta name="twitter:image" content="http://ennis.info/images/posts/android/UI/子线程/logcat1.png">
 
 
 
@@ -124,13 +125,13 @@
 
 
 
-  <link rel="canonical" href="http://ennis.info/2018/11/06/笔记-深入拆解Java虚拟机-1617即时编译/"/>
+  <link rel="canonical" href="http://ennis.info/2019/02/17/Android在子线程中更新UI/"/>
 
 
 
 
 
-  <title>笔记-深入拆解Java虚拟机-1617即时编译 | Ennis -Little Monster</title>
+  <title>Android在子线程中更新UI | Ennis -Little Monster</title>
   
 
 
@@ -301,7 +302,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://ennis.info/2018/11/06/笔记-深入拆解Java虚拟机-1617即时编译/">
+    <link itemprop="mainEntityOfPage" href="http://ennis.info/2019/02/17/Android在子线程中更新UI/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Ennis L.M. Wu">
@@ -318,7 +319,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">笔记-深入拆解Java虚拟机-1617即时编译</h1>
+          <h1 class="post-title" itemprop="name headline">Android在子线程中更新UI</h1>
         
 
         <div class="post-meta">
@@ -330,8 +331,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-11-06T10:03:09+08:00">
-                2018-11-06
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-02-17T10:21:05+08:00">
+                2019-02-17
               </time>
             
 
@@ -353,8 +354,8 @@
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Java虚拟机/" itemprop="url" rel="index">
-                    <span itemprop="name">Java虚拟机</span>
+                  <a href="/categories/Android/" itemprop="url" rel="index">
+                    <span itemprop="name">Android</span>
                   </a>
                 </span>
 
@@ -390,163 +391,41 @@
       
 
       
-        <h1 id="分层编译模式"><a href="#分层编译模式" class="headerlink" title="分层编译模式"></a>分层编译模式</h1><h2 id="HotSpot-包含的即时编译器："><a href="#HotSpot-包含的即时编译器：" class="headerlink" title="HotSpot 包含的即时编译器："></a>HotSpot 包含的即时编译器：</h2><ol>
-<li>C1</li>
-<li>C2</li>
-<li>Graal（<strong>实验性质</strong>的即时编译器）</li>
+        <p>源码版本 SDK 28</p>
+<p>Android 中控件都是线程不安全的，Google <strong>规范</strong>只能在主线程中更新 UI，在子线程中发送网络请求。假如在子线程中更新 UI，会抛出异常</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">android.view.ViewRootImpl$CalledFromWrongThreadException: Only the original thread that created a view hierarchy can touch its views.</span><br><span class="line">        at android.view.ViewRootImpl.checkThread(ViewRootImpl.java:7753)</span><br></pre></td></tr></table></figure>
+<p>但如果运行下面这段代码，你会发现程序完美运行，没有任何问题，为什么这时却又可以在子线程更新 UI 了呢？</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Override</span></span><br><span class="line"><span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">onCreate</span><span class="params">(Bundle savedInstanceState)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">super</span>.onCreate(savedInstanceState);</span><br><span class="line">    Log.d(<span class="string">"子线程更新UI"</span>, <span class="string">"onCreate"</span>);</span><br><span class="line">    Log.d(<span class="string">"子线程更新UI"</span>, Thread.currentThread().getId()</span><br><span class="line">            + Thread.currentThread().getName());</span><br><span class="line">    setContentView(R.layout.activity_main);</span><br><span class="line"></span><br><span class="line">    textView = findViewById(R.id.text_view);</span><br><span class="line">    <span class="keyword">new</span> Thread(<span class="keyword">new</span> Runnable() &#123;</span><br><span class="line">        <span class="meta">@Override</span></span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">()</span> </span>&#123;</span><br><span class="line">            Log.d(<span class="string">"子线程更新UI"</span>, Thread.currentThread().getId()</span><br><span class="line">                    + Thread.currentThread().getName());</span><br><span class="line">            textView.setText(String.valueOf(System.currentTimeMillis()));</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;).start();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>如果我们将子线程 sleep 1 秒呢，这时便抛出了上述不能更新 UI 的异常。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Override</span></span><br><span class="line"><span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">onCreate</span><span class="params">(Bundle savedInstanceState)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">super</span>.onCreate(savedInstanceState);</span><br><span class="line">    Log.d(<span class="string">"子线程更新UI"</span>, <span class="string">"onCreate"</span>);</span><br><span class="line">    Log.d(<span class="string">"子线程更新UI"</span>, Thread.currentThread().getId()</span><br><span class="line">            + Thread.currentThread().getName());</span><br><span class="line">    setContentView(R.layout.activity_main);</span><br><span class="line"></span><br><span class="line">    textView = findViewById(R.id.text_view);</span><br><span class="line">    <span class="keyword">new</span> Thread(<span class="keyword">new</span> Runnable() &#123;</span><br><span class="line">        <span class="meta">@Override</span></span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">()</span> </span>&#123;</span><br><span class="line">            <span class="keyword">try</span> &#123;</span><br><span class="line">                Thread.sleep(<span class="number">1000</span>);</span><br><span class="line">            &#125; <span class="keyword">catch</span> (InterruptedException e) &#123;</span><br><span class="line">                e.printStackTrace();</span><br><span class="line">            &#125;</span><br><span class="line">            Log.d(<span class="string">"子线程更新UI"</span>, Thread.currentThread().getId()</span><br><span class="line">                    + Thread.currentThread().getName());</span><br><span class="line">            textView.setText(String.valueOf(System.currentTimeMillis()));</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;).start();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h1 id="为什么在-onCreate-中在子线程可以更新-UI"><a href="#为什么在-onCreate-中在子线程可以更新-UI" class="headerlink" title="为什么在 onCreate 中在子线程可以更新 UI"></a>为什么在 onCreate 中在子线程可以更新 UI</h1><p>TextView.setText 的调用过程是这样的</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">TextView.setText </span><br><span class="line">-&gt; TextView.checkForRelayout</span><br><span class="line">-&gt; View.invalidate </span><br><span class="line">-&gt; View.invalidateInternal </span><br><span class="line">-&gt; ViewGroup.invalidateChild</span><br><span class="line">-&gt; ViewParent.invalidateChildInParent <span class="comment">//这里会不断Loop去取上一个结点的mParent</span></span><br><span class="line">-&gt; ViewRootImpl.invalidateChildInParent <span class="comment">//DecorView的mParent是ViewRootImpl</span></span><br><span class="line">-&gt; ViewRootImpl.checkThread <span class="comment">//在这里执行checkThread，如果非UI线程则抛出异常</span></span><br></pre></td></tr></table></figure>
+<h2 id="ViewRootImpl-checkThread"><a href="#ViewRootImpl-checkThread" class="headerlink" title="ViewRootImpl.checkThread"></a>ViewRootImpl.checkThread</h2><p>检查线程的逻辑是<strong>检查当前线程是否为创建 ViewRootImpl 对象的线程</strong>，因为一般情况 ViewRootImpl 对象由系统在主线程中创建，<strong>即一般情况检查是否为主线程</strong>。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">checkThread</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (mThread != Thread.currentThread()) &#123;</span><br><span class="line">        <span class="keyword">throw</span> <span class="keyword">new</span> CalledFromWrongThreadException(</span><br><span class="line">                <span class="string">"Only the original thread that created a view hierarchy can touch its views."</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="title">ViewRootImpl</span><span class="params">(Context context, Display display)</span> </span>&#123;</span><br><span class="line">    mThread = Thread.currentThread();</span><br></pre></td></tr></table></figure>
+<h2 id="View-invalidateInternal"><a href="#View-invalidateInternal" class="headerlink" title="View.invalidateInternal"></a>View.invalidateInternal</h2><p><code>View.invalidateInternal</code> 方法中有这样一段，它会判断 mAttachInfo 和 mParent 均不为空时才会调用 <code>ViewGroup.invalidateChild</code> ，onCreate 时 View 的 mAttachInfo 字段还未被赋值，此时为 null，所以<strong>此时更新 UI 未执行到 ViewRootImpl.checkThread 方法，未检查线程，所以更新 UI 成功</strong>。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">...</span><br><span class="line"><span class="keyword">final</span> AttachInfo ai = mAttachInfo;</span><br><span class="line"><span class="keyword">final</span> ViewParent p = mParent;</span><br><span class="line"><span class="keyword">if</span> (p != <span class="keyword">null</span> &amp;&amp; ai != <span class="keyword">null</span> &amp;&amp; l &lt; r &amp;&amp; t &lt; b) &#123;</span><br><span class="line">    <span class="keyword">final</span> Rect damage = ai.mTmpInvalRect;</span><br><span class="line">    damage.set(l, t, r, b);</span><br><span class="line">    p.invalidateChild(<span class="keyword">this</span>, damage);</span><br><span class="line">&#125;</span><br><span class="line">...</span><br></pre></td></tr></table></figure>
+<h1 id="mAttachInfo-什么时候被赋值？"><a href="#mAttachInfo-什么时候被赋值？" class="headerlink" title="mAttachInfo 什么时候被赋值？"></a>mAttachInfo 什么时候被赋值？</h1><p>当我们将子线程 sleep 一定时间后更新 UI 发现抛出异常，最简单的解释就是 View 的 mAttachInfo 字段已被赋值。</p>
+<p>那 mAttachInfo 是何时被赋值的？</p>
+<p>ViewRootImpl 对根节点 DecorView <strong>执行 performTraversals 时</strong>，调用 dispatchAttachedToWindow 对所有 View 赋值 mAttachInfo。（类似 measure，layout，draw 的递归调用）。</p>
+<p>而 ViewRootImpl 执行 performTraversals 是<strong>在 Activity.onResume 之后</strong>，所以当子线程试图更新 UI 时，如果在 performTraversals 之前更新 UI 是可以成功的，当 mAttachInfo 字段已被赋值后便会抛出异常。</p>
+<p>我们可以通过打印日志验证</p>
+<p><img src="/images/posts/android/UI/子线程/logcat1.png" alt=""></p>
+<h1 id="在子线程中更新-UI"><a href="#在子线程中更新-UI" class="headerlink" title="在子线程中更新 UI"></a>在子线程中更新 UI</h1><p>由上述可知<strong>子线程中可以更新 UI</strong>，如下面这段代码就可以完美运行</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">runOnChildThread</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="keyword">new</span> Thread(<span class="keyword">new</span> Runnable() &#123;</span><br><span class="line">        <span class="meta">@Override</span></span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">()</span> </span>&#123;</span><br><span class="line">            Looper.prepare();</span><br><span class="line">            <span class="keyword">final</span> TextView textView = <span class="keyword">new</span> MyTextView(MainActivity.<span class="keyword">this</span>);</span><br><span class="line">            Log.d(<span class="string">"子线程更新UI"</span>, Thread.currentThread().getId()</span><br><span class="line">                    + Thread.currentThread().getName() + <span class="string">"创建TextView"</span>);</span><br><span class="line">            textView.setText(<span class="string">"子线程"</span> + System.currentTimeMillis());</span><br><span class="line">            textView.setOnClickListener(<span class="keyword">new</span> View.OnClickListener() &#123;</span><br><span class="line">                <span class="meta">@Override</span></span><br><span class="line">                <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onClick</span><span class="params">(View v)</span> </span>&#123;</span><br><span class="line">                    Log.d(<span class="string">"子线程更新UI"</span>, Thread.currentThread().getId()</span><br><span class="line">                            + Thread.currentThread().getName() + <span class="string">"点击TextView"</span>);</span><br><span class="line">                    textView.setText(<span class="string">"子线程"</span> + System.currentTimeMillis());</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;);</span><br><span class="line">            WindowManager.LayoutParams layoutParams = <span class="keyword">new</span> WindowManager.LayoutParams();</span><br><span class="line">            <span class="comment">//设置为透明，默认效果是黑色</span></span><br><span class="line">            layoutParams.format = PixelFormat.TRANSPARENT;</span><br><span class="line">            layoutParams.height = WindowManager.LayoutParams.WRAP_CONTENT;</span><br><span class="line">            layoutParams.width = WindowManager.LayoutParams.WRAP_CONTENT;</span><br><span class="line">            <span class="comment">//设置window透传，也就是当前view所在的window不阻碍底层的window获得触摸事件</span></span><br><span class="line">            layoutParams.flags = WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE</span><br><span class="line">                    | WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL;</span><br><span class="line">            MainActivity.<span class="keyword">this</span>.getWindowManager().addView(textView, layoutParams);</span><br><span class="line">            Looper.loop();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;).start();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>我们可以打印日志验证，点击 TextView 时，UI 在子线程中更新。</p>
+<p><img src="/images/posts/android/UI/子线程/logcat2.png" alt=""></p>
+<p>当子线程满足以下条件时便可以在子线程中更新 UI</p>
+<ol>
+<li><p><strong>创建子线程的根视图</strong></p>
+</li>
+<li><p><strong>根视图添加到 WindowManager</strong></p>
+</li>
+<li><p><strong>创建子线程的 Looper</strong></p>
+</li>
 </ol>
-<h2 id="Java-7-以前需要根据程序特性选择对应的即使编译器"><a href="#Java-7-以前需要根据程序特性选择对应的即使编译器" class="headerlink" title="Java 7 以前需要根据程序特性选择对应的即使编译器"></a>Java 7 以前需要根据程序特性选择对应的即使编译器</h2><h3 id="C1"><a href="#C1" class="headerlink" title="C1"></a>C1</h3><ul>
-<li><strong>执行时间较短</strong>的程序。</li>
-<li>对<strong>启动性能</strong>有要求的程序。</li>
-<li>C1 <strong>编译效率较快</strong>。</li>
-<li>对应参数 -client</li>
-</ul>
-<h3 id="C2"><a href="#C2" class="headerlink" title="C2"></a>C2</h3><ul>
-<li><strong>执行时间较长</strong>的程序。</li>
-<li>对<strong>峰值性能</strong>有要求的程序。</li>
-<li>C2 生成<strong>代码的执行效率较快</strong>。</li>
-<li>对应参数 -server</li>
-</ul>
-<h2 id="Java-7-引入分层编译"><a href="#Java-7-引入分层编译" class="headerlink" title="Java 7 引入分层编译"></a>Java 7 引入分层编译</h2><ul>
-<li><strong>综合</strong> C1 的<strong>启动性能</strong>优势和 C2 的<strong>峰值性能</strong>优势。</li>
-<li><p>分层编译将 Java 虚拟机的执行状态<strong>分为 5 个层次</strong>。</p>
-<p>  0.解释执行</p>
-<p>  1.执行不带 profiling 的 C1 代码</p>
-<p>  2.执行仅带方法调用次数和循环回边执行次数 profiling 的C1 代码</p>
-<p>  3.执行带所有 profiling 的 C1 代码</p>
-<p>  4.执行 C2 代码</p>
-</li>
-<li><p>C2 代码的执行效率比 C1 代码高 30% 以上。</p>
-</li>
-<li>C1 执行效率 1 层 &gt; 2 层 &gt; 3 层。（1 层比 2 层稍高，2 层比 3 层高 30% 以上）。</li>
-</ul>
-<h2 id="profile"><a href="#profile" class="headerlink" title="profile"></a>profile</h2><ul>
-<li>profiling：在程序执行过程中，收集能够<strong>反映程序执行状态的数据</strong>。</li>
-<li>这里所收集的数据我们称之为程序的 profile。</li>
-<li>例如 JDK 附带的 hprof。</li>
-<li>profiler 大多通过<strong>注入</strong>或 <strong>JVMTI 事件</strong>来实现。</li>
-<li><strong>第 0 层和第 3 层还会收集用于第 4 层 C2 编译的数据。</strong></li>
-</ul>
-<p>如：分支跳转字节码的分支 profile（branch profile）（跳转次数和不跳转次数），非私有实例方法调用指令，强制类型转换 checkcast 指令，类型测试 instanceof 指令，引用类型的数组存储 aastore 指令的 profile（receiver type profile）。</p>
-<ul>
-<li>分支 profile 和类型 profile 的收集会给应用程序<strong>带来不少性能开销</strong>。</li>
-<li>通常情况，<strong>不会在解释执行中收集</strong>分支 profile 和类型 profile。</li>
-<li><strong>只有触发 C1 编译后</strong>，JVM 认为可能被 C2 编译，才收集这些 profile。</li>
-<li>比较<strong>极端情况</strong>下，JVM 才会在<strong>解释执行时收集</strong> profile（如等待 C1 编译的方法过多时）。</li>
-<li>C2 可以根据收集到的数据进行猜测，作出比较<strong>激进的优化</strong>。</li>
-</ul>
-<h3 id="基于分支-profile-的优化"><a href="#基于分支-profile-的优化" class="headerlink" title="基于分支 profile 的优化"></a>基于分支 profile 的优化</h3><ul>
-<li><p>根据条件跳转指令的分支 profile，即时编译器可以将<strong>从未执行过的分支剪掉</strong>。</p>
-<ul>
-<li><strong>节省编译时间</strong>和部署代码要消耗的<strong>内存空间</strong>。</li>
-<li>将<strong>精简程序的数据流</strong>，触发更多的优化。</li>
-</ul>
-</li>
-<li><p>根据分支 profile，计算每一条程序执行路径的概率，<strong>优化优先处理概率较高的路径</strong>。</p>
-</li>
-</ul>
-<h3 id="基于类型-profile-的优化"><a href="#基于类型-profile-的优化" class="headerlink" title="基于类型 profile 的优化"></a>基于类型 profile 的优化</h3><h4 id="instanceof-测试"><a href="#instanceof-测试" class="headerlink" title="instanceof 测试"></a>instanceof 测试</h4><ul>
-<li>目标类型是 final 类型，只比较测试对象的动态类型是否为该类型。</li>
-<li>目标类型是非 final 类型，依次测试该类，该类的父类、祖先类，该类所直接或者间接实现的接口。</li>
-</ul>
-<h4 id="instanceof-以及方法调用的类型-profile"><a href="#instanceof-以及方法调用的类型-profile" class="headerlink" title="instanceof 以及方法调用的类型 profile"></a>instanceof 以及方法调用的类型 profile</h4><ul>
-<li><strong>假设对象的动态类型仅为类型 profile 中的那几个。</strong></li>
-<li><strong>针对分支 profile 优化。</strong></li>
-<li><strong>对方法调用的条件去虚化内联。</strong></li>
-</ul>
-<h3 id="去优化"><a href="#去优化" class="headerlink" title="去优化"></a>去优化</h3><blockquote>
-<p>即从执行即时编译生成的机器码切换回解释执行。</p>
-</blockquote>
-<ul>
-<li>当<strong>假设失败</strong>的情况下，JVM 将<strong>去优化</strong>。</li>
-<li>生成的机器码中，即时编译器在<strong>假设失败的位置上插入一个陷阱</strong>（trap）。</li>
-<li>陷阱实际上是一条 call 指令，调用至 Java 虚拟机专门负责去优化的方法。</li>
-<li>与普通的 call 指令的区别：去优化方法会更改栈上的返回地址，并不再返回即时编译器生成的机器码中。</li>
-<li><strong>去优化过程非常复杂。</strong></li>
-<li>生成的机器代码和原本的字节码差异非常大。</li>
-<li>需要将当前机器码的执行状态转换至某一字节码之前的执行状态，并从该字节码开始执行。</li>
-<li>这便要求即时编译器在编译过程中<strong>记录好这两种执行状态的映射</strong>。</li>
-</ul>
-<h4 id="去优化的原因与优化无关"><a href="#去优化的原因与优化无关" class="headerlink" title="去优化的原因与优化无关"></a>去优化的原因与优化无关</h4><blockquote>
-<p>即使重新编译也不会改变生成的机器码。</p>
-</blockquote>
-<ul>
-<li>生成的机器码可以在调用去优化方法时传入 Action_None。</li>
-<li>表示<strong>保留这一份机器码</strong>。</li>
-<li>在下一次调用该方法时重新进入这一份机器码。</li>
-</ul>
-<h4 id="去优化的原因与静态分析的结果有关"><a href="#去优化的原因与静态分析的结果有关" class="headerlink" title="去优化的原因与静态分析的结果有关"></a>去优化的原因与静态分析的结果有关</h4><ul>
-<li>生成的机器码可以在调用去优化方法时传入 Action_Recompile。</li>
-<li>表示<strong>不保留这一份机器码</strong>。</li>
-<li>但是可以<strong>不经过重新 profile，直接重新编译</strong>。</li>
-</ul>
-<h4 id="去优化的原因与基于-profile-的激进优化有关"><a href="#去优化的原因与基于-profile-的激进优化有关" class="headerlink" title="去优化的原因与基于 profile 的激进优化有关"></a>去优化的原因与基于 profile 的激进优化有关</h4><ul>
-<li>生成的机器码需要在调用去优化方法时传入 Action_Reinterpret。</li>
-<li>表示<strong>不保留这一份机器码</strong>。</li>
-<li>而且<strong>需要重新收集程序的 profile</strong>。</li>
-</ul>
-<h2 id="编译路径"><a href="#编译路径" class="headerlink" title="编译路径"></a>编译路径</h2><ul>
-<li><strong>1 层和 4 层为终止状态。</strong></li>
-<li>一个方法被终止状态编译后，如果编译后的代码没有失效，JVM 不再发出该方法的编译请求。</li>
-</ul>
-<p><img src="/images/posts/JVM/1617/compile_path.png" alt="compile_path"></p>
-<h3 id="通常情况"><a href="#通常情况" class="headerlink" title="通常情况"></a>通常情况</h3><ul>
-<li>热点方法会被第 3 层的 C1 编译，再被第 4 层的 C2 编译。</li>
-</ul>
-<h3 id="琐碎的方法"><a href="#琐碎的方法" class="headerlink" title="琐碎的方法"></a>琐碎的方法</h3><ul>
-<li><strong>字节数少</strong>，且第 3 层的 profiling <strong>没有可收集的数据</strong>的方法。</li>
-<li>JVM 断定该方法对于 <strong>C1 代码和 C2 代码执行效率相同</strong>。</li>
-<li>在第 3 层编译后，直接用第 1 层的 C1 编译。</li>
-</ul>
-<h3 id="C1-忙碌的情况"><a href="#C1-忙碌的情况" class="headerlink" title="C1 忙碌的情况"></a>C1 忙碌的情况</h3><ul>
-<li>解释执行过程中进行 profiling。</li>
-<li>然后直接由第 4 层的 C2 编译。</li>
-</ul>
-<h3 id="C2-忙碌的情况"><a href="#C2-忙碌的情况" class="headerlink" title="C2 忙碌的情况"></a>C2 忙碌的情况</h3><ul>
-<li>方法先被第 2 层的 C1 编译。</li>
-<li>再被第 3 层的 C1 编译，减少在第 3 层的执行时间。</li>
-</ul>
-<h2 id="Java-8"><a href="#Java-8" class="headerlink" title="Java 8"></a>Java 8</h2><ul>
-<li>默认开启分层编译。</li>
-<li>不管分层编译是否开启，原本的选择即时编译器的参数都无效（-client 和 -server）。</li>
-<li>关闭分层编译情况下，JVM 采用 C2。</li>
-<li>只使用 C1：使用参数 -XX:TieredStopAtLevel=1，解释执行后直接由 1 层的 C1 编译。</li>
-</ul>
-<h1 id="即时编译的触发"><a href="#即时编译的触发" class="headerlink" title="即时编译的触发"></a>即时编译的触发</h1><ul>
-<li>根据方法的<strong>调用次数</strong>和<strong>循环回边的执行次数</strong>来触发。</li>
-<li>profiling 中包含上述次数。</li>
-<li><strong>解释执行和 C1 代码中增加循环回边计数器的位置不同</strong>，但不会对程序照成影响。</li>
-<li>JVM <strong>不对计数器进行同步</strong>，收集的几次为非精确值。</li>
-<li>即时编译的<strong>触发不需要非常精确的值</strong>。</li>
-<li>不启用分层编译，超过由参数 -XX:CompileThreshold 指定的阈值时（使用 C1 时，该值为 1500；使用 C2 时，该值为 10000），会触发即时编译。</li>
-<li>启用分层编译，JVM 不采用由参数 -XX:CompileThreshold 指定的阈值，使用另一套阈值系统。阈值大小<strong>动态调整</strong>。</li>
-<li>动态调整：比较阈值时，将阈值与某个<strong>系数 s</strong> 相乘。</li>
-<li>该系数与<strong>当前待编译的方法数目</strong>成<strong>正相关</strong>，与<strong>编译线程的数目</strong>成<strong>负相关</strong>。</li>
-<li>64 位 JVM中，默认情况下<strong>编译线程的总数目</strong>根据<strong>处理器数量来调整</strong>，（对应参数 -XX:+CICompilerCountPerCPU，默认为 true；当通过参数 -XX:+CICompilerCount=N 强制设定总编译线程数目时，CICompilerCountPerCPU 将被设置为 false）。</li>
-<li>JVM 将编译线程按照 1:2 的比例分配给 C1 和 C2（至少各为 1 个）。</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">对于核及以上的机器，总的编译线程的数目为：</span><br><span class="line">n = log2(N) * log2(log2(N)) * 3 / 2</span><br><span class="line">其中 N 为 CPU 核心数目。</span><br></pre></td></tr></table></figure>
-<p>启用分层编译时的具体触发条件：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">当方法调用次数大于由参数 -XX:TierXInvocationThreshold 指定的阈值乘以系数，或者当方法调用次数大于由参数 -XX:TierXMINInvocationThreshold 指定的阈值乘以系数，并且方法调用次数和循环回边次数之和大于由参数 -XX:TierXCompileThreshold 指定的阈值乘以系数时，便会触发 X 层即时编译。</span><br><span class="line"></span><br><span class="line">触发条件为：</span><br><span class="line">i &gt; TierXInvocationThreshold * s || (i &gt; TierXMinInvocationThreshold * s  &amp;&amp; i + b &gt; TierXCompileThreshold * s)</span><br></pre></td></tr></table></figure>
-<h1 id="OSR-编译"><a href="#OSR-编译" class="headerlink" title="OSR 编译"></a>OSR 编译</h1><ul>
-<li>JVM 还存在另一种以<strong>循环为单位</strong>的即时编译（On-Stack-Replacement（OSR）编译）。</li>
-<li><strong>循环回边计数器用来触发</strong>这种类型的编译的。</li>
-<li>不启用分层编译情况，触发 OSR 编译的阈值是由参数 -XX:CompileThreshold 指定的阈值的倍数。</li>
-</ul>
-<p>计算方法：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">(OnStackReplacePercentage - InterpreterProfilePercentage)/100</span><br><span class="line"></span><br><span class="line">其中 -XX:InterpreterProfilePercentage 的默认值为 33，当使用 C1 时 -XX:OnStackReplacePercentage 为 933，当使用 C2 时为 140。</span><br><span class="line">也就是说，默认情况下，C1 的 OSR 编译的阈值为 13500，而 C2 的为 10700。</span><br></pre></td></tr></table></figure>
-<ul>
-<li>启用分层编译的情况下，触发 OSR 编译的阈值则由参数 -XX:TierXBackEdgeThreshold 指定的阈值乘以系数。</li>
-<li>OSR 编译在<strong>正常的应用程序</strong>中<strong>不多见</strong>。它只在<strong>基准测试</strong>时比较<strong>常见</strong>。</li>
-</ul>
-<h1 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h1><p>Q：<strong>为什么不把所有代码都即时编译一下呢？这样程序的执行效率不是更快吗？</strong></p>
-<p>A：即时编译是以方法为单位的。<strong>动态编译比较耗时</strong>，如果花了大量CPU资源编译出来的机器码运行不了几次，就很浪费了。</p>
-<hr>
-<p>Q：为什么要用分层编译呢？<strong>使用最快的编译代码编译器编译的代码不是更好吗？</strong></p>
-<p>A：<strong>机器码越快，需要的编译时间就越长。分层编译是一种折衷的方式</strong>，既能够满足部分不那么热的代码能够在短时间内编译完成，也能满足很热的代码能够拥有最好的优化。</p>
-<h1 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h1><blockquote>
-<p><a href="https://time.geekbang.org/column/article/14061" target="_blank" rel="noopener">https://time.geekbang.org/column/article/14061</a><br><a href="https://time.geekbang.org/column/article/14070" target="_blank" rel="noopener">https://time.geekbang.org/column/article/14070</a></p>
-</blockquote>
+<h1 id="实际项目请在主线程中更新-UI！！！"><a href="#实际项目请在主线程中更新-UI！！！" class="headerlink" title="实际项目请在主线程中更新 UI！！！"></a><strong>实际项目请在主线程中更新 UI！！！</strong></h1><h1 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h1><p><a href="https://www.zhihu.com/question/24764972" target="_blank" rel="noopener">https://www.zhihu.com/question/24764972</a></p>
+<p><a href="https://ivanljt.github.io/blog/2017/08/16/Android%20%E4%B8%AD%E5%AD%90%E7%BA%BF%E7%A8%8B%E7%9C%9F%E7%9A%84%E4%B8%8D%E8%83%BD%E6%9B%B4%E6%96%B0UI%E5%90%97/" target="_blank" rel="noopener">https://ivanljt.github.io/blog/2017/08/16/Android%20%E4%B8%AD%E5%AD%90%E7%BA%BF%E7%A8%8B%E7%9C%9F%E7%9A%84%E4%B8%8D%E8%83%BD%E6%9B%B4%E6%96%B0UI%E5%90%97/</a></p>
 
       
     </div>
@@ -593,7 +472,9 @@
       
         <div class="post-tags">
           
-            <a href="/tags/JVM/" rel="tag"># JVM</a>
+            <a href="/tags/Android/" rel="tag"># Android</a>
+          
+            <a href="/tags/AndroidUI/" rel="tag"># AndroidUI</a>
           
         </div>
       
@@ -606,8 +487,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2018/10/21/一些简单的Git命令/" rel="next" title="一些简单的Git命令">
-                <i class="fa fa-chevron-left"></i> 一些简单的Git命令
+              <a href="/2019/02/16/HashSet为什么要使用Object对象填充value而不是null/" rel="next" title="HashSet为什么要使用Object对象填充value而不是null">
+                <i class="fa fa-chevron-left"></i> HashSet为什么要使用Object对象填充value而不是null
               </a>
             
           </div>
@@ -616,8 +497,8 @@
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2018/11/07/Android的视图优化方法/" rel="prev" title="Android的视图优化方法">
-                Android的视图优化方法 <i class="fa fa-chevron-right"></i>
+              <a href="/2019/03/18/转-Android类加载/" rel="prev" title="转-Android类加载">
+                转-Android类加载 <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
@@ -789,7 +670,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#分层编译模式"><span class="nav-number">1.</span> <span class="nav-text">分层编译模式</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#HotSpot-包含的即时编译器："><span class="nav-number">1.1.</span> <span class="nav-text">HotSpot 包含的即时编译器：</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Java-7-以前需要根据程序特性选择对应的即使编译器"><span class="nav-number">1.2.</span> <span class="nav-text">Java 7 以前需要根据程序特性选择对应的即使编译器</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#C1"><span class="nav-number">1.2.1.</span> <span class="nav-text">C1</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#C2"><span class="nav-number">1.2.2.</span> <span class="nav-text">C2</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Java-7-引入分层编译"><span class="nav-number">1.3.</span> <span class="nav-text">Java 7 引入分层编译</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#profile"><span class="nav-number">1.4.</span> <span class="nav-text">profile</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#基于分支-profile-的优化"><span class="nav-number">1.4.1.</span> <span class="nav-text">基于分支 profile 的优化</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#基于类型-profile-的优化"><span class="nav-number">1.4.2.</span> <span class="nav-text">基于类型 profile 的优化</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#instanceof-测试"><span class="nav-number">1.4.2.1.</span> <span class="nav-text">instanceof 测试</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#instanceof-以及方法调用的类型-profile"><span class="nav-number">1.4.2.2.</span> <span class="nav-text">instanceof 以及方法调用的类型 profile</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#去优化"><span class="nav-number">1.4.3.</span> <span class="nav-text">去优化</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#去优化的原因与优化无关"><span class="nav-number">1.4.3.1.</span> <span class="nav-text">去优化的原因与优化无关</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#去优化的原因与静态分析的结果有关"><span class="nav-number">1.4.3.2.</span> <span class="nav-text">去优化的原因与静态分析的结果有关</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#去优化的原因与基于-profile-的激进优化有关"><span class="nav-number">1.4.3.3.</span> <span class="nav-text">去优化的原因与基于 profile 的激进优化有关</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#编译路径"><span class="nav-number">1.5.</span> <span class="nav-text">编译路径</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#通常情况"><span class="nav-number">1.5.1.</span> <span class="nav-text">通常情况</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#琐碎的方法"><span class="nav-number">1.5.2.</span> <span class="nav-text">琐碎的方法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#C1-忙碌的情况"><span class="nav-number">1.5.3.</span> <span class="nav-text">C1 忙碌的情况</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#C2-忙碌的情况"><span class="nav-number">1.5.4.</span> <span class="nav-text">C2 忙碌的情况</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Java-8"><span class="nav-number">1.6.</span> <span class="nav-text">Java 8</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#即时编译的触发"><span class="nav-number">2.</span> <span class="nav-text">即时编译的触发</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#OSR-编译"><span class="nav-number">3.</span> <span class="nav-text">OSR 编译</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#问题"><span class="nav-number">4.</span> <span class="nav-text">问题</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#参考"><span class="nav-number">5.</span> <span class="nav-text">参考</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#为什么在-onCreate-中在子线程可以更新-UI"><span class="nav-number">1.</span> <span class="nav-text">为什么在 onCreate 中在子线程可以更新 UI</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#ViewRootImpl-checkThread"><span class="nav-number">1.1.</span> <span class="nav-text">ViewRootImpl.checkThread</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#View-invalidateInternal"><span class="nav-number">1.2.</span> <span class="nav-text">View.invalidateInternal</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#mAttachInfo-什么时候被赋值？"><span class="nav-number">2.</span> <span class="nav-text">mAttachInfo 什么时候被赋值？</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#在子线程中更新-UI"><span class="nav-number">3.</span> <span class="nav-text">在子线程中更新 UI</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#实际项目请在主线程中更新-UI！！！"><span class="nav-number">4.</span> <span class="nav-text">实际项目请在主线程中更新 UI！！！</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#参考"><span class="nav-number">5.</span> <span class="nav-text">参考</span></a></li></ol></div>
             
 
           </div>

@@ -298,7 +298,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://ennis.info/2019/03/20/Android在子线程中更新UI/">
+    <link itemprop="mainEntityOfPage" href="http://ennis.info/2019/03/24/Java并发之synchronized/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Ennis L.M. Wu">
@@ -317,7 +317,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2019/03/20/Android在子线程中更新UI/" itemprop="url">Android在子线程中更新UI</a></h1>
+                <a class="post-title-link" href="/2019/03/24/Java并发之synchronized/" itemprop="url">Java并发之synchronized</a></h1>
         
 
         <div class="post-meta">
@@ -329,8 +329,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-03-20T14:38:11+08:00">
-                2019-03-20
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-03-24T14:24:12+08:00">
+                2019-03-24
               </time>
             
 
@@ -352,8 +352,8 @@
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Android/" itemprop="url" rel="index">
-                    <span itemprop="name">Android</span>
+                  <a href="/categories/Java/" itemprop="url" rel="index">
+                    <span itemprop="name">Java</span>
                   </a>
                 </span>
 
@@ -391,40 +391,119 @@
       
         
           
-            <p>源码版本 SDK 28</p>
-<p>Android 中控件都是线程不安全的，Google <strong>规范</strong>只能在主线程中更新 UI，在子线程中发送网络请求。假如在子线程中更新 UI，会抛出异常</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">android.view.ViewRootImpl$CalledFromWrongThreadException: Only the original thread that created a view hierarchy can touch its views.</span><br><span class="line">        at android.view.ViewRootImpl.checkThread(ViewRootImpl.java:7753)</span><br></pre></td></tr></table></figure>
-<p>但如果运行下面这段代码，你会发现程序完美运行，没有任何问题，为什么这时却又可以在子线程更新 UI 了呢？</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Override</span></span><br><span class="line"><span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">onCreate</span><span class="params">(Bundle savedInstanceState)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">super</span>.onCreate(savedInstanceState);</span><br><span class="line">    Log.d(<span class="string">"子线程更新UI"</span>, <span class="string">"onCreate"</span>);</span><br><span class="line">    Log.d(<span class="string">"子线程更新UI"</span>, Thread.currentThread().getId()</span><br><span class="line">            + Thread.currentThread().getName());</span><br><span class="line">    setContentView(R.layout.activity_main);</span><br><span class="line"></span><br><span class="line">    textView = findViewById(R.id.text_view);</span><br><span class="line">    <span class="keyword">new</span> Thread(<span class="keyword">new</span> Runnable() &#123;</span><br><span class="line">        <span class="meta">@Override</span></span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">()</span> </span>&#123;</span><br><span class="line">            Log.d(<span class="string">"子线程更新UI"</span>, Thread.currentThread().getId()</span><br><span class="line">                    + Thread.currentThread().getName());</span><br><span class="line">            textView.setText(String.valueOf(System.currentTimeMillis()));</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;).start();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>如果我们将子线程 sleep 1 秒呢，这时便抛出了上述不能更新 UI 的异常。</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Override</span></span><br><span class="line"><span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">onCreate</span><span class="params">(Bundle savedInstanceState)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">super</span>.onCreate(savedInstanceState);</span><br><span class="line">    Log.d(<span class="string">"子线程更新UI"</span>, <span class="string">"onCreate"</span>);</span><br><span class="line">    Log.d(<span class="string">"子线程更新UI"</span>, Thread.currentThread().getId()</span><br><span class="line">            + Thread.currentThread().getName());</span><br><span class="line">    setContentView(R.layout.activity_main);</span><br><span class="line"></span><br><span class="line">    textView = findViewById(R.id.text_view);</span><br><span class="line">    <span class="keyword">new</span> Thread(<span class="keyword">new</span> Runnable() &#123;</span><br><span class="line">        <span class="meta">@Override</span></span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">()</span> </span>&#123;</span><br><span class="line">            <span class="keyword">try</span> &#123;</span><br><span class="line">                Thread.sleep(<span class="number">1000</span>);</span><br><span class="line">            &#125; <span class="keyword">catch</span> (InterruptedException e) &#123;</span><br><span class="line">                e.printStackTrace();</span><br><span class="line">            &#125;</span><br><span class="line">            Log.d(<span class="string">"子线程更新UI"</span>, Thread.currentThread().getId()</span><br><span class="line">                    + Thread.currentThread().getName());</span><br><span class="line">            textView.setText(String.valueOf(System.currentTimeMillis()));</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;).start();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h1 id="为什么在-onCreate-中在子线程可以更新-UI"><a href="#为什么在-onCreate-中在子线程可以更新-UI" class="headerlink" title="为什么在 onCreate 中在子线程可以更新 UI"></a>为什么在 onCreate 中在子线程可以更新 UI</h1><p>TextView.setText 的调用过程是这样的</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">TextView.setText </span><br><span class="line">-&gt; TextView.checkForRelayout</span><br><span class="line">-&gt; View.invalidate </span><br><span class="line">-&gt; View.invalidateInternal </span><br><span class="line">-&gt; ViewGroup.invalidateChild</span><br><span class="line">-&gt; ViewParent.invalidateChildInParent <span class="comment">//这里会不断Loop去取上一个结点的mParent</span></span><br><span class="line">-&gt; ViewRootImpl.invalidateChildInParent <span class="comment">//DecorView的mParent是ViewRootImpl</span></span><br><span class="line">-&gt; ViewRootImpl.checkThread <span class="comment">//在这里执行checkThread，如果非UI线程则抛出异常</span></span><br></pre></td></tr></table></figure>
-<h2 id="ViewRootImpl-checkThread"><a href="#ViewRootImpl-checkThread" class="headerlink" title="ViewRootImpl.checkThread"></a>ViewRootImpl.checkThread</h2><p>检查线程的逻辑是<strong>检查当前线程是否为创建 ViewRootImpl 对象的线程</strong>，因为一般情况 ViewRootImpl 对象由系统在主线程中创建，<strong>即一般情况检查是否为主线程</strong>。</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">checkThread</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (mThread != Thread.currentThread()) &#123;</span><br><span class="line">        <span class="keyword">throw</span> <span class="keyword">new</span> CalledFromWrongThreadException(</span><br><span class="line">                <span class="string">"Only the original thread that created a view hierarchy can touch its views."</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="title">ViewRootImpl</span><span class="params">(Context context, Display display)</span> </span>&#123;</span><br><span class="line">    mThread = Thread.currentThread();</span><br></pre></td></tr></table></figure>
-<h2 id="View-invalidateInternal"><a href="#View-invalidateInternal" class="headerlink" title="View.invalidateInternal"></a>View.invalidateInternal</h2><p><code>View.invalidateInternal</code> 方法中有这样一段，它会判断 mAttachInfo 和 mParent 均不为空时才会调用 <code>ViewGroup.invalidateChild</code> ，onCreate 时 View 的 mAttachInfo 字段还未被赋值，此时为 null，所以<strong>此时更新 UI 未执行到 ViewRootImpl.checkThread 方法，未检查线程，所以更新 UI 成功</strong>。</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">...</span><br><span class="line"><span class="keyword">final</span> AttachInfo ai = mAttachInfo;</span><br><span class="line"><span class="keyword">final</span> ViewParent p = mParent;</span><br><span class="line"><span class="keyword">if</span> (p != <span class="keyword">null</span> &amp;&amp; ai != <span class="keyword">null</span> &amp;&amp; l &lt; r &amp;&amp; t &lt; b) &#123;</span><br><span class="line">    <span class="keyword">final</span> Rect damage = ai.mTmpInvalRect;</span><br><span class="line">    damage.set(l, t, r, b);</span><br><span class="line">    p.invalidateChild(<span class="keyword">this</span>, damage);</span><br><span class="line">&#125;</span><br><span class="line">...</span><br></pre></td></tr></table></figure>
-<h1 id="mAttachInfo-什么时候被赋值？"><a href="#mAttachInfo-什么时候被赋值？" class="headerlink" title="mAttachInfo 什么时候被赋值？"></a>mAttachInfo 什么时候被赋值？</h1><p>当我们将子线程 sleep 一定时间后更新 UI 发现抛出异常，最简单的解释就是 View 的 mAttachInfo 字段已被赋值。</p>
-<p>那 mAttachInfo 是何时被赋值的？</p>
-<p>ViewRootImpl 对根节点 DecorView <strong>执行 performTraversals 时</strong>，调用 dispatchAttachedToWindow 对所有 View 赋值 mAttachInfo。（类似 measure，layout，draw 的递归调用）。</p>
-<p>而 ViewRootImpl 执行 performTraversals 是<strong>在 Activity.onResume 之后</strong>，所以当子线程试图更新 UI 时，如果在 performTraversals 之前更新 UI 是可以成功的，当 mAttachInfo 字段已被赋值后便会抛出异常。</p>
-<p>我们可以通过打印日志验证</p>
-<p><img src="/images/posts/android/UI/子线程/logcat1.png" alt=""></p>
-<h1 id="在子线程中更新-UI"><a href="#在子线程中更新-UI" class="headerlink" title="在子线程中更新 UI"></a>在子线程中更新 UI</h1><p>由上述可知<strong>子线程中可以更新 UI</strong>，如下面这段代码就可以完美运行</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">runOnChildThread</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="keyword">new</span> Thread(<span class="keyword">new</span> Runnable() &#123;</span><br><span class="line">        <span class="meta">@Override</span></span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">()</span> </span>&#123;</span><br><span class="line">            Looper.prepare();</span><br><span class="line">            <span class="keyword">final</span> TextView textView = <span class="keyword">new</span> MyTextView(MainActivity.<span class="keyword">this</span>);</span><br><span class="line">            Log.d(<span class="string">"子线程更新UI"</span>, Thread.currentThread().getId()</span><br><span class="line">                    + Thread.currentThread().getName() + <span class="string">"创建TextView"</span>);</span><br><span class="line">            textView.setText(<span class="string">"子线程"</span> + System.currentTimeMillis());</span><br><span class="line">            textView.setOnClickListener(<span class="keyword">new</span> View.OnClickListener() &#123;</span><br><span class="line">                <span class="meta">@Override</span></span><br><span class="line">                <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onClick</span><span class="params">(View v)</span> </span>&#123;</span><br><span class="line">                    Log.d(<span class="string">"子线程更新UI"</span>, Thread.currentThread().getId()</span><br><span class="line">                            + Thread.currentThread().getName() + <span class="string">"点击TextView"</span>);</span><br><span class="line">                    textView.setText(<span class="string">"子线程"</span> + System.currentTimeMillis());</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;);</span><br><span class="line">            WindowManager.LayoutParams layoutParams = <span class="keyword">new</span> WindowManager.LayoutParams();</span><br><span class="line">            <span class="comment">//设置为透明，默认效果是黑色</span></span><br><span class="line">            layoutParams.format = PixelFormat.TRANSPARENT;</span><br><span class="line">            layoutParams.height = WindowManager.LayoutParams.WRAP_CONTENT;</span><br><span class="line">            layoutParams.width = WindowManager.LayoutParams.WRAP_CONTENT;</span><br><span class="line">            <span class="comment">//设置window透传，也就是当前view所在的window不阻碍底层的window获得触摸事件</span></span><br><span class="line">            layoutParams.flags = WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE</span><br><span class="line">                    | WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL;</span><br><span class="line">            MainActivity.<span class="keyword">this</span>.getWindowManager().addView(textView, layoutParams);</span><br><span class="line">            Looper.loop();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;).start();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>我们可以打印日志验证，点击 TextView 时，UI 在子线程中更新。</p>
-<p><img src="/images/posts/android/UI/子线程/logcat2.png" alt=""></p>
-<p>当子线程满足以下条件时便可以在子线程中更新 UI</p>
-<ol>
-<li><p><strong>创建子线程的根视图</strong></p>
+            <h1 id="锁机制的特性"><a href="#锁机制的特性" class="headerlink" title="锁机制的特性"></a>锁机制的特性</h1><ul>
+<li>互斥性</li>
+<li>可见性</li>
+</ul>
+<h1 id="用法"><a href="#用法" class="headerlink" title="用法"></a>用法</h1><h2 id="修饰代码块"><a href="#修饰代码块" class="headerlink" title="修饰代码块"></a>修饰代码块</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">synchronized</span>(object) &#123;&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">synchronized</span>(类.class) &#123;&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="修饰方法"><a href="#修饰方法" class="headerlink" title="修饰方法"></a>修饰方法</h2><ul>
+<li>成员方法</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">synchronized</span> <span class="keyword">void</span> <span class="title">method1</span><span class="params">()</span> </span>&#123;&#125;</span><br></pre></td></tr></table></figure>
+<p>等同于</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">method1</span><span class="params">()</span> </span>&#123;</span><br><span class="line">	<span class="keyword">synchronized</span>(<span class="keyword">this</span>) &#123;&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>静态方法</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">synchronized</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">method2</span><span class="params">()</span> </span>&#123;&#125;</span><br></pre></td></tr></table></figure>
+<p>等同于</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">static</span> <span class="keyword">void</span> <span class="title">method2</span><span class="params">()</span> </span>&#123;</span><br><span class="line">	<span class="keyword">synchronized</span>(该类.class) &#123;&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h1 id="锁的是对象还是代码？"><a href="#锁的是对象还是代码？" class="headerlink" title="锁的是对象还是代码？"></a>锁的是对象还是代码？</h1><ul>
+<li><strong>synchronized 锁的是对象</strong>，线程只有拿到了锁对象才能执行 synchronized 那段代码，否则阻塞等待。</li>
+</ul>
+<p>也就是说，如果锁对象是 this，那么同步机制仅对该对象有效。</p>
+<ul>
+<li><p>线程拿到锁对象后，<strong>其他线程可以执行非 synchronized 代码</strong>。</p>
 </li>
-<li><p><strong>根视图添加到 WindowManager</strong></p>
+<li><p>同时访问 static synchronized 方法和 synchronized 方法可以并行。</p>
 </li>
-<li><p><strong>创建子线程的 Looper</strong></p>
+</ul>
+<p>前者锁对象是 Class 对象，后者锁对象是 this，锁对象不同，两个方法可以并行。</p>
+<h2 id="如果想锁全局怎么办"><a href="#如果想锁全局怎么办" class="headerlink" title="如果想锁全局怎么办"></a>如果想锁全局怎么办</h2><ul>
+<li><strong>锁住该类对应的 Class 对象。</strong></li>
+</ul>
+<p>Class 类比较特殊，每个类都会有一个对应的 Class 对象且唯一，由 JVM 维护。</p>
+<ul>
+<li>提供一个公用的锁对象。（例如声明为 static 的字段）</li>
+</ul>
+<h1 id="synchronized-的性质"><a href="#synchronized-的性质" class="headerlink" title="synchronized 的性质"></a>synchronized 的性质</h1><h2 id="可重入性"><a href="#可重入性" class="headerlink" title="可重入性"></a>可重入性</h2><ul>
+<li><p><strong>同一线程的外层函数获得锁之后，内层函数可以直接再次获取该锁。</strong></p>
 </li>
-</ol>
-<h1 id="实际项目请在主线程中更新-UI！！！"><a href="#实际项目请在主线程中更新-UI！！！" class="headerlink" title="实际项目请在主线程中更新 UI！！！"></a><strong>实际项目请在主线程中更新 UI！！！</strong></h1><h1 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h1><p><a href="https://www.zhihu.com/question/24764972" target="_blank" rel="noopener">https://www.zhihu.com/question/24764972</a><br><a href="https://ivanljt.github.io/blog/2017/08/16/Android%20%E4%B8%AD%E5%AD%90%E7%BA%BF%E7%A8%8B%E7%9C%9F%E7%9A%84%E4%B8%8D%E8%83%BD%E6%9B%B4%E6%96%B0UI%E5%90%97/" target="_blank" rel="noopener">https://ivanljt.github.io/blog/2017/08/16/Android%20%E4%B8%AD%E5%AD%90%E7%BA%BF%E7%A8%8B%E7%9C%9F%E7%9A%84%E4%B8%8D%E8%83%BD%E6%9B%B4%E6%96%B0UI%E5%90%97/</a></p>
+<li><p>可避免死锁、提升封装性。</p>
+</li>
+</ul>
+<p>线程从 A 方法进入 B 方法时不需要释放锁后重新申请，可直接获得锁对象。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">synchronized</span> <span class="keyword">void</span> <span class="title">methodA</span><span class="params">()</span> </span>&#123;</span><br><span class="line">	methodB();</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">synchronized</span> <span class="keyword">void</span> <span class="title">methodB</span><span class="params">()</span> </span>&#123;&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li><p>同一个方法是可重入的。</p>
+</li>
+<li><p><strong>可重入不要求是同一个方法。</strong></p>
+</li>
+<li><p><strong>可重入不要求是同一个类中的。</strong></p>
+</li>
+</ul>
+<h2 id="不可中断性"><a href="#不可中断性" class="headerlink" title="不可中断性"></a>不可中断性</h2><ul>
+<li><p>如果锁对象被其他线程获得，只能阻塞等待。</p>
+</li>
+<li><p>如果锁对象永远不被释放，只能永远等待。</p>
+</li>
+</ul>
+<h1 id="其他注意事项"><a href="#其他注意事项" class="headerlink" title="其他注意事项"></a>其他注意事项</h1><ul>
+<li><p><strong>锁对象不能为 null。</strong></p>
+</li>
+<li><p><strong>synchronized 关键字不能被继承。</strong></p>
+</li>
+</ul>
+<p>父类中的 synchronized 修饰方法，子类重写该方法时，默认情况不同步，必须显示的使用 synchronized 关键字。</p>
+<ul>
+<li><p>抽象方法不能使用 synchronized 关键字。</p>
+</li>
+<li><p>构造方法不能使用 synchronized 关键字，但可以使用 <code>synchronized(this) {}</code>。</p>
+</li>
+<li><p>synchronized 有系统开销，尽量减小锁的粒度（作用域范围）。</p>
+</li>
+<li><p>避免死锁。</p>
+</li>
+</ul>
+<h1 id="synchronized-实现原理（字节码）"><a href="#synchronized-实现原理（字节码）" class="headerlink" title="synchronized 实现原理（字节码）"></a>synchronized 实现原理（字节码）</h1><blockquote>
+<p><a href="/2018/10/17/笔记-深入拆解Java虚拟机-14Java虚拟机是怎么实现synchronized的？">详细实现原理</a></p>
+</blockquote>
+<ul>
+<li><p>同步块使用 monitorenter 和 moniterexit 指令。</p>
+</li>
+<li><p>同步方法使用修饰符 ACC_SYNCHRONIZED 。</p>
+</li>
+<li><p>同步本质上都是通过监视器（monitor）提供支持。</p>
+</li>
+<li><p>所有对象都有一个自己的监视器（monitor）。</p>
+</li>
+<li><p>本地内存中共享变量副本发生变化后，解锁之前将本地内存中共享变量的值刷新到主存。</p>
+</li>
+<li><p>其他线程获取到锁后，去主内存中读取该共享变量的新值。</p>
+</li>
+</ul>
+<h2 id="可重入性原理"><a href="#可重入性原理" class="headerlink" title="可重入性原理"></a>可重入性原理</h2><ul>
+<li><p>锁对象监视器计数为 0 时，线程进入监视器，并设置计数器 为 1。（monitorenter）</p>
+</li>
+<li><p>线程重入监视器时，计数器 +1。（monitorenter）</p>
+</li>
+<li><p>线程退出监视器时，计数器 -1。（monitorexit）</p>
+</li>
+<li><p>如果监视器与其他线程关联，该线程阻塞等待，直到监视器计数器为 0。</p>
+</li>
+</ul>
+<h1 id="synchronized-的缺陷"><a href="#synchronized-的缺陷" class="headerlink" title="synchronized 的缺陷"></a>synchronized 的缺陷</h1><ul>
+<li><p><strong>效率低</strong>：试图获得锁时<strong>不能设定超时</strong>，<strong>不能中断</strong>。</p>
+</li>
+<li><p><strong>不灵活</strong>：加锁和解锁的<strong>时机和条件单一</strong>。</p>
+</li>
+<li><p><strong>无法知道是否成功获取到锁。</strong></p>
+</li>
+</ul>
+<h1 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h1><p><a href="https://juejin.im/post/594a24defe88c2006aa01f1c" target="_blank" rel="noopener">https://juejin.im/post/594a24defe88c2006aa01f1c</a></p>
+<p><a href="https://blog.csdn.net/xiao__gui/article/details/8188833" target="_blank" rel="noopener">https://blog.csdn.net/xiao__gui/article/details/8188833</a></p>
+<p><a href="https://www.jianshu.com/p/a499d13ca702" target="_blank" rel="noopener">https://www.jianshu.com/p/a499d13ca702</a></p>
 
           
         
@@ -699,6 +778,182 @@
 </ul>
 </li>
 </ul>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://ennis.info/2019/02/17/Android在子线程中更新UI/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Ennis L.M. Wu">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar/portrait.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Ennis -Little Monster">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2019/02/17/Android在子线程中更新UI/" itemprop="url">Android在子线程中更新UI</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-02-17T10:21:05+08:00">
+                2019-02-17
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Android/" itemprop="url" rel="index">
+                    <span itemprop="name">Android</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>源码版本 SDK 28</p>
+<p>Android 中控件都是线程不安全的，Google <strong>规范</strong>只能在主线程中更新 UI，在子线程中发送网络请求。假如在子线程中更新 UI，会抛出异常</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">android.view.ViewRootImpl$CalledFromWrongThreadException: Only the original thread that created a view hierarchy can touch its views.</span><br><span class="line">        at android.view.ViewRootImpl.checkThread(ViewRootImpl.java:7753)</span><br></pre></td></tr></table></figure>
+<p>但如果运行下面这段代码，你会发现程序完美运行，没有任何问题，为什么这时却又可以在子线程更新 UI 了呢？</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Override</span></span><br><span class="line"><span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">onCreate</span><span class="params">(Bundle savedInstanceState)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">super</span>.onCreate(savedInstanceState);</span><br><span class="line">    Log.d(<span class="string">"子线程更新UI"</span>, <span class="string">"onCreate"</span>);</span><br><span class="line">    Log.d(<span class="string">"子线程更新UI"</span>, Thread.currentThread().getId()</span><br><span class="line">            + Thread.currentThread().getName());</span><br><span class="line">    setContentView(R.layout.activity_main);</span><br><span class="line"></span><br><span class="line">    textView = findViewById(R.id.text_view);</span><br><span class="line">    <span class="keyword">new</span> Thread(<span class="keyword">new</span> Runnable() &#123;</span><br><span class="line">        <span class="meta">@Override</span></span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">()</span> </span>&#123;</span><br><span class="line">            Log.d(<span class="string">"子线程更新UI"</span>, Thread.currentThread().getId()</span><br><span class="line">                    + Thread.currentThread().getName());</span><br><span class="line">            textView.setText(String.valueOf(System.currentTimeMillis()));</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;).start();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>如果我们将子线程 sleep 1 秒呢，这时便抛出了上述不能更新 UI 的异常。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Override</span></span><br><span class="line"><span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">onCreate</span><span class="params">(Bundle savedInstanceState)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">super</span>.onCreate(savedInstanceState);</span><br><span class="line">    Log.d(<span class="string">"子线程更新UI"</span>, <span class="string">"onCreate"</span>);</span><br><span class="line">    Log.d(<span class="string">"子线程更新UI"</span>, Thread.currentThread().getId()</span><br><span class="line">            + Thread.currentThread().getName());</span><br><span class="line">    setContentView(R.layout.activity_main);</span><br><span class="line"></span><br><span class="line">    textView = findViewById(R.id.text_view);</span><br><span class="line">    <span class="keyword">new</span> Thread(<span class="keyword">new</span> Runnable() &#123;</span><br><span class="line">        <span class="meta">@Override</span></span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">()</span> </span>&#123;</span><br><span class="line">            <span class="keyword">try</span> &#123;</span><br><span class="line">                Thread.sleep(<span class="number">1000</span>);</span><br><span class="line">            &#125; <span class="keyword">catch</span> (InterruptedException e) &#123;</span><br><span class="line">                e.printStackTrace();</span><br><span class="line">            &#125;</span><br><span class="line">            Log.d(<span class="string">"子线程更新UI"</span>, Thread.currentThread().getId()</span><br><span class="line">                    + Thread.currentThread().getName());</span><br><span class="line">            textView.setText(String.valueOf(System.currentTimeMillis()));</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;).start();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h1 id="为什么在-onCreate-中在子线程可以更新-UI"><a href="#为什么在-onCreate-中在子线程可以更新-UI" class="headerlink" title="为什么在 onCreate 中在子线程可以更新 UI"></a>为什么在 onCreate 中在子线程可以更新 UI</h1><p>TextView.setText 的调用过程是这样的</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">TextView.setText </span><br><span class="line">-&gt; TextView.checkForRelayout</span><br><span class="line">-&gt; View.invalidate </span><br><span class="line">-&gt; View.invalidateInternal </span><br><span class="line">-&gt; ViewGroup.invalidateChild</span><br><span class="line">-&gt; ViewParent.invalidateChildInParent <span class="comment">//这里会不断Loop去取上一个结点的mParent</span></span><br><span class="line">-&gt; ViewRootImpl.invalidateChildInParent <span class="comment">//DecorView的mParent是ViewRootImpl</span></span><br><span class="line">-&gt; ViewRootImpl.checkThread <span class="comment">//在这里执行checkThread，如果非UI线程则抛出异常</span></span><br></pre></td></tr></table></figure>
+<h2 id="ViewRootImpl-checkThread"><a href="#ViewRootImpl-checkThread" class="headerlink" title="ViewRootImpl.checkThread"></a>ViewRootImpl.checkThread</h2><p>检查线程的逻辑是<strong>检查当前线程是否为创建 ViewRootImpl 对象的线程</strong>，因为一般情况 ViewRootImpl 对象由系统在主线程中创建，<strong>即一般情况检查是否为主线程</strong>。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">checkThread</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (mThread != Thread.currentThread()) &#123;</span><br><span class="line">        <span class="keyword">throw</span> <span class="keyword">new</span> CalledFromWrongThreadException(</span><br><span class="line">                <span class="string">"Only the original thread that created a view hierarchy can touch its views."</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="title">ViewRootImpl</span><span class="params">(Context context, Display display)</span> </span>&#123;</span><br><span class="line">    mThread = Thread.currentThread();</span><br></pre></td></tr></table></figure>
+<h2 id="View-invalidateInternal"><a href="#View-invalidateInternal" class="headerlink" title="View.invalidateInternal"></a>View.invalidateInternal</h2><p><code>View.invalidateInternal</code> 方法中有这样一段，它会判断 mAttachInfo 和 mParent 均不为空时才会调用 <code>ViewGroup.invalidateChild</code> ，onCreate 时 View 的 mAttachInfo 字段还未被赋值，此时为 null，所以<strong>此时更新 UI 未执行到 ViewRootImpl.checkThread 方法，未检查线程，所以更新 UI 成功</strong>。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">...</span><br><span class="line"><span class="keyword">final</span> AttachInfo ai = mAttachInfo;</span><br><span class="line"><span class="keyword">final</span> ViewParent p = mParent;</span><br><span class="line"><span class="keyword">if</span> (p != <span class="keyword">null</span> &amp;&amp; ai != <span class="keyword">null</span> &amp;&amp; l &lt; r &amp;&amp; t &lt; b) &#123;</span><br><span class="line">    <span class="keyword">final</span> Rect damage = ai.mTmpInvalRect;</span><br><span class="line">    damage.set(l, t, r, b);</span><br><span class="line">    p.invalidateChild(<span class="keyword">this</span>, damage);</span><br><span class="line">&#125;</span><br><span class="line">...</span><br></pre></td></tr></table></figure>
+<h1 id="mAttachInfo-什么时候被赋值？"><a href="#mAttachInfo-什么时候被赋值？" class="headerlink" title="mAttachInfo 什么时候被赋值？"></a>mAttachInfo 什么时候被赋值？</h1><p>当我们将子线程 sleep 一定时间后更新 UI 发现抛出异常，最简单的解释就是 View 的 mAttachInfo 字段已被赋值。</p>
+<p>那 mAttachInfo 是何时被赋值的？</p>
+<p>ViewRootImpl 对根节点 DecorView <strong>执行 performTraversals 时</strong>，调用 dispatchAttachedToWindow 对所有 View 赋值 mAttachInfo。（类似 measure，layout，draw 的递归调用）。</p>
+<p>而 ViewRootImpl 执行 performTraversals 是<strong>在 Activity.onResume 之后</strong>，所以当子线程试图更新 UI 时，如果在 performTraversals 之前更新 UI 是可以成功的，当 mAttachInfo 字段已被赋值后便会抛出异常。</p>
+<p>我们可以通过打印日志验证</p>
+<p><img src="/images/posts/android/UI/子线程/logcat1.png" alt=""></p>
+<h1 id="在子线程中更新-UI"><a href="#在子线程中更新-UI" class="headerlink" title="在子线程中更新 UI"></a>在子线程中更新 UI</h1><p>由上述可知<strong>子线程中可以更新 UI</strong>，如下面这段代码就可以完美运行</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">runOnChildThread</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="keyword">new</span> Thread(<span class="keyword">new</span> Runnable() &#123;</span><br><span class="line">        <span class="meta">@Override</span></span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">()</span> </span>&#123;</span><br><span class="line">            Looper.prepare();</span><br><span class="line">            <span class="keyword">final</span> TextView textView = <span class="keyword">new</span> MyTextView(MainActivity.<span class="keyword">this</span>);</span><br><span class="line">            Log.d(<span class="string">"子线程更新UI"</span>, Thread.currentThread().getId()</span><br><span class="line">                    + Thread.currentThread().getName() + <span class="string">"创建TextView"</span>);</span><br><span class="line">            textView.setText(<span class="string">"子线程"</span> + System.currentTimeMillis());</span><br><span class="line">            textView.setOnClickListener(<span class="keyword">new</span> View.OnClickListener() &#123;</span><br><span class="line">                <span class="meta">@Override</span></span><br><span class="line">                <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onClick</span><span class="params">(View v)</span> </span>&#123;</span><br><span class="line">                    Log.d(<span class="string">"子线程更新UI"</span>, Thread.currentThread().getId()</span><br><span class="line">                            + Thread.currentThread().getName() + <span class="string">"点击TextView"</span>);</span><br><span class="line">                    textView.setText(<span class="string">"子线程"</span> + System.currentTimeMillis());</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;);</span><br><span class="line">            WindowManager.LayoutParams layoutParams = <span class="keyword">new</span> WindowManager.LayoutParams();</span><br><span class="line">            <span class="comment">//设置为透明，默认效果是黑色</span></span><br><span class="line">            layoutParams.format = PixelFormat.TRANSPARENT;</span><br><span class="line">            layoutParams.height = WindowManager.LayoutParams.WRAP_CONTENT;</span><br><span class="line">            layoutParams.width = WindowManager.LayoutParams.WRAP_CONTENT;</span><br><span class="line">            <span class="comment">//设置window透传，也就是当前view所在的window不阻碍底层的window获得触摸事件</span></span><br><span class="line">            layoutParams.flags = WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE</span><br><span class="line">                    | WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL;</span><br><span class="line">            MainActivity.<span class="keyword">this</span>.getWindowManager().addView(textView, layoutParams);</span><br><span class="line">            Looper.loop();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;).start();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>我们可以打印日志验证，点击 TextView 时，UI 在子线程中更新。</p>
+<p><img src="/images/posts/android/UI/子线程/logcat2.png" alt=""></p>
+<p>当子线程满足以下条件时便可以在子线程中更新 UI</p>
+<ol>
+<li><p><strong>创建子线程的根视图</strong></p>
+</li>
+<li><p><strong>根视图添加到 WindowManager</strong></p>
+</li>
+<li><p><strong>创建子线程的 Looper</strong></p>
+</li>
+</ol>
+<h1 id="实际项目请在主线程中更新-UI！！！"><a href="#实际项目请在主线程中更新-UI！！！" class="headerlink" title="实际项目请在主线程中更新 UI！！！"></a><strong>实际项目请在主线程中更新 UI！！！</strong></h1><h1 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h1><p><a href="https://www.zhihu.com/question/24764972" target="_blank" rel="noopener">https://www.zhihu.com/question/24764972</a></p>
+<p><a href="https://ivanljt.github.io/blog/2017/08/16/Android%20%E4%B8%AD%E5%AD%90%E7%BA%BF%E7%A8%8B%E7%9C%9F%E7%9A%84%E4%B8%8D%E8%83%BD%E6%9B%B4%E6%96%B0UI%E5%90%97/" target="_blank" rel="noopener">https://ivanljt.github.io/blog/2017/08/16/Android%20%E4%B8%AD%E5%AD%90%E7%BA%BF%E7%A8%8B%E7%9C%9F%E7%9A%84%E4%B8%8D%E8%83%BD%E6%9B%B4%E6%96%B0UI%E5%90%97/</a></p>
 
           
         
@@ -2261,219 +2516,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://ennis.info/2018/12/08/笔记-深入拆解Java虚拟机-33JavaAgent与字节码注入/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Ennis L.M. Wu">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar/portrait.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Ennis -Little Monster">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/12/08/笔记-深入拆解Java虚拟机-33JavaAgent与字节码注入/" itemprop="url">笔记-深入拆解Java虚拟机-33JavaAgent与字节码注入</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-12-08T16:01:16+08:00">
-                2018-12-08
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Java虚拟机/" itemprop="url" rel="index">
-                    <span itemprop="name">Java虚拟机</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h1 id="premain-方法"><a href="#premain-方法" class="headerlink" title="premain 方法"></a>premain 方法</h1><ul>
-<li><strong>在 main 方法前执行的方法。</strong></li>
-<li>JVM 能识别的 premain 方法参数类型是 String</li>
-</ul>
-<h2 id="以-Java-agent-方式运行-premain-方法"><a href="#以-Java-agent-方式运行-premain-方法" class="headerlink" title="以 Java agent 方式运行 premain 方法"></a>以 Java agent 方式运行 premain 方法</h2><ul>
-<li>方法一：打包成 jar 包，在的 MANIFEST.MF 配置文件中，指定的 Premain-class。</li>
-<li>方法二：通过 Attach API 远程加载。<ul>
-<li>不会先于 main 方法执行。</li>
-<li>取决于调用 Attach API 的时机。</li>
-<li>运行不再是 premain 方法，而是 agentmain 方法。</li>
-<li>更新 jar 包的 manifest 文件，包含 Agent-Class 配置。</li>
-</ul>
-</li>
-<li>JVM 不限制 Java agent 的数量。</li>
-</ul>
-<h1 id="字节码注入"><a href="#字节码注入" class="headerlink" title="字节码注入"></a>字节码注入</h1><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> org.example;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> java.lang.instrument.*;</span><br><span class="line"><span class="keyword">import</span> java.security.ProtectionDomain;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">MyAgent</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">premain</span><span class="params">(String args, Instrumentation instrumentation)</span> </span>&#123;</span><br><span class="line">        instrumentation.addTransformer(<span class="keyword">new</span> MyTransformer());</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">static</span> <span class="class"><span class="keyword">class</span> <span class="title">MyTransformer</span> <span class="keyword">implements</span> <span class="title">ClassFileTransformer</span> </span>&#123;</span><br><span class="line">        <span class="keyword">public</span> <span class="keyword">byte</span>[] transform(ClassLoader loader, String className, Class&lt;?&gt; classBeingRedefined,</span><br><span class="line">                                ProtectionDomain protectionDomain, <span class="keyword">byte</span>[] classfileBuffer) <span class="keyword">throws</span> IllegalClassFormatException &#123;</span><br><span class="line">            <span class="comment">//打印该数组的前四个字节，也就是 Java class 文件的魔数（magic number）0xCAFEBABE。</span></span><br><span class="line">            System.out.printf(<span class="string">"Loaded %s: 0x%X%X%X%X\n"</span>, className, classfileBuffer[<span class="number">0</span>], classfileBuffer[<span class="number">1</span>],</span><br><span class="line">                    classfileBuffer[<span class="number">2</span>], classfileBuffer[<span class="number">3</span>]);</span><br><span class="line">            <span class="comment">//如果返回 null 或抛出异常，JVM 使用原来的 byte 数组完成类加载工作。</span></span><br><span class="line">            <span class="keyword">return</span> <span class="keyword">null</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<ul>
-<li><code>Instrumentation</code> 接口：注册类加载时间拦截器。</li>
-<li><code>ClassFileTransformer</code> 接口：拦截器需要实现，重写 transform 方法。</li>
-<li><code>transform</code> 方法：<ul>
-<li><code>byte[]</code> 参数：正在被加载的类的字节码。</li>
-<li><code>byte[]</code> 返回值：更新过后的类的字节码。</li>
-</ul>
-</li>
-</ul>
-<h2 id="redefine-和-retransform（不懂，怎么实现？）"><a href="#redefine-和-retransform（不懂，怎么实现？）" class="headerlink" title="redefine 和 retransform（不懂，怎么实现？）"></a>redefine 和 retransform（不懂，怎么实现？）</h2><ul>
-<li>要求传入所需类实例。</li>
-</ul>
-<h3 id="redefine"><a href="#redefine" class="headerlink" title="redefine"></a>redefine</h3><blockquote>
-<p>舍弃原本的字节码，并替换成由用户提供的 byte 数组。</p>
-</blockquote>
-<ul>
-<li><strong>比较危险，一般用于修复出错了的字节码。</strong></li>
-</ul>
-<h3 id="retransform"><a href="#retransform" class="headerlink" title="retransform"></a>retransform</h3><blockquote>
-<p>针对所传入的类，重新调用所有已注册的 ClassFileTransformer 的 transform 方法。</p>
-</blockquote>
-<ul>
-<li>使用 retransform <strong>注入已加载但未注入的类</strong>。</li>
-</ul>
-<p>在执行 premain 或者 agentmain 方法前，JVM 早已加载了不少类，这些类的加载事件并没有被拦截。</p>
-<ul>
-<li>定义了多个 Java agent，多个注入的情况下，移除部分注入。</li>
-</ul>
-<h1 id="JVMTI-agent（不懂）"><a href="#JVMTI-agent（不懂）" class="headerlink" title="JVMTI agent（不懂）"></a>JVMTI agent（不懂）</h1><blockquote>
-<p>JVMTI 是一个事件驱动的工具实现接口。</p>
-</blockquote>
-<ul>
-<li>Java agent 通过 JVMTI agent（C agent）实现。</li>
-<li>在 C agent 加载后的入口方法 Agent_OnLoad 注册各个事件的钩子（hook）方法。</li>
-<li>JVM 触发这些事件时，调用对应的钩子方法。</li>
-</ul>
-<p>为 JVMTI 中的 ClassFileLoadHook 事件设置钩子，在 C 层面拦截所有的类加载事件。</p>
-<p><a href="https://docs.oracle.com/en/java/javase/11/docs/specs/jvmti.html#EventIndex" target="_blank" rel="noopener">关于 JVMTI 的其他事件</a></p>
-<h1 id="基于字节码注入的-profiler"><a href="#基于字节码注入的-profiler" class="headerlink" title="基于字节码注入的 profiler"></a>基于字节码注入的 profiler</h1><ul>
-<li>实现代码覆盖工具，或者各式各样的 profiler。</li>
-<li>在某一程序行为的周围，注入某运行时类方法的调用，表示该程序行为正要发生或已经发生。</li>
-<li>需排除对 JDK 类和运行时类的注入（可能造成死循环调用）。</li>
-<li>设置一个线程私有标识位，区分应用代码上下文和注入代码上下文。（不懂）</li>
-<li>借助自定义类加载器来隔离命名空间。</li>
-<li>观察者效应（observer effect）对所收集的数据造成的影响。</li>
-<li>使用字节码注入开发 profiler 时，需要辩证地看待所收集的数据。</li>
-<li>仅表示在被注入的情况下程序的执行状态，不是没有注入情况下的程序执行状态。</li>
-</ul>
-<h1 id="面向方面（切面）编程（AOP）"><a href="#面向方面（切面）编程（AOP）" class="headerlink" title="面向方面（切面）编程（AOP）"></a>面向方面（切面）编程（AOP）</h1><ul>
-<li>字节码注入实现。</li>
-</ul>
-<h1 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h1><p>Q：如何注入方法出口。除了正常执行路径之外，还需考虑异常执行路径。</p>
-<p>A：不用管有没有 catch 块，有没有 throw，直接给所有代码罩一个 catch any 的异常处理就行了。</p>
-<h1 id="引用"><a href="#引用" class="headerlink" title="引用"></a>引用</h1><blockquote>
-<p><a href="https://time.geekbang.org/column/article/41186" target="_blank" rel="noopener">https://time.geekbang.org/column/article/41186</a></p>
-</blockquote>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -2528,7 +2570,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">56</span>
+                  <span class="site-state-item-count">57</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -2550,7 +2592,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">24</span>
+                  <span class="site-state-item-count">25</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>
