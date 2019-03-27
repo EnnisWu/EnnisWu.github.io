@@ -85,7 +85,7 @@
 <meta name="keywords" content="JVM">
 <meta property="og:type" content="article">
 <meta property="og:title" content="笔记-深入拆解Java虚拟机-24字段访问相关优化">
-<meta property="og:url" content="http://ennis.info/2018/11/22/笔记-深入拆解Java虚拟机-24字段访问相关优化/index.html">
+<meta property="og:url" content="http://blog.ennis.info/2018/11/22/笔记-深入拆解Java虚拟机-24字段访问相关优化/index.html">
 <meta property="og:site_name" content="Ennis -Little Monster">
 <meta property="og:description" content="字段读取优化 即时编译器会优化实例字段和静态字段访问，以减少总的内存访问数目。  沿控制流，缓存各个字段存储节点将要存储的值，或者字段读取节点所得到的值。 遇到对同一字段的读取节点时，如果缓存值还没有失效，将读取节点替换为该缓存值。 遇到对同一字段的存储节点时，更新所缓存的值。 遇到可能更新字段的节点时，采取保守策略，舍弃所有缓存值。   如果字段读取节点被替换成一个常量，将进一步触发更多优化。">
 <meta property="og:locale" content="zh-Hans">
@@ -122,7 +122,7 @@
 
 
 
-  <link rel="canonical" href="http://ennis.info/2018/11/22/笔记-深入拆解Java虚拟机-24字段访问相关优化/"/>
+  <link rel="canonical" href="http://blog.ennis.info/2018/11/22/笔记-深入拆解Java虚拟机-24字段访问相关优化/"/>
 
 
 
@@ -299,7 +299,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://ennis.info/2018/11/22/笔记-深入拆解Java虚拟机-24字段访问相关优化/">
+    <link itemprop="mainEntityOfPage" href="http://blog.ennis.info/2018/11/22/笔记-深入拆解Java虚拟机-24字段访问相关优化/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Ennis L.M. Wu">
