@@ -298,260 +298,6 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://blog.ennis.info/2019/03/24/Java并发之synchronized/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Ennis L.M. Wu">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar/portrait.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Ennis -Little Monster">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2019/03/24/Java并发之synchronized/" itemprop="url">Java并发之synchronized</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-03-24T14:24:12+08:00">
-                2019-03-24
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Java/" itemprop="url" rel="index">
-                    <span itemprop="name">Java</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h1 id="锁机制的特性"><a href="#锁机制的特性" class="headerlink" title="锁机制的特性"></a>锁机制的特性</h1><ul>
-<li>互斥性</li>
-<li>可见性</li>
-</ul>
-<h1 id="用法"><a href="#用法" class="headerlink" title="用法"></a>用法</h1><h2 id="修饰代码块"><a href="#修饰代码块" class="headerlink" title="修饰代码块"></a>修饰代码块</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">synchronized</span>(object) &#123;&#125;</span><br></pre></td></tr></table></figure>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">synchronized</span>(类.class) &#123;&#125;</span><br></pre></td></tr></table></figure>
-<h2 id="修饰方法"><a href="#修饰方法" class="headerlink" title="修饰方法"></a>修饰方法</h2><ul>
-<li>成员方法</li>
-</ul>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">synchronized</span> <span class="keyword">void</span> <span class="title">method1</span><span class="params">()</span> </span>&#123;&#125;</span><br></pre></td></tr></table></figure>
-<p>等同于</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">method1</span><span class="params">()</span> </span>&#123;</span><br><span class="line">	<span class="keyword">synchronized</span>(<span class="keyword">this</span>) &#123;&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<ul>
-<li>静态方法</li>
-</ul>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">synchronized</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">method2</span><span class="params">()</span> </span>&#123;&#125;</span><br></pre></td></tr></table></figure>
-<p>等同于</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">static</span> <span class="keyword">void</span> <span class="title">method2</span><span class="params">()</span> </span>&#123;</span><br><span class="line">	<span class="keyword">synchronized</span>(该类.class) &#123;&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h1 id="锁的是对象还是代码？"><a href="#锁的是对象还是代码？" class="headerlink" title="锁的是对象还是代码？"></a>锁的是对象还是代码？</h1><ul>
-<li><strong>synchronized 锁的是对象</strong>，线程只有拿到了锁对象才能执行 synchronized 那段代码，否则阻塞等待。</li>
-</ul>
-<p>也就是说，如果锁对象是 this，那么同步机制仅对该对象有效。</p>
-<ul>
-<li><p>线程拿到锁对象后，<strong>其他线程可以执行非 synchronized 代码</strong>。</p>
-</li>
-<li><p>同时访问 static synchronized 方法和 synchronized 方法可以并行。</p>
-</li>
-</ul>
-<p>前者锁对象是 Class 对象，后者锁对象是 this，锁对象不同，两个方法可以并行。</p>
-<h2 id="如果想锁全局怎么办"><a href="#如果想锁全局怎么办" class="headerlink" title="如果想锁全局怎么办"></a>如果想锁全局怎么办</h2><ul>
-<li><strong>锁住该类对应的 Class 对象。</strong></li>
-</ul>
-<p>Class 类比较特殊，每个类都会有一个对应的 Class 对象且唯一，由 JVM 维护。</p>
-<ul>
-<li>提供一个公用的锁对象。（例如声明为 static 的字段）</li>
-</ul>
-<h1 id="synchronized-的性质"><a href="#synchronized-的性质" class="headerlink" title="synchronized 的性质"></a>synchronized 的性质</h1><h2 id="可重入性"><a href="#可重入性" class="headerlink" title="可重入性"></a>可重入性</h2><ul>
-<li><p><strong>同一线程的外层函数获得锁之后，内层函数可以直接再次获取该锁。</strong></p>
-</li>
-<li><p>可避免死锁、提升封装性。</p>
-</li>
-</ul>
-<p>线程从 A 方法进入 B 方法时不需要释放锁后重新申请，可直接获得锁对象。</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">synchronized</span> <span class="keyword">void</span> <span class="title">methodA</span><span class="params">()</span> </span>&#123;</span><br><span class="line">	methodB();</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">synchronized</span> <span class="keyword">void</span> <span class="title">methodB</span><span class="params">()</span> </span>&#123;&#125;</span><br></pre></td></tr></table></figure>
-<ul>
-<li><p>同一个方法是可重入的。</p>
-</li>
-<li><p><strong>可重入不要求是同一个方法。</strong></p>
-</li>
-<li><p><strong>可重入不要求是同一个类中的。</strong></p>
-</li>
-</ul>
-<h2 id="不可中断性"><a href="#不可中断性" class="headerlink" title="不可中断性"></a>不可中断性</h2><ul>
-<li><p>如果锁对象被其他线程获得，只能阻塞等待。</p>
-</li>
-<li><p>如果锁对象永远不被释放，只能永远等待。</p>
-</li>
-</ul>
-<h1 id="其他注意事项"><a href="#其他注意事项" class="headerlink" title="其他注意事项"></a>其他注意事项</h1><ul>
-<li><p><strong>锁对象不能为 null。</strong></p>
-</li>
-<li><p><strong>synchronized 关键字不能被继承。</strong></p>
-</li>
-</ul>
-<p>父类中的 synchronized 修饰方法，子类重写该方法时，默认情况不同步，必须显示的使用 synchronized 关键字。</p>
-<ul>
-<li><p>抽象方法不能使用 synchronized 关键字。</p>
-</li>
-<li><p>构造方法不能使用 synchronized 关键字，但可以使用 <code>synchronized(this) {}</code>。</p>
-</li>
-<li><p>synchronized 有系统开销，尽量减小锁的粒度（作用域范围）。</p>
-</li>
-<li><p>避免死锁。</p>
-</li>
-</ul>
-<h1 id="synchronized-实现原理（字节码）"><a href="#synchronized-实现原理（字节码）" class="headerlink" title="synchronized 实现原理（字节码）"></a>synchronized 实现原理（字节码）</h1><blockquote>
-<p><a href="/2018/10/17/笔记-深入拆解Java虚拟机-14Java虚拟机是怎么实现synchronized的？">详细实现原理</a></p>
-</blockquote>
-<ul>
-<li><p>同步块使用 monitorenter 和 moniterexit 指令。</p>
-</li>
-<li><p>同步方法使用修饰符 ACC_SYNCHRONIZED 。</p>
-</li>
-<li><p>同步本质上都是通过监视器（monitor）提供支持。</p>
-</li>
-<li><p>所有对象都有一个自己的监视器（monitor）。</p>
-</li>
-<li><p>本地内存中共享变量副本发生变化后，解锁之前将本地内存中共享变量的值刷新到主存。</p>
-</li>
-<li><p>其他线程获取到锁后，去主内存中读取该共享变量的新值。</p>
-</li>
-</ul>
-<h2 id="可重入性原理"><a href="#可重入性原理" class="headerlink" title="可重入性原理"></a>可重入性原理</h2><ul>
-<li><p>锁对象监视器计数为 0 时，线程进入监视器，并设置计数器 为 1。（monitorenter）</p>
-</li>
-<li><p>线程重入监视器时，计数器 +1。（monitorenter）</p>
-</li>
-<li><p>线程退出监视器时，计数器 -1。（monitorexit）</p>
-</li>
-<li><p>如果监视器与其他线程关联，该线程阻塞等待，直到监视器计数器为 0。</p>
-</li>
-</ul>
-<h1 id="synchronized-的缺陷"><a href="#synchronized-的缺陷" class="headerlink" title="synchronized 的缺陷"></a>synchronized 的缺陷</h1><ul>
-<li><p><strong>效率低</strong>：试图获得锁时<strong>不能设定超时</strong>，<strong>不能中断</strong>。</p>
-</li>
-<li><p><strong>不灵活</strong>：加锁和解锁的<strong>时机和条件单一</strong>。</p>
-</li>
-<li><p><strong>无法知道是否成功获取到锁。</strong></p>
-</li>
-</ul>
-<h1 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h1><p><a href="https://juejin.im/post/594a24defe88c2006aa01f1c" target="_blank" rel="noopener">https://juejin.im/post/594a24defe88c2006aa01f1c</a></p>
-<p><a href="https://blog.csdn.net/xiao__gui/article/details/8188833" target="_blank" rel="noopener">https://blog.csdn.net/xiao__gui/article/details/8188833</a></p>
-<p><a href="https://www.jianshu.com/p/a499d13ca702" target="_blank" rel="noopener">https://www.jianshu.com/p/a499d13ca702</a></p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://blog.ennis.info/2019/03/18/转-Android类加载/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -778,6 +524,260 @@
 </ul>
 </li>
 </ul>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://blog.ennis.info/2019/02/18/Java并发之synchronized/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Ennis L.M. Wu">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar/portrait.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Ennis -Little Monster">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2019/02/18/Java并发之synchronized/" itemprop="url">Java并发之synchronized</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-02-18T14:24:12+08:00">
+                2019-02-18
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Java/" itemprop="url" rel="index">
+                    <span itemprop="name">Java</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h1 id="锁机制的特性"><a href="#锁机制的特性" class="headerlink" title="锁机制的特性"></a>锁机制的特性</h1><ul>
+<li>互斥性</li>
+<li>可见性</li>
+</ul>
+<h1 id="用法"><a href="#用法" class="headerlink" title="用法"></a>用法</h1><h2 id="修饰代码块"><a href="#修饰代码块" class="headerlink" title="修饰代码块"></a>修饰代码块</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">synchronized</span>(object) &#123;&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">synchronized</span>(类.class) &#123;&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="修饰方法"><a href="#修饰方法" class="headerlink" title="修饰方法"></a>修饰方法</h2><ul>
+<li>成员方法</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">synchronized</span> <span class="keyword">void</span> <span class="title">method1</span><span class="params">()</span> </span>&#123;&#125;</span><br></pre></td></tr></table></figure>
+<p>等同于</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">method1</span><span class="params">()</span> </span>&#123;</span><br><span class="line">	<span class="keyword">synchronized</span>(<span class="keyword">this</span>) &#123;&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>静态方法</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">synchronized</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">method2</span><span class="params">()</span> </span>&#123;&#125;</span><br></pre></td></tr></table></figure>
+<p>等同于</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">static</span> <span class="keyword">void</span> <span class="title">method2</span><span class="params">()</span> </span>&#123;</span><br><span class="line">	<span class="keyword">synchronized</span>(该类.class) &#123;&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h1 id="锁的是对象还是代码？"><a href="#锁的是对象还是代码？" class="headerlink" title="锁的是对象还是代码？"></a>锁的是对象还是代码？</h1><ul>
+<li><strong>synchronized 锁的是对象</strong>，线程只有拿到了锁对象才能执行 synchronized 那段代码，否则阻塞等待。</li>
+</ul>
+<p>也就是说，如果锁对象是 this，那么同步机制仅对该对象有效。</p>
+<ul>
+<li><p>线程拿到锁对象后，<strong>其他线程可以执行非 synchronized 代码</strong>。</p>
+</li>
+<li><p>同时访问 static synchronized 方法和 synchronized 方法可以并行。</p>
+</li>
+</ul>
+<p>前者锁对象是 Class 对象，后者锁对象是 this，锁对象不同，两个方法可以并行。</p>
+<h2 id="如果想锁全局怎么办"><a href="#如果想锁全局怎么办" class="headerlink" title="如果想锁全局怎么办"></a>如果想锁全局怎么办</h2><ul>
+<li><strong>锁住该类对应的 Class 对象。</strong></li>
+</ul>
+<p>Class 类比较特殊，每个类都会有一个对应的 Class 对象且唯一，由 JVM 维护。</p>
+<ul>
+<li>提供一个公用的锁对象。（例如声明为 static 的字段）</li>
+</ul>
+<h1 id="synchronized-的性质"><a href="#synchronized-的性质" class="headerlink" title="synchronized 的性质"></a>synchronized 的性质</h1><h2 id="可重入性"><a href="#可重入性" class="headerlink" title="可重入性"></a>可重入性</h2><ul>
+<li><p><strong>同一线程的外层函数获得锁之后，内层函数可以直接再次获取该锁。</strong></p>
+</li>
+<li><p>可避免死锁、提升封装性。</p>
+</li>
+</ul>
+<p>线程从 A 方法进入 B 方法时不需要释放锁后重新申请，可直接获得锁对象。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">synchronized</span> <span class="keyword">void</span> <span class="title">methodA</span><span class="params">()</span> </span>&#123;</span><br><span class="line">	methodB();</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">synchronized</span> <span class="keyword">void</span> <span class="title">methodB</span><span class="params">()</span> </span>&#123;&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li><p>同一个方法是可重入的。</p>
+</li>
+<li><p><strong>可重入不要求是同一个方法。</strong></p>
+</li>
+<li><p><strong>可重入不要求是同一个类中的。</strong></p>
+</li>
+</ul>
+<h2 id="不可中断性"><a href="#不可中断性" class="headerlink" title="不可中断性"></a>不可中断性</h2><ul>
+<li><p>如果锁对象被其他线程获得，只能阻塞等待。</p>
+</li>
+<li><p>如果锁对象永远不被释放，只能永远等待。</p>
+</li>
+</ul>
+<h1 id="其他注意事项"><a href="#其他注意事项" class="headerlink" title="其他注意事项"></a>其他注意事项</h1><ul>
+<li><p><strong>锁对象不能为 null。</strong></p>
+</li>
+<li><p><strong>synchronized 关键字不能被继承。</strong></p>
+</li>
+</ul>
+<p>父类中的 synchronized 修饰方法，子类重写该方法时，默认情况不同步，必须显示的使用 synchronized 关键字。</p>
+<ul>
+<li><p>抽象方法不能使用 synchronized 关键字。</p>
+</li>
+<li><p>构造方法不能使用 synchronized 关键字，但可以使用 <code>synchronized(this) {}</code>。</p>
+</li>
+<li><p>synchronized 有系统开销，尽量减小锁的粒度（作用域范围）。</p>
+</li>
+<li><p>避免死锁。</p>
+</li>
+</ul>
+<h1 id="synchronized-实现原理（字节码）"><a href="#synchronized-实现原理（字节码）" class="headerlink" title="synchronized 实现原理（字节码）"></a>synchronized 实现原理（字节码）</h1><blockquote>
+<p><a href="/2018/10/17/笔记-深入拆解Java虚拟机-14Java虚拟机是怎么实现synchronized的？">详细实现原理</a></p>
+</blockquote>
+<ul>
+<li><p>同步块使用 monitorenter 和 moniterexit 指令。</p>
+</li>
+<li><p>同步方法使用修饰符 ACC_SYNCHRONIZED 。</p>
+</li>
+<li><p>同步本质上都是通过监视器（monitor）提供支持。</p>
+</li>
+<li><p>所有对象都有一个自己的监视器（monitor）。</p>
+</li>
+<li><p>本地内存中共享变量副本发生变化后，解锁之前将本地内存中共享变量的值刷新到主存。</p>
+</li>
+<li><p>其他线程获取到锁后，去主内存中读取该共享变量的新值。</p>
+</li>
+</ul>
+<h2 id="可重入性原理"><a href="#可重入性原理" class="headerlink" title="可重入性原理"></a>可重入性原理</h2><ul>
+<li><p>锁对象监视器计数为 0 时，线程进入监视器，并设置计数器 为 1。（monitorenter）</p>
+</li>
+<li><p>线程重入监视器时，计数器 +1。（monitorenter）</p>
+</li>
+<li><p>线程退出监视器时，计数器 -1。（monitorexit）</p>
+</li>
+<li><p>如果监视器与其他线程关联，该线程阻塞等待，直到监视器计数器为 0。</p>
+</li>
+</ul>
+<h1 id="synchronized-的缺陷"><a href="#synchronized-的缺陷" class="headerlink" title="synchronized 的缺陷"></a>synchronized 的缺陷</h1><ul>
+<li><p><strong>效率低</strong>：试图获得锁时<strong>不能设定超时</strong>，<strong>不能中断</strong>。</p>
+</li>
+<li><p><strong>不灵活</strong>：加锁和解锁的<strong>时机和条件单一</strong>。</p>
+</li>
+<li><p><strong>无法知道是否成功获取到锁。</strong></p>
+</li>
+</ul>
+<h1 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h1><p><a href="https://juejin.im/post/594a24defe88c2006aa01f1c" target="_blank" rel="noopener">https://juejin.im/post/594a24defe88c2006aa01f1c</a></p>
+<p><a href="https://blog.csdn.net/xiao__gui/article/details/8188833" target="_blank" rel="noopener">https://blog.csdn.net/xiao__gui/article/details/8188833</a></p>
+<p><a href="https://www.jianshu.com/p/a499d13ca702" target="_blank" rel="noopener">https://www.jianshu.com/p/a499d13ca702</a></p>
 
           
         
@@ -1534,6 +1534,251 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://blog.ennis.info/2019/02/14/View绘制流程/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Ennis L.M. Wu">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar/portrait.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Ennis -Little Monster">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2019/02/14/View绘制流程/" itemprop="url">View绘制流程</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-02-14T14:45:07+08:00">
+                2019-02-14
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Android/" itemprop="url" rel="index">
+                    <span itemprop="name">Android</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>转自：<a href="http://blog.csdn.net/guolin_blog/article/details/16330267" target="_blank" rel="noopener">http://blog.csdn.net/guolin_blog/article/details/16330267</a></p>
+<p>每个 View 的绘制都会经过 measure（测量）、layout（布局）、draw（绘图）3 个流程。</p>
+<p>系统的绘制流程从 ViewRootImpl.performTraversals 开始。</p>
+<h1 id="测量"><a href="#测量" class="headerlink" title="测量"></a>测量</h1><ul>
+<li>测量从 ViewRootImpl.performTraversals 开始。</li>
+<li>measure 方法接收两个参数，widthMeasureSpec 和 heightMeasureSpec。</li>
+<li><strong>measure 方法用 final 修饰，不允许子类重写。</strong></li>
+<li><strong>measure 可能被多次调用。</strong></li>
+<li>真正测量 View 大小的是 onMeasure 方法，会在 measure 方法中调用。</li>
+<li><strong>若要改变默认的测量流程需要重写 onMeasure 方法。</strong></li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">onMeasure</span><span class="params">(<span class="keyword">int</span> widthMeasureSpec, <span class="keyword">int</span> heightMeasureSpec)</span> </span>&#123;</span><br><span class="line">    setMeasuredDimension(getDefaultSize(getSuggestedMinimumWidth(), widthMeasureSpec),</span><br><span class="line">            getDefaultSize(getSuggestedMinimumHeight(), heightMeasureSpec));</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>onMearsure 默认通过调用 getDefaultSize 方法获取大小，然后调用 setMeasuredDimension 设定测量的大小。</p>
+<ul>
+<li><strong>调用 setMeasuredDimension 方法后可以通过 getMeasuredWidth 和 getMeasuredHeight 获取 View 测量出的宽高。</strong></li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">int</span> <span class="title">getDefaultSize</span><span class="params">(<span class="keyword">int</span> size, <span class="keyword">int</span> measureSpec)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">int</span> result = size;</span><br><span class="line">    <span class="keyword">int</span> specMode = MeasureSpec.getMode(measureSpec);</span><br><span class="line">    <span class="keyword">int</span> specSize = MeasureSpec.getSize(measureSpec);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">switch</span> (specMode) &#123;</span><br><span class="line">    <span class="keyword">case</span> MeasureSpec.UNSPECIFIED:</span><br><span class="line">        result = size;</span><br><span class="line">        <span class="keyword">break</span>;</span><br><span class="line">    <span class="keyword">case</span> MeasureSpec.AT_MOST:</span><br><span class="line">    <span class="keyword">case</span> MeasureSpec.EXACTLY:</span><br><span class="line">        result = specSize;</span><br><span class="line">        <span class="keyword">break</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> result;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>measureSpec 通过 measure 方法传入。</p>
+<p>ViewGroup 可能包含子 View，每个 View 都要调用 measure。</p>
+<p>ViewGroup 定义了 measureChildren 和 measureChild 方法，依次调用子 View 的 measure 方法触发测量。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">measureChildren</span><span class="params">(<span class="keyword">int</span> widthMeasureSpec, <span class="keyword">int</span> heightMeasureSpec)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">final</span> <span class="keyword">int</span> size = mChildrenCount;</span><br><span class="line">    <span class="keyword">final</span> View[] children = mChildren;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; size; ++i) &#123;</span><br><span class="line">        <span class="keyword">final</span> View child = children[i];</span><br><span class="line">        <span class="keyword">if</span> ((child.mViewFlags &amp; VISIBILITY_MASK) != GONE) &#123;</span><br><span class="line">            measureChild(child, widthMeasureSpec, heightMeasureSpec);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>ViewGroup 通过调用 getChildMeasureSpec 方法计算子 View 的 MeasureSpec。</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">measureChild</span><span class="params">(View child, <span class="keyword">int</span> parentWidthMeasureSpec,</span></span></span><br><span class="line"><span class="function"><span class="params">        <span class="keyword">int</span> parentHeightMeasureSpec)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">final</span> LayoutParams lp = child.getLayoutParams();</span><br><span class="line"></span><br><span class="line">    <span class="keyword">final</span> <span class="keyword">int</span> childWidthMeasureSpec = getChildMeasureSpec(parentWidthMeasureSpec,</span><br><span class="line">            mPaddingLeft + mPaddingRight, lp.width);</span><br><span class="line">    <span class="keyword">final</span> <span class="keyword">int</span> childHeightMeasureSpec = getChildMeasureSpec(parentHeightMeasureSpec,</span><br><span class="line">            mPaddingTop + mPaddingBottom, lp.height);</span><br><span class="line"></span><br><span class="line">    child.measure(childWidthMeasureSpec, childHeightMeasureSpec);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="MeasureSpec"><a href="#MeasureSpec" class="headerlink" title="MeasureSpec"></a>MeasureSpec</h2><ul>
+<li>值由 specSize 和 specMode 共同组成。</li>
+<li>specSize 记录大小，specMode 记录规格。</li>
+<li>通过 MeasureSpec.makeMeasureSpec 方法组装 MeasureSpec。</li>
+<li>通过 MeasureSpec.getMode 方法和 MeasureSpec.getSize 方法拆分。</li>
+</ul>
+<blockquote>
+<p>   specMode 的三种类型</p>
+</blockquote>
+<blockquote>
+<ol>
+<li>EXACTLY</li>
+</ol>
+</blockquote>
+<blockquote>
+<pre><code>表示父视图希望子视图的大小应该是由specSize的值来决定的，系统默认会按照这个规则来设置子视图的大小，开发人员当然也可以按照自己的意愿设置成任意的大小。
+</code></pre></blockquote>
+<blockquote>
+<ol start="2">
+<li>AT_MOST</li>
+</ol>
+</blockquote>
+<blockquote>
+<pre><code>表示子视图最多只能是specSize中指定的大小，开发人员应该尽可能小得去设置这个视图，并且保证不会超过specSize。系统默认会按照这个规则来设置子视图的大小，开发人员当然也可以按照自己的意愿设置成任意的大小。
+</code></pre></blockquote>
+<blockquote>
+<ol start="3">
+<li>UNSPECIFIED</li>
+</ol>
+</blockquote>
+<blockquote>
+<pre><code>表示开发人员可以将视图按照自己的意愿设置成任意的大小，没有任何限制。这种情况比较少见，不太会用到。
+</code></pre></blockquote>
+<ul>
+<li>父 View 经过计算得出 widthMeasureSpec 和 heightMeasureSpec 后传给子 View。</li>
+<li>根 View 通过 ViewRootImpl.getRootMeasureSpec 方法获得 widthMeasureSpec 和 heightMeasureSpec。</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//截取自 ViewRootImpl.performTraversals 方法</span></span><br><span class="line"><span class="keyword">int</span> childWidthMeasureSpec = getRootMeasureSpec(mWidth, lp.width);</span><br><span class="line"><span class="keyword">int</span> childHeightMeasureSpec = getRootMeasureSpec(mHeight, lp.height);</span><br></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">int</span> <span class="title">getRootMeasureSpec</span><span class="params">(<span class="keyword">int</span> windowSize, <span class="keyword">int</span> rootDimension)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">int</span> measureSpec;</span><br><span class="line">    <span class="keyword">switch</span> (rootDimension) &#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">case</span> ViewGroup.LayoutParams.MATCH_PARENT:</span><br><span class="line">        <span class="comment">// Window can't resize. Force root view to be windowSize.</span></span><br><span class="line">        measureSpec = MeasureSpec.makeMeasureSpec(windowSize, MeasureSpec.EXACTLY);</span><br><span class="line">        <span class="keyword">break</span>;</span><br><span class="line">    <span class="keyword">case</span> ViewGroup.LayoutParams.WRAP_CONTENT:</span><br><span class="line">        <span class="comment">// Window can resize. Set max size for root view.</span></span><br><span class="line">        measureSpec = MeasureSpec.makeMeasureSpec(windowSize, MeasureSpec.AT_MOST);</span><br><span class="line">        <span class="keyword">break</span>;</span><br><span class="line">    <span class="keyword">default</span>:</span><br><span class="line">        <span class="comment">// Window wants to be an exact size. Force root view to be that size.</span></span><br><span class="line">        measureSpec = MeasureSpec.makeMeasureSpec(rootDimension, MeasureSpec.EXACTLY);</span><br><span class="line">        <span class="keyword">break</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> measureSpec;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>rootDimension 参数等于 MATCH_PARENT 时，MeasureSpec 的 specMode 等于 EXACTLY。</li>
+<li>rootDimension 参数等于 WRAP_CONTENT 时，MeasureSpec 的 specMode 等于 AT_MOST。</li>
+<li>rootDimension 参数等于 MATCH_PARENT 或 WRAP_CONTENT 时，specSize 都等于 windowSize，也就是根视图总是会充满全屏。</li>
+</ul>
+<h1 id="布局"><a href="#布局" class="headerlink" title="布局"></a>布局</h1><ul>
+<li>ViewRoot.performTraversals 方法在测量结束开始布局。</li>
+<li>layout 方法接收 4 个参数，表示左、上、右、下 4 个位置的坐标。</li>
+<li>layout 方法会判断 View 大小是否发生变化，确定是否需要重绘。</li>
+<li><strong>layout 可能被多次调用。</strong></li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">boolean</span> changed = isLayoutModeOptical(mParent) ?</span><br><span class="line">                setOpticalFrame(l, t, r, b) : setFrame(l, t, r, b);</span><br></pre></td></tr></table></figure>
+<ul>
+<li>真正实现布局的是 onLayout 方法。</li>
+<li><strong>View.onLayout 是空方法，ViewGroup.onLayout 是抽象方法。</strong></li>
+<li><strong>onLayout 方法结束后可以通过 getWidth 和 getHeight 方法获取 View 的宽高。</strong></li>
+</ul>
+<h2 id="getWidth-getHeight-与-getMeasureWidth-getMeasureHeight"><a href="#getWidth-getHeight-与-getMeasureWidth-getMeasureHeight" class="headerlink" title="getWidth / getHeight 与 getMeasureWidth / getMeasureHeight"></a>getWidth / getHeight 与 getMeasureWidth / getMeasureHeight</h2><ul>
+<li>getMeasureWidth / getMeasureHeight 的值通过 setMeasuredDimension 方法设置。</li>
+<li>getWidth / getHeight 的值通过坐标相减计算得出。</li>
+</ul>
+<h1 id="绘图"><a href="#绘图" class="headerlink" title="绘图"></a>绘图</h1><ul>
+<li>ViewRoot.performTraversals 方法在布局结束开始绘图。</li>
+<li>draw 方法接收一个 Canvas 对象的参数。</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">draw</span><span class="params">(Canvas canvas)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">final</span> <span class="keyword">int</span> privateFlags = mPrivateFlags;</span><br><span class="line">        <span class="keyword">final</span> <span class="keyword">boolean</span> dirtyOpaque = (privateFlags &amp; PFLAG_DIRTY_MASK) == PFLAG_DIRTY_OPAQUE &amp;&amp;</span><br><span class="line">                (mAttachInfo == <span class="keyword">null</span> || !mAttachInfo.mIgnoreDirtyState);</span><br><span class="line">        mPrivateFlags = (privateFlags &amp; ~PFLAG_DIRTY_MASK) | PFLAG_DRAWN;</span><br><span class="line"></span><br><span class="line">        <span class="comment">/*</span></span><br><span class="line"><span class="comment">         * Draw traversal performs several drawing steps which must be executed</span></span><br><span class="line"><span class="comment">         * in the appropriate order:</span></span><br><span class="line"><span class="comment">         *</span></span><br><span class="line"><span class="comment">         *      1. Draw the background</span></span><br><span class="line"><span class="comment">         *      2. If necessary, save the canvas' layers to prepare for fading</span></span><br><span class="line"><span class="comment">         *      3. Draw view's content</span></span><br><span class="line"><span class="comment">         *      4. Draw children</span></span><br><span class="line"><span class="comment">         *      5. If necessary, draw the fading edges and restore layers</span></span><br><span class="line"><span class="comment">         *      6. Draw decorations (scrollbars for instance)</span></span><br><span class="line"><span class="comment">         */</span></span><br><span class="line"></span><br><span class="line">        <span class="comment">// Step 1, draw the background, if needed</span></span><br><span class="line">        <span class="keyword">int</span> saveCount;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> (!dirtyOpaque) &#123;</span><br><span class="line">            drawBackground(canvas);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="comment">// skip step 2 &amp; 5 if possible (common case)</span></span><br><span class="line">        <span class="keyword">final</span> <span class="keyword">int</span> viewFlags = mViewFlags;</span><br><span class="line">        <span class="keyword">boolean</span> horizontalEdges = (viewFlags &amp; FADING_EDGE_HORIZONTAL) != <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">boolean</span> verticalEdges = (viewFlags &amp; FADING_EDGE_VERTICAL) != <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">if</span> (!verticalEdges &amp;&amp; !horizontalEdges) &#123;</span><br><span class="line">            <span class="comment">// Step 3, draw the content</span></span><br><span class="line">            <span class="keyword">if</span> (!dirtyOpaque) onDraw(canvas);</span><br><span class="line"></span><br><span class="line">            <span class="comment">// Step 4, draw the children</span></span><br><span class="line">            dispatchDraw(canvas);</span><br><span class="line"></span><br><span class="line">            drawAutofilledHighlight(canvas);</span><br><span class="line"></span><br><span class="line">            <span class="comment">// Overlay is part of the content and draws beneath Foreground</span></span><br><span class="line">            <span class="keyword">if</span> (mOverlay != <span class="keyword">null</span> &amp;&amp; !mOverlay.isEmpty()) &#123;</span><br><span class="line">                mOverlay.getOverlayView().dispatchDraw(canvas);</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">            <span class="comment">// Step 6, draw decorations (foreground, scrollbars)</span></span><br><span class="line">            onDrawForeground(canvas);</span><br><span class="line"></span><br><span class="line">            <span class="comment">// Step 7, draw the default focus highlight</span></span><br><span class="line">            drawDefaultFocusHighlight(canvas);</span><br><span class="line"></span><br><span class="line">            <span class="keyword">if</span> (debugDraw()) &#123;</span><br><span class="line">                debugDrawFocus(canvas);</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">            <span class="comment">// we're done...</span></span><br><span class="line">            <span class="keyword">return</span>;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="comment">/*</span></span><br><span class="line"><span class="comment">         * Here we do the full fledged routine...</span></span><br><span class="line"><span class="comment">         * (this is an uncommon case where speed matters less,</span></span><br><span class="line"><span class="comment">         * this is why we repeat some of the tests that have been</span></span><br><span class="line"><span class="comment">         * done above)</span></span><br><span class="line"><span class="comment">         */</span></span><br><span class="line">        <span class="comment">//完整流程省略</span></span><br></pre></td></tr></table></figure>
+<ul>
+<li><p><strong>绘制流程共有 6 个步骤，其中第 2 步和第 5 步可跳过。</strong></p>
+<ol>
+<li>绘制背景。</li>
+<li>如有必要，保存图层以准备褪色。</li>
+<li>绘制 View 的内容。</li>
+<li>绘制子 View。</li>
+<li>如有必要，绘制淡化边缘和恢复图层。</li>
+<li>绘制装饰。（如滚动条）</li>
+</ol>
+</li>
+<li><p><strong>绘制内容在 onDraw 方法，对应第 3 步。</strong></p>
+</li>
+</ul>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://blog.ennis.info/2018/12/19/笔记-深入拆解Java虚拟机-36SubstrateVM：AOT编译框架/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -2169,353 +2414,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://blog.ennis.info/2018/12/13/笔记-深入拆解Java虚拟机-3031Java虚拟机的监控及诊断工具/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Ennis L.M. Wu">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar/portrait.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Ennis -Little Monster">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/12/13/笔记-深入拆解Java虚拟机-3031Java虚拟机的监控及诊断工具/" itemprop="url">笔记-深入拆解Java虚拟机-3031Java虚拟机的监控及诊断工具</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-12-13T15:25:33+08:00">
-                2018-12-13
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Java虚拟机/" itemprop="url" rel="index">
-                    <span itemprop="name">Java虚拟机</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <blockquote>
-<p>随便看看了解下就好。</p>
-</blockquote>
-<h1 id="命令行"><a href="#命令行" class="headerlink" title="命令行"></a>命令行</h1><h2 id="jps"><a href="#jps" class="headerlink" title="jps"></a>jps</h2><blockquote>
-<p>打印所有正在运行的 Java 进程的相关信息。<a href="https://docs.oracle.com/en/java/javase/11/tools/jps.html" target="_blank" rel="noopener">帮助文档</a></p>
-</blockquote>
-<table>
-<thead>
-<tr>
-<th>参数</th>
-<th>作用</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>默认</td>
-<td>打印 Java 进程 ID 和主类名</td>
-</tr>
-<tr>
-<td>-l</td>
-<td>打印模块名和包名</td>
-</tr>
-<tr>
-<td>-v</td>
-<td>打印传递给 JVM 的参数</td>
-</tr>
-<tr>
-<td>-m</td>
-<td>打印传递给主类的参数</td>
-</tr>
-</tbody>
-</table>
-<ul>
-<li>如果某 Java 进程关闭了默认开启的 UsePerfData 参数 jps 命令和 jstat 命令无法探知该 Java 进程。</li>
-</ul>
-<h2 id="jstat"><a href="#jstat" class="headerlink" title="jstat"></a>jstat</h2><blockquote>
-<p>打印目标 Java 进程的性能数据。包括多条子命令。<a href="https://docs.oracle.com/en/java/javase/11/tools/jstat.html" target="_blank" rel="noopener">帮助文档</a></p>
-</blockquote>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">$ jstat -options</span><br><span class="line">-class</span><br><span class="line">-compiler</span><br><span class="line">-gc</span><br><span class="line">-gccapacity</span><br><span class="line">-gccause</span><br><span class="line">-gcmetacapacity</span><br><span class="line">-gcnew</span><br><span class="line">-gcnewcapacity</span><br><span class="line">-gcold</span><br><span class="line">-gcoldcapacity</span><br><span class="line">-gcutil</span><br><span class="line">-printcompilation</span><br></pre></td></tr></table></figure>
-<table>
-<thead>
-<tr>
-<th>子命令</th>
-<th>作用</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>-class</td>
-<td>打印类加载相关数据</td>
-</tr>
-<tr>
-<td>-compiler</td>
-<td>打印即时编译相关数据</td>
-</tr>
-<tr>
-<td>-printcompilation</td>
-<td>同上</td>
-</tr>
-<tr>
-<td>-gc 前缀</td>
-<td>打印垃圾回收相关数据</td>
-</tr>
-</tbody>
-</table>
-<ul>
-<li>-t 参数，打印进程的启动时间。</li>
-<li>默认情况 jstat 只打印一次性能数据。</li>
-<li>可以配置为每隔一段时间打印一次（直至进程终止或达到最大次数）。</li>
-</ul>
-<h2 id="jmap"><a href="#jmap" class="headerlink" title="jmap"></a>jmap</h2><blockquote>
-<p>分析 JVM 堆中的对象。包括多条子命令。<a href="https://docs.oracle.com/en/java/javase/11/tools/jmap.html" target="_blank" rel="noopener">帮助文档</a></p>
-</blockquote>
-<table>
-<thead>
-<tr>
-<th>子命令</th>
-<th>作用</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>-clstats</td>
-<td>打印被加载类的信息</td>
-</tr>
-<tr>
-<td>-finalizerinfo</td>
-<td>打印所有待 finalize 的对象</td>
-</tr>
-<tr>
-<td>-histo</td>
-<td>统计各个类的实例数目以及占用内存</td>
-</tr>
-<tr>
-<td>-histo:live</td>
-<td>只统计堆中的存活对象</td>
-</tr>
-<tr>
-<td>-dump</td>
-<td>导出堆的快照</td>
-</tr>
-<tr>
-<td>-dump:live</td>
-<td>只保存堆中的存活对象</td>
-</tr>
-</tbody>
-</table>
-<h2 id="jinfo"><a href="#jinfo" class="headerlink" title="jinfo"></a>jinfo</h2><blockquote>
-<p>查看进程的参数。<a href="https://docs.oracle.com/en/java/javase/11/tools/jinfo.html" target="_blank" rel="noopener">帮助文档</a></p>
-</blockquote>
-<ul>
-<li>可以修改进程的“manageable”虚拟机参数。</li>
-</ul>
-<h2 id="jstack"><a href="#jstack" class="headerlink" title="jstack"></a>jstack</h2><blockquote>
-<p>打印进程中各个线程的栈轨迹和线程所持有的锁。<a href="https://docs.oracle.com/en/java/javase/11/tools/jstack.html" target="_blank" rel="noopener">帮助文档</a></p>
-</blockquote>
-<ul>
-<li>死锁检测。</li>
-</ul>
-<h2 id="jcmd"><a href="#jcmd" class="headerlink" title="jcmd"></a>jcmd</h2><blockquote>
-<p>替代除了 jstat 之外的所有命令。<a href="https://docs.oracle.com/en/java/javase/11/tools/jcmd.html" target="_blank" rel="noopener">帮助文档</a></p>
-</blockquote>
-<h1 id="GUI"><a href="#GUI" class="headerlink" title="GUI"></a>GUI</h1><h2 id="eclipse-MAT"><a href="#eclipse-MAT" class="headerlink" title="eclipse MAT"></a>eclipse MAT</h2><blockquote>
-<p>解析二进制快照工具。</p>
-</blockquote>
-<ul>
-<li><p>获取二级制快照的方式</p>
-<ol>
-<li>使用 Attach API</li>
-<li>新建一个 JVM 运行 Attach API</li>
-<li>使用 jmap</li>
-</ol>
-</li>
-<li><p>进程启用 DisableAttachMechanism 参数时</p>
-<ol>
-<li>不显示</li>
-<li>不显示</li>
-<li>运行时报错</li>
-</ol>
-</li>
-<li><p>计算对象占据内存的<a href="https://help.eclipse.org/mars/topic/org.eclipse.mat.ui.help/concepts/shallowretainedheap.html?cp=46_2_1" target="_blank" rel="noopener">两种方式</a></p>
-<ol>
-<li>Shallow heap：对象自身所占据的内存。</li>
-<li>Retained heap：对象不再被引用时，垃圾回收器所能回收的总内存，包括对象自身所占据的内存，和仅能够通过该对象引用到的其他对象所占据的内存。</li>
-</ol>
-</li>
-<li><p>直方图（histogram）：展示各个类的实例数目和实例的堆总和。</p>
-</li>
-<li><p>支配树（dominator tree）：按照每个对象 Retained heap 的大小排列支配树。</p>
-</li>
-<li><p>自动匹配内存泄漏常见模式，汇报潜在内存泄漏问题。<a href="https://help.eclipse.org/mars/topic/org.eclipse.mat.ui.help/tasks/runningleaksuspectreport.html?cp=46_3_1" target="_blank" rel="noopener">帮助文档</a> <a href="http://memoryanalyzer.blogspot.com/2008/05/automated-heap-dump-analysis-finding.html" target="_blank" rel="noopener">博客</a></p>
-</li>
-</ul>
-<h2 id="Java-Mission-Control"><a href="#Java-Mission-Control" class="headerlink" title="Java Mission Control"></a>Java Mission Control</h2><blockquote>
-<p>JVM 上的性能监控工具。包含一个 GUI 客户端，众多用来收集 JVM 性能数据的插件，虚拟机内置的高效 profiling 工具 Java Flight Recorder（JFR）。</p>
-</blockquote>
-<ul>
-<li>JFR 的性能开销很小，默认配置下平均低于 1%。</li>
-<li>JFR 能够直接访问虚拟机内的数据，不会影响虚拟机的优化。</li>
-<li>适用于生产环境下满负荷运行的 Java 程序。</li>
-<li>JFR 记录运行过程中发生的一系列事件（包括 Java 和 JVM）。</li>
-</ul>
-<table>
-<thead>
-<tr>
-<th>事件类型</th>
-<th>说明</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>瞬时事件（Instant Event）</td>
-<td>关心发生与否，如异常、线程启动</td>
-</tr>
-<tr>
-<td>持续事件（Duration Event）</td>
-<td>关心持续时间，如垃圾回收</td>
-</tr>
-<tr>
-<td>计时事件（Timed Event）</td>
-<td>时长超出指定阈值的持续事件</td>
-</tr>
-<tr>
-<td>取样事件（Sample Event）</td>
-<td>周期性取样的事件，如方法抽样</td>
-</tr>
-</tbody>
-</table>
-<ul>
-<li>JFR 的取样事件比其他工具更加精确。</li>
-<li>JFR 的 3 种启用方式<ol>
-<li>命令行中使用 -XX:StartFlightRecording= 参数。</li>
-<li>使用 jcmd 的 JFR.* 子命令。</li>
-<li>使用 JMC 的 JFR 插件。</li>
-</ol>
-</li>
-</ul>
-<h2 id="VisualVM"><a href="#VisualVM" class="headerlink" title="VisualVM"></a>VisualVM</h2><blockquote>
-<p><a href="https://visualvm.github.io/index.html" target="_blank" rel="noopener">https://visualvm.github.io/index.html</a></p>
-</blockquote>
-<h2 id="JITWatch"><a href="#JITWatch" class="headerlink" title="JITWatch"></a>JITWatch</h2><blockquote>
-<p><a href="https://github.com/AdoptOpenJDK/jitwatch" target="_blank" rel="noopener">https://github.com/AdoptOpenJDK/jitwatch</a></p>
-</blockquote>
-<h1 id="引用"><a href="#引用" class="headerlink" title="引用"></a>引用</h1><blockquote>
-<p><a href="https://time.geekbang.org/column/article/40821" target="_blank" rel="noopener">https://time.geekbang.org/column/article/40821</a></p>
-</blockquote>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -2570,7 +2468,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">57</span>
+                  <span class="site-state-item-count">58</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -2592,7 +2490,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">25</span>
+                  <span class="site-state-item-count">26</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>
