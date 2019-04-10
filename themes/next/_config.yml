@@ -27,10 +27,10 @@ override: false
 # For example, you put your favicons into `hexo-site/source/images` directory.
 # Then need to rename & redefine they on any other names, otherwise icons from Next will rewrite your custom icons in Hexo.
 favicon:
-  small: http://pcrioz2ch.bkt.clouddn.com/portrait.png
-  medium: http://pcrioz2ch.bkt.clouddn.com/portrait.png
-  apple_touch_icon: http://pcrioz2ch.bkt.clouddn.com/portrait.png
-  safari_pinned_tab: http://pcrioz2ch.bkt.clouddn.com/portrait.svg
+  small: /images/avatar/portrait.png
+  medium: /images/avatar/portrait.png
+  apple_touch_icon: /images/avatar/portrait.png
+  safari_pinned_tab: /images/avatar/portrait.png
   #android_manifest: /images/manifest.json
   #ms_browserconfig: /images/browserconfig.xml
 
@@ -94,6 +94,7 @@ index_with_subtitle: false
 menu:
   home: / || home
   about: /about/ || user
+  足迹: /footmark/ || map-marker
   tags: /tags/ || tags
   categories: /categories/ || th
   archives: /archives/ || archive
@@ -695,7 +696,7 @@ pace: false
 pace_theme: pace-theme-minimal
 
 # Canvas-nest
-canvas_nest: true
+canvas_nest: false
 
 # three_waves
 three_waves: false
