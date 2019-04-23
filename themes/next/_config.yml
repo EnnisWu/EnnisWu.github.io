@@ -94,7 +94,8 @@ index_with_subtitle: false
 menu:
   home: / || home
   about: /about/ || user
-  足迹: /footmark/ || map-marker
+  足迹: /footprints/ || map-marker
+  相册: /photos/ || image
   tags: /tags/ || tags
   categories: /categories/ || th
   archives: /archives/ || archive
