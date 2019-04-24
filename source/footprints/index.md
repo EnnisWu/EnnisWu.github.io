@@ -7,13 +7,13 @@ date: 2019-04-09 15:36:53
 
 # 世界
 
-<div id="world-map-markers" style="width: 600px; height: 400px"></div>
+<div id="world-map-markers" style="width: 100%; height: 400px"></div>
 
 ***
 
 # 中国
 
-<div id="china-map-markers" style="width: 600px; height: 400px"></div>
+<div id="china-map-markers" style="width: 100%; height: 400px"></div>
 
 - **常德**
 	- 诞生
@@ -107,7 +107,7 @@ date: 2019-04-09 15:36:53
 
 # 日本
 
-<div id="japan-map-markers" style="width: 600px; height: 400px"></div>
+<div id="japan-map-markers" style="width: 100%; height: 400px"></div>
 
 - **广岛**  2018-08-18
 	- 锦带桥
@@ -118,7 +118,7 @@ date: 2019-04-09 15:36:53
 	- 高知城
 
 <link rel="stylesheet" href="/js/map/jquery-jvectormap-2.0.3.css" type="text/css" media="screen"/>
-<script src="/js/map/jquery-3.3.1.min.js"></script>
+<script src="/js/public/jquery-3.3.1.min.js"></script>
 <script src="/js/map/jquery-jvectormap-2.0.3.min.js"></script>
 <script src="/js/map/jquery-jvectormap-world-mill.js"></script>
 <script src="/js/map/jquery-jvectormap-cn-merc-en.js"></script>
