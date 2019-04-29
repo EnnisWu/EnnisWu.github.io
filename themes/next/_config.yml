@@ -96,6 +96,7 @@ menu:
   about: /about/ || user
   足迹: /footprints/ || map-marker
   相册: /photos/ || image
+  影视: /movies/ || film
   tags: /tags/ || tags
   categories: /categories/ || th
   archives: /archives/ || archive

@@ -117,10 +117,10 @@ date: 2019-04-09 15:36:53
 	- 竹林寺
 	- 高知城
 
-<link rel="stylesheet" href="/js/map/jquery-jvectormap-2.0.3.css" type="text/css" media="screen"/>
-<script src="/js/public/jquery-3.3.1.min.js"></script>
-<script src="/js/map/jquery-jvectormap-2.0.3.min.js"></script>
-<script src="/js/map/jquery-jvectormap-world-mill.js"></script>
-<script src="/js/map/jquery-jvectormap-cn-merc-en.js"></script>
-<script src="/js/map/jquery-jvectormap-jp-merc.js"></script>
-<script src="/js/map/map-data.js"></script>
+<link rel="stylesheet" href="/lib/map/jquery-jvectormap-2.0.3.css" type="text/css" media="screen"/>
+<script src="/lib/public/jquery-3.3.1.min.js"></script>
+<script src="/lib/map/jquery-jvectormap-2.0.3.min.js"></script>
+<script src="/lib/map/jquery-jvectormap-world-mill.js"></script>
+<script src="/lib/map/jquery-jvectormap-cn-merc-en.js"></script>
+<script src="/lib/map/jquery-jvectormap-jp-merc.js"></script>
+<script src="/lib/map/map-data.js"></script>

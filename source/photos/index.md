@@ -7,9 +7,9 @@ fancybox: false
 
 ***
 
-<link rel="stylesheet" href="/js/photo/ins.css">
-<link rel="stylesheet" href="/js/photo/photoswipe.css"> 
-<link rel="stylesheet" href="/js/photo/default-skin/default-skin.css"> 
+<link rel="stylesheet" href="/lib/photo/ins.css">
+<link rel="stylesheet" href="/lib/photo/photoswipe.css"> 
+<link rel="stylesheet" href="/lib/photo/default-skin/default-skin.css"> 
 
 <!--<div class="photos-btn-wrap">-->
 <!--  <a class="photos-btn active" href="javascript:void(0)" target="_blank" rel="external">Photos</a>-->
@@ -27,7 +27,7 @@ fancybox: false
       $script.setAttribute('src', path)
     }
     setTimeout(function() {
-        loadScript('/js/photo/ins.js')
+        loadScript('/lib/photo/ins.js')
     }, 0)
   })()
 </script>
