@@ -5,15 +5,14 @@ type: "photos"
 fancybox: false
 ---
 
-***
-
 <link rel="stylesheet" href="/lib/photo/ins.css">
 <link rel="stylesheet" href="/lib/photo/photoswipe.css"> 
 <link rel="stylesheet" href="/lib/photo/default-skin/default-skin.css"> 
 
-<!--<div class="photos-btn-wrap">-->
-<!--  <a class="photos-btn active" href="javascript:void(0)" target="_blank" rel="external">Photos</a>-->
-<!--</div>-->
+<div class="photos-btn-wrap">
+  <a class="photos-btn active" href="javascript:void(0)">照片</a>
+  <a class="photos-btn" href="/videos">视频</a>
+</div>
 
 <div class="instagram itemscope">
   <a target="_blank" class="open-ins">图片正在加载中…若长时间未加载成功，您可能需要科学上网</a>
