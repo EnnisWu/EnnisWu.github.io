@@ -37,10 +37,14 @@
 
 
 
+
   
 
 
 
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
 
 
 
@@ -81,17 +85,17 @@
 
 
 
-<meta name="description" content="照片  视频    图片正在加载中…若长时间未加载成功，您可能需要科学上网     (function() {     var loadScript = function(path) {       var $script = document.createElement(&apos;script&apos;)       document.getElementsByTagName(&apos;body&apos;)[0">
+<meta name="description" content=".photos-btn-wrap {     border-bottom: 1px solid #e5e5e5;     margin-bottom: 20px;     display: flex; } .photos-btn {     font-size: 16px;     color: #333;     margin-bottom: -4px;     padding: 5px 8p">
 <meta property="og:type" content="website">
 <meta property="og:title" content="相册">
-<meta property="og:url" content="http://blog.ennis.info/photos/index.html">
+<meta property="og:url" content="http://blog.ennis.info/videos/index.html">
 <meta property="og:site_name" content="Ennis -Little Monster">
-<meta property="og:description" content="照片  视频    图片正在加载中…若长时间未加载成功，您可能需要科学上网     (function() {     var loadScript = function(path) {       var $script = document.createElement(&apos;script&apos;)       document.getElementsByTagName(&apos;body&apos;)[0">
+<meta property="og:description" content=".photos-btn-wrap {     border-bottom: 1px solid #e5e5e5;     margin-bottom: 20px;     display: flex; } .photos-btn {     font-size: 16px;     color: #333;     margin-bottom: -4px;     padding: 5px 8p">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2019-05-02T06:49:18.495Z">
+<meta property="og:updated_time" content="2019-05-02T06:57:21.339Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="相册">
-<meta name="twitter:description" content="照片  视频    图片正在加载中…若长时间未加载成功，您可能需要科学上网     (function() {     var loadScript = function(path) {       var $script = document.createElement(&apos;script&apos;)       document.getElementsByTagName(&apos;body&apos;)[0">
+<meta name="twitter:description" content=".photos-btn-wrap {     border-bottom: 1px solid #e5e5e5;     margin-bottom: 20px;     display: flex; } .photos-btn {     font-size: 16px;     color: #333;     margin-bottom: -4px;     padding: 5px 8p">
 
 
 
@@ -102,7 +106,7 @@
     scheme: 'Pisces',
     version: '5.1.4',
     sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
-    fancybox: false,
+    fancybox: true,
     tabs: true,
     motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
     duoshuo: {
@@ -121,7 +125,7 @@
 
 
 
-  <link rel="canonical" href="http://blog.ennis.info/photos/"/>
+  <link rel="canonical" href="http://blog.ennis.info/videos/"/>
 
 
 
@@ -335,26 +339,66 @@
       <div class="post-body">
         
         
-          <p><link rel="stylesheet" href="/lib/photo/ins.css"></p>
-<p><link rel="stylesheet" href="/lib/photo/photoswipe.css"> </p>
-<link rel="stylesheet" href="/lib/photo/default-skin/default-skin.css"> 
+          <style>
+.photos-btn-wrap {
+    border-bottom: 1px solid #e5e5e5;
+    margin-bottom: 20px;
+    display: flex;
+}
+.photos-btn {
+    font-size: 16px;
+    color: #333;
+    margin-bottom: -4px;
+    padding: 5px 8px 3px;
+    border: 1px solid #fff;
+}
+.photos-btn.active {
+    color: #08c;
+    border: 1px solid #e5e5e5;
+    border-bottom: 5px solid #fff;
+}
+.year {
+    font-size: 16px;
+}
+.year{
+    display: inline;
+}
+h1 em{
+    font-style: normal;
+    font-size: 14px;
+    margin-left: 10px;
+}
+</style>
 
-<div class="photos-btn-wrap"><br>  <a class="photos-btn active" href="javascript:void(0)" target="_blank" rel="noopener">照片</a><br>  <a class="photos-btn" href="/videos">视频</a><br></div>
+<div class="photos-btn-wrap"><br>  <a class="photos-btn" href="/photos">照片</a><br>  <a class="photos-btn active" href="javascript:void(0)" target="_blank" rel="noopener">视频</a><br></div>
 
-<div class="instagram itemscope"><br>  <a target="_blank" class="open-ins">图片正在加载中…若长时间未加载成功，您可能需要科学上网</a><br></div>
+<p></p><h1 class="year">2019年<em>2月</em></h1><p></p>
+<video src="http://image.ennis.info/videos/2019-02-16_185208.mov" width="50%" controls="controls"></video>
 
-<script>
-  (function() {
-    var loadScript = function(path) {
-      var $script = document.createElement('script')
-      document.getElementsByTagName('body')[0].appendChild($script)
-      $script.setAttribute('src', path)
-    }
-    setTimeout(function() {
-        loadScript('/lib/photo/ins.js')
-    }, 0)
-  })()
-</script>
+<p></p><h1 class="year">2018年<em>10月</em></h1><p></p>
+<video src="http://image.ennis.info/videos/2018-10-09_155329.mov" width="50%" controls="controls"></video>
+
+<p></p><h1 class="year">2018年<em>4月</em></h1><p></p>
+<video src="http://image.ennis.info/videos/2018-04-15_170000.mp4" width="50%" controls="controls"></video><br><br><br><video src="http://image.ennis.info/videos/2018-04-15_131345.mp4" width="50%" controls="controls"></video><br><br><br><video src="http://image.ennis.info/videos/2018-04-15_131344.mp4" width="50%" controls="controls"></video>
+
+<p></p><h1 class="year">2017年<em>8月</em></h1><p></p>
+<video src="http://image.ennis.info/videos/2017-08-23_214015.mov" width="50%" controls="controls"></video><br><br><br><video src="http://image.ennis.info/videos/2017-08-22_141952.mov" width="50%" controls="controls"></video><br><br><br><video src="http://image.ennis.info/videos/2017-08-21_000000.mov" width="50%" controls="controls"></video><br><br><br><video src="http://image.ennis.info/videos/2017-08-20_122201.mov" width="50%" controls="controls"></video><br><br><br><video src="http://image.ennis.info/videos/2017-08-19_094142.mov" width="50%" controls="controls"></video><br><br><br><video src="http://image.ennis.info/videos/2017-08-13_135159.mov" width="50%" controls="controls"></video>
+
+<p></p><h1 class="year">2017年<em>7月</em></h1><p></p>
+<video src="http://image.ennis.info/videos/2017-07-08_155451.mov" width="50%" controls="controls"></video>
+
+<p></p><h1 class="year">2017年<em>6月</em></h1><p></p>
+<video src="http://image.ennis.info/videos/2017-06-03_170550.mov" width="50%" controls="controls"></video><br><br><br><video src="http://image.ennis.info/videos/2017-06-03_105850.mov" width="50%" controls="controls"></video><br><br><br><video src="http://image.ennis.info/videos/2017-06-03_100942.mov" width="50%" controls="controls"></video>
+
+<p></p><h1 class="year">2016年<em>8月</em></h1><p></p>
+<video src="http://image.ennis.info/videos/2016-08-11_000000.mov" width="50%" controls="controls"></video>
+
+<p></p><h1 class="year">2016年<em>1月</em></h1><p></p>
+<video src="http://image.ennis.info/videos/2016-01-01_200920.mp4" width="50%" controls="controls"></video>
+
+<p></p><h1 class="year">2015年<em>6月</em></h1><p></p>
+<video src="http://image.ennis.info/videos/2015-06-17_174441.mp4" width="50%" controls="controls"></video>
+
         
       </div>
       
@@ -396,8 +440,17 @@
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
 
-      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
+      <section class="site-overview-wrap sidebar-panel">
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
             
@@ -497,6 +550,22 @@
       </section>
 
       
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#undefined"><span class="nav-number">1.</span> <span class="nav-text">2019年2月</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#undefined"><span class="nav-number">2.</span> <span class="nav-text">2018年10月</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#undefined"><span class="nav-number">3.</span> <span class="nav-text">2018年4月</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#undefined"><span class="nav-number">4.</span> <span class="nav-text">2017年8月</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#undefined"><span class="nav-number">5.</span> <span class="nav-text">2017年7月</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#undefined"><span class="nav-number">6.</span> <span class="nav-text">2017年6月</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#undefined"><span class="nav-number">7.</span> <span class="nav-text">2016年8月</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#undefined"><span class="nav-number">8.</span> <span class="nav-text">2016年1月</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#undefined"><span class="nav-number">9.</span> <span class="nav-text">2015年6月</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
 
       
 
@@ -566,6 +635,8 @@
 
 
 
+  
+
 
 
 
@@ -600,6 +671,11 @@
   
   
     <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
   
 
 
@@ -1009,46 +1085,6 @@
   
 
 
-  
-    <!-- Root element of PhotoSwipe. Must have class pswp. -->
-    <div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
-      <div class="pswp__bg"></div>
-      <div class="pswp__scroll-wrap">
-          <div class="pswp__container">
-              <div class="pswp__item"></div>
-              <div class="pswp__item"></div>
-              <div class="pswp__item"></div>
-          </div>
-          <div class="pswp__ui pswp__ui--hidden">
-              <div class="pswp__top-bar">
-                  <div class="pswp__counter"></div>
-                  <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
-                  <button class="pswp__button pswp__button--share" title="Share"></button>
-                  <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
-                  <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
-                  <!-- Preloader demo http://codepen.io/dimsemenov/pen/yyBWoR -->
-                  <!-- element will get class pswp__preloader--active when preloader is running -->
-                  <div class="pswp__preloader">
-                      <div class="pswp__preloader__icn">
-                        <div class="pswp__preloader__cut">
-                          <div class="pswp__preloader__donut"></div>
-                        </div>
-                      </div>
-                  </div>
-              </div>
-              <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
-                  <div class="pswp__share-tooltip"></div> 
-              </div>
-              <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
-              </button>
-              <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
-              </button>
-              <div class="pswp__caption">
-                  <div class="pswp__caption__center"></div>
-              </div>
-          </div>
-      </div>
-    </div>
   
 <script src="/live2dw/lib/L2Dwidget.min.js?0c58a1486de42ac6cc1c59c7d98ae887"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"debug":false,"model":{"jsonPath":"/live2dw/assets/haruto.model.json"},"display":{"position":"right","width":80,"height":160},"mobile":{"show":false,"scale":0.2},"log":false});</script></body>
 </html>

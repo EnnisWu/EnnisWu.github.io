@@ -121,12 +121,16 @@ figure {
 .photos-btn-wrap {
 	border-bottom: 1px solid #e5e5e5;
 	margin-bottom: 20px;
+
+	display: flex;
 }
 .photos-btn {
 	font-size: 16px;
 	color: #333;
 	margin-bottom: -4px;
 	padding: 5px 8px 3px;
+
+	border: 1px solid #fff;
 }
 .photos-btn.active {
 	color: #08c;
