@@ -1,6 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title><![CDATA[LayoutInflater中inflate方法各参数作用（二）]]></title>
+    <url>%2F2019%2F05%2F03%2FLayoutInflater%E4%B8%ADinflate%E6%96%B9%E6%B3%95%E5%90%84%E5%8F%82%E6%95%B0%E4%BD%9C%E7%94%A8%EF%BC%88%E4%BA%8C%EF%BC%89%2F</url>
+    <content type="text"><![CDATA[View.inflate 和 LayoutInflater.inflateView.inflate 实际上上只是简单的包装了 LayoutInflater.inflate 1234public static View inflate(Context context, @LayoutRes int resource, ViewGroup root) &#123; LayoutInflater factory = LayoutInflater.from(context); return factory.inflate(resource, root);&#125; LayoutInflater.inflate 两个参数和三个参数的区别两个参数两个参数的方法实际上也只是简单调用了三个参数的方法 123public View inflate(@LayoutRes int resource, @Nullable ViewGroup root) &#123; return inflate(resource, root, root != null);&#125; 当 ViewGroup 传入 null 时调用 1inflate(resource, null, false); 当 ViewGroup 传入非 null 时调用 1inflate(resource, root, true); 三个参数ViewGroup 传入 null View 没有父布局 View 没有 LayoutParams 返回该 View attachToRoot 参数无效 ViewGroup 传入非 nullattachToRoot 为 true View 添加到父布局 View 设置 LayoutParams 参数 返回父布局 attachToRoot 为 true View 没有父布局 View 设置 LayoutParams 参数 返回该 View ViewGroup 最好传入非 null 的情况如果在知道父布局的情况下，ViewGroup 最好传入父布局而不是 null，因为 View 的 LayoutParams 参数始终需要通过父布局来确定。 当调用 ViewGroup.addView 时，如果添加的 View 的 LayoutParams 为 null，会调用 generateDefaultLayoutParams 方法生成一个宽高都包裹的 LayoutParams，这可能并不是我们想要的效果，因为在 xml 中指定的宽高等属性将失效。 12345678910111213public void addView(View child, int index) &#123; if (child == null) &#123; throw new IllegalArgumentException("Cannot add a null child view to a ViewGroup"); &#125; LayoutParams params = child.getLayoutParams(); if (params == null) &#123; params = generateDefaultLayoutParams(); if (params == null) &#123; throw new IllegalArgumentException("generateDefaultLayoutParams() cannot return null"); &#125; &#125; addView(child, index, params);&#125; attachToRoot 最好传入 true 的情况 自定义组件 attachToRoot 必须传入 false 的情况否则会抛出异常 1java.lang.IllegalStateException: The specified child already has a parent. You must call removeView() on the child&apos;s parent first. 不负责 View 的展示时，attachToRoot 必须传入 false RecyclerView#onCreateViewHolder 由 RecyclerView 控制展示 ViewHolder 的 View Fragment#onCreateView 由 FragmentManager 控制显示 Fragment View 已有父布局时，attachToRoot 必须传入 false参考 https://blog.csdn.net/u012702547/article/details/52628453https://www.jianshu.com/p/342890fcf5c9]]></content>
+      <categories>
+        <category>Android视图</category>
+      </categories>
+      <tags>
+        <tag>Android</tag>
+      </tags>
+  </entry>
+  <entry>
     <title><![CDATA[转-Android类加载]]></title>
     <url>%2F2019%2F03%2F18%2F%E8%BD%AC-Android%E7%B1%BB%E5%8A%A0%E8%BD%BD%2F</url>
     <content type="text"><![CDATA[转自：https://juejin.im/post/5c31c3ebf265da614e2c3b68 JVM 类加载机制JVM 将描述类的数据从 Class 文件加载到内存，并对数据进行校验、转换解析和初始化，最终形成可以被虚拟机直接使用的 Java 类型。 类的生命周期 类从被加载到虚拟机内存中开始，到卸载出内存为止。 整个生命周期包括 7 个阶段：加载（Loading）、验证（Verification）、准备（Preparation）、解析（Resolution）、初始化（Initialization）、使用（Using）和卸载（Unloading）。 验证、准备、解析3个部分统称为连接（Linking）。 类加载器 对于任意一个类，需要由加载它的类加载器和这个类本身一同确立其在 JVM 中的唯一性。 每一个类加载器，都拥有一个独立的类名称空间。 比较两个类是否“相等”，只有在这两个类是由同一个类加载器加载的前提下才有意义，否则，即使这两个类来源于同一个 Class 文件，被同一个虚拟机加载，只要加载它们的类加载器不同，那这两个类就必定不相等。 JDK 8 及之前的双亲委派模型 Java 应用程序一般由 3 种类加载器互相配合进行加载。 如果有必要，可以自定义的类加载器。 这种层次关系称为类加载器的双亲委派模型（Parents Delegation Model）。 双亲委派模型要求除了顶层的启动类加载器外，其余的类加载器都应当有父类加载器。 父子关系一般不会以继承（Inheritance）的关系来实现，而是都使用组合（Composition）关系来复用父加载器的代码。 双亲委派模型的工作过程 一个类加载器收到类加载的请求。 把这个请求委派给父类加载器去完成。 父加载器反馈自己无法完成这个加载请求（它的搜索范围中没有找到所需的类）。 子加载器尝试自己加载。 启动类加载器（Bootstrap ClassLoader） 加载以下类库到 JVM 内存 存放在 ＜JAVA_HOME＞\lib 目录中的 或者被 -Xbootclasspath 参数所指定的路径中的 并且是虚拟机识别的类库 无法被 Java 程序直接引用。 把加载请求委派给引导类加载器，直接使用 null 代替。 扩展类加载器（Extension ClassLoader） 由 sun.misc.Launcher $ExtClassLoader 实现。 加载以下类库到 JVM 内存 存放在＜JAVA_HOME＞\lib\ext目录中的 或者被 java.ext.dirs 系统变量所指定的路径中的所有类库 开发者可以直接使用扩展类加载器。 应用程序类加载器（Application ClassLoader） 也称为系统类加载器 由 sun.misc.Launcher $App-ClassLoader 实现。 加载以下类库到 JVM 内存 用户类路径（ClassPath）上所指定的类库 开发者可以直接使用这个类加载器。 如果应用程序中没有自定义过自己的类加载器，一般情况下这个就是程序中默认的类加载器。 JDK 9 双亲委派模型的更改 Java9 引入了模块系统，并且略微更改了上述的类加载器。 扩展类加载器被改名为平台类加载器（platform class loader）。 Java SE中除了少数几个关键模块，比如说 java.base 是由启动类加载器加载之外，其他的模块均由平台类加载器所加载。 Android 类加载机制 本质上 Android 和传统的 JVM 是一样的。 需要通过类加载器将目标类加载到内存 类加载器之间符合双亲委派模型 类有对应的生命周期 基于移动设备的特点，如内存以及电量等诸多方面跟一般的 PC 设备都有本质的区别，Google 开发了更符合移动设备的用于执行 Java 代码的虚拟机，即 Dalvik 和 ART。 Android 5.0 开始采用 ART 虚拟机替代 Dalvik。 ART 从 dex 字节码加载类。将多个 Class 文件合并成一个 classes.dex 文件。 在 8.0 之前 DexClassLoader：能够加载未安装的 apk PathClassLoader：只能加载系统中已经安装过的 apk 从 8.0 开始 PathClassLoader 也可以加载未安装的 apk PathClassLoader 可以完全替代 DexClassLoader]]></content>
@@ -20,8 +31,8 @@
       </categories>
       <tags>
         <tag>Java</tag>
-        <tag>面试</tag>
         <tag>Java基础</tag>
+        <tag>面试</tag>
         <tag>Java多线程</tag>
       </tags>
   </entry>
@@ -46,9 +57,9 @@
       </categories>
       <tags>
         <tag>Java</tag>
-        <tag>面试</tag>
-        <tag>Java基础</tag>
         <tag>Java集合</tag>
+        <tag>Java基础</tag>
+        <tag>面试</tag>
       </tags>
   </entry>
   <entry>
@@ -60,9 +71,9 @@
       </categories>
       <tags>
         <tag>Java</tag>
-        <tag>面试</tag>
-        <tag>Java基础</tag>
         <tag>Java集合</tag>
+        <tag>Java基础</tag>
+        <tag>面试</tag>
       </tags>
   </entry>
   <entry>
@@ -86,8 +97,8 @@
       </categories>
       <tags>
         <tag>Android</tag>
-        <tag>View</tag>
         <tag>面试</tag>
+        <tag>View</tag>
       </tags>
   </entry>
   <entry>

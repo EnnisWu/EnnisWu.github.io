@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://blog.ennis.info/"/>
-  <updated>2019-03-18T12:49:48.997Z</updated>
+  <updated>2019-05-03T13:34:34.013Z</updated>
   <id>http://blog.ennis.info/</id>
   
   <author>
@@ -15,6 +15,31 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>LayoutInflater中inflate方法各参数作用（二）</title>
+    <link href="http://blog.ennis.info/2019/05/03/LayoutInflater%E4%B8%ADinflate%E6%96%B9%E6%B3%95%E5%90%84%E5%8F%82%E6%95%B0%E4%BD%9C%E7%94%A8%EF%BC%88%E4%BA%8C%EF%BC%89/"/>
+    <id>http://blog.ennis.info/2019/05/03/LayoutInflater中inflate方法各参数作用（二）/</id>
+    <published>2019-05-03T12:40:47.000Z</published>
+    <updated>2019-05-03T13:34:34.013Z</updated>
+    
+    <content type="html"><![CDATA[<h1 id="View-inflate-和-LayoutInflater-inflate"><a href="#View-inflate-和-LayoutInflater-inflate" class="headerlink" title="View.inflate 和 LayoutInflater.inflate"></a>View.inflate 和 LayoutInflater.inflate</h1><p>View.inflate 实际上上只是简单的包装了 LayoutInflater.inflate</p><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> View <span class="title">inflate</span><span class="params">(Context context, @LayoutRes <span class="keyword">int</span> resource, ViewGroup root)</span> </span>&#123;</span><br><span class="line">    LayoutInflater factory = LayoutInflater.from(context);</span><br><span class="line">    <span class="keyword">return</span> factory.inflate(resource, root);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><h1 id="LayoutInflater-inflate-两个参数和三个参数的区别"><a href="#LayoutInflater-inflate-两个参数和三个参数的区别" class="headerlink" title="LayoutInflater.inflate 两个参数和三个参数的区别"></a>LayoutInflater.inflate 两个参数和三个参数的区别</h1><h2 id="两个参数"><a href="#两个参数" class="headerlink" title="两个参数"></a>两个参数</h2><p>两个参数的方法实际上也只是简单调用了三个参数的方法</p><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> View <span class="title">inflate</span><span class="params">(@LayoutRes <span class="keyword">int</span> resource, @Nullable ViewGroup root)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> inflate(resource, root, root != <span class="keyword">null</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><ul><li>当 ViewGroup 传入 null 时调用</li></ul><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">inflate(resource, <span class="keyword">null</span>, <span class="keyword">false</span>);</span><br></pre></td></tr></table></figure><ul><li>当 ViewGroup 传入非 null 时调用</li></ul><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">inflate(resource, root, <span class="keyword">true</span>);</span><br></pre></td></tr></table></figure><h2 id="三个参数"><a href="#三个参数" class="headerlink" title="三个参数"></a>三个参数</h2><h3 id="ViewGroup-传入-null"><a href="#ViewGroup-传入-null" class="headerlink" title="ViewGroup 传入 null"></a>ViewGroup 传入 null</h3><ul><li>View 没有父布局</li><li>View 没有 LayoutParams</li><li>返回该 View</li><li>attachToRoot 参数无效</li></ul><h3 id="ViewGroup-传入非-null"><a href="#ViewGroup-传入非-null" class="headerlink" title="ViewGroup 传入非 null"></a>ViewGroup 传入非 null</h3><h4 id="attachToRoot-为-true"><a href="#attachToRoot-为-true" class="headerlink" title="attachToRoot 为 true"></a>attachToRoot 为 true</h4><ul><li>View 添加到父布局</li><li>View 设置 LayoutParams 参数</li><li>返回父布局</li></ul><h4 id="attachToRoot-为-true-1"><a href="#attachToRoot-为-true-1" class="headerlink" title="attachToRoot 为 true"></a>attachToRoot 为 true</h4><ul><li>View 没有父布局</li><li>View 设置 LayoutParams 参数</li><li>返回该 View</li></ul><h1 id="ViewGroup-最好传入非-null-的情况"><a href="#ViewGroup-最好传入非-null-的情况" class="headerlink" title="ViewGroup 最好传入非 null 的情况"></a>ViewGroup 最好传入非 null 的情况</h1><p>如果在知道父布局的情况下，ViewGroup 最好传入父布局而不是 null，因为 View 的 LayoutParams 参数始终需要通过父布局来确定。</p><p>当调用 ViewGroup.addView 时，如果添加的 View 的 LayoutParams 为 null，会调用 generateDefaultLayoutParams 方法生成一个宽高都包裹的 LayoutParams，这可能并不是我们想要的效果，因为在 xml 中指定的宽高等属性将失效。</p><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">addView</span><span class="params">(View child, <span class="keyword">int</span> index)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (child == <span class="keyword">null</span>) &#123;</span><br><span class="line">        <span class="keyword">throw</span> <span class="keyword">new</span> IllegalArgumentException(<span class="string">"Cannot add a null child view to a ViewGroup"</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    LayoutParams params = child.getLayoutParams();</span><br><span class="line">    <span class="keyword">if</span> (params == <span class="keyword">null</span>) &#123;</span><br><span class="line">        params = generateDefaultLayoutParams();</span><br><span class="line">        <span class="keyword">if</span> (params == <span class="keyword">null</span>) &#123;</span><br><span class="line">            <span class="keyword">throw</span> <span class="keyword">new</span> IllegalArgumentException(<span class="string">"generateDefaultLayoutParams() cannot return null"</span>);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    addView(child, index, params);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><h1 id="attachToRoot-最好传入-true-的情况"><a href="#attachToRoot-最好传入-true-的情况" class="headerlink" title="attachToRoot 最好传入 true 的情况"></a>attachToRoot 最好传入 true 的情况</h1><ul><li>自定义组件</li></ul><h1 id="attachToRoot-必须传入-false-的情况"><a href="#attachToRoot-必须传入-false-的情况" class="headerlink" title="attachToRoot 必须传入 false 的情况"></a>attachToRoot 必须传入 false 的情况</h1><p>否则会抛出异常</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">java.lang.IllegalStateException: The specified child already has a parent. You must call removeView() on the child&apos;s parent first.</span><br></pre></td></tr></table></figure><h2 id="不负责-View-的展示时，attachToRoot-必须传入-false"><a href="#不负责-View-的展示时，attachToRoot-必须传入-false" class="headerlink" title="不负责 View 的展示时，attachToRoot 必须传入 false"></a>不负责 View 的展示时，attachToRoot 必须传入 false</h2><ul><li>RecyclerView#onCreateViewHolder</li></ul><p>由 RecyclerView 控制展示 ViewHolder 的 View</p><ul><li>Fragment#onCreateView</li></ul><p>由 FragmentManager 控制显示 Fragment</p><h2 id="View-已有父布局时，attachToRoot-必须传入-false"><a href="#View-已有父布局时，attachToRoot-必须传入-false" class="headerlink" title="View 已有父布局时，attachToRoot 必须传入 false"></a>View 已有父布局时，attachToRoot 必须传入 false</h2><h1 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h1><blockquote><p><a href="https://blog.csdn.net/u012702547/article/details/52628453" target="_blank" rel="noopener">https://blog.csdn.net/u012702547/article/details/52628453</a><br><a href="https://www.jianshu.com/p/342890fcf5c9" target="_blank" rel="noopener">https://www.jianshu.com/p/342890fcf5c9</a></p></blockquote>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;h1 id=&quot;View-inflate-和-LayoutInflater-inflate&quot;&gt;&lt;a href=&quot;#View-inflate-和-LayoutInflater-inflate&quot; class=&quot;headerlink&quot; title=&quot;View.inflate 和 Lay
+      
+    
+    </summary>
+    
+      <category term="Android视图" scheme="http://blog.ennis.info/categories/Android%E8%A7%86%E5%9B%BE/"/>
+    
+    
+      <category term="Android" scheme="http://blog.ennis.info/tags/Android/"/>
+    
+  </entry>
   
   <entry>
     <title>转-Android类加载</title>
@@ -68,9 +93,9 @@
     
       <category term="Java" scheme="http://blog.ennis.info/tags/Java/"/>
     
-      <category term="面试" scheme="http://blog.ennis.info/tags/%E9%9D%A2%E8%AF%95/"/>
-    
       <category term="Java基础" scheme="http://blog.ennis.info/tags/Java%E5%9F%BA%E7%A1%80/"/>
+    
+      <category term="面试" scheme="http://blog.ennis.info/tags/%E9%9D%A2%E8%AF%95/"/>
     
       <category term="Java多线程" scheme="http://blog.ennis.info/tags/Java%E5%A4%9A%E7%BA%BF%E7%A8%8B/"/>
     
@@ -129,11 +154,11 @@
     
       <category term="Java" scheme="http://blog.ennis.info/tags/Java/"/>
     
-      <category term="面试" scheme="http://blog.ennis.info/tags/%E9%9D%A2%E8%AF%95/"/>
+      <category term="Java集合" scheme="http://blog.ennis.info/tags/Java%E9%9B%86%E5%90%88/"/>
     
       <category term="Java基础" scheme="http://blog.ennis.info/tags/Java%E5%9F%BA%E7%A1%80/"/>
     
-      <category term="Java集合" scheme="http://blog.ennis.info/tags/Java%E9%9B%86%E5%90%88/"/>
+      <category term="面试" scheme="http://blog.ennis.info/tags/%E9%9D%A2%E8%AF%95/"/>
     
   </entry>
   
@@ -160,11 +185,11 @@
     
       <category term="Java" scheme="http://blog.ennis.info/tags/Java/"/>
     
-      <category term="面试" scheme="http://blog.ennis.info/tags/%E9%9D%A2%E8%AF%95/"/>
+      <category term="Java集合" scheme="http://blog.ennis.info/tags/Java%E9%9B%86%E5%90%88/"/>
     
       <category term="Java基础" scheme="http://blog.ennis.info/tags/Java%E5%9F%BA%E7%A1%80/"/>
     
-      <category term="Java集合" scheme="http://blog.ennis.info/tags/Java%E9%9B%86%E5%90%88/"/>
+      <category term="面试" scheme="http://blog.ennis.info/tags/%E9%9D%A2%E8%AF%95/"/>
     
   </entry>
   
@@ -220,9 +245,9 @@
     
       <category term="Android" scheme="http://blog.ennis.info/tags/Android/"/>
     
-      <category term="View" scheme="http://blog.ennis.info/tags/View/"/>
-    
       <category term="面试" scheme="http://blog.ennis.info/tags/%E9%9D%A2%E8%AF%95/"/>
+    
+      <category term="View" scheme="http://blog.ennis.info/tags/View/"/>
     
   </entry>
   
@@ -532,33 +557,6 @@
       
         &lt;h1 id=&quot;逃逸分析&quot;&gt;&lt;a href=&quot;#逃逸分析&quot; class=&quot;headerlink&quot; title=&quot;逃逸分析&quot;&gt;&lt;/a&gt;逃逸分析&lt;/h1&gt;&lt;blockquote&gt;
 &lt;p&gt;一种确定&lt;strong&gt;指针动态范围&lt;/strong&gt;的&lt;strong&gt;静态分析&lt;/strong&gt;
-      
-    
-    </summary>
-    
-      <category term="Java虚拟机" scheme="http://blog.ennis.info/categories/Java%E8%99%9A%E6%8B%9F%E6%9C%BA/"/>
-    
-    
-      <category term="JVM" scheme="http://blog.ennis.info/tags/JVM/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>笔记-深入拆解Java虚拟机-22HotSpot虚拟机的intrinsic</title>
-    <link href="http://blog.ennis.info/2018/11/14/%E7%AC%94%E8%AE%B0-%E6%B7%B1%E5%85%A5%E6%8B%86%E8%A7%A3Java%E8%99%9A%E6%8B%9F%E6%9C%BA-22HotSpot%E8%99%9A%E6%8B%9F%E6%9C%BA%E7%9A%84intrinsic/"/>
-    <id>http://blog.ennis.info/2018/11/14/笔记-深入拆解Java虚拟机-22HotSpot虚拟机的intrinsic/</id>
-    <published>2018-11-14T11:14:48.000Z</published>
-    <updated>2019-01-26T13:26:29.120Z</updated>
-    
-    <content type="html"><![CDATA[<ul><li>HotSpot 虚拟机中，所有被标注 @HotSpotIntrinsicCandidate 注解的方法都是 HotSpot intrinsic。</li><li>这些方法的调用，会被 HotSpot 虚拟机<strong>替换成高效的指令序列</strong>。<strong>原本的方法实现</strong>则会被<strong>忽略</strong>掉。</li><li>如果 Java 核心类库的开发者更改了原本的实现，虚拟机中的高效实现也需要进行相应的修改。</li><li><strong>其他虚拟机不一定维护</strong>了这些 intrinsic 的高效实现。</li><li>这些高效实现通常<strong>依赖于具体的 CPU 指令</strong>，而这些 CPU 指令不好在 Java 源程序中表达。</li><li>如果换了一个体系架构，可能没有对应的 CPU 指令，无法进行 intrinsic 优化。</li></ul><!-- # intrinsic 与 CPU 指令 --><!-- 看看即可 --><h1 id="intrinsic-与方法内联"><a href="#intrinsic-与方法内联" class="headerlink" title="intrinsic 与方法内联"></a>intrinsic 与方法内联</h1><h2 id="独立的桩程序"><a href="#独立的桩程序" class="headerlink" title="独立的桩程序"></a>独立的桩程序</h2><ul><li>可以被解释执行器利用，直接替换对原方法的调用。</li><li>可以被即时编译器所利用，把代表对原方法的调用的 IR 节点，替换为对这些桩程序的调用的 IR 节点。</li><li>这种形式实现的比较少，主要包括 Math 类的一些方法。</li></ul><h2 id="特殊的编译器-IR-节点"><a href="#特殊的编译器-IR-节点" class="headerlink" title="特殊的编译器 IR 节点"></a>特殊的编译器 IR 节点</h2><ul><li>只能被即时编译器所用。</li><li>将对原方法的调用的 IR 节点，替换成特殊的 IR 节点，并参与接下来的优化过程。</li><li>替换过程是在方法内联时进行。</li><li>native 方法被标记为 intrinsic 也能够 “ 内联 “ 进来，并插入特殊的 IR 节点。</li><li>即时编译器的后端根据这些特殊的 IR 节点，生成指定的 CPU 指令。<br>-native 方法经过 intrinsic 优化之后，JNI 开销直接消失不见，最终的结果十分高效。</li><li>大部分实现通过这种形式。</li></ul><h1 id="已有-intrinsic-简介"><a href="#已有-intrinsic-简介" class="headerlink" title="已有 intrinsic 简介"></a>已有 intrinsic 简介</h1><ul><li>最新版本的 HotSpot 虚拟机定义了三百多个 intrinsic（Java 10.0.2）。</li><li>有三成以上是Unsafe类的方法。</li></ul><!-- 其他看看即可 --><h1 id="引用"><a href="#引用" class="headerlink" title="引用"></a>引用</h1><blockquote><p><a href="https://time.geekbang.org/column/article/18046" target="_blank" rel="noopener">https://time.geekbang.org/column/article/18046</a></p></blockquote>]]></content>
-    
-    <summary type="html">
-    
-      
-      
-        &lt;ul&gt;
-&lt;li&gt;HotSpot 虚拟机中，所有被标注 @HotSpotIntrinsicCandidate 注解的方法都是 HotSpot intrinsic。&lt;/li&gt;
-&lt;li&gt;这些方法的调用，会被 HotSpot 虚拟机&lt;strong&gt;替换成高效的指令序列&lt;/strong&gt;
       
     
     </summary>

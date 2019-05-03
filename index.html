@@ -334,6 +334,194 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://blog.ennis.info/2019/05/03/LayoutInflater中inflate方法各参数作用（二）/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Ennis L.M. Wu">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar/portrait.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Ennis -Little Monster">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2019/05/03/LayoutInflater中inflate方法各参数作用（二）/" itemprop="url">LayoutInflater中inflate方法各参数作用（二）</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-05-03T20:40:47+08:00">
+                2019-05-03
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Android视图/" itemprop="url" rel="index">
+                    <span itemprop="name">Android视图</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h1 id="View-inflate-和-LayoutInflater-inflate"><a href="#View-inflate-和-LayoutInflater-inflate" class="headerlink" title="View.inflate 和 LayoutInflater.inflate"></a>View.inflate 和 LayoutInflater.inflate</h1><p>View.inflate 实际上上只是简单的包装了 LayoutInflater.inflate</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> View <span class="title">inflate</span><span class="params">(Context context, @LayoutRes <span class="keyword">int</span> resource, ViewGroup root)</span> </span>&#123;</span><br><span class="line">    LayoutInflater factory = LayoutInflater.from(context);</span><br><span class="line">    <span class="keyword">return</span> factory.inflate(resource, root);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h1 id="LayoutInflater-inflate-两个参数和三个参数的区别"><a href="#LayoutInflater-inflate-两个参数和三个参数的区别" class="headerlink" title="LayoutInflater.inflate 两个参数和三个参数的区别"></a>LayoutInflater.inflate 两个参数和三个参数的区别</h1><h2 id="两个参数"><a href="#两个参数" class="headerlink" title="两个参数"></a>两个参数</h2><p>两个参数的方法实际上也只是简单调用了三个参数的方法</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> View <span class="title">inflate</span><span class="params">(@LayoutRes <span class="keyword">int</span> resource, @Nullable ViewGroup root)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> inflate(resource, root, root != <span class="keyword">null</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>当 ViewGroup 传入 null 时调用</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">inflate(resource, <span class="keyword">null</span>, <span class="keyword">false</span>);</span><br></pre></td></tr></table></figure>
+<ul>
+<li>当 ViewGroup 传入非 null 时调用</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">inflate(resource, root, <span class="keyword">true</span>);</span><br></pre></td></tr></table></figure>
+<h2 id="三个参数"><a href="#三个参数" class="headerlink" title="三个参数"></a>三个参数</h2><h3 id="ViewGroup-传入-null"><a href="#ViewGroup-传入-null" class="headerlink" title="ViewGroup 传入 null"></a>ViewGroup 传入 null</h3><ul>
+<li>View 没有父布局</li>
+<li>View 没有 LayoutParams</li>
+<li>返回该 View</li>
+<li>attachToRoot 参数无效</li>
+</ul>
+<h3 id="ViewGroup-传入非-null"><a href="#ViewGroup-传入非-null" class="headerlink" title="ViewGroup 传入非 null"></a>ViewGroup 传入非 null</h3><h4 id="attachToRoot-为-true"><a href="#attachToRoot-为-true" class="headerlink" title="attachToRoot 为 true"></a>attachToRoot 为 true</h4><ul>
+<li>View 添加到父布局</li>
+<li>View 设置 LayoutParams 参数</li>
+<li>返回父布局</li>
+</ul>
+<h4 id="attachToRoot-为-true-1"><a href="#attachToRoot-为-true-1" class="headerlink" title="attachToRoot 为 true"></a>attachToRoot 为 true</h4><ul>
+<li>View 没有父布局</li>
+<li>View 设置 LayoutParams 参数</li>
+<li>返回该 View</li>
+</ul>
+<h1 id="ViewGroup-最好传入非-null-的情况"><a href="#ViewGroup-最好传入非-null-的情况" class="headerlink" title="ViewGroup 最好传入非 null 的情况"></a>ViewGroup 最好传入非 null 的情况</h1><p>如果在知道父布局的情况下，ViewGroup 最好传入父布局而不是 null，因为 View 的 LayoutParams 参数始终需要通过父布局来确定。</p>
+<p>当调用 ViewGroup.addView 时，如果添加的 View 的 LayoutParams 为 null，会调用 generateDefaultLayoutParams 方法生成一个宽高都包裹的 LayoutParams，这可能并不是我们想要的效果，因为在 xml 中指定的宽高等属性将失效。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">addView</span><span class="params">(View child, <span class="keyword">int</span> index)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (child == <span class="keyword">null</span>) &#123;</span><br><span class="line">        <span class="keyword">throw</span> <span class="keyword">new</span> IllegalArgumentException(<span class="string">"Cannot add a null child view to a ViewGroup"</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    LayoutParams params = child.getLayoutParams();</span><br><span class="line">    <span class="keyword">if</span> (params == <span class="keyword">null</span>) &#123;</span><br><span class="line">        params = generateDefaultLayoutParams();</span><br><span class="line">        <span class="keyword">if</span> (params == <span class="keyword">null</span>) &#123;</span><br><span class="line">            <span class="keyword">throw</span> <span class="keyword">new</span> IllegalArgumentException(<span class="string">"generateDefaultLayoutParams() cannot return null"</span>);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    addView(child, index, params);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h1 id="attachToRoot-最好传入-true-的情况"><a href="#attachToRoot-最好传入-true-的情况" class="headerlink" title="attachToRoot 最好传入 true 的情况"></a>attachToRoot 最好传入 true 的情况</h1><ul>
+<li>自定义组件</li>
+</ul>
+<h1 id="attachToRoot-必须传入-false-的情况"><a href="#attachToRoot-必须传入-false-的情况" class="headerlink" title="attachToRoot 必须传入 false 的情况"></a>attachToRoot 必须传入 false 的情况</h1><p>否则会抛出异常</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">java.lang.IllegalStateException: The specified child already has a parent. You must call removeView() on the child&apos;s parent first.</span><br></pre></td></tr></table></figure>
+<h2 id="不负责-View-的展示时，attachToRoot-必须传入-false"><a href="#不负责-View-的展示时，attachToRoot-必须传入-false" class="headerlink" title="不负责 View 的展示时，attachToRoot 必须传入 false"></a>不负责 View 的展示时，attachToRoot 必须传入 false</h2><ul>
+<li>RecyclerView#onCreateViewHolder</li>
+</ul>
+<p>由 RecyclerView 控制展示 ViewHolder 的 View</p>
+<ul>
+<li>Fragment#onCreateView</li>
+</ul>
+<p>由 FragmentManager 控制显示 Fragment</p>
+<h2 id="View-已有父布局时，attachToRoot-必须传入-false"><a href="#View-已有父布局时，attachToRoot-必须传入-false" class="headerlink" title="View 已有父布局时，attachToRoot 必须传入 false"></a>View 已有父布局时，attachToRoot 必须传入 false</h2><h1 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h1><blockquote>
+<p><a href="https://blog.csdn.net/u012702547/article/details/52628453" target="_blank" rel="noopener">https://blog.csdn.net/u012702547/article/details/52628453</a><br><a href="https://www.jianshu.com/p/342890fcf5c9" target="_blank" rel="noopener">https://www.jianshu.com/p/342890fcf5c9</a></p>
+</blockquote>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://blog.ennis.info/2019/03/18/转-Android类加载/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -2236,201 +2424,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://blog.ennis.info/2018/12/15/笔记-深入拆解Java虚拟机-34Graal：用Java编译Java/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Ennis L.M. Wu">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar/portrait.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Ennis -Little Monster">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/12/15/笔记-深入拆解Java虚拟机-34Graal：用Java编译Java/" itemprop="url">笔记-深入拆解Java虚拟机-34Graal：用Java编译Java</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-12-15T13:49:51+08:00">
-                2018-12-15
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Java虚拟机/" itemprop="url" rel="index">
-                    <span itemprop="name">Java虚拟机</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h1 id="GraalVM"><a href="#GraalVM" class="headerlink" title="GraalVM"></a>GraalVM</h1><blockquote>
-<p>GraalVM 是一个高性能的、支持多种编程语言的执行环境。它既可以在传统的 OpenJDK 上运行，也可以通过 AOT（Ahead-Of-Time）编译成可执行文件单独运行，甚至可以集成至数据库中运行。</p>
-</blockquote>
-<blockquote>
-<p>除此之外，它还移除了编程语言之间的边界，并且支持通过即时编译技术，将混杂了不同的编程语言的代码编译到同一段二进制码之中，从而实现不同语言之间的无缝切换。</p>
-</blockquote>
-<h1 id="Graal-编译器"><a href="#Graal-编译器" class="headerlink" title="Graal 编译器"></a>Graal 编译器</h1><blockquote>
-<p>用 Java 写就的即时编译器，它从 Java 9u 开始便被集成自 JDK 中，作为实验性质的即时编译器。</p>
-</blockquote>
-<ul>
-<li>启用时将替换掉 HotSpot 中的 C2 编译器。</li>
-<li>响应原本 C2 负责的编译请求。</li>
-</ul>
-<h1 id="Graal-和-Java-虚拟机的交互"><a href="#Graal-和-Java-虚拟机的交互" class="headerlink" title="Graal 和 Java 虚拟机的交互"></a>Graal 和 Java 虚拟机的交互</h1><p>即时编译器与 JVM 的交互可以分为三个方面：</p>
-<ol>
-<li>响应编译请求。</li>
-<li>获取编译所需的元数据（如类、方法、字段）和反映程序执行状态的 profile。</li>
-<li>将生成的二进制码部署至代码缓存（code cache）里。</li>
-</ol>
-<ul>
-<li>传统情况，<strong>即时编译器是与 JVM 紧耦合</strong>。</li>
-<li>更改即时编译器需要重新编译整个 JVM。</li>
-<li>引入 <a href="http://openjdk.java.net/jeps/243" target="_blank" rel="noopener">JVM 编译器接口</a>（JVM Compiler Interface，JVMCI）解耦合 JVM 和 Graal。</li>
-<li><strong>Java 程序可以直接调用 Graal</strong>，编译并部署指定方法（因为JVMCI）。</li>
-<li>Graal 的单元测试和 Truffle 语言实现框架基于上述技术。</li>
-</ul>
-<h1 id="Graal-和-C2-的区别"><a href="#Graal-和-C2-的区别" class="headerlink" title="Graal 和 C2 的区别"></a>Graal 和 C2 的区别</h1><ul>
-<li>Graal 由 <strong>Java 编写</strong>，C2 由 C++ 编写。</li>
-<li>Graal <strong>更加模块化，更容易开发与维护</strong>。</li>
-<li>Graal 中被证实有效的部分逃逸分析（partial escape analysis）未被移植到 C2 中。</li>
-<li>Graal 的<strong>内联算法对新语法、新语言更加友好</strong>。</li>
-</ul>
-<h1 id="Graal-的实现"><a href="#Graal-的实现" class="headerlink" title="Graal 的实现"></a>Graal 的实现</h1><ul>
-<li>编译过程分为前端和后端。</li>
-<li><strong>前端</strong>实现<strong>平台无关</strong>的优化（如方法内联），和小部分平台相关的优化。</li>
-<li><strong>后端</strong>实现大部分<strong>平台相关</strong>优化（如寄存器分配），和<strong>生成机器码</strong>。</li>
-<li>前端的 IR 称为 High-level IR（HIR）（如Sea-of-Nodes IR），后端的 IR 称为 Low-level IR（LIR）。</li>
-<li>前端由一个个单独的优化阶段（optimization phase）构成。</li>
-<li>前端编译阶段除了少数几个关键的之外，其余均可以通过配置选项开启或关闭。</li>
-<li><strong>Graal 比 C2 更加激进</strong>，设计上<strong>十分青睐基于假设的优化手段</strong>。</li>
-<li>Graal 支持自定义假设，和直接与去优化节点相关联。</li>
-<li>Graal 实现高性能的 intrinsic 方法相对简单。</li>
-</ul>
-<h1 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h1><p>Q：GraalVM 和 JVM 是什么关系？</p>
-<p>A：可以将 GraalVM 看成泛指带 Graal 编译器的虚拟机。</p>
-<hr>
-<p>Q：<strong>可不可以把 profile 和编译的机器码保存到磁盘</strong>，在代码和运行平台不变的情况下，下次启动（或部署多实例）的时候直接装载这部分数据？这算作是一种系统预热的可行性方案吗？</p>
-<p>A：<strong>已经有这种做法</strong>，但同时需要承担 profile 不能反映当前执行状态的风险。</p>
-<hr>
-<p>Q：<strong>Graal 自身的及时编译是调用 Graal 自身吗？如果这么做会不会出现无穷递归？</strong></p>
-<p>A：默认情况下，<strong>由 C1 编译Graal。调用 Graal 编译 Graal 并不会造成无穷递归。</strong>因为 JVM 里有解释执行器，能够执行 Graal 代码。</p>
-<h1 id="引用"><a href="#引用" class="headerlink" title="引用"></a>引用</h1><blockquote>
-<p><a href="https://time.geekbang.org/column/article/41245" target="_blank" rel="noopener">https://time.geekbang.org/column/article/41245</a></p>
-</blockquote>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -2485,7 +2478,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">58</span>
+                  <span class="site-state-item-count">59</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
