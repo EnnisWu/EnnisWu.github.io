@@ -130,7 +130,7 @@ scheme: Pisces
 # Value before `||` delimeter is the target permalink.
 # Value after `||` delimeter is the name of FontAwesome icon. If icon (with or without delimeter) is not specified, globe icon will be loaded.
 social:
-  E-Mail: mailto:ennis.lm.wu@gmail.com || envelope
+  E-Mail: mailto:wkf1997@gmail.com || envelope
   GitHub: https://github.com/EnnisWu || github
   #Google: https://plus.google.com/yourname || google
   Twitter: https://twitter.com/EnnisWu || twitter
