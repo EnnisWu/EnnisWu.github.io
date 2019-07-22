@@ -94,12 +94,13 @@ index_with_subtitle: false
 menu:
   home: / || home
   about: /about/ || user
-  足迹: /footprints/ || map-marker
-  相册: /photos/ || image
-  影视: /movies/ || film
   tags: /tags/ || tags
   categories: /categories/ || th
   archives: /archives/ || archive
+  瞬间: /moments/ || bolt
+  相册: /photos/ || image
+  足迹: /footprints/ || map-marker
+  影视: /movies/ || film
   #schedule: /schedule/ || calendar
   #sitemap: /sitemap.xml || sitemap
   #commonweal: /404/ || heartbeat
@@ -130,7 +131,7 @@ scheme: Pisces
 # Value before `||` delimeter is the target permalink.
 # Value after `||` delimeter is the name of FontAwesome icon. If icon (with or without delimeter) is not specified, globe icon will be loaded.
 social:
-  E-Mail: mailto:wkf1997@gmail.com || envelope
+  E-Mail: mailto:ennis.wu@outlook.com || envelope
   GitHub: https://github.com/EnnisWu || github
   #Google: https://plus.google.com/yourname || google
   Twitter: https://twitter.com/EnnisWu || twitter
