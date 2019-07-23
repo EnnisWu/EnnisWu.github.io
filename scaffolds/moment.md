@@ -1,10 +1,8 @@
 ---
 title: {{ title }}
 date: {{ date }}
-tags:
-categories:
+mCategories:
 type: moment
-time: {{ 't' + date.substring(10) + '修改！！' }}
 ---
 
 <div class="pics"></div>
@@ -14,9 +12,9 @@ time: {{ 't' + date.substring(10) + '修改！！' }}
 var data = [
     {"link": "", "type": "photo"},
     {"link": "", "type": "image"},
-    {"link": "", "type": "meme"},
     {"link": "", "type": "screenshot"},
-    {"link": "", "type": "picture"}
+    {"link": "", "type": "picture"},
+    {"link": "", "type": "video"}
 ];
 picsRender(data);
 </script>
