@@ -123,7 +123,7 @@ live2d:
 
 douban:
   user: 76491968
-  builtin: true
+  builtin: false
   movie:
     title: '影视'
     quote: '因为标记了很多以前看的，所以时间不准确'

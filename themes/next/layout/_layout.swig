@@ -10,8 +10,11 @@
   {% include '_partials/head.swig' %}
   <title>{% block title %}{% endblock %}</title>
   {% include '_third-party/analytics/index.swig' %}
-  <script src="/lib/photo/photoswipe.min.js?v={{ theme.version }}"></script>
-  <script src="/lib/photo/photoswipe-ui-default.min.js?v={{ theme.version }}"></script>
+  <script src="/lib/photo/photoswipe.min.js"></script>
+  <script src="/lib/photo/photoswipe-ui-default.min.js"></script>
+  <script src="/lib/public/jquery-3.3.1.min.js"></script>
+  <link href="/lib/moment/jquery.fancybox.min.css" rel="stylesheet">
+  <script src="/lib/moment/jquery.fancybox.min.js"></script>
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="{{ page.lang || page.language || config.language }}">
