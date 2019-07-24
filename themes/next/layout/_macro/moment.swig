@@ -32,7 +32,8 @@
 
         {# Not to show title for quote posts that do not have a title #}
         {% if not (is_index and post.type === 'quote' and not post.title) %}
-          <{% if theme.seo %}h2{% else %}h1{% endif %} class="post-title{% if post.direction && post.direction.toLowerCase() === 'rtl' %} rtl{% endif %}" itemprop="name headline">{#
+          {#适配瞬间#}
+          <{% if theme.seo %}h2{% else %}h2{% endif %} class="post-title{% if post.direction && post.direction.toLowerCase() === 'rtl' %} rtl{% endif %}" itemprop="name headline" style="text-align: center">{#
           #}{# Link posts #}{#
           #}{% if post.link %}
               {% if post.sticky > 0 %}
@@ -43,7 +44,7 @@
               {% endif %}
               {#适配瞬间#}
               {#<a class="post-title-link post-title-link-external" target="_blank" href="{{ url_for(post.link) }}" itemprop="url">#}
-                {{ post.title or post.link }}
+                <p style="text-align: left; display: table; margin: auto">{{ post.title or post.link }}</p>
                 <i class="fa fa-external-link"></i>
               {#适配瞬间#}
               {#</a>#}
@@ -56,12 +57,12 @@
                 {% endif %}
                 {#适配瞬间#}
                 {#<a class="post-title-link" href="{{ url_for(post.path) }}" itemprop="url">#}{#
-                #}{{ post.title | default(__('post.untitled'))}}{#
+                #}<p style="text-align: left; display: table; margin: auto">{{ post.title | default(__('post.untitled')) }}</p>{#
               #}{#适配瞬间#}{#
               #}{#</a>#}{#
-            #}{% else %}{{ post.title }}{% endif %}{#
+            #}{% else %}<p style="text-align: left; display: table; margin: auto">{{ post.title }}</p>{% endif %}{#
           #}{% endif %}{#
-        #}</{% if theme.seo %}h2{% else %}h1{% endif %}>
+        #}</{% if theme.seo %}h2{% else %}h2{% endif %}>
         {% endif %}
 
         <div class="post-meta">
