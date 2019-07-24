@@ -17,8 +17,8 @@ function videosRender(data, divId) {
             var posterSrc = posterUrl + videos[j].poster;
             videosHtml += '<a class="group-picture" data-fancybox href="#v' + name + '">'
             + '<div style="position: relative; text-align: center; width: 32%; float: left">'
-            + '<div style="position: absolute; width: 100%; height: 100%">'
-            + '<img style="width: 30%; margin: 35%; padding: 0px; border-width: 0px" src="/images/video/play.svg">'
+            + '<div style="position: absolute; width: 50%; height: 50%; left: 0; right: 0; top: 0; bottom: 0; margin: auto">'
+            + '<img style="width: 100%; padding: 0px; border-width: 0px" src="/images/video/play.svg">'
             + '</div>'
             + '<img style="width: 100%; padding: 0px;" src="' + posterSrc + '">'
             + '</div>'
