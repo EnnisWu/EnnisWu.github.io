@@ -31,12 +31,11 @@ function qzoneShareRender(data, divId) {
 
 function weChatShareRender(data, divId) {
     document.getElementById(divId).innerHTML 
-    = '<div style="text-align: center">'
-    + '<div style="display: table; height: 40px; position: relative; border-radius: 2px; overflow: hidden; background-color: #f5f5f5; padding: 10px; margin: auto;">'
+    = '<div style="width: 270px; display: table; height: 40px; position: relative; border-radius: 2px; overflow: hidden; background-color: #f5f5f5; padding: 10px; margin: auto;">'
     + '<div style="float: left; overflow: hidden; margin: 0; width: 40px; height: 40px; position: relative; display: table-cell;">'
     + '<a class="group-picture" href="' + data.url + '"target="_blank" title="点击查看" style="border-bottom: 0px; display: inline-block; vertical-align: top; color: #295c9d;">'
     + '<img src="' + data.picUrl + '"style="padding: 0px; height: 40px;"></a></div>'
-    + '<div style="padding-right: 10px; overflow: hidden; display: table-cell; vertical-align: middle; padding-left: 14px;">'
-    + '<a href="' + data.url + '"target="_blank"style="border-bottom: 0px; font-size: 16px; color: #000; text-decoration: none; overflow: hidden;">'
-    + data.title + '</a></div></div></div>';
+    + '<div style="line-height: 1.2; padding-right: 10px; overflow: hidden; display: table-cell; vertical-align: middle; padding-left: 14px;">'
+    + '<a href="' + data.url + '"target="_blank" style="text-align: left; border-bottom: 0px; font-size: 15px; color: #000; text-decoration: none; overflow: hidden;">'
+    + data.title + '</a></div></div>';
 }
