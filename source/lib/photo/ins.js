@@ -118,8 +118,10 @@
           var liTmpl = "";
           for (var i = 0, len = data.link.length; i < len; i++) {
             //var minSrc = 'http://p1ju2a9a7.bkt.clouddn.com/min_photos/' + data.link[i] + '?imageMogr2/auto-orient';
-            var minSrc = 'http://image.ennis.info/photos_min/' + data.link[i];
-            var src = 'http://image.ennis.info/photos/' + data.link[i];
+            // var minSrc = 'http://image.ennis.info/photos_min/' + data.link[i];
+            // var src = 'http://image.ennis.info/photos/' + data.link[i];
+            var minSrc = 'https://d13mlcfozzlptt.cloudfront.net/photos_min/' + data.link[i];
+            var src = 'https://d13mlcfozzlptt.cloudfront.net/photos/' + data.link[i];
             //var src = 'http://p1ju2a9a7.bkt.clouddn.com/' + data.link[i];
             var type = data.type[i];
             var target = src + (type === 'video' ? '.mp4' : '.jpg');

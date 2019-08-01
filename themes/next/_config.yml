@@ -45,7 +45,7 @@ rss: /atom.xml
 footer:
   # Specify the date when the site was setup.
   # If not defined, current year will be used.
-  #since: 2015
+  since: 2018
 
   # Icon between year and copyright info.
   icon: user
@@ -101,6 +101,7 @@ menu:
   相册: /photos/ || image
   足迹: /footprints/ || map-marker
   影视: /movies/ || film
+  留言: /comments/ || comments
   #schedule: /schedule/ || calendar
   #sitemap: /sitemap.xml || sitemap
   #commonweal: /404/ || heartbeat
@@ -115,9 +116,9 @@ menu_icons:
 # ---------------------------------------------------------------
 
 # Schemes
-#scheme: Muse
+scheme: Muse
 #scheme: Mist
-scheme: Pisces
+#scheme: Pisces
 #scheme: Gemini
 
 
@@ -131,7 +132,6 @@ scheme: Pisces
 # Value before `||` delimeter is the target permalink.
 # Value after `||` delimeter is the name of FontAwesome icon. If icon (with or without delimeter) is not specified, globe icon will be loaded.
 social:
-  E-Mail: mailto:ennis.wu@outlook.com || envelope
   GitHub: https://github.com/EnnisWu || github
   #Google: https://plus.google.com/yourname || google
   Twitter: https://twitter.com/EnnisWu || twitter
@@ -141,6 +141,7 @@ social:
   #YouTube: https://youtube.com/yourname || youtube
   Instagram: https://www.instagram.com/ennis_wu || instagram
   #Skype: skype:yourname?call|chat || skype
+  E-Mail: mailto:ennis.wu@outlook.com || envelope
 
 social_icons:
   enable: true
@@ -186,8 +187,8 @@ sidebar:
   #  - always  expand for all pages automatically
   #  - hide    expand only when click on the sidebar toggle icon.
   #  - remove  Totally remove sidebar including sidebar toggle.
-  display: post
-  #display: always
+  #display: post
+  display: always
   #display: hide
   #display: remove
 

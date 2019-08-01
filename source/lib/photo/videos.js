@@ -1,6 +1,6 @@
 function videosRender(data, divId) {
-    var videoUrl = 'http://image.ennis.info/videos/';
-    var posterUrl = 'http://image.ennis.info/posters/';
+    var videoUrl = 'https://d13mlcfozzlptt.cloudfront.net/videos/';
+    var posterUrl = 'https://d13mlcfozzlptt.cloudfront.net/posters/';
     var videosHtml = '';
 
     var len = data.length;

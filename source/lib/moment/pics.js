@@ -1,5 +1,5 @@
 function picsRender(data, divId) {
-    var baseUrl = 'http://image.ennis.info/';
+    var baseUrl = 'https://d13mlcfozzlptt.cloudfront.net/';
     var pics = '<div style="text-align: center; overflow: hidden">';
     
     var len = data.length;
