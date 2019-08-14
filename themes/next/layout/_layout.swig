@@ -15,6 +15,7 @@
   <script src="/lib/public/jquery-3.3.1.min.js"></script>
   <link href="/lib/moment/jquery.fancybox.min.css" rel="stylesheet">
   <script src="/lib/moment/jquery.fancybox.min.js"></script>
+  <script src="/lib/moment/moment.js"></script>
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="{{ page.lang || page.language || config.language }}">

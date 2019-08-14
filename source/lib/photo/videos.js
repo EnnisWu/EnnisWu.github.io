@@ -1,6 +1,8 @@
+var host = 'https://d13mlcfozzlptt.cloudfront.net/';
+
 function videosRender(data, divId) {
-    var videoUrl = 'https://d13mlcfozzlptt.cloudfront.net/videos/';
-    var posterUrl = 'https://d13mlcfozzlptt.cloudfront.net/posters/';
+    var videoUrl = host + 'videos/';
+    var posterUrl = host + 'posters/';
     var videosHtml = '';
 
     var len = data.length;

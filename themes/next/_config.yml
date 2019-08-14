@@ -132,16 +132,16 @@ scheme: Muse
 # Value before `||` delimeter is the target permalink.
 # Value after `||` delimeter is the name of FontAwesome icon. If icon (with or without delimeter) is not specified, globe icon will be loaded.
 social:
+  E-Mail: mailto:ennis.wu@outlook.com || envelope
   GitHub: https://github.com/EnnisWu || github
   #Google: https://plus.google.com/yourname || google
-  Twitter: https://twitter.com/EnnisWu || twitter
+  #Twitter: https://twitter.com/yourname || twitter
   #FB Page: https://www.facebook.com/yourname || facebook
   #VK Group: https://vk.com/yourname || vk
   #StackOverflow: https://stackoverflow.com/yourname || stack-overflow
   #YouTube: https://youtube.com/yourname || youtube
-  Instagram: https://www.instagram.com/ennis_wu || instagram
+  #Instagram: https://www.instagram.com/yourname || instagram
   #Skype: skype:yourname?call|chat || skype
-  E-Mail: mailto:ennis.wu@outlook.com || envelope
 
 social_icons:
   enable: true
