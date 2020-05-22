@@ -1,9 +1,15 @@
 ---
-title: LayoutInflater中inflate方法各参数作用（二）
+title: '「笔记」LayoutInflater 中 inflate 方法各参数作用（二）'
 date: 2019-05-03 20:40:47
 tags: Android
-categories: Android视图
+categories: Android
 ---
+
+# 原文
+
+- [三个案例带你看懂LayoutInflater中inflate方法两个参数和三个参数的区别](https://blog.csdn.net/u012702547/article/details/52628453)
+
+- [View.inflate() 的前世今生](https://www.jianshu.com/p/342890fcf5c9)
 
 # View.inflate 和 LayoutInflater.inflate
 
@@ -45,8 +51,11 @@ inflate(resource, root, true);
 ### ViewGroup 传入 null
 
 - View 没有父布局
+
 - View 没有 LayoutParams
+
 - 返回该 View
+
 - attachToRoot 参数无效
 
 ### ViewGroup 传入非 null
@@ -54,13 +63,17 @@ inflate(resource, root, true);
 #### attachToRoot 为 true
 
 - View 添加到父布局
+
 - View 设置 LayoutParams 参数
+
 - 返回父布局
 
 #### attachToRoot 为 true
 
 - View 没有父布局
+
 - View 设置 LayoutParams 参数
+
 - 返回该 View
 
 # ViewGroup 最好传入非 null 的情况
@@ -108,8 +121,3 @@ java.lang.IllegalStateException: The specified child already has a parent. You m
 由 FragmentManager 控制显示 Fragment
 
 ## View 已有父布局时，attachToRoot 必须传入 false
-
-# 参考
-
-> https://blog.csdn.net/u012702547/article/details/52628453
-> https://www.jianshu.com/p/342890fcf5c9

@@ -1,7 +1,7 @@
 ---
-title: Java内部类中private的探讨
+title: '「原创」Java 内部类中 private 的探讨'
 date: 2019-02-15 11:48:23
-tags: [Java,Java基础]
+tags: [Java,内部类]
 categories: Java
 ---
 
@@ -140,7 +140,6 @@ private priviteMethod(int arg0, double arg1, char arg2): void
 内部类的字段
 private int inner
 final Outer this$0
-
 ```
 
 # 内部类为什么可以直接访问外部类的字段和方法

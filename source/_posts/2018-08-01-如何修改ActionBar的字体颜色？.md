@@ -1,8 +1,8 @@
 ---
-title: 如何修改ActionBar的字体颜色？
+title: '「笔记」如何修改 ActionBar 的字体颜色？'
 date: 2018-08-01 18:22:46
 tags: [Android,ActionBar]
-categories: Android视图
+categories: Android
 ---
 
 ```xml

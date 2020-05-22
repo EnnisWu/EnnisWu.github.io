@@ -1,23 +1,32 @@
 ---
-title: 笔记-深入拆解Java虚拟机-33JavaAgent与字节码注入
+title: '「深入拆解 Java 虚拟机」33 JavaAgent 与字节码注入'
 date: 2018-12-08 16:01:16
-tags: JVM
-categories: Java虚拟机
+tags: [JVM,看不懂]
+categories: 《深入拆解 Java 虚拟机》
 ---
+
+原文：https://time.geekbang.org/column/article/41186
 
 # premain 方法
 
 - **在 main 方法前执行的方法。**
+
 - JVM 能识别的 premain 方法参数类型是 String
 
 ## 以 Java agent 方式运行 premain 方法
 
 - 方法一：打包成 jar 包，在的 MANIFEST.MF 配置文件中，指定的 Premain-class。
+
 - 方法二：通过 Attach API 远程加载。
+
 	- 不会先于 main 方法执行。
+
 	- 取决于调用 Attach API 的时机。
+
 	- 运行不再是 premain 方法，而是 agentmain 方法。
+
 	- 更新 jar 包的 manifest 文件，包含 Agent-Class 配置。
+
 - JVM 不限制 Java agent 的数量。
 
 # 字节码注入
@@ -47,9 +56,13 @@ public class MyAgent {
 ```
 
 - `Instrumentation` 接口：注册类加载时间拦截器。
+
 - `ClassFileTransformer` 接口：拦截器需要实现，重写 transform 方法。
+
 - `transform` 方法：
+
 	- `byte[]` 参数：正在被加载的类的字节码。
+
 	- `byte[]` 返回值：更新过后的类的字节码。
 
 ## redefine 和 retransform（不懂，怎么实现？）
@@ -77,7 +90,9 @@ public class MyAgent {
 > JVMTI 是一个事件驱动的工具实现接口。
 
 - Java agent 通过 JVMTI agent（C agent）实现。
+
 - 在 C agent 加载后的入口方法 Agent_OnLoad 注册各个事件的钩子（hook）方法。
+
 - JVM 触发这些事件时，调用对应的钩子方法。
 
 为 JVMTI 中的 ClassFileLoadHook 事件设置钩子，在 C 层面拦截所有的类加载事件。
@@ -87,12 +102,19 @@ public class MyAgent {
 # 基于字节码注入的 profiler
 
 - 实现代码覆盖工具，或者各式各样的 profiler。
+
 - 在某一程序行为的周围，注入某运行时类方法的调用，表示该程序行为正要发生或已经发生。
+
 - 需排除对 JDK 类和运行时类的注入（可能造成死循环调用）。
+
 - 设置一个线程私有标识位，区分应用代码上下文和注入代码上下文。（不懂）
+
 - 借助自定义类加载器来隔离命名空间。
+
 - 观察者效应（observer effect）对所收集的数据造成的影响。
+
 - 使用字节码注入开发 profiler 时，需要辩证地看待所收集的数据。
+
 - 仅表示在被注入的情况下程序的执行状态，不是没有注入情况下的程序执行状态。
 
 # 面向方面（切面）编程（AOP）
@@ -104,7 +126,3 @@ public class MyAgent {
 Q：如何注入方法出口。除了正常执行路径之外，还需考虑异常执行路径。
 
 A：不用管有没有 catch 块，有没有 throw，直接给所有代码罩一个 catch any 的异常处理就行了。
-
-# 引用
-
-> https://time.geekbang.org/column/article/41186

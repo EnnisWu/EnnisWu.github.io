@@ -1,9 +1,11 @@
 ---
-title: 笔记-深入拆解Java虚拟机-15Java语法糖与Java编译器
+title: '「深入拆解 Java 虚拟机」15 Java 语法糖与 Java 编译器'
 date: 2018-10-20 19:02:34
 tags: JVM
-categories: Java虚拟机
+categories: 《深入拆解 Java 虚拟机》
 ---
+
+原文：https://time.geekbang.org/column/article/13781
 
 # 自动装箱（auto-boxing）与自动拆箱（auto-unboxing）
 
@@ -41,13 +43,17 @@ public int foo();
 ```
 
 - 向泛型参数为 Integer 的 ArrayList 添加 int 值，**字节码中调用了 Integer.valueOf 方法**。
+
 - 从泛型参数为 Integer 的 ArrayList 取出元素，程序期待的是 int 值，**字节码中调用了 Integer.intValue 方法**。
 
 # 泛型与类型擦除
 
 - 在字节码中，ArrayList 的 add 接受的参数类型是 Object，get 方法的返回类型是 Object。
+
 - get 方法**强制向下转换类型**。
+
 - **泛型信息**在 JVM 中会**全部擦除**，为了兼容引入泛型之前的代码。
+
 - 为限定继承类的泛型参数擦除为 Object，**限定继承类**的泛型参数**擦除为所限定的类**。
 
 ```java
@@ -76,6 +82,7 @@ T foo(T);
 # 桥接方法
 
 - 桥接方法标识符包括 ACC_BRIDGE 和 ACC_SYNTHETIC（对于 Java 源代码不可见）。
+
 - **不能直接调用桥接方法，但可通过反射调用。**
 
 ## 泛型重写生成桥接方法
@@ -96,8 +103,11 @@ class VIPOnlyMerchant extends Merchant<VIP> {
 ```
 
 - actionPrice 方法符合 Java 语言的方法重写。
+
 - 不符合 JVM 方法重写的定义。
+
 父类方法描述符(LCustomer)
+
 子类方法描述符(LVIP)
 
 - 为了**保证编译的字节码能保留重写的语言**，Java 编译器额外**添加了桥接方法**。
@@ -169,8 +179,5 @@ class NaiveMerchant extends Merchant
 # 字符串 switch
 
 - case 比较字符串的哈希值。
+
 - 哈希值相同的字符串用 equals 比较。
-
-# 参考
-
-> https://time.geekbang.org/column/article/13781

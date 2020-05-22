@@ -1,13 +1,22 @@
 ---
-title: Java并发之synchronized
+title: '「笔记」synchronized 的相关问题'
 date: 2019-02-18 14:24:12
-tags: [Java,Java基础,Java多线程,面试]
+tags: [Java,Java多线程]
 categories: [Java]
 ---
+
+# 原文
+
+- [Java 之 synchronized 详解](https://juejin.im/post/594a24defe88c2006aa01f1c)
+
+- [Java线程同步：synchronized锁住的是代码还是对象](https://blog.csdn.net/xiao__gui/article/details/8188833)
+
+- [Java并发之synchronized深度解析](https://www.jianshu.com/p/a499d13ca702)
 
 # 锁机制的特性
 
 - 互斥性
+
 - 可见性
 
 # 用法
@@ -21,6 +30,7 @@ synchronized(object) {}
 ```java
 synchronized(类.class) {}
 ```
+
 ## 修饰方法
 
 - 成员方法
@@ -28,6 +38,7 @@ synchronized(类.class) {}
 ```java
 synchronized void method1() {}
 ```
+
 等同于
 
 ```java
@@ -149,11 +160,3 @@ synchronized void methodB() {}
 - **不灵活**：加锁和解锁的**时机和条件单一**。
 
 - **无法知道是否成功获取到锁。**
-
-# 参考
-
-https://juejin.im/post/594a24defe88c2006aa01f1c
-
-https://blog.csdn.net/xiao__gui/article/details/8188833
-
-https://www.jianshu.com/p/a499d13ca702

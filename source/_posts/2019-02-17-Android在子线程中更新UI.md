@@ -1,9 +1,15 @@
 ---
-title: Android在子线程中更新UI
+title: '「笔记」Android 在子线程中更新 UI'
 date: 2019-02-17 10:21:05
-tags: [Android,AndroidUI]
+tags: [Android]
 categories: Android
 ---
+
+# 原文
+
+- https://www.zhihu.com/question/24764972
+
+- https://ivanljt.github.io/blog/2017/08/16/Android%20%E4%B8%AD%E5%AD%90%E7%BA%BF%E7%A8%8B%E7%9C%9F%E7%9A%84%E4%B8%8D%E8%83%BD%E6%9B%B4%E6%96%B0UI%E5%90%97/
 
 源码版本 SDK 28
 
@@ -178,9 +184,3 @@ private void runOnChildThread() {
 3. **创建子线程的 Looper**
 
 # **实际项目请在主线程中更新 UI！！！**
-
-# 参考
-
-https://www.zhihu.com/question/24764972
-
-https://ivanljt.github.io/blog/2017/08/16/Android%20%E4%B8%AD%E5%AD%90%E7%BA%BF%E7%A8%8B%E7%9C%9F%E7%9A%84%E4%B8%8D%E8%83%BD%E6%9B%B4%E6%96%B0UI%E5%90%97/

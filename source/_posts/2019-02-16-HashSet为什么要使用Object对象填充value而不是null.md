@@ -1,8 +1,8 @@
 ---
-title: HashSet为什么要使用Object对象填充value而不是null
+title: '「原创」HashSet 为什么要使用 Object 对象填充 value 而不是 null'
 date: 2019-02-16 23:25:02
-tags: [Java,Java集合,Java基础,面试]
-categories: Java集合
+tags: [Java,Java集合]
+categories: Java
 ---
 
 我们知道 HashSet 内部使用 HashMap 实现，HashSet 的元素存储在 HashMap 的 key 中（唯一），value 使用了一个 Object 对象填充。为什么 HashSet 不使用 null 去填充 value 呢？
