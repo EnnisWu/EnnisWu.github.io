@@ -72,7 +72,7 @@
 
 
 
-  <meta name="keywords" content="JVM," />
+  <meta name="keywords" content="未完成,JVM," />
 
 
 
@@ -85,18 +85,18 @@
 
 
 
-<meta name="description" content="编译器优化的重排序 保证遵守 as-if-serial 属性。 操作之间存在数据依赖，不能调整顺序。  Java 内存模型与 happens-before 关系 用来描述两个操作的内存可见性。 操作 X happens-before 操作 Y，X 的结果对于 Y 可见。 happens-before 关系具有传递性。 解决这种数据竞争的关键：构造一个跨线程的 happens-before 关系。">
-<meta name="keywords" content="JVM">
+<meta name="description" content="原文：https://time.geekbang.org/column/article/13484 编译器优化的重排序 保证遵守 as-if-serial 属性。  操作之间存在数据依赖，不能调整顺序。   Java 内存模型与 happens-before 关系 用来描述两个操作的内存可见性。  操作 X happens-before 操作 Y，X 的结果对于 Y 可见。  happens-be">
+<meta name="keywords" content="未完成,JVM">
 <meta property="og:type" content="article">
-<meta property="og:title" content="笔记-深入拆解Java虚拟机-13Java内存模型">
+<meta property="og:title" content="「深入拆解 Java 虚拟机」13 Java 内存模型">
 <meta property="og:url" content="http://blog.ennis.info/2018/08/31/笔记-深入拆解Java虚拟机-13Java内存模型/index.html">
 <meta property="og:site_name" content="Ennis Wu">
-<meta property="og:description" content="编译器优化的重排序 保证遵守 as-if-serial 属性。 操作之间存在数据依赖，不能调整顺序。  Java 内存模型与 happens-before 关系 用来描述两个操作的内存可见性。 操作 X happens-before 操作 Y，X 的结果对于 Y 可见。 happens-before 关系具有传递性。 解决这种数据竞争的关键：构造一个跨线程的 happens-before 关系。">
+<meta property="og:description" content="原文：https://time.geekbang.org/column/article/13484 编译器优化的重排序 保证遵守 as-if-serial 属性。  操作之间存在数据依赖，不能调整顺序。   Java 内存模型与 happens-before 关系 用来描述两个操作的内存可见性。  操作 X happens-before 操作 Y，X 的结果对于 Y 可见。  happens-be">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2019-01-26T13:26:29.089Z">
+<meta property="og:updated_time" content="2020-05-21T16:44:20.449Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="笔记-深入拆解Java虚拟机-13Java内存模型">
-<meta name="twitter:description" content="编译器优化的重排序 保证遵守 as-if-serial 属性。 操作之间存在数据依赖，不能调整顺序。  Java 内存模型与 happens-before 关系 用来描述两个操作的内存可见性。 操作 X happens-before 操作 Y，X 的结果对于 Y 可见。 happens-before 关系具有传递性。 解决这种数据竞争的关键：构造一个跨线程的 happens-before 关系。">
+<meta name="twitter:title" content="「深入拆解 Java 虚拟机」13 Java 内存模型">
+<meta name="twitter:description" content="原文：https://time.geekbang.org/column/article/13484 编译器优化的重排序 保证遵守 as-if-serial 属性。  操作之间存在数据依赖，不能调整顺序。   Java 内存模型与 happens-before 关系 用来描述两个操作的内存可见性。  操作 X happens-before 操作 Y，X 的结果对于 Y 可见。  happens-be">
 
 
 
@@ -132,7 +132,7 @@
 
 
 
-  <title>笔记-深入拆解Java虚拟机-13Java内存模型 | Ennis Wu</title>
+  <title>「深入拆解 Java 虚拟机」13 Java 内存模型 | Ennis Wu</title>
   
 
 
@@ -338,6 +338,18 @@
 
  </div>
     </header>
+    <script>
+      let images = [
+         'header0.jpg',
+         'header1.jpg',
+         'header2.png'
+      ];
+      let image = images[Math.floor(Math.random() * images.length)];
+      window.document.getElementById('header').style.cssText 
+      = 'background: url(/images/avatar/' 
+      + image
+      + '); no-repeat; background-size: auto 100%;';
+    </script>
 
     <main id="main" class="main">
       <div class="main-inner">
@@ -376,7 +388,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">笔记-深入拆解Java虚拟机-13Java内存模型</h1>
+          <h1 class="post-title" itemprop="name headline">「深入拆解 Java 虚拟机」13 Java 内存模型</h1>
         
 
         <div class="post-meta">
@@ -411,8 +423,8 @@
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Java虚拟机/" itemprop="url" rel="index">
-                    <span itemprop="name">Java虚拟机</span>
+                  <a href="/categories/《深入拆解-Java-虚拟机》/" itemprop="url" rel="index">
+                    <span itemprop="name">《深入拆解 Java 虚拟机》</span>
                   </a>
                 </span>
 
@@ -448,32 +460,42 @@
       
 
       
-        <h1 id="编译器优化的重排序"><a href="#编译器优化的重排序" class="headerlink" title="编译器优化的重排序"></a>编译器优化的重排序</h1><ul>
-<li>保证遵守 as-if-serial 属性。</li>
-<li>操作之间存在数据依赖，不能调整顺序。</li>
+        <p>原文：<a href="https://time.geekbang.org/column/article/13484" target="_blank" rel="noopener">https://time.geekbang.org/column/article/13484</a></p>
+<h1 id="编译器优化的重排序"><a href="#编译器优化的重排序" class="headerlink" title="编译器优化的重排序"></a>编译器优化的重排序</h1><ul>
+<li><p>保证遵守 as-if-serial 属性。</p>
+</li>
+<li><p>操作之间存在数据依赖，不能调整顺序。</p>
+</li>
 </ul>
 <h1 id="Java-内存模型与-happens-before-关系"><a href="#Java-内存模型与-happens-before-关系" class="headerlink" title="Java 内存模型与 happens-before 关系"></a>Java 内存模型与 happens-before 关系</h1><ul>
-<li>用来描述两个操作的内存可见性。</li>
-<li>操作 X happens-before 操作 Y，X 的结果对于 Y 可见。</li>
-<li>happens-before 关系具有传递性。</li>
-<li>解决这种数据竞争的关键：构造一个跨线程的 happens-before 关系。</li>
+<li><p>用来描述两个操作的内存可见性。</p>
+</li>
+<li><p>操作 X happens-before 操作 Y，X 的结果对于 Y 可见。</p>
+</li>
+<li><p>happens-before 关系具有传递性。</p>
+</li>
+<li><p>解决这种数据竞争的关键：构造一个跨线程的 happens-before 关系。</p>
+</li>
 </ul>
 <p>线程间的 happens-before 关系：</p>
 <ol>
-<li>解锁操作 happens-before 之后（时钟顺序）对同一把锁的加锁操作。</li>
-<li>volatile 字段的写操作 happens-before 之后（时钟顺序）对同一字段的读操作。</li>
-<li>线程的启动操作（Thread.starts()） happens-before 该线程的第一个操作。</li>
-<li>线程的最后一个操作 happens-before 它的终止事件（Thread.isAlive() 或 Thread.join()）。</li>
-<li>线程对其他线程的中断操作 happens-before 被中断线程所收到的中断事件（即被中断线程的 InterruptedException 异常，或者第三个线程针对被中断线程的 Thread.interrupted 或者 Thread.isInterrupted 调用）。</li>
-<li>构造器中的最后一个操作 happens-before 析构器的第一个操作。</li>
+<li><p>解锁操作 happens-before 之后（时钟顺序）对同一把锁的加锁操作。</p>
+</li>
+<li><p>volatile 字段的写操作 happens-before 之后（时钟顺序）对同一字段的读操作。</p>
+</li>
+<li><p>线程的启动操作（Thread.starts()） happens-before 该线程的第一个操作。</p>
+</li>
+<li><p>线程的最后一个操作 happens-before 它的终止事件（Thread.isAlive() 或 Thread.join()）。</p>
+</li>
+<li><p>线程对其他线程的中断操作 happens-before 被中断线程所收到的中断事件（即被中断线程的 InterruptedException 异常，或者第三个线程针对被中断线程的 Thread.interrupted 或者 Thread.isInterrupted 调用）。</p>
+</li>
+<li><p>构造器中的最后一个操作 happens-before 析构器的第一个操作。</p>
+</li>
 </ol>
 <h1 id="Java-内存模型的底层实现"><a href="#Java-内存模型的底层实现" class="headerlink" title="Java 内存模型的底层实现"></a>Java 内存模型的底层实现</h1><ul>
 <li>通过内存屏障（memory barrier）禁止重排序。</li>
 </ul>
 <p>开不太懂，之后再看</p>
-<h1 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h1><blockquote>
-<p><a href="https://time.geekbang.org/column/article/13484" target="_blank" rel="noopener">https://time.geekbang.org/column/article/13484</a></p>
-</blockquote>
 
       
     </div>
@@ -520,6 +542,8 @@
       
         <div class="post-tags">
           
+            <a href="/tags/未完成/" rel="tag"># 未完成</a>
+          
             <a href="/tags/JVM/" rel="tag"># JVM</a>
           
         </div>
@@ -533,8 +557,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2018/08/29/笔记-深入拆解Java虚拟机-1112垃圾回收/" rel="next" title="笔记-深入拆解Java虚拟机-1112垃圾回收">
-                <i class="fa fa-chevron-left"></i> 笔记-深入拆解Java虚拟机-1112垃圾回收
+              <a href="/2018/08/29/笔记-深入拆解Java虚拟机-1112垃圾回收/" rel="next" title="「深入拆解 Java 虚拟机」11 12 垃圾回收">
+                <i class="fa fa-chevron-left"></i> 「深入拆解 Java 虚拟机」11 12 垃圾回收
               </a>
             
           </div>
@@ -543,8 +567,8 @@
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2018/10/17/笔记-深入拆解Java虚拟机-14Java虚拟机是怎么实现synchronized的？/" rel="prev" title="笔记-深入拆解Java虚拟机-14Java虚拟机是怎么实现synchronized的？">
-                笔记-深入拆解Java虚拟机-14Java虚拟机是怎么实现synchronized的？ <i class="fa fa-chevron-right"></i>
+              <a href="/2018/10/17/笔记-深入拆解Java虚拟机-14Java虚拟机是怎么实现synchronized的？/" rel="prev" title="「深入拆解 Java 虚拟机」14 Java 虚拟机是怎么实现 synchronized 的？">
+                「深入拆解 Java 虚拟机」14 Java 虚拟机是怎么实现 synchronized 的？ <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
@@ -626,7 +650,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">59</span>
+                  <span class="site-state-item-count">76</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -637,7 +661,7 @@
               
               <div class="site-state-item site-state-categories">
                 <a href="/categories/index.html">
-                  <span class="site-state-item-count">14</span>
+                  <span class="site-state-item-count">10</span>
                   <span class="site-state-item-name">分类</span>
                 </a>
               </div>
@@ -648,7 +672,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">26</span>
+                  <span class="site-state-item-count">37</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>
@@ -704,7 +728,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#编译器优化的重排序"><span class="nav-number">1.</span> <span class="nav-text">编译器优化的重排序</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Java-内存模型与-happens-before-关系"><span class="nav-number">2.</span> <span class="nav-text">Java 内存模型与 happens-before 关系</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Java-内存模型的底层实现"><span class="nav-number">3.</span> <span class="nav-text">Java 内存模型的底层实现</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#参考"><span class="nav-number">4.</span> <span class="nav-text">参考</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#编译器优化的重排序"><span class="nav-number">1.</span> <span class="nav-text">编译器优化的重排序</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Java-内存模型与-happens-before-关系"><span class="nav-number">2.</span> <span class="nav-text">Java 内存模型与 happens-before 关系</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Java-内存模型的底层实现"><span class="nav-number">3.</span> <span class="nav-text">Java 内存模型的底层实现</span></a></li></ol></div>
             
 
           </div>
@@ -724,7 +748,7 @@
 
     <footer id="footer" class="footer">
       <div class="footer-inner">
-        <div class="copyright">&copy; 2018 &mdash; <span itemprop="copyrightYear">2019</span>
+        <div class="copyright">&copy; 2018 &mdash; <span itemprop="copyrightYear">2020</span>
   <span class="with-love">
     <i class="fa fa-user"></i>
   </span>

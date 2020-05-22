@@ -85,18 +85,18 @@
 
 
 
-<meta name="description" content="随便看看了解下就好。  命令行jps 打印所有正在运行的 Java 进程的相关信息。帮助文档     参数 作用     默认 打印 Java 进程 ID 和主类名   -l 打印模块名和包名   -v 打印传递给 JVM 的参数   -m 打印传递给主类的参数     如果某 Java 进程关闭了默认开启的 UsePerfData 参数 jps 命令和 jstat 命令无法探知该 Java 进">
+<meta name="description" content="原文：https://time.geekbang.org/column/article/40821  随便看看了解下就好。  命令行jps 打印所有正在运行的 Java 进程的相关信息。帮助文档     参数 作用     默认 打印 Java 进程 ID 和主类名   -l 打印模块名和包名   -v 打印传递给 JVM 的参数   -m 打印传递给主类的参数     如果某 Java 进程关闭">
 <meta name="keywords" content="JVM">
 <meta property="og:type" content="article">
-<meta property="og:title" content="笔记-深入拆解Java虚拟机-3031Java虚拟机的监控及诊断工具">
+<meta property="og:title" content="「深入拆解 Java 虚拟机」30 31 Java 虚拟机的监控及诊断工具">
 <meta property="og:url" content="http://blog.ennis.info/2018/12/13/笔记-深入拆解Java虚拟机-3031Java虚拟机的监控及诊断工具/index.html">
 <meta property="og:site_name" content="Ennis Wu">
-<meta property="og:description" content="随便看看了解下就好。  命令行jps 打印所有正在运行的 Java 进程的相关信息。帮助文档     参数 作用     默认 打印 Java 进程 ID 和主类名   -l 打印模块名和包名   -v 打印传递给 JVM 的参数   -m 打印传递给主类的参数     如果某 Java 进程关闭了默认开启的 UsePerfData 参数 jps 命令和 jstat 命令无法探知该 Java 进">
+<meta property="og:description" content="原文：https://time.geekbang.org/column/article/40821  随便看看了解下就好。  命令行jps 打印所有正在运行的 Java 进程的相关信息。帮助文档     参数 作用     默认 打印 Java 进程 ID 和主类名   -l 打印模块名和包名   -v 打印传递给 JVM 的参数   -m 打印传递给主类的参数     如果某 Java 进程关闭">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2019-01-26T13:26:29.156Z">
+<meta property="og:updated_time" content="2020-05-21T16:48:39.519Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="笔记-深入拆解Java虚拟机-3031Java虚拟机的监控及诊断工具">
-<meta name="twitter:description" content="随便看看了解下就好。  命令行jps 打印所有正在运行的 Java 进程的相关信息。帮助文档     参数 作用     默认 打印 Java 进程 ID 和主类名   -l 打印模块名和包名   -v 打印传递给 JVM 的参数   -m 打印传递给主类的参数     如果某 Java 进程关闭了默认开启的 UsePerfData 参数 jps 命令和 jstat 命令无法探知该 Java 进">
+<meta name="twitter:title" content="「深入拆解 Java 虚拟机」30 31 Java 虚拟机的监控及诊断工具">
+<meta name="twitter:description" content="原文：https://time.geekbang.org/column/article/40821  随便看看了解下就好。  命令行jps 打印所有正在运行的 Java 进程的相关信息。帮助文档     参数 作用     默认 打印 Java 进程 ID 和主类名   -l 打印模块名和包名   -v 打印传递给 JVM 的参数   -m 打印传递给主类的参数     如果某 Java 进程关闭">
 
 
 
@@ -132,7 +132,7 @@
 
 
 
-  <title>笔记-深入拆解Java虚拟机-3031Java虚拟机的监控及诊断工具 | Ennis Wu</title>
+  <title>「深入拆解 Java 虚拟机」30 31 Java 虚拟机的监控及诊断工具 | Ennis Wu</title>
   
 
 
@@ -338,6 +338,18 @@
 
  </div>
     </header>
+    <script>
+      let images = [
+         'header0.jpg',
+         'header1.jpg',
+         'header2.png'
+      ];
+      let image = images[Math.floor(Math.random() * images.length)];
+      window.document.getElementById('header').style.cssText 
+      = 'background: url(/images/avatar/' 
+      + image
+      + '); no-repeat; background-size: auto 100%;';
+    </script>
 
     <main id="main" class="main">
       <div class="main-inner">
@@ -376,7 +388,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">笔记-深入拆解Java虚拟机-3031Java虚拟机的监控及诊断工具</h1>
+          <h1 class="post-title" itemprop="name headline">「深入拆解 Java 虚拟机」30 31 Java 虚拟机的监控及诊断工具</h1>
         
 
         <div class="post-meta">
@@ -411,8 +423,8 @@
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Java虚拟机/" itemprop="url" rel="index">
-                    <span itemprop="name">Java虚拟机</span>
+                  <a href="/categories/《深入拆解-Java-虚拟机》/" itemprop="url" rel="index">
+                    <span itemprop="name">《深入拆解 Java 虚拟机》</span>
                   </a>
                 </span>
 
@@ -448,7 +460,8 @@
       
 
       
-        <blockquote>
+        <p>原文：<a href="https://time.geekbang.org/column/article/40821" target="_blank" rel="noopener">https://time.geekbang.org/column/article/40821</a></p>
+<blockquote>
 <p>随便看看了解下就好。</p>
 </blockquote>
 <h1 id="命令行"><a href="#命令行" class="headerlink" title="命令行"></a>命令行</h1><h2 id="jps"><a href="#jps" class="headerlink" title="jps"></a>jps</h2><blockquote>
@@ -514,9 +527,12 @@
 </tbody>
 </table>
 <ul>
-<li>-t 参数，打印进程的启动时间。</li>
-<li>默认情况 jstat 只打印一次性能数据。</li>
-<li>可以配置为每隔一段时间打印一次（直至进程终止或达到最大次数）。</li>
+<li><p>-t 参数，打印进程的启动时间。</p>
+</li>
+<li><p>默认情况 jstat 只打印一次性能数据。</p>
+</li>
+<li><p>可以配置为每隔一段时间打印一次（直至进程终止或达到最大次数）。</p>
+</li>
 </ul>
 <h2 id="jmap"><a href="#jmap" class="headerlink" title="jmap"></a>jmap</h2><blockquote>
 <p>分析 JVM 堆中的对象。包括多条子命令。<a href="https://docs.oracle.com/en/java/javase/11/tools/jmap.html" target="_blank" rel="noopener">帮助文档</a></p>
@@ -559,7 +575,7 @@
 <p>查看进程的参数。<a href="https://docs.oracle.com/en/java/javase/11/tools/jinfo.html" target="_blank" rel="noopener">帮助文档</a></p>
 </blockquote>
 <ul>
-<li>可以修改进程的“manageable”虚拟机参数。</li>
+<li>可以修改进程的 “manageable” 虚拟机参数。</li>
 </ul>
 <h2 id="jstack"><a href="#jstack" class="headerlink" title="jstack"></a>jstack</h2><blockquote>
 <p>打印进程中各个线程的栈轨迹和线程所持有的锁。<a href="https://docs.oracle.com/en/java/javase/11/tools/jstack.html" target="_blank" rel="noopener">帮助文档</a></p>
@@ -576,22 +592,30 @@
 <ul>
 <li><p>获取二级制快照的方式</p>
 <ol>
-<li>使用 Attach API</li>
-<li>新建一个 JVM 运行 Attach API</li>
-<li>使用 jmap</li>
+<li><p>使用 Attach API</p>
+</li>
+<li><p>新建一个 JVM 运行 Attach API</p>
+</li>
+<li><p>使用 jmap</p>
+</li>
 </ol>
 </li>
 <li><p>进程启用 DisableAttachMechanism 参数时</p>
 <ol>
-<li>不显示</li>
-<li>不显示</li>
-<li>运行时报错</li>
+<li><p>不显示</p>
+</li>
+<li><p>不显示</p>
+</li>
+<li><p>运行时报错</p>
+</li>
 </ol>
 </li>
 <li><p>计算对象占据内存的<a href="https://help.eclipse.org/mars/topic/org.eclipse.mat.ui.help/concepts/shallowretainedheap.html?cp=46_2_1" target="_blank" rel="noopener">两种方式</a></p>
 <ol>
-<li>Shallow heap：对象自身所占据的内存。</li>
-<li>Retained heap：对象不再被引用时，垃圾回收器所能回收的总内存，包括对象自身所占据的内存，和仅能够通过该对象引用到的其他对象所占据的内存。</li>
+<li><p>Shallow heap：对象自身所占据的内存。</p>
+</li>
+<li><p>Retained heap：对象不再被引用时，垃圾回收器所能回收的总内存，包括对象自身所占据的内存，和仅能够通过该对象引用到的其他对象所占据的内存。</p>
+</li>
 </ol>
 </li>
 <li><p>直方图（histogram）：展示各个类的实例数目和实例的堆总和。</p>
@@ -605,10 +629,14 @@
 <p>JVM 上的性能监控工具。包含一个 GUI 客户端，众多用来收集 JVM 性能数据的插件，虚拟机内置的高效 profiling 工具 Java Flight Recorder（JFR）。</p>
 </blockquote>
 <ul>
-<li>JFR 的性能开销很小，默认配置下平均低于 1%。</li>
-<li>JFR 能够直接访问虚拟机内的数据，不会影响虚拟机的优化。</li>
-<li>适用于生产环境下满负荷运行的 Java 程序。</li>
-<li>JFR 记录运行过程中发生的一系列事件（包括 Java 和 JVM）。</li>
+<li><p>JFR 的性能开销很小，默认配置下平均低于 1%。</p>
+</li>
+<li><p>JFR 能够直接访问虚拟机内的数据，不会影响虚拟机的优化。</p>
+</li>
+<li><p>适用于生产环境下满负荷运行的 Java 程序。</p>
+</li>
+<li><p>JFR 记录运行过程中发生的一系列事件（包括 Java 和 JVM）。</p>
+</li>
 </ul>
 <table>
 <thead>
@@ -637,11 +665,16 @@
 </tbody>
 </table>
 <ul>
-<li>JFR 的取样事件比其他工具更加精确。</li>
-<li>JFR 的 3 种启用方式<ol>
-<li>命令行中使用 -XX:StartFlightRecording= 参数。</li>
-<li>使用 jcmd 的 JFR.* 子命令。</li>
-<li>使用 JMC 的 JFR 插件。</li>
+<li><p>JFR 的取样事件比其他工具更加精确。</p>
+</li>
+<li><p>JFR 的 3 种启用方式</p>
+<ol>
+<li><p>命令行中使用 -XX:StartFlightRecording= 参数。</p>
+</li>
+<li><p>使用 jcmd 的 JFR.* 子命令。</p>
+</li>
+<li><p>使用 JMC 的 JFR 插件。</p>
+</li>
 </ol>
 </li>
 </ul>
@@ -650,9 +683,6 @@
 </blockquote>
 <h2 id="JITWatch"><a href="#JITWatch" class="headerlink" title="JITWatch"></a>JITWatch</h2><blockquote>
 <p><a href="https://github.com/AdoptOpenJDK/jitwatch" target="_blank" rel="noopener">https://github.com/AdoptOpenJDK/jitwatch</a></p>
-</blockquote>
-<h1 id="引用"><a href="#引用" class="headerlink" title="引用"></a>引用</h1><blockquote>
-<p><a href="https://time.geekbang.org/column/article/40821" target="_blank" rel="noopener">https://time.geekbang.org/column/article/40821</a></p>
 </blockquote>
 
       
@@ -713,8 +743,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2018/12/08/笔记-深入拆解Java虚拟机-33JavaAgent与字节码注入/" rel="next" title="笔记-深入拆解Java虚拟机-33JavaAgent与字节码注入">
-                <i class="fa fa-chevron-left"></i> 笔记-深入拆解Java虚拟机-33JavaAgent与字节码注入
+              <a href="/2018/12/08/笔记-深入拆解Java虚拟机-33JavaAgent与字节码注入/" rel="next" title="「深入拆解 Java 虚拟机」33 JavaAgent 与字节码注入">
+                <i class="fa fa-chevron-left"></i> 「深入拆解 Java 虚拟机」33 JavaAgent 与字节码注入
               </a>
             
           </div>
@@ -723,8 +753,8 @@
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2018/12/15/笔记-深入拆解Java虚拟机-34Graal：用Java编译Java/" rel="prev" title="笔记-深入拆解Java虚拟机-34Graal：用Java编译Java">
-                笔记-深入拆解Java虚拟机-34Graal：用Java编译Java <i class="fa fa-chevron-right"></i>
+              <a href="/2018/12/15/笔记-深入拆解Java虚拟机-34Graal：用Java编译Java/" rel="prev" title="「深入拆解 Java 虚拟机」34 Graal：用 Java 编译 Java">
+                「深入拆解 Java 虚拟机」34 Graal：用 Java 编译 Java <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
@@ -806,7 +836,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">59</span>
+                  <span class="site-state-item-count">76</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -817,7 +847,7 @@
               
               <div class="site-state-item site-state-categories">
                 <a href="/categories/index.html">
-                  <span class="site-state-item-count">14</span>
+                  <span class="site-state-item-count">10</span>
                   <span class="site-state-item-name">分类</span>
                 </a>
               </div>
@@ -828,7 +858,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">26</span>
+                  <span class="site-state-item-count">37</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>
@@ -884,7 +914,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#命令行"><span class="nav-number">1.</span> <span class="nav-text">命令行</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#jps"><span class="nav-number">1.1.</span> <span class="nav-text">jps</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#jstat"><span class="nav-number">1.2.</span> <span class="nav-text">jstat</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#jmap"><span class="nav-number">1.3.</span> <span class="nav-text">jmap</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#jinfo"><span class="nav-number">1.4.</span> <span class="nav-text">jinfo</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#jstack"><span class="nav-number">1.5.</span> <span class="nav-text">jstack</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#jcmd"><span class="nav-number">1.6.</span> <span class="nav-text">jcmd</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#GUI"><span class="nav-number">2.</span> <span class="nav-text">GUI</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#eclipse-MAT"><span class="nav-number">2.1.</span> <span class="nav-text">eclipse MAT</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Java-Mission-Control"><span class="nav-number">2.2.</span> <span class="nav-text">Java Mission Control</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#VisualVM"><span class="nav-number">2.3.</span> <span class="nav-text">VisualVM</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#JITWatch"><span class="nav-number">2.4.</span> <span class="nav-text">JITWatch</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#引用"><span class="nav-number">3.</span> <span class="nav-text">引用</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#命令行"><span class="nav-number">1.</span> <span class="nav-text">命令行</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#jps"><span class="nav-number">1.1.</span> <span class="nav-text">jps</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#jstat"><span class="nav-number">1.2.</span> <span class="nav-text">jstat</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#jmap"><span class="nav-number">1.3.</span> <span class="nav-text">jmap</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#jinfo"><span class="nav-number">1.4.</span> <span class="nav-text">jinfo</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#jstack"><span class="nav-number">1.5.</span> <span class="nav-text">jstack</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#jcmd"><span class="nav-number">1.6.</span> <span class="nav-text">jcmd</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#GUI"><span class="nav-number">2.</span> <span class="nav-text">GUI</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#eclipse-MAT"><span class="nav-number">2.1.</span> <span class="nav-text">eclipse MAT</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Java-Mission-Control"><span class="nav-number">2.2.</span> <span class="nav-text">Java Mission Control</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#VisualVM"><span class="nav-number">2.3.</span> <span class="nav-text">VisualVM</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#JITWatch"><span class="nav-number">2.4.</span> <span class="nav-text">JITWatch</span></a></li></ol></li></ol></div>
             
 
           </div>
@@ -904,7 +934,7 @@
 
     <footer id="footer" class="footer">
       <div class="footer-inner">
-        <div class="copyright">&copy; 2018 &mdash; <span itemprop="copyrightYear">2019</span>
+        <div class="copyright">&copy; 2018 &mdash; <span itemprop="copyrightYear">2020</span>
   <span class="with-love">
     <i class="fa fa-user"></i>
   </span>

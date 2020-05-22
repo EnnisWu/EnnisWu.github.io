@@ -72,7 +72,7 @@
 
 
 
-  <meta name="keywords" content="计算机网络,TCP/IP," />
+  <meta name="keywords" content="计算机网络,TCP,IP," />
 
 
 
@@ -85,13 +85,13 @@
 
 
 
-<meta name="description" content="ICMP的正式规范参见 RFC 792 ICMP是IP层的一个组成部分，传递差错报文和其他需要注意的信息。通常被IP层或更高层协议使用。   校验和覆盖整个ICMP报文，算法与IP首部相同 不同类型和代码有不同的内容  ICMP报文的类型 类型字段和代码字段共同决定。 ICMO差错报文始终包含IP首部和产生差错的IP数据报的前8个字节。接收ICMP差错报文的模块可以与某个协议和用户进程联系起来。">
-<meta name="keywords" content="计算机网络,TCP&#x2F;IP">
+<meta name="description" content="ICMP 的正式规范参见 RFC 792 ICMP 是 IP 层的一个组成部分，传递差错报文和其他需要注意的信息。 通常被 IP 层或更高层协议使用。   校验和覆盖整个 ICMP 报文，算法与 IP 首部相同  不同类型和代码有不同的内容   ICMP 报文的类型 类型字段和代码字段共同决定。  ICMP 差错报文始终包含 IP 首部和产生差错的 IP 数据报的前 8 个字节。   接收 ICM">
+<meta name="keywords" content="计算机网络,TCP,IP">
 <meta property="og:type" content="article">
-<meta property="og:title" content="《TCPIP详解卷1》006阅读笔记">
+<meta property="og:title" content="「TCP&#x2F;IP详解 卷1」006 阅读笔记">
 <meta property="og:url" content="http://blog.ennis.info/2018/06/12/《TCPIP详解卷1》006阅读笔记/index.html">
 <meta property="og:site_name" content="Ennis Wu">
-<meta property="og:description" content="ICMP的正式规范参见 RFC 792 ICMP是IP层的一个组成部分，传递差错报文和其他需要注意的信息。通常被IP层或更高层协议使用。   校验和覆盖整个ICMP报文，算法与IP首部相同 不同类型和代码有不同的内容  ICMP报文的类型 类型字段和代码字段共同决定。 ICMO差错报文始终包含IP首部和产生差错的IP数据报的前8个字节。接收ICMP差错报文的模块可以与某个协议和用户进程联系起来。">
+<meta property="og:description" content="ICMP 的正式规范参见 RFC 792 ICMP 是 IP 层的一个组成部分，传递差错报文和其他需要注意的信息。 通常被 IP 层或更高层协议使用。   校验和覆盖整个 ICMP 报文，算法与 IP 首部相同  不同类型和代码有不同的内容   ICMP 报文的类型 类型字段和代码字段共同决定。  ICMP 差错报文始终包含 IP 首部和产生差错的 IP 数据报的前 8 个字节。   接收 ICM">
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="http://blog.ennis.info/images/posts/TCPIP/006/ICMP.png">
 <meta property="og:image" content="http://blog.ennis.info/images/posts/TCPIP/006/mask.png">
@@ -100,10 +100,10 @@
 <meta property="og:image" content="http://blog.ennis.info/images/posts/TCPIP/006/RTT.png">
 <meta property="og:image" content="http://blog.ennis.info/images/posts/TCPIP/006/unreachable_response.png">
 <meta property="og:image" content="http://blog.ennis.info/images/posts/TCPIP/006/unreachable.png">
-<meta property="og:updated_time" content="2019-01-26T13:26:29.010Z">
+<meta property="og:updated_time" content="2020-05-21T17:07:13.491Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="《TCPIP详解卷1》006阅读笔记">
-<meta name="twitter:description" content="ICMP的正式规范参见 RFC 792 ICMP是IP层的一个组成部分，传递差错报文和其他需要注意的信息。通常被IP层或更高层协议使用。   校验和覆盖整个ICMP报文，算法与IP首部相同 不同类型和代码有不同的内容  ICMP报文的类型 类型字段和代码字段共同决定。 ICMO差错报文始终包含IP首部和产生差错的IP数据报的前8个字节。接收ICMP差错报文的模块可以与某个协议和用户进程联系起来。">
+<meta name="twitter:title" content="「TCP&#x2F;IP详解 卷1」006 阅读笔记">
+<meta name="twitter:description" content="ICMP 的正式规范参见 RFC 792 ICMP 是 IP 层的一个组成部分，传递差错报文和其他需要注意的信息。 通常被 IP 层或更高层协议使用。   校验和覆盖整个 ICMP 报文，算法与 IP 首部相同  不同类型和代码有不同的内容   ICMP 报文的类型 类型字段和代码字段共同决定。  ICMP 差错报文始终包含 IP 首部和产生差错的 IP 数据报的前 8 个字节。   接收 ICM">
 <meta name="twitter:image" content="http://blog.ennis.info/images/posts/TCPIP/006/ICMP.png">
 
 
@@ -140,7 +140,7 @@
 
 
 
-  <title>《TCPIP详解卷1》006阅读笔记 | Ennis Wu</title>
+  <title>「TCP/IP详解 卷1」006 阅读笔记 | Ennis Wu</title>
   
 
 
@@ -346,6 +346,18 @@
 
  </div>
     </header>
+    <script>
+      let images = [
+         'header0.jpg',
+         'header1.jpg',
+         'header2.png'
+      ];
+      let image = images[Math.floor(Math.random() * images.length)];
+      window.document.getElementById('header').style.cssText 
+      = 'background: url(/images/avatar/' 
+      + image
+      + '); no-repeat; background-size: auto 100%;';
+    </script>
 
     <main id="main" class="main">
       <div class="main-inner">
@@ -384,7 +396,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">《TCPIP详解卷1》006阅读笔记</h1>
+          <h1 class="post-title" itemprop="name headline">「TCP/IP详解 卷1」006 阅读笔记</h1>
         
 
         <div class="post-meta">
@@ -419,8 +431,8 @@
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/TCP-IP/" itemprop="url" rel="index">
-                    <span itemprop="name">TCP/IP</span>
+                  <a href="/categories/《TCP-IP详解-卷1》/" itemprop="url" rel="index">
+                    <span itemprop="name">《TCP/IP详解 卷1》</span>
                   </a>
                 </span>
 
@@ -456,58 +468,70 @@
       
 
       
-        <p>ICMP的正式规范参见 RFC 792<br><br></p>
-<p>ICMP是IP层的一个组成部分，传递差错报文和其他需要注意的信息。<br>通常被IP层或更高层协议使用。<br><br></p>
+        <p>ICMP 的正式规范参见 RFC 792</p>
+<p>ICMP 是 IP 层的一个组成部分，传递差错报文和其他需要注意的信息。</p>
+<p>通常被 IP 层或更高层协议使用。</p>
 <p><img src="/images/posts/TCPIP/006/ICMP.png" alt="ICMP"></p>
 <ul>
-<li>校验和覆盖整个ICMP报文，算法与IP首部相同</li>
-<li>不同类型和代码有不同的内容<br><br></li>
-</ul>
-<h4 id="ICMP报文的类型"><a href="#ICMP报文的类型" class="headerlink" title="ICMP报文的类型"></a>ICMP报文的类型</h4><ul>
-<li>类型字段和代码字段共同决定。</li>
-<li><p>ICMO差错报文始终包含IP首部和产生差错的IP数据报的前8个字节。<br>接收ICMP差错报文的模块可以与某个协议和用户进程联系起来。</p>
+<li><p>校验和覆盖整个 ICMP 报文，算法与 IP 首部相同</p>
 </li>
+<li><p>不同类型和代码有不同的内容</p>
+</li>
+</ul>
+<h1 id="ICMP-报文的类型"><a href="#ICMP-报文的类型" class="headerlink" title="ICMP 报文的类型"></a>ICMP 报文的类型</h1><ul>
+<li><p>类型字段和代码字段共同决定。</p>
+</li>
+<li><p>ICMP 差错报文始终包含 IP 首部和产生差错的 IP 数据报的前 8 个字节。</p>
+</li>
+</ul>
+<p>接收 ICMP 差错报文的模块可以与某个协议和用户进程联系起来。</p>
+<ul>
 <li><p>下面情况不产生差错报文：</p>
+<ol>
+<li><p>ICMP 差错报文</p>
 </li>
-<li><ol>
-<li>ICMP差错报文</li>
-</ol>
+<li><p>目的地址是广播或多播地址</p>
 </li>
-<li><ol start="2">
-<li>目的地址是广播或多播地址</li>
-</ol>
+<li><p>作为链路层广播的数据报</p>
 </li>
-<li><ol start="3">
-<li>作为链路层广播的数据报</li>
-</ol>
+<li><p>不是 IP 分片的第一片</p>
 </li>
-<li><ol start="4">
-<li>不是IP分片的第一片</li>
-</ol>
+<li><p>源地址不是单个主机的数据报</p>
 </li>
-<li><ol start="5">
-<li>源地址不是单个主机的数据报<br><br></li>
 </ol>
 </li>
 </ul>
-<h4 id="ICMP地址掩码请求与应答"><a href="#ICMP地址掩码请求与应答" class="headerlink" title="ICMP地址掩码请求与应答"></a>ICMP地址掩码请求与应答</h4><p><img src="/images/posts/TCPIP/006/mask.png" alt="mask"></p>
+<h1 id="ICMP-地址掩码请求与应答"><a href="#ICMP-地址掩码请求与应答" class="headerlink" title="ICMP 地址掩码请求与应答"></a>ICMP 地址掩码请求与应答</h1><p><img src="/images/posts/TCPIP/006/mask.png" alt="mask"></p>
 <ul>
-<li>用于无盘系统在引导过程中获取自己的子网掩码。</li>
-<li>系统广播他的ICMP请求报文（类似RARP获取IP地址）。</li>
-<li>标识符和序列号由发送端任意设定，在应答中返回进行匹配。<br><br></li>
+<li><p>用于无盘系统在引导过程中获取自己的子网掩码。</p>
+</li>
+<li><p>系统广播他的 ICMP 请求报文（类似 RARP 获取 IP 地址）。</p>
+</li>
+<li><p>标识符和序列号由发送端任意设定，在应答中返回进行匹配。</p>
+</li>
 </ul>
-<h4 id="ICMP时间戳请求与应答"><a href="#ICMP时间戳请求与应答" class="headerlink" title="ICMP时间戳请求与应答"></a>ICMP时间戳请求与应答</h4><p><img src="/images/posts/TCPIP/006/time_stamp_request_response.png" alt="time_stamp_request_response"></p>
+<h1 id="ICMP-时间戳请求与应答"><a href="#ICMP-时间戳请求与应答" class="headerlink" title="ICMP 时间戳请求与应答"></a>ICMP 时间戳请求与应答</h1><p><img src="/images/posts/TCPIP/006/time_stamp_request_response.png" alt="time_stamp_request_response"></p>
 <ul>
-<li>请求允许系统向另一个系统查询当前时间。</li>
-<li>返回的建议值是自午夜计算的毫秒数，协调的统一时间。</li>
-<li>缺陷：必须通过其他方法获知当时的日期。</li>
-<li>请求端填写发起时间戳，应答系统收到时填写接收时间戳，发送时填写传送时间戳。<br><img src="/images/posts/TCPIP/006/time_stamp_request.png" alt="time_stamp_request"><br><img src="/images/posts/TCPIP/006/RTT.png" alt="RTT"></li>
-<li>调整值是difference - RTT / 2。<br><br></li>
+<li><p>请求允许系统向另一个系统查询当前时间。</p>
+</li>
+<li><p>返回的建议值是自午夜计算的毫秒数，协调的统一时间。</p>
+</li>
+<li><p>缺陷：必须通过其他方法获知当时的日期。</p>
+</li>
+<li><p>请求端填写发起时间戳，应答系统收到时填写接收时间戳，发送时填写传送时间戳。</p>
+</li>
 </ul>
-<h4 id="ICMP端口不可达差错"><a href="#ICMP端口不可达差错" class="headerlink" title="ICMP端口不可达差错"></a>ICMP端口不可达差错</h4><p>以UDP端口不可达为例。<br><img src="/images/posts/TCPIP/006/unreachable_response.png" alt="unreachable_response"></p>
+<p><img src="/images/posts/TCPIP/006/time_stamp_request.png" alt="time_stamp_request"></p>
+<p><img src="/images/posts/TCPIP/006/RTT.png" alt="RTT"></p>
 <ul>
-<li>IP首部后面前8个字节是UDP首部（源端口号和目的端口号）。<br><img src="/images/posts/TCPIP/006/unreachable.png" alt="unreachable"></li>
+<li>调整值是 difference - RTT / 2。</li>
 </ul>
+<h1 id="ICMP-端口不可达差错"><a href="#ICMP-端口不可达差错" class="headerlink" title="ICMP 端口不可达差错"></a>ICMP 端口不可达差错</h1><p>以 UDP 端口不可达为例。</p>
+<p><img src="/images/posts/TCPIP/006/unreachable_response.png" alt="unreachable_response"></p>
+<ul>
+<li>IP 首部后面前 8 个字节是 UDP 首部（源端口号和目的端口号）。</li>
+</ul>
+<p><img src="/images/posts/TCPIP/006/unreachable.png" alt="unreachable"></p>
 
       
     </div>
@@ -556,7 +580,9 @@
           
             <a href="/tags/计算机网络/" rel="tag"># 计算机网络</a>
           
-            <a href="/tags/TCP-IP/" rel="tag"># TCP/IP</a>
+            <a href="/tags/TCP/" rel="tag"># TCP</a>
+          
+            <a href="/tags/IP/" rel="tag"># IP</a>
           
         </div>
       
@@ -569,8 +595,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2018/06/12/《TCPIP详解卷1》004阅读笔记/" rel="next" title="《TCPIP详解卷1》004阅读笔记">
-                <i class="fa fa-chevron-left"></i> 《TCPIP详解卷1》004阅读笔记
+              <a href="/2018/06/12/《TCPIP详解卷1》004阅读笔记/" rel="next" title="「TCP/IP详解 卷1」004 阅读笔记">
+                <i class="fa fa-chevron-left"></i> 「TCP/IP详解 卷1」004 阅读笔记
               </a>
             
           </div>
@@ -579,8 +605,8 @@
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2018/06/12/《TCPIP详解卷1》007、008、009阅读笔记/" rel="prev" title="《TCPIP详解卷1》007、008、009阅读笔记">
-                《TCPIP详解卷1》007、008、009阅读笔记 <i class="fa fa-chevron-right"></i>
+              <a href="/2018/06/12/《TCPIP详解卷1》007、008、009阅读笔记/" rel="prev" title="「TCP/IP详解 卷1」007、008、009 阅读笔记">
+                「TCP/IP详解 卷1」007、008、009 阅读笔记 <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
@@ -662,7 +688,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">59</span>
+                  <span class="site-state-item-count">76</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -673,7 +699,7 @@
               
               <div class="site-state-item site-state-categories">
                 <a href="/categories/index.html">
-                  <span class="site-state-item-count">14</span>
+                  <span class="site-state-item-count">10</span>
                   <span class="site-state-item-name">分类</span>
                 </a>
               </div>
@@ -684,7 +710,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">26</span>
+                  <span class="site-state-item-count">37</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>
@@ -740,7 +766,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#ICMP报文的类型"><span class="nav-number">1.</span> <span class="nav-text">ICMP报文的类型</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#ICMP地址掩码请求与应答"><span class="nav-number">2.</span> <span class="nav-text">ICMP地址掩码请求与应答</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#ICMP时间戳请求与应答"><span class="nav-number">3.</span> <span class="nav-text">ICMP时间戳请求与应答</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#ICMP端口不可达差错"><span class="nav-number">4.</span> <span class="nav-text">ICMP端口不可达差错</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#ICMP-报文的类型"><span class="nav-number">1.</span> <span class="nav-text">ICMP 报文的类型</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#ICMP-地址掩码请求与应答"><span class="nav-number">2.</span> <span class="nav-text">ICMP 地址掩码请求与应答</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#ICMP-时间戳请求与应答"><span class="nav-number">3.</span> <span class="nav-text">ICMP 时间戳请求与应答</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#ICMP-端口不可达差错"><span class="nav-number">4.</span> <span class="nav-text">ICMP 端口不可达差错</span></a></li></ol></div>
             
 
           </div>
@@ -760,7 +786,7 @@
 
     <footer id="footer" class="footer">
       <div class="footer-inner">
-        <div class="copyright">&copy; 2018 &mdash; <span itemprop="copyrightYear">2019</span>
+        <div class="copyright">&copy; 2018 &mdash; <span itemprop="copyrightYear">2020</span>
   <span class="with-love">
     <i class="fa fa-user"></i>
   </span>

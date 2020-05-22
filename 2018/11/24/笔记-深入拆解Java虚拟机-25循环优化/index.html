@@ -85,18 +85,18 @@
 
 
 
-<meta name="description" content="循环无关代码外提 所谓的循环无关代码（Loop-invariant Code），指的是循环中值不变的表达式。   在不改变程序语义的情况下，将循环无关代码提出循环之外。  外提循环中值不变的表达式 通过 Sea-of-Nodes IR 以及节点调度共同完成。  外提循环无关检测 通过循环预测（Loop Prediction）完成。  比如 null 检测（null check），数组下标范围检测（">
+<meta name="description" content="原文：https://time.geekbang.org/column/article/39814 循环无关代码外提 所谓的循环无关代码（Loop-invariant Code），指的是循环中值不变的表达式。   在不改变程序语义的情况下，将循环无关代码提出循环之外。  外提循环中值不变的表达式 通过 Sea-of-Nodes IR 以及节点调度共同完成。  外提循环无关检测 通过循环预测（Loo">
 <meta name="keywords" content="JVM">
 <meta property="og:type" content="article">
-<meta property="og:title" content="笔记-深入拆解Java虚拟机-25循环优化">
+<meta property="og:title" content="「深入拆解 Java 虚拟机」25 循环优化">
 <meta property="og:url" content="http://blog.ennis.info/2018/11/24/笔记-深入拆解Java虚拟机-25循环优化/index.html">
 <meta property="og:site_name" content="Ennis Wu">
-<meta property="og:description" content="循环无关代码外提 所谓的循环无关代码（Loop-invariant Code），指的是循环中值不变的表达式。   在不改变程序语义的情况下，将循环无关代码提出循环之外。  外提循环中值不变的表达式 通过 Sea-of-Nodes IR 以及节点调度共同完成。  外提循环无关检测 通过循环预测（Loop Prediction）完成。  比如 null 检测（null check），数组下标范围检测（">
+<meta property="og:description" content="原文：https://time.geekbang.org/column/article/39814 循环无关代码外提 所谓的循环无关代码（Loop-invariant Code），指的是循环中值不变的表达式。   在不改变程序语义的情况下，将循环无关代码提出循环之外。  外提循环中值不变的表达式 通过 Sea-of-Nodes IR 以及节点调度共同完成。  外提循环无关检测 通过循环预测（Loo">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2019-01-26T13:26:29.138Z">
+<meta property="og:updated_time" content="2020-05-21T16:47:23.697Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="笔记-深入拆解Java虚拟机-25循环优化">
-<meta name="twitter:description" content="循环无关代码外提 所谓的循环无关代码（Loop-invariant Code），指的是循环中值不变的表达式。   在不改变程序语义的情况下，将循环无关代码提出循环之外。  外提循环中值不变的表达式 通过 Sea-of-Nodes IR 以及节点调度共同完成。  外提循环无关检测 通过循环预测（Loop Prediction）完成。  比如 null 检测（null check），数组下标范围检测（">
+<meta name="twitter:title" content="「深入拆解 Java 虚拟机」25 循环优化">
+<meta name="twitter:description" content="原文：https://time.geekbang.org/column/article/39814 循环无关代码外提 所谓的循环无关代码（Loop-invariant Code），指的是循环中值不变的表达式。   在不改变程序语义的情况下，将循环无关代码提出循环之外。  外提循环中值不变的表达式 通过 Sea-of-Nodes IR 以及节点调度共同完成。  外提循环无关检测 通过循环预测（Loo">
 
 
 
@@ -132,7 +132,7 @@
 
 
 
-  <title>笔记-深入拆解Java虚拟机-25循环优化 | Ennis Wu</title>
+  <title>「深入拆解 Java 虚拟机」25 循环优化 | Ennis Wu</title>
   
 
 
@@ -338,6 +338,18 @@
 
  </div>
     </header>
+    <script>
+      let images = [
+         'header0.jpg',
+         'header1.jpg',
+         'header2.png'
+      ];
+      let image = images[Math.floor(Math.random() * images.length)];
+      window.document.getElementById('header').style.cssText 
+      = 'background: url(/images/avatar/' 
+      + image
+      + '); no-repeat; background-size: auto 100%;';
+    </script>
 
     <main id="main" class="main">
       <div class="main-inner">
@@ -376,7 +388,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">笔记-深入拆解Java虚拟机-25循环优化</h1>
+          <h1 class="post-title" itemprop="name headline">「深入拆解 Java 虚拟机」25 循环优化</h1>
         
 
         <div class="post-meta">
@@ -411,8 +423,8 @@
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Java虚拟机/" itemprop="url" rel="index">
-                    <span itemprop="name">Java虚拟机</span>
+                  <a href="/categories/《深入拆解-Java-虚拟机》/" itemprop="url" rel="index">
+                    <span itemprop="name">《深入拆解 Java 虚拟机》</span>
                   </a>
                 </span>
 
@@ -448,7 +460,8 @@
       
 
       
-        <h1 id="循环无关代码外提"><a href="#循环无关代码外提" class="headerlink" title="循环无关代码外提"></a>循环无关代码外提</h1><blockquote>
+        <p>原文：<a href="https://time.geekbang.org/column/article/39814" target="_blank" rel="noopener">https://time.geekbang.org/column/article/39814</a></p>
+<h1 id="循环无关代码外提"><a href="#循环无关代码外提" class="headerlink" title="循环无关代码外提"></a>循环无关代码外提</h1><blockquote>
 <p>所谓的循环无关代码（Loop-invariant Code），指的是循环中值不变的表达式。</p>
 </blockquote>
 <ul>
@@ -466,21 +479,32 @@
 <p>指的是在循环体中重复多次循环迭代，并<strong>减少循环次数</strong>的编译优化。</p>
 </blockquote>
 <ul>
-<li>在 C2 中，<strong>只有计数循环</strong>（Counted Loop）才能被展开。</li>
-<li>随着循环体的增大，优化机会不断增加。</li>
-<li>如果循环展开能够触发进一步优化，总体的代码复杂度将降低。</li>
-<li>缺点：可能会<strong>增加代码的冗余度</strong>，导致所生成机器码的长度大幅上涨。</li>
+<li><p>在 C2 中，<strong>只有计数循环</strong>（Counted Loop）才能被展开。</p>
+</li>
+<li><p>随着循环体的增大，优化机会不断增加。</p>
+</li>
+<li><p>如果循环展开能够触发进一步优化，总体的代码复杂度将降低。</p>
+</li>
+<li><p>缺点：可能会<strong>增加代码的冗余度</strong>，导致所生成机器码的长度大幅上涨。</p>
+</li>
 </ul>
 <h2 id="循环完全展开（Full-Unroll）"><a href="#循环完全展开（Full-Unroll）" class="headerlink" title="循环完全展开（Full Unroll）"></a>循环完全展开（Full Unroll）</h2><ul>
-<li>当<strong>循环数目</strong>是<strong>固定值</strong>而且<strong>非常小</strong>时，会将<strong>循环全部展开</strong>（Full Unroll）。</li>
-<li>仅迭代三次（或以下）的循环，即时编译器将进行完全展开。</li>
-<li>循环体 IR 节点数目超过阈值的循环，即时编译器不会进行任何循环展开。</li>
+<li><p>当<strong>循环数目</strong>是<strong>固定值</strong>而且<strong>非常小</strong>时，会将<strong>循环全部展开</strong>（Full Unroll）。</p>
+</li>
+<li><p>仅迭代三次（或以下）的循环，即时编译器将进行完全展开。</p>
+</li>
+<li><p>循环体 IR 节点数目超过阈值的循环，即时编译器不会进行任何循环展开。</p>
+</li>
 </ul>
 <h2 id="计数循环需满足的-4-个条件"><a href="#计数循环需满足的-4-个条件" class="headerlink" title="计数循环需满足的 4 个条件"></a>计数循环需满足的 4 个条件</h2><ol>
-<li>维护一个循环计数器，并且基于计数器的循环出口只有一个（但可以有基于其他判断条件的出口）。</li>
-<li>循环计数器的类型为 int、short 或者 char（即不能是 byte、long，更不能是 float 或者 double）。</li>
-<li>每个迭代循环计数器的增量为常数。</li>
-<li>循环计数器的上限（增量为正数）或下限（增量为负数）是循环无关的数值。</li>
+<li><p>维护一个循环计数器，并且基于计数器的循环出口只有一个（但可以有基于其他判断条件的出口）。</p>
+</li>
+<li><p>循环计数器的类型为 int、short 或者 char（即不能是 byte、long，更不能是 float 或者 double）。</p>
+</li>
+<li><p>每个迭代循环计数器的增量为常数。</p>
+</li>
+<li><p>循环计数器的上限（增量为正数）或下限（增量为负数）是循环无关的数值。</p>
+</li>
 </ol>
 <h1 id="循环判断外提（loop-unswitching）"><a href="#循环判断外提（loop-unswitching）" class="headerlink" title="循环判断外提（loop unswitching）"></a>循环判断外提（loop unswitching）</h1><blockquote>
 <p>指的是<strong>将循环中的 if 语句外提至循环之前</strong>，并且在该 if 语句的两个分支中分别放置一份循环代码。</p>
@@ -492,8 +516,10 @@
 <p>指的是将循环的前几个迭代或者后几个迭代剥离出循环的优化方式。</p>
 </blockquote>
 <ul>
-<li>一般来说，循环的<strong>前几个迭代</strong>或者<strong>后几个迭代</strong>都包含<strong>特殊处理</strong>。</li>
-<li>剥离出去后，可以<strong>使原本的循环体的规律性更加明显</strong>，触发进一步的优化。</li>
+<li><p>一般来说，循环的<strong>前几个迭代</strong>或者<strong>后几个迭代</strong>都包含<strong>特殊处理</strong>。</p>
+</li>
+<li><p>剥离出去后，可以<strong>使原本的循环体的规律性更加明显</strong>，触发进一步的优化。</p>
+</li>
 </ul>
 <h1 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h1><p>Q：</p>
 <p>如果有这样一段代码：</p>
@@ -502,9 +528,6 @@
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sum += x + a[i] + y;</span><br></pre></td></tr></table></figure>
 <p>也能借助 IR 外提  x + y 吗？</p>
 <p>A：能。</p>
-<h1 id="引用"><a href="#引用" class="headerlink" title="引用"></a>引用</h1><blockquote>
-<p><a href="https://time.geekbang.org/column/article/39814" target="_blank" rel="noopener">https://time.geekbang.org/column/article/39814</a></p>
-</blockquote>
 
       
     </div>
@@ -564,8 +587,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2018/11/22/笔记-深入拆解Java虚拟机-24字段访问相关优化/" rel="next" title="笔记-深入拆解Java虚拟机-24字段访问相关优化">
-                <i class="fa fa-chevron-left"></i> 笔记-深入拆解Java虚拟机-24字段访问相关优化
+              <a href="/2018/11/22/笔记-深入拆解Java虚拟机-24字段访问相关优化/" rel="next" title="「深入拆解 Java 虚拟机」24 字段访问相关优化">
+                <i class="fa fa-chevron-left"></i> 「深入拆解 Java 虚拟机」24 字段访问相关优化
               </a>
             
           </div>
@@ -574,8 +597,8 @@
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2018/12/03/笔记-深入拆解Java虚拟机-26向量化/" rel="prev" title="笔记-深入拆解Java虚拟机-26向量化">
-                笔记-深入拆解Java虚拟机-26向量化 <i class="fa fa-chevron-right"></i>
+              <a href="/2018/12/03/笔记-深入拆解Java虚拟机-26向量化/" rel="prev" title="「深入拆解 Java 虚拟机」26 向量化">
+                「深入拆解 Java 虚拟机」26 向量化 <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
@@ -657,7 +680,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">59</span>
+                  <span class="site-state-item-count">76</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -668,7 +691,7 @@
               
               <div class="site-state-item site-state-categories">
                 <a href="/categories/index.html">
-                  <span class="site-state-item-count">14</span>
+                  <span class="site-state-item-count">10</span>
                   <span class="site-state-item-name">分类</span>
                 </a>
               </div>
@@ -679,7 +702,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">26</span>
+                  <span class="site-state-item-count">37</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>
@@ -735,7 +758,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#循环无关代码外提"><span class="nav-number">1.</span> <span class="nav-text">循环无关代码外提</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#外提循环中值不变的表达式"><span class="nav-number">1.1.</span> <span class="nav-text">外提循环中值不变的表达式</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#外提循环无关检测"><span class="nav-number">1.2.</span> <span class="nav-text">外提循环无关检测</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#循环展开（Loop-Unrolling）"><span class="nav-number">2.</span> <span class="nav-text">循环展开（Loop Unrolling）</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#循环完全展开（Full-Unroll）"><span class="nav-number">2.1.</span> <span class="nav-text">循环完全展开（Full Unroll）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#计数循环需满足的-4-个条件"><span class="nav-number">2.2.</span> <span class="nav-text">计数循环需满足的 4 个条件</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#循环判断外提（loop-unswitching）"><span class="nav-number">3.</span> <span class="nav-text">循环判断外提（loop unswitching）</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#循环剥离（loop-peeling）"><span class="nav-number">4.</span> <span class="nav-text">循环剥离（loop peeling）</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#问题"><span class="nav-number">5.</span> <span class="nav-text">问题</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#引用"><span class="nav-number">6.</span> <span class="nav-text">引用</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#循环无关代码外提"><span class="nav-number">1.</span> <span class="nav-text">循环无关代码外提</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#外提循环中值不变的表达式"><span class="nav-number">1.1.</span> <span class="nav-text">外提循环中值不变的表达式</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#外提循环无关检测"><span class="nav-number">1.2.</span> <span class="nav-text">外提循环无关检测</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#循环展开（Loop-Unrolling）"><span class="nav-number">2.</span> <span class="nav-text">循环展开（Loop Unrolling）</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#循环完全展开（Full-Unroll）"><span class="nav-number">2.1.</span> <span class="nav-text">循环完全展开（Full Unroll）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#计数循环需满足的-4-个条件"><span class="nav-number">2.2.</span> <span class="nav-text">计数循环需满足的 4 个条件</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#循环判断外提（loop-unswitching）"><span class="nav-number">3.</span> <span class="nav-text">循环判断外提（loop unswitching）</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#循环剥离（loop-peeling）"><span class="nav-number">4.</span> <span class="nav-text">循环剥离（loop peeling）</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#问题"><span class="nav-number">5.</span> <span class="nav-text">问题</span></a></li></ol></div>
             
 
           </div>
@@ -755,7 +778,7 @@
 
     <footer id="footer" class="footer">
       <div class="footer-inner">
-        <div class="copyright">&copy; 2018 &mdash; <span itemprop="copyrightYear">2019</span>
+        <div class="copyright">&copy; 2018 &mdash; <span itemprop="copyrightYear">2020</span>
   <span class="with-love">
     <i class="fa fa-user"></i>
   </span>

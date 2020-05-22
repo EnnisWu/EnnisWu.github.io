@@ -85,19 +85,19 @@
 
 
 
-<meta name="description" content="分层编译模式HotSpot 包含的即时编译器： C1 C2 Graal（实验性质的即时编译器）  Java 7 以前需要根据程序特性选择对应的即使编译器C1 执行时间较短的程序。 对启动性能有要求的程序。 C1 编译效率较快。 对应参数 -client  C2 执行时间较长的程序。 对峰值性能有要求的程序。 C2 生成代码的执行效率较快。 对应参数 -server  Java 7 引入分层编译 综">
+<meta name="description" content="原文 https://time.geekbang.org/column/article/14061 https://time.geekbang.org/column/article/14070  分层编译模式HotSpot 包含的即时编译器： C1  C2  Graal（实验性质的即时编译器）   Java 7 以前需要根据程序特性选择对应的即使编译器C1 执行时间较短的程序。  对启动性能有要求">
 <meta name="keywords" content="JVM">
 <meta property="og:type" content="article">
-<meta property="og:title" content="笔记-深入拆解Java虚拟机-1617即时编译">
+<meta property="og:title" content="「深入拆解 Java 虚拟机」16 17 即时编译">
 <meta property="og:url" content="http://blog.ennis.info/2018/11/06/笔记-深入拆解Java虚拟机-1617即时编译/index.html">
 <meta property="og:site_name" content="Ennis Wu">
-<meta property="og:description" content="分层编译模式HotSpot 包含的即时编译器： C1 C2 Graal（实验性质的即时编译器）  Java 7 以前需要根据程序特性选择对应的即使编译器C1 执行时间较短的程序。 对启动性能有要求的程序。 C1 编译效率较快。 对应参数 -client  C2 执行时间较长的程序。 对峰值性能有要求的程序。 C2 生成代码的执行效率较快。 对应参数 -server  Java 7 引入分层编译 综">
+<meta property="og:description" content="原文 https://time.geekbang.org/column/article/14061 https://time.geekbang.org/column/article/14070  分层编译模式HotSpot 包含的即时编译器： C1  C2  Graal（实验性质的即时编译器）   Java 7 以前需要根据程序特性选择对应的即使编译器C1 执行时间较短的程序。  对启动性能有要求">
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="http://blog.ennis.info/images/posts/JVM/1617/compile_path.png">
-<meta property="og:updated_time" content="2019-01-26T13:26:29.105Z">
+<meta property="og:updated_time" content="2020-05-21T16:45:16.971Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="笔记-深入拆解Java虚拟机-1617即时编译">
-<meta name="twitter:description" content="分层编译模式HotSpot 包含的即时编译器： C1 C2 Graal（实验性质的即时编译器）  Java 7 以前需要根据程序特性选择对应的即使编译器C1 执行时间较短的程序。 对启动性能有要求的程序。 C1 编译效率较快。 对应参数 -client  C2 执行时间较长的程序。 对峰值性能有要求的程序。 C2 生成代码的执行效率较快。 对应参数 -server  Java 7 引入分层编译 综">
+<meta name="twitter:title" content="「深入拆解 Java 虚拟机」16 17 即时编译">
+<meta name="twitter:description" content="原文 https://time.geekbang.org/column/article/14061 https://time.geekbang.org/column/article/14070  分层编译模式HotSpot 包含的即时编译器： C1  C2  Graal（实验性质的即时编译器）   Java 7 以前需要根据程序特性选择对应的即使编译器C1 执行时间较短的程序。  对启动性能有要求">
 <meta name="twitter:image" content="http://blog.ennis.info/images/posts/JVM/1617/compile_path.png">
 
 
@@ -134,7 +134,7 @@
 
 
 
-  <title>笔记-深入拆解Java虚拟机-1617即时编译 | Ennis Wu</title>
+  <title>「深入拆解 Java 虚拟机」16 17 即时编译 | Ennis Wu</title>
   
 
 
@@ -340,6 +340,18 @@
 
  </div>
     </header>
+    <script>
+      let images = [
+         'header0.jpg',
+         'header1.jpg',
+         'header2.png'
+      ];
+      let image = images[Math.floor(Math.random() * images.length)];
+      window.document.getElementById('header').style.cssText 
+      = 'background: url(/images/avatar/' 
+      + image
+      + '); no-repeat; background-size: auto 100%;';
+    </script>
 
     <main id="main" class="main">
       <div class="main-inner">
@@ -378,7 +390,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">笔记-深入拆解Java虚拟机-1617即时编译</h1>
+          <h1 class="post-title" itemprop="name headline">「深入拆解 Java 虚拟机」16 17 即时编译</h1>
         
 
         <div class="post-meta">
@@ -413,8 +425,8 @@
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Java虚拟机/" itemprop="url" rel="index">
-                    <span itemprop="name">Java虚拟机</span>
+                  <a href="/categories/《深入拆解-Java-虚拟机》/" itemprop="url" rel="index">
+                    <span itemprop="name">《深入拆解 Java 虚拟机》</span>
                   </a>
                 </span>
 
@@ -450,25 +462,41 @@
       
 
       
-        <h1 id="分层编译模式"><a href="#分层编译模式" class="headerlink" title="分层编译模式"></a>分层编译模式</h1><h2 id="HotSpot-包含的即时编译器："><a href="#HotSpot-包含的即时编译器：" class="headerlink" title="HotSpot 包含的即时编译器："></a>HotSpot 包含的即时编译器：</h2><ol>
-<li>C1</li>
-<li>C2</li>
-<li>Graal（<strong>实验性质</strong>的即时编译器）</li>
+        <h1 id="原文"><a href="#原文" class="headerlink" title="原文"></a>原文</h1><ul>
+<li><a href="https://time.geekbang.org/column/article/14061" target="_blank" rel="noopener">https://time.geekbang.org/column/article/14061</a></li>
+<li><a href="https://time.geekbang.org/column/article/14070" target="_blank" rel="noopener">https://time.geekbang.org/column/article/14070</a></li>
+</ul>
+<h1 id="分层编译模式"><a href="#分层编译模式" class="headerlink" title="分层编译模式"></a>分层编译模式</h1><h2 id="HotSpot-包含的即时编译器："><a href="#HotSpot-包含的即时编译器：" class="headerlink" title="HotSpot 包含的即时编译器："></a>HotSpot 包含的即时编译器：</h2><ol>
+<li><p>C1</p>
+</li>
+<li><p>C2</p>
+</li>
+<li><p>Graal（<strong>实验性质</strong>的即时编译器）</p>
+</li>
 </ol>
 <h2 id="Java-7-以前需要根据程序特性选择对应的即使编译器"><a href="#Java-7-以前需要根据程序特性选择对应的即使编译器" class="headerlink" title="Java 7 以前需要根据程序特性选择对应的即使编译器"></a>Java 7 以前需要根据程序特性选择对应的即使编译器</h2><h3 id="C1"><a href="#C1" class="headerlink" title="C1"></a>C1</h3><ul>
-<li><strong>执行时间较短</strong>的程序。</li>
-<li>对<strong>启动性能</strong>有要求的程序。</li>
-<li>C1 <strong>编译效率较快</strong>。</li>
-<li>对应参数 -client</li>
+<li><p><strong>执行时间较短</strong>的程序。</p>
+</li>
+<li><p>对<strong>启动性能</strong>有要求的程序。</p>
+</li>
+<li><p>C1 <strong>编译效率较快</strong>。</p>
+</li>
+<li><p>对应参数 -client</p>
+</li>
 </ul>
 <h3 id="C2"><a href="#C2" class="headerlink" title="C2"></a>C2</h3><ul>
-<li><strong>执行时间较长</strong>的程序。</li>
-<li>对<strong>峰值性能</strong>有要求的程序。</li>
-<li>C2 生成<strong>代码的执行效率较快</strong>。</li>
-<li>对应参数 -server</li>
+<li><p><strong>执行时间较长</strong>的程序。</p>
+</li>
+<li><p>对<strong>峰值性能</strong>有要求的程序。</p>
+</li>
+<li><p>C2 生成<strong>代码的执行效率较快</strong>。</p>
+</li>
+<li><p>对应参数 -server</p>
+</li>
 </ul>
 <h2 id="Java-7-引入分层编译"><a href="#Java-7-引入分层编译" class="headerlink" title="Java 7 引入分层编译"></a>Java 7 引入分层编译</h2><ul>
-<li><strong>综合</strong> C1 的<strong>启动性能</strong>优势和 C2 的<strong>峰值性能</strong>优势。</li>
+<li><p><strong>综合</strong> C1 的<strong>启动性能</strong>优势和 C2 的<strong>峰值性能</strong>优势。</p>
+</li>
 <li><p>分层编译将 Java 虚拟机的执行状态<strong>分为 5 个层次</strong>。</p>
 <p>  0.解释执行</p>
 <p>  1.执行不带 profiling 的 C1 代码</p>
@@ -478,120 +506,182 @@
 </li>
 <li><p>C2 代码的执行效率比 C1 代码高 30% 以上。</p>
 </li>
-<li>C1 执行效率 1 层 &gt; 2 层 &gt; 3 层。（1 层比 2 层稍高，2 层比 3 层高 30% 以上）。</li>
+<li><p>C1 执行效率 1 层 &gt; 2 层 &gt; 3 层。（1 层比 2 层稍高，2 层比 3 层高 30% 以上）。</p>
+</li>
 </ul>
 <h2 id="profile"><a href="#profile" class="headerlink" title="profile"></a>profile</h2><ul>
-<li>profiling：在程序执行过程中，收集能够<strong>反映程序执行状态的数据</strong>。</li>
-<li>这里所收集的数据我们称之为程序的 profile。</li>
-<li>例如 JDK 附带的 hprof。</li>
-<li>profiler 大多通过<strong>注入</strong>或 <strong>JVMTI 事件</strong>来实现。</li>
-<li><strong>第 0 层和第 3 层还会收集用于第 4 层 C2 编译的数据。</strong></li>
+<li><p>profiling：在程序执行过程中，收集能够<strong>反映程序执行状态的数据</strong>。</p>
+</li>
+<li><p>这里所收集的数据我们称之为程序的 profile。</p>
+</li>
+<li><p>例如 JDK 附带的 hprof。</p>
+</li>
+<li><p>profiler 大多通过<strong>注入</strong>或 <strong>JVMTI 事件</strong>来实现。</p>
+</li>
+<li><p><strong>第 0 层和第 3 层还会收集用于第 4 层 C2 编译的数据。</strong></p>
+</li>
 </ul>
 <p>如：分支跳转字节码的分支 profile（branch profile）（跳转次数和不跳转次数），非私有实例方法调用指令，强制类型转换 checkcast 指令，类型测试 instanceof 指令，引用类型的数组存储 aastore 指令的 profile（receiver type profile）。</p>
 <ul>
-<li>分支 profile 和类型 profile 的收集会给应用程序<strong>带来不少性能开销</strong>。</li>
-<li>通常情况，<strong>不会在解释执行中收集</strong>分支 profile 和类型 profile。</li>
-<li><strong>只有触发 C1 编译后</strong>，JVM 认为可能被 C2 编译，才收集这些 profile。</li>
-<li>比较<strong>极端情况</strong>下，JVM 才会在<strong>解释执行时收集</strong> profile（如等待 C1 编译的方法过多时）。</li>
-<li>C2 可以根据收集到的数据进行猜测，作出比较<strong>激进的优化</strong>。</li>
+<li><p>分支 profile 和类型 profile 的收集会给应用程序<strong>带来不少性能开销</strong>。</p>
+</li>
+<li><p>通常情况，<strong>不会在解释执行中收集</strong>分支 profile 和类型 profile。</p>
+</li>
+<li><p><strong>只有触发 C1 编译后</strong>，JVM 认为可能被 C2 编译，才收集这些 profile。</p>
+</li>
+<li><p>比较<strong>极端情况</strong>下，JVM 才会在<strong>解释执行时收集</strong> profile（如等待 C1 编译的方法过多时）。</p>
+</li>
+<li><p>C2 可以根据收集到的数据进行猜测，作出比较<strong>激进的优化</strong>。</p>
+</li>
 </ul>
 <h3 id="基于分支-profile-的优化"><a href="#基于分支-profile-的优化" class="headerlink" title="基于分支 profile 的优化"></a>基于分支 profile 的优化</h3><ul>
 <li><p>根据条件跳转指令的分支 profile，即时编译器可以将<strong>从未执行过的分支剪掉</strong>。</p>
 <ul>
-<li><strong>节省编译时间</strong>和部署代码要消耗的<strong>内存空间</strong>。</li>
-<li>将<strong>精简程序的数据流</strong>，触发更多的优化。</li>
+<li><p><strong>节省编译时间</strong>和部署代码要消耗的<strong>内存空间</strong>。</p>
+</li>
+<li><p>将<strong>精简程序的数据流</strong>，触发更多的优化。</p>
+</li>
 </ul>
 </li>
 <li><p>根据分支 profile，计算每一条程序执行路径的概率，<strong>优化优先处理概率较高的路径</strong>。</p>
 </li>
 </ul>
 <h3 id="基于类型-profile-的优化"><a href="#基于类型-profile-的优化" class="headerlink" title="基于类型 profile 的优化"></a>基于类型 profile 的优化</h3><h4 id="instanceof-测试"><a href="#instanceof-测试" class="headerlink" title="instanceof 测试"></a>instanceof 测试</h4><ul>
-<li>目标类型是 final 类型，只比较测试对象的动态类型是否为该类型。</li>
-<li>目标类型是非 final 类型，依次测试该类，该类的父类、祖先类，该类所直接或者间接实现的接口。</li>
+<li><p>目标类型是 final 类型，只比较测试对象的动态类型是否为该类型。</p>
+</li>
+<li><p>目标类型是非 final 类型，依次测试该类，该类的父类、祖先类，该类所直接或者间接实现的接口。</p>
+</li>
 </ul>
 <h4 id="instanceof-以及方法调用的类型-profile"><a href="#instanceof-以及方法调用的类型-profile" class="headerlink" title="instanceof 以及方法调用的类型 profile"></a>instanceof 以及方法调用的类型 profile</h4><ul>
-<li><strong>假设对象的动态类型仅为类型 profile 中的那几个。</strong></li>
-<li><strong>针对分支 profile 优化。</strong></li>
-<li><strong>对方法调用的条件去虚化内联。</strong></li>
+<li><p><strong>假设对象的动态类型仅为类型 profile 中的那几个。</strong></p>
+</li>
+<li><p><strong>针对分支 profile 优化。</strong></p>
+</li>
+<li><p><strong>对方法调用的条件去虚化内联。</strong></p>
+</li>
 </ul>
 <h3 id="去优化"><a href="#去优化" class="headerlink" title="去优化"></a>去优化</h3><blockquote>
 <p>即从执行即时编译生成的机器码切换回解释执行。</p>
 </blockquote>
 <ul>
-<li>当<strong>假设失败</strong>的情况下，JVM 将<strong>去优化</strong>。</li>
-<li>生成的机器码中，即时编译器在<strong>假设失败的位置上插入一个陷阱</strong>（trap）。</li>
-<li>陷阱实际上是一条 call 指令，调用至 Java 虚拟机专门负责去优化的方法。</li>
-<li>与普通的 call 指令的区别：去优化方法会更改栈上的返回地址，并不再返回即时编译器生成的机器码中。</li>
-<li><strong>去优化过程非常复杂。</strong></li>
-<li>生成的机器代码和原本的字节码差异非常大。</li>
-<li>需要将当前机器码的执行状态转换至某一字节码之前的执行状态，并从该字节码开始执行。</li>
-<li>这便要求即时编译器在编译过程中<strong>记录好这两种执行状态的映射</strong>。</li>
+<li><p>当<strong>假设失败</strong>的情况下，JVM 将<strong>去优化</strong>。</p>
+</li>
+<li><p>生成的机器码中，即时编译器在<strong>假设失败的位置上插入一个陷阱</strong>（trap）。</p>
+</li>
+<li><p>陷阱实际上是一条 call 指令，调用至 Java 虚拟机专门负责去优化的方法。</p>
+</li>
+<li><p>与普通的 call 指令的区别：去优化方法会更改栈上的返回地址，并不再返回即时编译器生成的机器码中。</p>
+</li>
+<li><p><strong>去优化过程非常复杂。</strong></p>
+</li>
+<li><p>生成的机器代码和原本的字节码差异非常大。</p>
+</li>
+<li><p>需要将当前机器码的执行状态转换至某一字节码之前的执行状态，并从该字节码开始执行。</p>
+</li>
+<li><p>这便要求即时编译器在编译过程中<strong>记录好这两种执行状态的映射</strong>。</p>
+</li>
 </ul>
 <h4 id="去优化的原因与优化无关"><a href="#去优化的原因与优化无关" class="headerlink" title="去优化的原因与优化无关"></a>去优化的原因与优化无关</h4><blockquote>
 <p>即使重新编译也不会改变生成的机器码。</p>
 </blockquote>
 <ul>
-<li>生成的机器码可以在调用去优化方法时传入 Action_None。</li>
-<li>表示<strong>保留这一份机器码</strong>。</li>
-<li>在下一次调用该方法时重新进入这一份机器码。</li>
+<li><p>生成的机器码可以在调用去优化方法时传入 Action_None。</p>
+</li>
+<li><p>表示<strong>保留这一份机器码</strong>。</p>
+</li>
+<li><p>在下一次调用该方法时重新进入这一份机器码。</p>
+</li>
 </ul>
 <h4 id="去优化的原因与静态分析的结果有关"><a href="#去优化的原因与静态分析的结果有关" class="headerlink" title="去优化的原因与静态分析的结果有关"></a>去优化的原因与静态分析的结果有关</h4><ul>
-<li>生成的机器码可以在调用去优化方法时传入 Action_Recompile。</li>
-<li>表示<strong>不保留这一份机器码</strong>。</li>
-<li>但是可以<strong>不经过重新 profile，直接重新编译</strong>。</li>
+<li><p>生成的机器码可以在调用去优化方法时传入 Action_Recompile。</p>
+</li>
+<li><p>表示<strong>不保留这一份机器码</strong>。</p>
+</li>
+<li><p>但是可以<strong>不经过重新 profile，直接重新编译</strong>。</p>
+</li>
 </ul>
 <h4 id="去优化的原因与基于-profile-的激进优化有关"><a href="#去优化的原因与基于-profile-的激进优化有关" class="headerlink" title="去优化的原因与基于 profile 的激进优化有关"></a>去优化的原因与基于 profile 的激进优化有关</h4><ul>
-<li>生成的机器码需要在调用去优化方法时传入 Action_Reinterpret。</li>
-<li>表示<strong>不保留这一份机器码</strong>。</li>
-<li>而且<strong>需要重新收集程序的 profile</strong>。</li>
+<li><p>生成的机器码需要在调用去优化方法时传入 Action_Reinterpret。</p>
+</li>
+<li><p>表示<strong>不保留这一份机器码</strong>。</p>
+</li>
+<li><p>而且<strong>需要重新收集程序的 profile</strong>。</p>
+</li>
 </ul>
 <h2 id="编译路径"><a href="#编译路径" class="headerlink" title="编译路径"></a>编译路径</h2><ul>
-<li><strong>1 层和 4 层为终止状态。</strong></li>
-<li>一个方法被终止状态编译后，如果编译后的代码没有失效，JVM 不再发出该方法的编译请求。</li>
+<li><p><strong>1 层和 4 层为终止状态。</strong></p>
+</li>
+<li><p>一个方法被终止状态编译后，如果编译后的代码没有失效，JVM 不再发出该方法的编译请求。</p>
+</li>
 </ul>
 <p><img src="/images/posts/JVM/1617/compile_path.png" alt="compile_path"></p>
 <h3 id="通常情况"><a href="#通常情况" class="headerlink" title="通常情况"></a>通常情况</h3><ul>
 <li>热点方法会被第 3 层的 C1 编译，再被第 4 层的 C2 编译。</li>
 </ul>
 <h3 id="琐碎的方法"><a href="#琐碎的方法" class="headerlink" title="琐碎的方法"></a>琐碎的方法</h3><ul>
-<li><strong>字节数少</strong>，且第 3 层的 profiling <strong>没有可收集的数据</strong>的方法。</li>
-<li>JVM 断定该方法对于 <strong>C1 代码和 C2 代码执行效率相同</strong>。</li>
-<li>在第 3 层编译后，直接用第 1 层的 C1 编译。</li>
+<li><p><strong>字节数少</strong>，且第 3 层的 profiling <strong>没有可收集的数据</strong>的方法。</p>
+</li>
+<li><p>JVM 断定该方法对于 <strong>C1 代码和 C2 代码执行效率相同</strong>。</p>
+</li>
+<li><p>在第 3 层编译后，直接用第 1 层的 C1 编译。</p>
+</li>
 </ul>
 <h3 id="C1-忙碌的情况"><a href="#C1-忙碌的情况" class="headerlink" title="C1 忙碌的情况"></a>C1 忙碌的情况</h3><ul>
-<li>解释执行过程中进行 profiling。</li>
-<li>然后直接由第 4 层的 C2 编译。</li>
+<li><p>解释执行过程中进行 profiling。</p>
+</li>
+<li><p>然后直接由第 4 层的 C2 编译。</p>
+</li>
 </ul>
 <h3 id="C2-忙碌的情况"><a href="#C2-忙碌的情况" class="headerlink" title="C2 忙碌的情况"></a>C2 忙碌的情况</h3><ul>
-<li>方法先被第 2 层的 C1 编译。</li>
-<li>再被第 3 层的 C1 编译，减少在第 3 层的执行时间。</li>
+<li><p>方法先被第 2 层的 C1 编译。</p>
+</li>
+<li><p>再被第 3 层的 C1 编译，减少在第 3 层的执行时间。</p>
+</li>
 </ul>
 <h2 id="Java-8"><a href="#Java-8" class="headerlink" title="Java 8"></a>Java 8</h2><ul>
-<li>默认开启分层编译。</li>
-<li>不管分层编译是否开启，原本的选择即时编译器的参数都无效（-client 和 -server）。</li>
-<li>关闭分层编译情况下，JVM 采用 C2。</li>
-<li>只使用 C1：使用参数 -XX:TieredStopAtLevel=1，解释执行后直接由 1 层的 C1 编译。</li>
+<li><p>默认开启分层编译。</p>
+</li>
+<li><p>不管分层编译是否开启，原本的选择即时编译器的参数都无效（-client 和 -server）。</p>
+</li>
+<li><p>关闭分层编译情况下，JVM 采用 C2。</p>
+</li>
+<li><p>只使用 C1：使用参数 -XX:TieredStopAtLevel=1，解释执行后直接由 1 层的 C1 编译。</p>
+</li>
 </ul>
 <h1 id="即时编译的触发"><a href="#即时编译的触发" class="headerlink" title="即时编译的触发"></a>即时编译的触发</h1><ul>
-<li>根据方法的<strong>调用次数</strong>和<strong>循环回边的执行次数</strong>来触发。</li>
-<li>profiling 中包含上述次数。</li>
-<li><strong>解释执行和 C1 代码中增加循环回边计数器的位置不同</strong>，但不会对程序照成影响。</li>
-<li>JVM <strong>不对计数器进行同步</strong>，收集的几次为非精确值。</li>
-<li>即时编译的<strong>触发不需要非常精确的值</strong>。</li>
-<li>不启用分层编译，超过由参数 -XX:CompileThreshold 指定的阈值时（使用 C1 时，该值为 1500；使用 C2 时，该值为 10000），会触发即时编译。</li>
-<li>启用分层编译，JVM 不采用由参数 -XX:CompileThreshold 指定的阈值，使用另一套阈值系统。阈值大小<strong>动态调整</strong>。</li>
-<li>动态调整：比较阈值时，将阈值与某个<strong>系数 s</strong> 相乘。</li>
-<li>该系数与<strong>当前待编译的方法数目</strong>成<strong>正相关</strong>，与<strong>编译线程的数目</strong>成<strong>负相关</strong>。</li>
-<li>64 位 JVM中，默认情况下<strong>编译线程的总数目</strong>根据<strong>处理器数量来调整</strong>，（对应参数 -XX:+CICompilerCountPerCPU，默认为 true；当通过参数 -XX:+CICompilerCount=N 强制设定总编译线程数目时，CICompilerCountPerCPU 将被设置为 false）。</li>
-<li>JVM 将编译线程按照 1:2 的比例分配给 C1 和 C2（至少各为 1 个）。</li>
+<li><p>根据方法的<strong>调用次数</strong>和<strong>循环回边的执行次数</strong>来触发。</p>
+</li>
+<li><p>profiling 中包含上述次数。</p>
+</li>
+<li><p><strong>解释执行和 C1 代码中增加循环回边计数器的位置不同</strong>，但不会对程序照成影响。</p>
+</li>
+<li><p>JVM <strong>不对计数器进行同步</strong>，收集的几次为非精确值。</p>
+</li>
+<li><p>即时编译的<strong>触发不需要非常精确的值</strong>。</p>
+</li>
+<li><p>不启用分层编译，超过由参数 -XX:CompileThreshold 指定的阈值时（使用 C1 时，该值为 1500；使用 C2 时，该值为 10000），会触发即时编译。</p>
+</li>
+<li><p>启用分层编译，JVM 不采用由参数 -XX:CompileThreshold 指定的阈值，使用另一套阈值系统。阈值大小<strong>动态调整</strong>。</p>
+</li>
+<li><p>动态调整：比较阈值时，将阈值与某个<strong>系数 s</strong> 相乘。</p>
+</li>
+<li><p>该系数与<strong>当前待编译的方法数目</strong>成<strong>正相关</strong>，与<strong>编译线程的数目</strong>成<strong>负相关</strong>。</p>
+</li>
+<li><p>64 位 JVM中，默认情况下<strong>编译线程的总数目</strong>根据<strong>处理器数量来调整</strong>，（对应参数 -XX:+CICompilerCountPerCPU，默认为 true；当通过参数 -XX:+CICompilerCount=N 强制设定总编译线程数目时，CICompilerCountPerCPU 将被设置为 false）。</p>
+</li>
+<li><p>JVM 将编译线程按照 1:2 的比例分配给 C1 和 C2（至少各为 1 个）。</p>
+</li>
 </ul>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">对于核及以上的机器，总的编译线程的数目为：</span><br><span class="line">n = log2(N) * log2(log2(N)) * 3 / 2</span><br><span class="line">其中 N 为 CPU 核心数目。</span><br></pre></td></tr></table></figure>
 <p>启用分层编译时的具体触发条件：</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">当方法调用次数大于由参数 -XX:TierXInvocationThreshold 指定的阈值乘以系数，或者当方法调用次数大于由参数 -XX:TierXMINInvocationThreshold 指定的阈值乘以系数，并且方法调用次数和循环回边次数之和大于由参数 -XX:TierXCompileThreshold 指定的阈值乘以系数时，便会触发 X 层即时编译。</span><br><span class="line"></span><br><span class="line">触发条件为：</span><br><span class="line">i &gt; TierXInvocationThreshold * s || (i &gt; TierXMinInvocationThreshold * s  &amp;&amp; i + b &gt; TierXCompileThreshold * s)</span><br></pre></td></tr></table></figure>
 <h1 id="OSR-编译"><a href="#OSR-编译" class="headerlink" title="OSR 编译"></a>OSR 编译</h1><ul>
-<li>JVM 还存在另一种以<strong>循环为单位</strong>的即时编译（On-Stack-Replacement（OSR）编译）。</li>
-<li><strong>循环回边计数器用来触发</strong>这种类型的编译的。</li>
-<li>不启用分层编译情况，触发 OSR 编译的阈值是由参数 -XX:CompileThreshold 指定的阈值的倍数。</li>
+<li><p>JVM 还存在另一种以<strong>循环为单位</strong>的即时编译（On-Stack-Replacement（OSR）编译）。</p>
+</li>
+<li><p><strong>循环回边计数器用来触发</strong>这种类型的编译的。</p>
+</li>
+<li><p>不启用分层编译情况，触发 OSR 编译的阈值是由参数 -XX:CompileThreshold 指定的阈值的倍数。</p>
+</li>
 </ul>
 <p>计算方法：</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">(OnStackReplacePercentage - InterpreterProfilePercentage)/100</span><br><span class="line"></span><br><span class="line">其中 -XX:InterpreterProfilePercentage 的默认值为 33，当使用 C1 时 -XX:OnStackReplacePercentage 为 933，当使用 C2 时为 140。</span><br><span class="line">也就是说，默认情况下，C1 的 OSR 编译的阈值为 13500，而 C2 的为 10700。</span><br></pre></td></tr></table></figure>
@@ -600,13 +690,10 @@
 <li>OSR 编译在<strong>正常的应用程序</strong>中<strong>不多见</strong>。它只在<strong>基准测试</strong>时比较<strong>常见</strong>。</li>
 </ul>
 <h1 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h1><p>Q：<strong>为什么不把所有代码都即时编译一下呢？这样程序的执行效率不是更快吗？</strong></p>
-<p>A：即时编译是以方法为单位的。<strong>动态编译比较耗时</strong>，如果花了大量CPU资源编译出来的机器码运行不了几次，就很浪费了。</p>
+<p>A：即时编译是以方法为单位的。<strong>动态编译比较耗时</strong>，如果花了大量 CPU 资源编译出来的机器码运行不了几次，就很浪费了。</p>
 <hr>
 <p>Q：为什么要用分层编译呢？<strong>使用最快的编译代码编译器编译的代码不是更好吗？</strong></p>
 <p>A：<strong>机器码越快，需要的编译时间就越长。分层编译是一种折衷的方式</strong>，既能够满足部分不那么热的代码能够在短时间内编译完成，也能满足很热的代码能够拥有最好的优化。</p>
-<h1 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h1><blockquote>
-<p><a href="https://time.geekbang.org/column/article/14061" target="_blank" rel="noopener">https://time.geekbang.org/column/article/14061</a><br><a href="https://time.geekbang.org/column/article/14070" target="_blank" rel="noopener">https://time.geekbang.org/column/article/14070</a></p>
-</blockquote>
 
       
     </div>
@@ -666,8 +753,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2018/10/21/一些简单的Git命令/" rel="next" title="一些简单的Git命令">
-                <i class="fa fa-chevron-left"></i> 一些简单的Git命令
+              <a href="/2018/10/21/一些简单的Git命令/" rel="next" title="「笔记」一些简单的 Git 命令">
+                <i class="fa fa-chevron-left"></i> 「笔记」一些简单的 Git 命令
               </a>
             
           </div>
@@ -676,8 +763,8 @@
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2018/11/07/Android的视图优化方法/" rel="prev" title="Android的视图优化方法">
-                Android的视图优化方法 <i class="fa fa-chevron-right"></i>
+              <a href="/2018/11/07/Android的视图优化方法/" rel="prev" title="「笔记」Android 的视图优化方法">
+                「笔记」Android 的视图优化方法 <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
@@ -759,7 +846,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">59</span>
+                  <span class="site-state-item-count">76</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -770,7 +857,7 @@
               
               <div class="site-state-item site-state-categories">
                 <a href="/categories/index.html">
-                  <span class="site-state-item-count">14</span>
+                  <span class="site-state-item-count">10</span>
                   <span class="site-state-item-name">分类</span>
                 </a>
               </div>
@@ -781,7 +868,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">26</span>
+                  <span class="site-state-item-count">37</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>
@@ -837,7 +924,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#分层编译模式"><span class="nav-number">1.</span> <span class="nav-text">分层编译模式</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#HotSpot-包含的即时编译器："><span class="nav-number">1.1.</span> <span class="nav-text">HotSpot 包含的即时编译器：</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Java-7-以前需要根据程序特性选择对应的即使编译器"><span class="nav-number">1.2.</span> <span class="nav-text">Java 7 以前需要根据程序特性选择对应的即使编译器</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#C1"><span class="nav-number">1.2.1.</span> <span class="nav-text">C1</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#C2"><span class="nav-number">1.2.2.</span> <span class="nav-text">C2</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Java-7-引入分层编译"><span class="nav-number">1.3.</span> <span class="nav-text">Java 7 引入分层编译</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#profile"><span class="nav-number">1.4.</span> <span class="nav-text">profile</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#基于分支-profile-的优化"><span class="nav-number">1.4.1.</span> <span class="nav-text">基于分支 profile 的优化</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#基于类型-profile-的优化"><span class="nav-number">1.4.2.</span> <span class="nav-text">基于类型 profile 的优化</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#instanceof-测试"><span class="nav-number">1.4.2.1.</span> <span class="nav-text">instanceof 测试</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#instanceof-以及方法调用的类型-profile"><span class="nav-number">1.4.2.2.</span> <span class="nav-text">instanceof 以及方法调用的类型 profile</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#去优化"><span class="nav-number">1.4.3.</span> <span class="nav-text">去优化</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#去优化的原因与优化无关"><span class="nav-number">1.4.3.1.</span> <span class="nav-text">去优化的原因与优化无关</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#去优化的原因与静态分析的结果有关"><span class="nav-number">1.4.3.2.</span> <span class="nav-text">去优化的原因与静态分析的结果有关</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#去优化的原因与基于-profile-的激进优化有关"><span class="nav-number">1.4.3.3.</span> <span class="nav-text">去优化的原因与基于 profile 的激进优化有关</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#编译路径"><span class="nav-number">1.5.</span> <span class="nav-text">编译路径</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#通常情况"><span class="nav-number">1.5.1.</span> <span class="nav-text">通常情况</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#琐碎的方法"><span class="nav-number">1.5.2.</span> <span class="nav-text">琐碎的方法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#C1-忙碌的情况"><span class="nav-number">1.5.3.</span> <span class="nav-text">C1 忙碌的情况</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#C2-忙碌的情况"><span class="nav-number">1.5.4.</span> <span class="nav-text">C2 忙碌的情况</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Java-8"><span class="nav-number">1.6.</span> <span class="nav-text">Java 8</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#即时编译的触发"><span class="nav-number">2.</span> <span class="nav-text">即时编译的触发</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#OSR-编译"><span class="nav-number">3.</span> <span class="nav-text">OSR 编译</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#问题"><span class="nav-number">4.</span> <span class="nav-text">问题</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#参考"><span class="nav-number">5.</span> <span class="nav-text">参考</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#原文"><span class="nav-number">1.</span> <span class="nav-text">原文</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#分层编译模式"><span class="nav-number">2.</span> <span class="nav-text">分层编译模式</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#HotSpot-包含的即时编译器："><span class="nav-number">2.1.</span> <span class="nav-text">HotSpot 包含的即时编译器：</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Java-7-以前需要根据程序特性选择对应的即使编译器"><span class="nav-number">2.2.</span> <span class="nav-text">Java 7 以前需要根据程序特性选择对应的即使编译器</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#C1"><span class="nav-number">2.2.1.</span> <span class="nav-text">C1</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#C2"><span class="nav-number">2.2.2.</span> <span class="nav-text">C2</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Java-7-引入分层编译"><span class="nav-number">2.3.</span> <span class="nav-text">Java 7 引入分层编译</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#profile"><span class="nav-number">2.4.</span> <span class="nav-text">profile</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#基于分支-profile-的优化"><span class="nav-number">2.4.1.</span> <span class="nav-text">基于分支 profile 的优化</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#基于类型-profile-的优化"><span class="nav-number">2.4.2.</span> <span class="nav-text">基于类型 profile 的优化</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#instanceof-测试"><span class="nav-number">2.4.2.1.</span> <span class="nav-text">instanceof 测试</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#instanceof-以及方法调用的类型-profile"><span class="nav-number">2.4.2.2.</span> <span class="nav-text">instanceof 以及方法调用的类型 profile</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#去优化"><span class="nav-number">2.4.3.</span> <span class="nav-text">去优化</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#去优化的原因与优化无关"><span class="nav-number">2.4.3.1.</span> <span class="nav-text">去优化的原因与优化无关</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#去优化的原因与静态分析的结果有关"><span class="nav-number">2.4.3.2.</span> <span class="nav-text">去优化的原因与静态分析的结果有关</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#去优化的原因与基于-profile-的激进优化有关"><span class="nav-number">2.4.3.3.</span> <span class="nav-text">去优化的原因与基于 profile 的激进优化有关</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#编译路径"><span class="nav-number">2.5.</span> <span class="nav-text">编译路径</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#通常情况"><span class="nav-number">2.5.1.</span> <span class="nav-text">通常情况</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#琐碎的方法"><span class="nav-number">2.5.2.</span> <span class="nav-text">琐碎的方法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#C1-忙碌的情况"><span class="nav-number">2.5.3.</span> <span class="nav-text">C1 忙碌的情况</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#C2-忙碌的情况"><span class="nav-number">2.5.4.</span> <span class="nav-text">C2 忙碌的情况</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Java-8"><span class="nav-number">2.6.</span> <span class="nav-text">Java 8</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#即时编译的触发"><span class="nav-number">3.</span> <span class="nav-text">即时编译的触发</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#OSR-编译"><span class="nav-number">4.</span> <span class="nav-text">OSR 编译</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#问题"><span class="nav-number">5.</span> <span class="nav-text">问题</span></a></li></ol></div>
             
 
           </div>
@@ -857,7 +944,7 @@
 
     <footer id="footer" class="footer">
       <div class="footer-inner">
-        <div class="copyright">&copy; 2018 &mdash; <span itemprop="copyrightYear">2019</span>
+        <div class="copyright">&copy; 2018 &mdash; <span itemprop="copyrightYear">2020</span>
   <span class="with-love">
     <i class="fa fa-user"></i>
   </span>

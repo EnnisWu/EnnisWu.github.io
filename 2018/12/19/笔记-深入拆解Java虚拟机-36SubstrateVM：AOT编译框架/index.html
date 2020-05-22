@@ -72,7 +72,7 @@
 
 
 
-  <meta name="keywords" content="JVM," />
+  <meta name="keywords" content="看不懂,JVM," />
 
 
 
@@ -85,18 +85,18 @@
 
 
 
-<meta name="description" content="AOT（Ahead-Of-Time）编译 程序运行之前，将字节码转换为机器码的过程。 编译后可以需要链接至托管环境中的动态共享库，也可以是独立运行的可执行文件。 狭义的 AOT 编译针对的目标代码是可以被即时编译的代码。 可以简单地理解为类似 GCC 的静态编译器。  优点 无须在运行时耗费 CPU 资源进行即时编译。 程序能在启动时就达到理想的性能。  缺点 无法得知程序运行时的信息。 无法进行">
-<meta name="keywords" content="JVM">
+<meta name="description" content="原文：https://time.geekbang.org/column/article/41582 AOT（Ahead-Of-Time）编译 程序运行之前，将字节码转换为机器码的过程。  编译后可以需要链接至托管环境中的动态共享库，也可以是独立运行的可执行文件。  狭义的 AOT 编译针对的目标代码是可以被即时编译的代码。  可以简单地理解为类似 GCC 的静态编译器。   优点 无须在运行时耗费">
+<meta name="keywords" content="看不懂,JVM">
 <meta property="og:type" content="article">
-<meta property="og:title" content="笔记-深入拆解Java虚拟机-36SubstrateVM：AOT编译框架">
+<meta property="og:title" content="「深入拆解 Java 虚拟机」36 SubstrateVM：AOT 编译框架">
 <meta property="og:url" content="http://blog.ennis.info/2018/12/19/笔记-深入拆解Java虚拟机-36SubstrateVM：AOT编译框架/index.html">
 <meta property="og:site_name" content="Ennis Wu">
-<meta property="og:description" content="AOT（Ahead-Of-Time）编译 程序运行之前，将字节码转换为机器码的过程。 编译后可以需要链接至托管环境中的动态共享库，也可以是独立运行的可执行文件。 狭义的 AOT 编译针对的目标代码是可以被即时编译的代码。 可以简单地理解为类似 GCC 的静态编译器。  优点 无须在运行时耗费 CPU 资源进行即时编译。 程序能在启动时就达到理想的性能。  缺点 无法得知程序运行时的信息。 无法进行">
+<meta property="og:description" content="原文：https://time.geekbang.org/column/article/41582 AOT（Ahead-Of-Time）编译 程序运行之前，将字节码转换为机器码的过程。  编译后可以需要链接至托管环境中的动态共享库，也可以是独立运行的可执行文件。  狭义的 AOT 编译针对的目标代码是可以被即时编译的代码。  可以简单地理解为类似 GCC 的静态编译器。   优点 无须在运行时耗费">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2019-01-26T13:26:29.191Z">
+<meta property="og:updated_time" content="2020-05-21T16:49:17.015Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="笔记-深入拆解Java虚拟机-36SubstrateVM：AOT编译框架">
-<meta name="twitter:description" content="AOT（Ahead-Of-Time）编译 程序运行之前，将字节码转换为机器码的过程。 编译后可以需要链接至托管环境中的动态共享库，也可以是独立运行的可执行文件。 狭义的 AOT 编译针对的目标代码是可以被即时编译的代码。 可以简单地理解为类似 GCC 的静态编译器。  优点 无须在运行时耗费 CPU 资源进行即时编译。 程序能在启动时就达到理想的性能。  缺点 无法得知程序运行时的信息。 无法进行">
+<meta name="twitter:title" content="「深入拆解 Java 虚拟机」36 SubstrateVM：AOT 编译框架">
+<meta name="twitter:description" content="原文：https://time.geekbang.org/column/article/41582 AOT（Ahead-Of-Time）编译 程序运行之前，将字节码转换为机器码的过程。  编译后可以需要链接至托管环境中的动态共享库，也可以是独立运行的可执行文件。  狭义的 AOT 编译针对的目标代码是可以被即时编译的代码。  可以简单地理解为类似 GCC 的静态编译器。   优点 无须在运行时耗费">
 
 
 
@@ -132,7 +132,7 @@
 
 
 
-  <title>笔记-深入拆解Java虚拟机-36SubstrateVM：AOT编译框架 | Ennis Wu</title>
+  <title>「深入拆解 Java 虚拟机」36 SubstrateVM：AOT 编译框架 | Ennis Wu</title>
   
 
 
@@ -338,6 +338,18 @@
 
  </div>
     </header>
+    <script>
+      let images = [
+         'header0.jpg',
+         'header1.jpg',
+         'header2.png'
+      ];
+      let image = images[Math.floor(Math.random() * images.length)];
+      window.document.getElementById('header').style.cssText 
+      = 'background: url(/images/avatar/' 
+      + image
+      + '); no-repeat; background-size: auto 100%;';
+    </script>
 
     <main id="main" class="main">
       <div class="main-inner">
@@ -376,7 +388,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">笔记-深入拆解Java虚拟机-36SubstrateVM：AOT编译框架</h1>
+          <h1 class="post-title" itemprop="name headline">「深入拆解 Java 虚拟机」36 SubstrateVM：AOT 编译框架</h1>
         
 
         <div class="post-meta">
@@ -411,8 +423,8 @@
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Java虚拟机/" itemprop="url" rel="index">
-                    <span itemprop="name">Java虚拟机</span>
+                  <a href="/categories/《深入拆解-Java-虚拟机》/" itemprop="url" rel="index">
+                    <span itemprop="name">《深入拆解 Java 虚拟机》</span>
                   </a>
                 </span>
 
@@ -448,39 +460,59 @@
       
 
       
-        <h1 id="AOT（Ahead-Of-Time）编译"><a href="#AOT（Ahead-Of-Time）编译" class="headerlink" title="AOT（Ahead-Of-Time）编译"></a>AOT（Ahead-Of-Time）编译</h1><ul>
-<li><strong>程序运行之前，将字节码转换为机器码的过程。</strong></li>
-<li>编译后可以需要链接至托管环境中的动态共享库，也可以是独立运行的可执行文件。</li>
-<li>狭义的 AOT 编译针对的目标代码是可以被即时编译的代码。</li>
-<li>可以简单地理解为类似 GCC 的静态编译器。</li>
+        <p>原文：<a href="https://time.geekbang.org/column/article/41582" target="_blank" rel="noopener">https://time.geekbang.org/column/article/41582</a></p>
+<h1 id="AOT（Ahead-Of-Time）编译"><a href="#AOT（Ahead-Of-Time）编译" class="headerlink" title="AOT（Ahead-Of-Time）编译"></a>AOT（Ahead-Of-Time）编译</h1><ul>
+<li><p><strong>程序运行之前，将字节码转换为机器码的过程。</strong></p>
+</li>
+<li><p>编译后可以需要链接至托管环境中的动态共享库，也可以是独立运行的可执行文件。</p>
+</li>
+<li><p>狭义的 AOT 编译针对的目标代码是可以被即时编译的代码。</p>
+</li>
+<li><p>可以简单地理解为类似 GCC 的静态编译器。</p>
+</li>
 </ul>
 <h2 id="优点"><a href="#优点" class="headerlink" title="优点"></a>优点</h2><ul>
-<li>无须在运行时耗费 CPU 资源进行即时编译。</li>
-<li>程序能在<strong>启动时就达到理想的性能</strong>。</li>
+<li><p>无须在运行时耗费 CPU 资源进行即时编译。</p>
+</li>
+<li><p>程序能在<strong>启动时就达到理想的性能</strong>。</p>
+</li>
 </ul>
 <h2 id="缺点"><a href="#缺点" class="headerlink" title="缺点"></a>缺点</h2><ul>
-<li>无法得知程序运行时的信息。</li>
-<li>无法进行基于类层次分析的完全虚方法内联。（不懂）</li>
-<li>无法进行基于程序 profile 的投机性优化。（不懂）</li>
-<li><strong>影响程序的峰值性能。</strong></li>
+<li><p>无法得知程序运行时的信息。</p>
+</li>
+<li><p>无法进行基于类层次分析的完全虚方法内联。（不懂）</p>
+</li>
+<li><p>无法进行基于程序 profile 的投机性优化。（不懂）</p>
+</li>
+<li><p><strong>影响程序的峰值性能。</strong></p>
+</li>
 </ul>
 <h1 id="jaotc"><a href="#jaotc" class="headerlink" title="jaotc"></a><a href="http://openjdk.java.net/jeps/295" target="_blank" rel="noopener">jaotc</a></h1><blockquote>
 <p>Java 9 引入的实验性 AOT 编译工具。</p>
 </blockquote>
 <ul>
-<li>借助 Graal 编译器，将类文件转换为机器码，存放在生成的动态共享库中。</li>
-<li><strong>在方法调用时切入</strong>，能够去优化至解释执行。</li>
-<li>由于 JVM 可能通过 Java agent 或者 C agent 改动加载的字节码，或者这份 AOT 编译生成的机器码针对的是旧版本的 Java 类，因此它<strong>需要额外的验证机制</strong>，来保证即将链接的机器码的语义与对应的 Java 类的语义是一致的。</li>
+<li><p>借助 Graal 编译器，将类文件转换为机器码，存放在生成的动态共享库中。</p>
+</li>
+<li><p><strong>在方法调用时切入</strong>，能够去优化至解释执行。</p>
+</li>
+<li><p>由于 JVM 可能通过 Java agent 或者 C agent 改动加载的字节码，或者这份 AOT 编译生成的机器码针对的是旧版本的 Java 类，因此它<strong>需要额外的验证机制</strong>，来保证即将链接的机器码的语义与对应的 Java 类的语义是一致的。</p>
+</li>
 </ul>
 <h2 id="类指纹（class-fingerprinting）"><a href="#类指纹（class-fingerprinting）" class="headerlink" title="类指纹（class fingerprinting）"></a>类指纹（class fingerprinting）</h2><ul>
-<li>在动态共享库中保存被编译的 Java 类的摘要信息。</li>
-<li>JVM 比较摘要信息和已加载的 Java 类。</li>
-<li>不匹配则舍弃。</li>
+<li><p>在动态共享库中保存被编译的 Java 类的摘要信息。</p>
+</li>
+<li><p>JVM 比较摘要信息和已加载的 Java 类。</p>
+</li>
+<li><p>不匹配则舍弃。</p>
+</li>
 </ul>
 <h2 id="应用"><a href="#应用" class="headerlink" title="应用"></a>应用</h2><ul>
-<li><strong>编译 java.base module</strong>（Java 核心类库中最为基础的类）。</li>
-<li>这些类可能被应用程序调用，但频率未必高到能触发即时编译。</li>
-<li>将它们<strong>提前编译为机器码</strong>，<strong>避免</strong>在执行即时编译生成的机器码时，因为调用到这些基础类，而需要<strong>切换至解释执行的性能惩罚</strong>。</li>
+<li><p><strong>编译 java.base module</strong>（Java 核心类库中最为基础的类）。</p>
+</li>
+<li><p>这些类可能被应用程序调用，但频率未必高到能触发即时编译。</p>
+</li>
+<li><p>将它们<strong>提前编译为机器码</strong>，<strong>避免</strong>在执行即时编译生成的机器码时，因为调用到这些基础类，而需要<strong>切换至解释执行的性能惩罚</strong>。</p>
+</li>
 </ul>
 <h1 id="SubstrateVM-的设计与实现"><a href="#SubstrateVM-的设计与实现" class="headerlink" title="SubstrateVM 的设计与实现"></a>SubstrateVM 的设计与实现</h1><blockquote>
 <p>设计初衷是提供一个高启动性能、低内存开销，并且能够无缝衔接 C 代码的 Java 运行时。</p>
@@ -489,46 +521,65 @@
 <p><a href="https://github.com/oracle/graal/blob/master/substratevm/LIMITATIONS.md" target="_blank" rel="noopener">文档</a></p>
 </blockquote>
 <ul>
-<li><strong>脱离 HotSpot 虚拟机，拥有独立运行时</strong>（包含异常处理，同步，线程管理，内存管理（垃圾回收）和 JNI 等组件）。</li>
-<li><strong>要求目标程序是封闭的，不能动态加载其他类库等。</strong></li>
-<li>探索整个编译空间，通过静态分析推算所有虚方法调用的目标方法。</li>
-<li>将所有可能执行到的方法都纳入编译范围，避免实现解释执行器。</li>
-<li>主要用于 JVM 语言的 AOT 编译。</li>
-<li>Truffle 语言实现可以在 SubstrateVM 上运行，但不会 AOT 编译。</li>
+<li><p><strong>脱离 HotSpot 虚拟机，拥有独立运行时</strong>（包含异常处理，同步，线程管理，内存管理（垃圾回收）和 JNI 等组件）。</p>
+</li>
+<li><p><strong>要求目标程序是封闭的，不能动态加载其他类库等。</strong></p>
+</li>
+<li><p>探索整个编译空间，通过静态分析推算所有虚方法调用的目标方法。</p>
+</li>
+<li><p>将所有可能执行到的方法都纳入编译范围，避免实现解释执行器。</p>
+</li>
+<li><p>主要用于 JVM 语言的 AOT 编译。</p>
+</li>
+<li><p>Truffle 语言实现可以在 SubstrateVM 上运行，但不会 AOT 编译。</p>
+</li>
 </ul>
 <h2 id="native-image-generator"><a href="#native-image-generator" class="headerlink" title="native image generator"></a>native image generator</h2><ul>
-<li>是一个 Java 程序。</li>
-<li>包含 AOT 编译逻辑。</li>
-<li>采用指针分析（points-to analysis），从程序入口出发，探索所有可达代码。</li>
-<li>执行初始化代码。</li>
-<li>最终生成可执行文件时，将已初始化的堆保存至一个堆快照之中。</li>
+<li><p>是一个 Java 程序。</p>
+</li>
+<li><p>包含 AOT 编译逻辑。</p>
+</li>
+<li><p>采用指针分析（points-to analysis），从程序入口出发，探索所有可达代码。</p>
+</li>
+<li><p>执行初始化代码。</p>
+</li>
+<li><p>最终生成可执行文件时，将已初始化的堆保存至一个堆快照之中。</p>
+</li>
 </ul>
 <h2 id="SubstrateVM-运行时"><a href="#SubstrateVM-运行时" class="headerlink" title="SubstrateVM 运行时"></a>SubstrateVM 运行时</h2><ul>
-<li>精简运行时，经过 AOT 编译的目标程序将跑在该运行时之上。</li>
-<li>直接从目标程序开始运行，无须进行 JVM 初始化。</li>
+<li><p>精简运行时，经过 AOT 编译的目标程序将跑在该运行时之上。</p>
+</li>
+<li><p>直接从目标程序开始运行，无须进行 JVM 初始化。</p>
+</li>
 </ul>
 <h1 id="SubstrateVM-的启动时间与内存开销"><a href="#SubstrateVM-的启动时间与内存开销" class="headerlink" title="SubstrateVM 的启动时间与内存开销"></a>SubstrateVM 的启动时间与内存开销</h1><ul>
-<li><strong>启动时间和内存开销非常少。</strong></li>
-<li>适合嵌入其他系统中。</li>
+<li><p><strong>启动时间和内存开销非常少。</strong></p>
+</li>
+<li><p>适合嵌入其他系统中。</p>
+</li>
 </ul>
 <h1 id="Metropolis-项目"><a href="#Metropolis-项目" class="headerlink" title="Metropolis 项目"></a><a href="http://openjdk.java.net/projects/metropolis/" target="_blank" rel="noopener">Metropolis 项目</a></h1><blockquote>
 <p>实现<strong>“Java-on-Java”</strong>的目标。</p>
 </blockquote>
 <p>Oracle 的架构师 John Rose 提出的使用 Java 开发 Java 虚拟机的好处：</p>
 <ol>
-<li>能够完全控制编译 Java 虚拟机时所使用的优化技术。</li>
-<li>能够与 C++ 语言的更新解耦合。</li>
-<li>能够减轻开发人员以及维护人员的负担。</li>
-<li>能够以更为敏捷的方式实现 Java 的新功能。</li>
+<li><p>能够完全控制编译 Java 虚拟机时所使用的优化技术。</p>
+</li>
+<li><p>能够与 C++ 语言的更新解耦合。</p>
+</li>
+<li><p>能够减轻开发人员以及维护人员的负担。</p>
+</li>
+<li><p>能够以更为敏捷的方式实现 Java 的新功能。</p>
+</li>
 </ol>
 <ul>
-<li><a href="https://www.jikesrvm.org/" target="_blank" rel="noopener">JikesRVM 项目</a>和<a href="https://github.com/beehive-lab/Maxine-VM" target="_blank" rel="noopener">Maxine VM 项目</a>已用 Java 完整地实现了一套 Java 虚拟机（后者的即时编译器 C1X 是 Graal 编译器的前身）。</li>
-<li>Java-on-Java 技术通常会干扰应用程序的垃圾回收、即时编译优化。</li>
-<li>严重影响 JVM 的启动性能。</li>
+<li><p><a href="https://www.jikesrvm.org/" target="_blank" rel="noopener">JikesRVM 项目</a>和<a href="https://github.com/beehive-lab/Maxine-VM" target="_blank" rel="noopener">Maxine VM 项目</a>已用 Java 完整地实现了一套 Java 虚拟机（后者的即时编译器 C1X 是 Graal 编译器的前身）。</p>
+</li>
+<li><p>Java-on-Java 技术通常会干扰应用程序的垃圾回收、即时编译优化。</p>
+</li>
+<li><p>严重影响 JVM 的启动性能。</p>
+</li>
 </ul>
-<h1 id="引用"><a href="#引用" class="headerlink" title="引用"></a>引用</h1><blockquote>
-<p><a href="https://time.geekbang.org/column/article/41582" target="_blank" rel="noopener">https://time.geekbang.org/column/article/41582</a></p>
-</blockquote>
 <h1 id="深入拆解Java虚拟机完结"><a href="#深入拆解Java虚拟机完结" class="headerlink" title="深入拆解Java虚拟机完结"></a>深入拆解Java虚拟机完结</h1>
       
     </div>
@@ -575,6 +626,8 @@
       
         <div class="post-tags">
           
+            <a href="/tags/看不懂/" rel="tag"># 看不懂</a>
+          
             <a href="/tags/JVM/" rel="tag"># JVM</a>
           
         </div>
@@ -588,8 +641,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2018/12/16/笔记-深入拆解Java虚拟机-35Truffle：语言实现框架/" rel="next" title="笔记-深入拆解Java虚拟机-35Truffle：语言实现框架">
-                <i class="fa fa-chevron-left"></i> 笔记-深入拆解Java虚拟机-35Truffle：语言实现框架
+              <a href="/2018/12/16/笔记-深入拆解Java虚拟机-35Truffle：语言实现框架/" rel="next" title="「深入拆解 Java 虚拟机」35 Truffle：语言实现框架">
+                <i class="fa fa-chevron-left"></i> 「深入拆解 Java 虚拟机」35 Truffle：语言实现框架
               </a>
             
           </div>
@@ -598,8 +651,8 @@
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2019/02/14/View绘制流程/" rel="prev" title="View绘制流程">
-                View绘制流程 <i class="fa fa-chevron-right"></i>
+              <a href="/2019/02/14/View绘制流程/" rel="prev" title="「笔记」View 绘制流程">
+                「笔记」View 绘制流程 <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
@@ -681,7 +734,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">59</span>
+                  <span class="site-state-item-count">76</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -692,7 +745,7 @@
               
               <div class="site-state-item site-state-categories">
                 <a href="/categories/index.html">
-                  <span class="site-state-item-count">14</span>
+                  <span class="site-state-item-count">10</span>
                   <span class="site-state-item-name">分类</span>
                 </a>
               </div>
@@ -703,7 +756,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">26</span>
+                  <span class="site-state-item-count">37</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>
@@ -759,7 +812,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#AOT（Ahead-Of-Time）编译"><span class="nav-number">1.</span> <span class="nav-text">AOT（Ahead-Of-Time）编译</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#优点"><span class="nav-number">1.1.</span> <span class="nav-text">优点</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#缺点"><span class="nav-number">1.2.</span> <span class="nav-text">缺点</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#jaotc"><span class="nav-number">2.</span> <span class="nav-text">jaotc</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#类指纹（class-fingerprinting）"><span class="nav-number">2.1.</span> <span class="nav-text">类指纹（class fingerprinting）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#应用"><span class="nav-number">2.2.</span> <span class="nav-text">应用</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#SubstrateVM-的设计与实现"><span class="nav-number">3.</span> <span class="nav-text">SubstrateVM 的设计与实现</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#SubstrateVM-的限制"><span class="nav-number">3.1.</span> <span class="nav-text">SubstrateVM 的限制</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#native-image-generator"><span class="nav-number">3.2.</span> <span class="nav-text">native image generator</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#SubstrateVM-运行时"><span class="nav-number">3.3.</span> <span class="nav-text">SubstrateVM 运行时</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#SubstrateVM-的启动时间与内存开销"><span class="nav-number">4.</span> <span class="nav-text">SubstrateVM 的启动时间与内存开销</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Metropolis-项目"><span class="nav-number">5.</span> <span class="nav-text">Metropolis 项目</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#引用"><span class="nav-number">6.</span> <span class="nav-text">引用</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#深入拆解Java虚拟机完结"><span class="nav-number">7.</span> <span class="nav-text">深入拆解Java虚拟机完结</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#AOT（Ahead-Of-Time）编译"><span class="nav-number">1.</span> <span class="nav-text">AOT（Ahead-Of-Time）编译</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#优点"><span class="nav-number">1.1.</span> <span class="nav-text">优点</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#缺点"><span class="nav-number">1.2.</span> <span class="nav-text">缺点</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#jaotc"><span class="nav-number">2.</span> <span class="nav-text">jaotc</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#类指纹（class-fingerprinting）"><span class="nav-number">2.1.</span> <span class="nav-text">类指纹（class fingerprinting）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#应用"><span class="nav-number">2.2.</span> <span class="nav-text">应用</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#SubstrateVM-的设计与实现"><span class="nav-number">3.</span> <span class="nav-text">SubstrateVM 的设计与实现</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#SubstrateVM-的限制"><span class="nav-number">3.1.</span> <span class="nav-text">SubstrateVM 的限制</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#native-image-generator"><span class="nav-number">3.2.</span> <span class="nav-text">native image generator</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#SubstrateVM-运行时"><span class="nav-number">3.3.</span> <span class="nav-text">SubstrateVM 运行时</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#SubstrateVM-的启动时间与内存开销"><span class="nav-number">4.</span> <span class="nav-text">SubstrateVM 的启动时间与内存开销</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Metropolis-项目"><span class="nav-number">5.</span> <span class="nav-text">Metropolis 项目</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#深入拆解Java虚拟机完结"><span class="nav-number">6.</span> <span class="nav-text">深入拆解Java虚拟机完结</span></a></li></ol></div>
             
 
           </div>
@@ -779,7 +832,7 @@
 
     <footer id="footer" class="footer">
       <div class="footer-inner">
-        <div class="copyright">&copy; 2018 &mdash; <span itemprop="copyrightYear">2019</span>
+        <div class="copyright">&copy; 2018 &mdash; <span itemprop="copyrightYear">2020</span>
   <span class="with-love">
     <i class="fa fa-user"></i>
   </span>

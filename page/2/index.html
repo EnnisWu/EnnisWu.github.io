@@ -337,6 +337,18 @@
 
  </div>
     </header>
+    <script>
+      let images = [
+         'header0.jpg',
+         'header1.jpg',
+         'header2.png'
+      ];
+      let image = images[Math.floor(Math.random() * images.length)];
+      window.document.getElementById('header').style.cssText 
+      = 'background: url(/images/avatar/' 
+      + image
+      + '); no-repeat; background-size: auto 100%;';
+    </script>
 
     <main id="main" class="main">
       <div class="main-inner">
@@ -358,7 +370,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://blog.ennis.info/2018/12/15/笔记-深入拆解Java虚拟机-34Graal：用Java编译Java/">
+    <link itemprop="mainEntityOfPage" href="http://blog.ennis.info/2020/03/26/TCP为什么需要3次握手和4次挥手/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Ennis L.M. Wu">
@@ -377,7 +389,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2018/12/15/笔记-深入拆解Java虚拟机-34Graal：用Java编译Java/" itemprop="url">笔记-深入拆解Java虚拟机-34Graal：用Java编译Java</a></h1>
+                <a class="post-title-link" href="/2020/03/26/TCP为什么需要3次握手和4次挥手/" itemprop="url">「笔记」TCP 为什么需要 3 次握手和 4 次挥手</a></h1>
         
 
         <div class="post-meta">
@@ -389,8 +401,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-12-15T13:49:51+08:00">
-                2018-12-15
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-03-26T15:36:35+08:00">
+                2020-03-26
               </time>
             
 
@@ -412,8 +424,8 @@
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Java虚拟机/" itemprop="url" rel="index">
-                    <span itemprop="name">Java虚拟机</span>
+                  <a href="/categories/计算机网络/" itemprop="url" rel="index">
+                    <span itemprop="name">计算机网络</span>
                   </a>
                 </span>
 
@@ -451,60 +463,59 @@
       
         
           
-            <h1 id="GraalVM"><a href="#GraalVM" class="headerlink" title="GraalVM"></a>GraalVM</h1><blockquote>
-<p>GraalVM 是一个高性能的、支持多种编程语言的执行环境。它既可以在传统的 OpenJDK 上运行，也可以通过 AOT（Ahead-Of-Time）编译成可执行文件单独运行，甚至可以集成至数据库中运行。</p>
-</blockquote>
-<blockquote>
-<p>除此之外，它还移除了编程语言之间的边界，并且支持通过即时编译技术，将混杂了不同的编程语言的代码编译到同一段二进制码之中，从而实现不同语言之间的无缝切换。</p>
-</blockquote>
-<h1 id="Graal-编译器"><a href="#Graal-编译器" class="headerlink" title="Graal 编译器"></a>Graal 编译器</h1><blockquote>
-<p>用 Java 写就的即时编译器，它从 Java 9u 开始便被集成自 JDK 中，作为实验性质的即时编译器。</p>
-</blockquote>
-<ul>
-<li>启用时将替换掉 HotSpot 中的 C2 编译器。</li>
-<li>响应原本 C2 负责的编译请求。</li>
+            <h1 id="原文"><a href="#原文" class="headerlink" title="原文"></a>原文</h1><ul>
+<li><p><a href="https://blog.csdn.net/xifeijian/article/details/12777187" target="_blank" rel="noopener">TCP为什么需要3次握手与4次挥手</a></p>
+</li>
+<li><p><a href="https://juejin.im/post/5d5414cb6fb9a06b20055e27" target="_blank" rel="noopener">iOS：为什么TCP连接要三次握手，四次挥手</a></p>
+</li>
 </ul>
-<h1 id="Graal-和-Java-虚拟机的交互"><a href="#Graal-和-Java-虚拟机的交互" class="headerlink" title="Graal 和 Java 虚拟机的交互"></a>Graal 和 Java 虚拟机的交互</h1><p>即时编译器与 JVM 的交互可以分为三个方面：</p>
-<ol>
-<li>响应编译请求。</li>
-<li>获取编译所需的元数据（如类、方法、字段）和反映程序执行状态的 profile。</li>
-<li>将生成的二进制码部署至代码缓存（code cache）里。</li>
+<h1 id="三次握手"><a href="#三次握手" class="headerlink" title="三次握手"></a>三次握手</h1><p>为什么便于阅读，我们将三次握手称为 hello1，hello2，hello3。</p>
+<h2 id="防止服务端一直等待"><a href="#防止服务端一直等待" class="headerlink" title="防止服务端一直等待"></a>防止服务端一直等待</h2><p><strong>假设只需要两次握手</strong>，如果服务端收到一条已失效的 hello1 请求，服务端会认为是客户端的新请求并回复 hello2 ，客户端收到后不会 hello3 和发送数据，这时候<strong>服务端会一直保持等待状态，浪费资源</strong>。</p>
+<h2 id="从另一个角度思考"><a href="#从另一个角度思考" class="headerlink" title="从另一个角度思考"></a>从另一个角度思考</h2><ol>
+<li><p>A 向 B 发送 hello1：B 确认 A 发送正常，B 接收正常</p>
+</li>
+<li><p>B 向 A 发送 hello2：A 确认 A 发送接收正常，B 发送接收正常</p>
+</li>
+<li><p>A 向 B 发送 hello3：B 确认 A 接收正常，B 发送正常</p>
+</li>
 </ol>
-<ul>
-<li>传统情况，<strong>即时编译器是与 JVM 紧耦合</strong>。</li>
-<li>更改即时编译器需要重新编译整个 JVM。</li>
-<li>引入 <a href="http://openjdk.java.net/jeps/243" target="_blank" rel="noopener">JVM 编译器接口</a>（JVM Compiler Interface，JVMCI）解耦合 JVM 和 Graal。</li>
-<li><strong>Java 程序可以直接调用 Graal</strong>，编译并部署指定方法（因为JVMCI）。</li>
-<li>Graal 的单元测试和 Truffle 语言实现框架基于上述技术。</li>
-</ul>
-<h1 id="Graal-和-C2-的区别"><a href="#Graal-和-C2-的区别" class="headerlink" title="Graal 和 C2 的区别"></a>Graal 和 C2 的区别</h1><ul>
-<li>Graal 由 <strong>Java 编写</strong>，C2 由 C++ 编写。</li>
-<li>Graal <strong>更加模块化，更容易开发与维护</strong>。</li>
-<li>Graal 中被证实有效的部分逃逸分析（partial escape analysis）未被移植到 C2 中。</li>
-<li>Graal 的<strong>内联算法对新语法、新语言更加友好</strong>。</li>
-</ul>
-<h1 id="Graal-的实现"><a href="#Graal-的实现" class="headerlink" title="Graal 的实现"></a>Graal 的实现</h1><ul>
-<li>编译过程分为前端和后端。</li>
-<li><strong>前端</strong>实现<strong>平台无关</strong>的优化（如方法内联），和小部分平台相关的优化。</li>
-<li><strong>后端</strong>实现大部分<strong>平台相关</strong>优化（如寄存器分配），和<strong>生成机器码</strong>。</li>
-<li>前端的 IR 称为 High-level IR（HIR）（如Sea-of-Nodes IR），后端的 IR 称为 Low-level IR（LIR）。</li>
-<li>前端由一个个单独的优化阶段（optimization phase）构成。</li>
-<li>前端编译阶段除了少数几个关键的之外，其余均可以通过配置选项开启或关闭。</li>
-<li><strong>Graal 比 C2 更加激进</strong>，设计上<strong>十分青睐基于假设的优化手段</strong>。</li>
-<li>Graal 支持自定义假设，和直接与去优化节点相关联。</li>
-<li>Graal 实现高性能的 intrinsic 方法相对简单。</li>
-</ul>
-<h1 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h1><p>Q：GraalVM 和 JVM 是什么关系？</p>
-<p>A：可以将 GraalVM 看成泛指带 Graal 编译器的虚拟机。</p>
-<hr>
-<p>Q：<strong>可不可以把 profile 和编译的机器码保存到磁盘</strong>，在代码和运行平台不变的情况下，下次启动（或部署多实例）的时候直接装载这部分数据？这算作是一种系统预热的可行性方案吗？</p>
-<p>A：<strong>已经有这种做法</strong>，但同时需要承担 profile 不能反映当前执行状态的风险。</p>
-<hr>
-<p>Q：<strong>Graal 自身的及时编译是调用 Graal 自身吗？如果这么做会不会出现无穷递归？</strong></p>
-<p>A：默认情况下，<strong>由 C1 编译Graal。调用 Graal 编译 Graal 并不会造成无穷递归。</strong>因为 JVM 里有解释执行器，能够执行 Graal 代码。</p>
-<h1 id="引用"><a href="#引用" class="headerlink" title="引用"></a>引用</h1><blockquote>
-<p><a href="https://time.geekbang.org/column/article/41245" target="_blank" rel="noopener">https://time.geekbang.org/column/article/41245</a></p>
-</blockquote>
+<p><strong>三次握手可以保证客户端和服务端双方确认双方的发送和接收都是正常的。</strong></p>
+<h2 id="三次握手状态"><a href="#三次握手状态" class="headerlink" title="三次握手状态"></a>三次握手状态</h2><p><img src="/images/posts/TCPIP/tcp_syn.jpg" alt=""></p>
+<ol>
+<li>客户端发送：SYN = 1, seq = x</li>
+</ol>
+<p>客户端 SYN-SENT 状态</p>
+<ol start="2">
+<li>服务端发送：SYN = 1, seq = y, ACK = 1, ack = x + 1</li>
+</ol>
+<p>服务端 SYN-RCVD 状态</p>
+<ol start="3">
+<li>客户端发送：ACK = 1, ack = y + 1</li>
+</ol>
+<p>客户端，服务端 ESTABLISHED 状态</p>
+<h1 id="四次挥手"><a href="#四次挥手" class="headerlink" title="四次挥手"></a>四次挥手</h1><h2 id="四次挥手状态"><a href="#四次挥手状态" class="headerlink" title="四次挥手状态"></a>四次挥手状态</h2><p><img src="/images/posts/TCPIP/tcp_fin.jpg" alt=""></p>
+<ol>
+<li>客户端发送：FIN = 1, seq = x</li>
+</ol>
+<p><strong>客户端停止发送数据，但接收数据</strong></p>
+<p>客户端 FIN-WAIT-1 状态</p>
+<ol start="2">
+<li>服务端发送：seq = y, ACK = 1, ack = x + 1</li>
+</ol>
+<p><strong>服务端确认，发送最后的数据</strong></p>
+<p>服务端 CLOSE-WAIT 状态</p>
+<p>客户端 FIN-WAIT-2 状态</p>
+<ol start="3">
+<li>服务端发送：FIN = 1, seq = z, ACK = 1, ack = x + 1</li>
+</ol>
+<p><strong>服务端停止发送数据</strong></p>
+<p>服务端 LAST-ACK 状态</p>
+<ol start="4">
+<li>客户端发送：seq = x + 1, ACK = 1, ack = z + 1</li>
+</ol>
+<p>服务端 CLOSE 状态</p>
+<p>客户端 TIME-WAIT 状态，2MSL 后 CLOSE 状态</p>
+<h2 id="为什么需要四次挥手？"><a href="#为什么需要四次挥手？" class="headerlink" title="为什么需要四次挥手？"></a>为什么需要四次挥手？</h2><p>因为 TCP 是全双工模式，双方都都需要确认关闭，为了保证服务端的数据发送完全，服务端的 ACK 和 FIN 分为两个报文发送（对比三次握手）。</p>
 
           
         
@@ -553,7 +564,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://blog.ennis.info/2018/12/13/笔记-深入拆解Java虚拟机-3031Java虚拟机的监控及诊断工具/">
+    <link itemprop="mainEntityOfPage" href="http://blog.ennis.info/2020/03/23/转-Flutter动画曲线Curves效果一览/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Ennis L.M. Wu">
@@ -572,7 +583,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2018/12/13/笔记-深入拆解Java虚拟机-3031Java虚拟机的监控及诊断工具/" itemprop="url">笔记-深入拆解Java虚拟机-3031Java虚拟机的监控及诊断工具</a></h1>
+                <a class="post-title-link" href="/2020/03/23/转-Flutter动画曲线Curves效果一览/" itemprop="url">「转载」Flutter 动画曲线 Curves 效果一览</a></h1>
         
 
         <div class="post-meta">
@@ -584,8 +595,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-12-13T15:25:33+08:00">
-                2018-12-13
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-03-23T22:10:23+08:00">
+                2020-03-23
               </time>
             
 
@@ -607,8 +618,844 @@
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Java虚拟机/" itemprop="url" rel="index">
-                    <span itemprop="name">Java虚拟机</span>
+                  <a href="/categories/Flutter/" itemprop="url" rel="index">
+                    <span itemprop="name">Flutter</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p><a href="https://blog.csdn.net/qq_17766199/article/details/95632571" target="_blank" rel="noopener">Flutter 动画曲线 Curves 效果一览</a></p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://blog.ennis.info/2020/03/20/HTTPS是如何保证安全的/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Ennis L.M. Wu">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar/portrait.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Ennis Wu">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2020/03/20/HTTPS是如何保证安全的/" itemprop="url">「笔记」HTTPS 是如何保证安全的</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-03-20T20:46:31+08:00">
+                2020-03-20
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/计算机网络/" itemprop="url" rel="index">
+                    <span itemprop="name">计算机网络</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>原文：<a href="https://blog.csdn.net/guolin_blog/article/details/104546558" target="_blank" rel="noopener">写一篇最好懂的HTTPS讲解</a></p>
+<h1 id="对称加密"><a href="#对称加密" class="headerlink" title="对称加密"></a>对称加密</h1><ul>
+<li><p>客户端和服务端使用同一个密钥</p>
+</li>
+<li><p>加解密效率高</p>
+</li>
+</ul>
+<h1 id="非对称加密"><a href="#非对称加密" class="headerlink" title="非对称加密"></a>非对称加密</h1><ul>
+<li><p>密钥分为公钥和私钥</p>
+</li>
+<li><p>公钥加密只有私钥才能解密</p>
+</li>
+<li><p>私钥加密只有公钥才能解密</p>
+</li>
+<li><p>公钥一般存放在客户端，私钥一般存放在服务端</p>
+</li>
+<li><p>安全性更高</p>
+</li>
+</ul>
+<h1 id="HTTPS-原理简述"><a href="#HTTPS-原理简述" class="headerlink" title="HTTPS 原理简述"></a>HTTPS 原理简述</h1><ol>
+<li><p>网站管理员向 CA 机构申请证书</p>
+<ul>
+<li><p>证书包含该网站的公钥，域名等其他信息</p>
+</li>
+<li><p>证书使用 CA 自己的私钥加密</p>
+</li>
+</ul>
+</li>
+<li><p>服务端配置证书</p>
+</li>
+<li><p>客户端发起请求，服务端返回证书</p>
+</li>
+<li><p>客户端使用 CA 的公钥解密证书</p>
+<ul>
+<li><p>解密成功且域名和其他信息与该网站相符则安全</p>
+</li>
+<li><p>得到网站公钥</p>
+</li>
+</ul>
+</li>
+<li><p>客户端与服务端商定对称加密密钥</p>
+<ul>
+<li><p>过程中客户端使用网站公钥，服务端使用私钥</p>
+</li>
+<li><p>对称加密密钥由客户端随机生成</p>
+</li>
+</ul>
+</li>
+<li><p>双方使用对称加密通信</p>
+</li>
+</ol>
+<h1 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h1><h2 id="为什么-HTTP-不安全"><a href="#为什么-HTTP-不安全" class="headerlink" title="为什么 HTTP 不安全"></a>为什么 HTTP 不安全</h2><ul>
+<li><p>明文传输</p>
+</li>
+<li><p>可能被监听</p>
+</li>
+<li><p>可能被篡改</p>
+</li>
+</ul>
+<h2 id="如何既保证效率又保证安全"><a href="#如何既保证效率又保证安全" class="headerlink" title="如何既保证效率又保证安全"></a>如何既保证效率又保证安全</h2><ul>
+<li><p>保证效率</p>
+<ul>
+<li>采用对称加密</li>
+</ul>
+</li>
+<li><p>保证安全</p>
+<ul>
+<li><p>对称加密密钥由客户端随机生成</p>
+</li>
+<li><p>首次商定密钥使用非对称加密，客户端公钥加密，服务端私钥解密</p>
+</li>
+</ul>
+</li>
+</ul>
+<h2 id="如何保证获的服务端公钥不被篡改"><a href="#如何保证获的服务端公钥不被篡改" class="headerlink" title="如何保证获的服务端公钥不被篡改"></a>如何保证获的服务端公钥不被篡改</h2><ul>
+<li><p>由 CA 机构签发证书，证书包含网站公钥和域名等其他信息</p>
+</li>
+<li><p>证书使用 CA 机构私钥加密</p>
+</li>
+<li><p>CA 机构数量有限，操作系统可以内置所有 CA 机构公钥</p>
+</li>
+</ul>
+<h2 id="HTTPS-使用对称加密还是非对称加密？"><a href="#HTTPS-使用对称加密还是非对称加密？" class="headerlink" title="HTTPS 使用对称加密还是非对称加密？"></a>HTTPS 使用对称加密还是非对称加密？</h2><p>HTTP 使用两种加密结合的方式</p>
+<ul>
+<li><p>CA 证书使用非对称加密</p>
+</li>
+<li><p>网站商定密钥使用非对称加密</p>
+</li>
+<li><p>传输内容使用对称加密</p>
+</li>
+</ul>
+<h2 id="为什么不直接使用非对称加密通信？"><a href="#为什么不直接使用非对称加密通信？" class="headerlink" title="为什么不直接使用非对称加密通信？"></a>为什么不直接使用非对称加密通信？</h2><p>对称加密更高效</p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://blog.ennis.info/2020/03/19/BuildContext是什么？/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Ennis L.M. Wu">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar/portrait.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Ennis Wu">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2020/03/19/BuildContext是什么？/" itemprop="url">「笔记」BuildContext是什么？</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-03-19T16:23:08+08:00">
+                2020-03-19
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Flutter/" itemprop="url" rel="index">
+                    <span itemprop="name">Flutter</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p><strong>小部件树中小部件位置的句柄。</strong></p>
+<p>此类提供了一组可以从 <code>StatelessWidget.build</code> 方法和 <code>State</code> 对象上的方法使用的方法。</p>
+<p><code>BuildContext</code> 对象将传递到 <code>WidgetBuilder</code> 函数（例如 <code>StatelessWidget.build</code>），并且可以从 <code>State.context</code> 成员获得。一些静态函数（例如 <code>showDialog</code>，<code>Theme.of</code> 等）也采用构建上下文，以便它们可以代表调用窗口小部件执行操作，或获取特定于给定上下文的数据。</p>
+<p><strong>每个窗口小部件都有其自己的BuildContext</strong>，它将成为 <code>StatelessWidget.build</code> 或 <code>State.build</code> 函数返回的窗口小部件的父级。 （同样，<code>RenderObjectWidgets</code> 的任何子项的父项。）</p>
+<p>随着小部件在树上移动，特定小部件的 <code>BuildContext</code> 可以随时间改变位置。因此，从类的方法返回的值不应在执行单个同步函数之后进行缓存。</p>
+<p><strong>BuildContext对象实际上是Element对象。 BuildContext接口用于阻止对Element对象的直接操作。</strong></p>
+<p>原文：<a href="https://api.flutter.dev/flutter/widgets/BuildContext-class.html" target="_blank" rel="noopener">BuildContext class</a></p>
+<blockquote>
+<p>A handle to the location of a widget in the widget tree.</p>
+<p>This class presents a set of methods that can be used from <code>StatelessWidget.build</code> methods and from methods on <code>State</code> objects.</p>
+<p><code>BuildContext</code> objects are passed to <code>WidgetBuilder</code> functions (such as <code>StatelessWidget.build</code>), and are available from the <code>State.context</code> member. Some static functions (e.g. <code>showDialog</code>, <code>Theme.of</code>, and so forth) also take build contexts so that they can act on behalf of the calling widget, or obtain data specifically for the given context.</p>
+<p>Each widget has its own <code>BuildContext</code>, which becomes the parent of the widget returned by the <code>StatelessWidget.build</code> or <code>State.build</code> function. (And similarly, the parent of any children for <code>RenderObjectWidget</code>s.)</p>
+<p>The <code>BuildContext</code> for a particular widget can change location over time as the widget is moved around the tree. Because of this, values returned from the methods on this class should not be cached beyond the execution of a single synchronous function.</p>
+<p><code>BuildContext</code> objects are actually <code>Element</code> objects. The <code>BuildContext</code> interface is used to discourage direct manipulation of <code>Element</code> objects.</p>
+</blockquote>
+<p><img src="/images/posts/Flutter/build_context_class_diagram.png" alt="BuildContext继承关系图" title="BuildContext继承关系图"></p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://blog.ennis.info/2020/03/18/When-Where使用Key，怎样选择Key/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Ennis L.M. Wu">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar/portrait.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Ennis Wu">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2020/03/18/When-Where使用Key，怎样选择Key/" itemprop="url">「转载」When & Where 使用 Key，怎样选择 Key</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-03-18T22:02:40+08:00">
+                2020-03-18
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Flutter/" itemprop="url" rel="index">
+                    <span itemprop="name">Flutter</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p><a href="https://www.youtube.com/watch?v=kn0EOS-ZiIc" target="_blank" rel="noopener">何时使用密钥 - Flutter小部件 101 第四集</a></p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://blog.ennis.info/2020/03/18/为什么嵌套一层Builder后Scaffold-of方法就不报错了/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Ennis L.M. Wu">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar/portrait.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Ennis Wu">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2020/03/18/为什么嵌套一层Builder后Scaffold-of方法就不报错了/" itemprop="url">「原创」为什么嵌套一层 Builder 后 Scaffold.of 方法就不报错了</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-03-18T14:04:31+08:00">
+                2020-03-18
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Flutter/" itemprop="url" rel="index">
+                    <span itemprop="name">Flutter</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h1 id="错误案例"><a href="#错误案例" class="headerlink" title="错误案例"></a>错误案例</h1><p>我们可能经常需要调用 <code>Scaffold.of()</code> 方法去调用 <code>showSnackBar</code> 或 <code>showBottomSheet</code> 等方法，如下面的代码所示。</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> <span class="string">'package:flutter/material.dart'</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">void</span> main() =&gt; runApp(MyApp());</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">MyApp</span> <span class="keyword">extends</span> <span class="title">StatelessWidget</span> </span>&#123;</span><br><span class="line">  <span class="meta">@override</span></span><br><span class="line">  Widget build(BuildContext context) &#123;</span><br><span class="line">    <span class="keyword">return</span> MaterialApp(</span><br><span class="line">      title: <span class="string">'Flutter Demo'</span>,</span><br><span class="line">      theme: ThemeData(</span><br><span class="line">        primarySwatch: Colors.blue,</span><br><span class="line">      ),</span><br><span class="line">      home: MyHomePage(title: <span class="string">'Flutter Demo Home Page'</span>),</span><br><span class="line">    );</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">MyHomePage</span> <span class="keyword">extends</span> <span class="title">StatefulWidget</span> </span>&#123;</span><br><span class="line">  MyHomePage(&#123;Key key, <span class="keyword">this</span>.title&#125;) : <span class="keyword">super</span>(key: key);</span><br><span class="line"></span><br><span class="line">  <span class="keyword">final</span> <span class="built_in">String</span> title;</span><br><span class="line"></span><br><span class="line">  <span class="meta">@override</span></span><br><span class="line">  _MyHomePageState createState() =&gt; _MyHomePageState();</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">_MyHomePageState</span> <span class="keyword">extends</span> <span class="title">State</span>&lt;<span class="title">MyHomePage</span>&gt; </span>&#123;</span><br><span class="line">  <span class="meta">@override</span></span><br><span class="line">  Widget build(BuildContext context) &#123;</span><br><span class="line">    <span class="keyword">return</span> Scaffold(</span><br><span class="line">      floatingActionButton: FloatingActionButton(</span><br><span class="line">        onPressed: () &#123;</span><br><span class="line">          Scaffold.of(context)</span><br><span class="line">              .showSnackBar(SnackBar(content: Text(<span class="string">'This is SnackBar!'</span>)));</span><br><span class="line">        &#125;,</span><br><span class="line">        child: Icon(Icons.add),</span><br><span class="line">      ),</span><br><span class="line">    );</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>当运行这段代码点击按钮后却报出这样的错误：</p>
+<blockquote>
+<p>The following assertion was thrown while handling a gesture:<br><strong>Scaffold.of() called with a context that does not contain a Scaffold.</strong></p>
+<p>No Scaffold ancestor could be found starting from the context that was passed to Scaffold.of(). This usually happens when the context provided is from the same StatefulWidget as that whose build function actually creates the Scaffold widget being sought.</p>
+</blockquote>
+<p><code>context</code> 没有在祖先 <code>Widget</code> 中找到 <code>Scaffold</code>。<code>FloatingActionBottom</code> 明明是 <code>Scaffold</code> 的孩子 <code>Widget</code>，为什么没有找到呢？</p>
+<h1 id="解决方案"><a href="#解决方案" class="headerlink" title="解决方案"></a>解决方案</h1><h2 id="方案一-嵌套一层-Builder"><a href="#方案一-嵌套一层-Builder" class="headerlink" title="方案一 嵌套一层 Builder"></a>方案一 嵌套一层 Builder</h2><p>如下面代码所示，在 <code>FloatingActionButton</code> 外添加一层 <code>Builder</code> 便可以正常运行。</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@override</span></span><br><span class="line">Widget build(BuildContext context) &#123;</span><br><span class="line">  <span class="keyword">return</span> Scaffold(</span><br><span class="line">    floatingActionButton: Builder(</span><br><span class="line">      builder: (context) =&gt; FloatingActionButton(</span><br><span class="line">        onPressed: () &#123;</span><br><span class="line">          Scaffold.of(context)</span><br><span class="line">              .showSnackBar(SnackBar(content: Text(<span class="string">'This is SnackBar!'</span>)));</span><br><span class="line">        &#125;,</span><br><span class="line">        child: Icon(Icons.add),</span><br><span class="line">      ),</span><br><span class="line">    ),</span><br><span class="line">  );</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="方法二-使用-GlobalKey"><a href="#方法二-使用-GlobalKey" class="headerlink" title="方法二 使用 GlobalKey"></a>方法二 使用 GlobalKey</h2><h1 id="of-方法的原理"><a href="#of-方法的原理" class="headerlink" title=".of 方法的原理"></a>.of 方法的原理</h1><p>由源码可知，通过传入的 <code>BuildContext</code> 调用 <code>findAncestorStateOfType</code> 方法找到祖先 <code>ScaffoldState</code>，当祖先 <code>Widget</code> 中没有 <code>Scaffold</code> 时报错。</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">static</span> ScaffoldState of(BuildContext context, &#123; <span class="built_in">bool</span> nullOk = <span class="keyword">false</span> &#125;) &#123;</span><br><span class="line">    <span class="keyword">assert</span>(nullOk != <span class="keyword">null</span>);</span><br><span class="line">    <span class="keyword">assert</span>(context != <span class="keyword">null</span>);</span><br><span class="line">    <span class="keyword">final</span> ScaffoldState result = context.findAncestorStateOfType&lt;ScaffoldState&gt;();</span><br><span class="line">    <span class="keyword">if</span> (nullOk || result != <span class="keyword">null</span>)</span><br><span class="line">      <span class="keyword">return</span> result;</span><br><span class="line">    <span class="keyword">throw</span> FlutterError.fromParts(&lt;DiagnosticsNode&gt;[</span><br><span class="line">      ErrorSummary(</span><br><span class="line">        <span class="string">'...'</span></span><br><span class="line">      ),</span><br><span class="line">      ErrorDescription(</span><br><span class="line">        <span class="string">'...'</span></span><br><span class="line">      ),</span><br><span class="line">      ErrorHint(</span><br><span class="line">        <span class="string">'...'</span></span><br><span class="line">      ),</span><br><span class="line">      ErrorHint(</span><br><span class="line">        <span class="string">'...'</span></span><br><span class="line">      ),</span><br><span class="line">      context.describeElement(<span class="string">'The context used was'</span>)</span><br><span class="line">    ]);</span><br><span class="line">  &#125;</span><br></pre></td></tr></table></figure>
+<h1 id="报错原因"><a href="#报错原因" class="headerlink" title="报错原因"></a>报错原因</h1><p>从错误案例代码我们可以看到，传入 <code>of</code> 的 <code>BuildContext</code> 是 <code>_MyHomePageState</code> 中 <code>build</code> 方法的参数，显然 <code>_MyHomePageState</code> 的祖先中并没有 <code>Scaffold</code>，所以报错没有找到 <code>Scaffold</code>。</p>
+<p><img src="/images/posts/Flutter/scaffold_no_builder.png" alt=""></p>
+<h1 id="Builder-的原理"><a href="#Builder-的原理" class="headerlink" title="Builder 的原理"></a>Builder 的原理</h1><figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">typedef</span> WidgetBuilder = Widget <span class="built_in">Function</span>(BuildContext context);</span><br></pre></td></tr></table></figure>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Builder</span> <span class="keyword">extends</span> <span class="title">StatelessWidget</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">const</span> Builder(&#123;</span><br><span class="line">    Key key,</span><br><span class="line">    <span class="meta">@required</span> <span class="keyword">this</span>.builder,</span><br><span class="line">  &#125;) : <span class="keyword">assert</span>(builder != <span class="keyword">null</span>),</span><br><span class="line">       <span class="keyword">super</span>(key: key);</span><br><span class="line"></span><br><span class="line">  <span class="keyword">final</span> WidgetBuilder builder;</span><br><span class="line"></span><br><span class="line">  <span class="meta">@override</span></span><br><span class="line">  Widget build(BuildContext context) =&gt; builder(context);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>由源码可知，<code>Builder</code> 接收一个 <code>WidgetBuilder</code> 方法，在 <code>build</code> 方法中回调了 <code>WidgetBuilder</code> 方法，并将自己的 <code>BuildContext</code> 传入。</p>
+<h1 id="解决原因"><a href="#解决原因" class="headerlink" title="解决原因"></a>解决原因</h1><p>为了便于查看，我们将修正后源码中 <code>_MyHomePageState.build</code> 的参数名改为 <code>contextA</code>，将传入 <code>Builder</code> 的 <code>WidgetBuilder</code> 方法的参数名改为 <code>contextB</code>。</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@override</span></span><br><span class="line">Widget build(BuildContext contextA) &#123;</span><br><span class="line">  <span class="keyword">return</span> Scaffold(</span><br><span class="line">    floatingActionButton: Builder(</span><br><span class="line">      builder: (contextB) =&gt; FloatingActionButton(</span><br><span class="line">        onPressed: () &#123;</span><br><span class="line">          Scaffold.of(contextB)</span><br><span class="line">              .showSnackBar(SnackBar(content: Text(<span class="string">'This is SnackBar!'</span>)));</span><br><span class="line">        &#125;,</span><br><span class="line">        child: Icon(Icons.add),</span><br><span class="line">      ),</span><br><span class="line">    ),</span><br><span class="line">  );</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>由修正的代码可知，我们传入 <code>Scaffold.of</code> 方法的 <code>BuildContext</code> 已经不再是 <code>_MyHomePageState</code> 的了，而是 <code>Builder</code> 的。而 <code>Builder</code> 的父 <code>Widget</code> 正是 <code>Scaffold</code>，所以正常运行。</p>
+<p><img src="/images/posts/Flutter/scaffold_builder.png" alt=""></p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://blog.ennis.info/2020/02/29/LinkedHashMap的相关问题/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Ennis L.M. Wu">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar/portrait.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Ennis Wu">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2020/02/29/LinkedHashMap的相关问题/" itemprop="url">「原创」LinkedHashMap 的相关问题</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-02-29T19:21:49+08:00">
+                2020-02-29
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Java/" itemprop="url" rel="index">
+                    <span itemprop="name">Java</span>
                   </a>
                 </span>
 
@@ -647,617 +1494,50 @@
         
           
             <blockquote>
-<p>随便看看了解下就好。</p>
+<p>以下源码基于 JDK 10</p>
 </blockquote>
-<h1 id="命令行"><a href="#命令行" class="headerlink" title="命令行"></a>命令行</h1><h2 id="jps"><a href="#jps" class="headerlink" title="jps"></a>jps</h2><blockquote>
-<p>打印所有正在运行的 Java 进程的相关信息。<a href="https://docs.oracle.com/en/java/javase/11/tools/jps.html" target="_blank" rel="noopener">帮助文档</a></p>
-</blockquote>
-<table>
-<thead>
-<tr>
-<th>参数</th>
-<th>作用</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>默认</td>
-<td>打印 Java 进程 ID 和主类名</td>
-</tr>
-<tr>
-<td>-l</td>
-<td>打印模块名和包名</td>
-</tr>
-<tr>
-<td>-v</td>
-<td>打印传递给 JVM 的参数</td>
-</tr>
-<tr>
-<td>-m</td>
-<td>打印传递给主类的参数</td>
-</tr>
-</tbody>
-</table>
-<ul>
-<li>如果某 Java 进程关闭了默认开启的 UsePerfData 参数 jps 命令和 jstat 命令无法探知该 Java 进程。</li>
+<h1 id="LinkedHashMap-是什么"><a href="#LinkedHashMap-是什么" class="headerlink" title="LinkedHashMap 是什么"></a>LinkedHashMap 是什么</h1><p>LinkedHashMap = HashMap + LinkedList</p>
+<h1 id="LinkedHashMap-主要作用"><a href="#LinkedHashMap-主要作用" class="headerlink" title="LinkedHashMap 主要作用"></a>LinkedHashMap 主要作用</h1><h2 id="实现按添加的顺序访问"><a href="#实现按添加的顺序访问" class="headerlink" title="实现按添加的顺序访问"></a>实现按添加的顺序访问</h2><ul>
+<li>迭代时按添加的顺序访问</li>
 </ul>
-<h2 id="jstat"><a href="#jstat" class="headerlink" title="jstat"></a>jstat</h2><blockquote>
-<p>打印目标 Java 进程的性能数据。包括多条子命令。<a href="https://docs.oracle.com/en/java/javase/11/tools/jstat.html" target="_blank" rel="noopener">帮助文档</a></p>
-</blockquote>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">$ jstat -options</span><br><span class="line">-class</span><br><span class="line">-compiler</span><br><span class="line">-gc</span><br><span class="line">-gccapacity</span><br><span class="line">-gccause</span><br><span class="line">-gcmetacapacity</span><br><span class="line">-gcnew</span><br><span class="line">-gcnewcapacity</span><br><span class="line">-gcold</span><br><span class="line">-gcoldcapacity</span><br><span class="line">-gcutil</span><br><span class="line">-printcompilation</span><br></pre></td></tr></table></figure>
-<table>
-<thead>
-<tr>
-<th>子命令</th>
-<th>作用</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>-class</td>
-<td>打印类加载相关数据</td>
-</tr>
-<tr>
-<td>-compiler</td>
-<td>打印即时编译相关数据</td>
-</tr>
-<tr>
-<td>-printcompilation</td>
-<td>同上</td>
-</tr>
-<tr>
-<td>-gc 前缀</td>
-<td>打印垃圾回收相关数据</td>
-</tr>
-</tbody>
-</table>
-<ul>
-<li>-t 参数，打印进程的启动时间。</li>
-<li>默认情况 jstat 只打印一次性能数据。</li>
-<li>可以配置为每隔一段时间打印一次（直至进程终止或达到最大次数）。</li>
-</ul>
-<h2 id="jmap"><a href="#jmap" class="headerlink" title="jmap"></a>jmap</h2><blockquote>
-<p>分析 JVM 堆中的对象。包括多条子命令。<a href="https://docs.oracle.com/en/java/javase/11/tools/jmap.html" target="_blank" rel="noopener">帮助文档</a></p>
-</blockquote>
-<table>
-<thead>
-<tr>
-<th>子命令</th>
-<th>作用</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>-clstats</td>
-<td>打印被加载类的信息</td>
-</tr>
-<tr>
-<td>-finalizerinfo</td>
-<td>打印所有待 finalize 的对象</td>
-</tr>
-<tr>
-<td>-histo</td>
-<td>统计各个类的实例数目以及占用内存</td>
-</tr>
-<tr>
-<td>-histo:live</td>
-<td>只统计堆中的存活对象</td>
-</tr>
-<tr>
-<td>-dump</td>
-<td>导出堆的快照</td>
-</tr>
-<tr>
-<td>-dump:live</td>
-<td>只保存堆中的存活对象</td>
-</tr>
-</tbody>
-</table>
-<h2 id="jinfo"><a href="#jinfo" class="headerlink" title="jinfo"></a>jinfo</h2><blockquote>
-<p>查看进程的参数。<a href="https://docs.oracle.com/en/java/javase/11/tools/jinfo.html" target="_blank" rel="noopener">帮助文档</a></p>
-</blockquote>
-<ul>
-<li>可以修改进程的“manageable”虚拟机参数。</li>
-</ul>
-<h2 id="jstack"><a href="#jstack" class="headerlink" title="jstack"></a>jstack</h2><blockquote>
-<p>打印进程中各个线程的栈轨迹和线程所持有的锁。<a href="https://docs.oracle.com/en/java/javase/11/tools/jstack.html" target="_blank" rel="noopener">帮助文档</a></p>
-</blockquote>
-<ul>
-<li>死锁检测。</li>
-</ul>
-<h2 id="jcmd"><a href="#jcmd" class="headerlink" title="jcmd"></a>jcmd</h2><blockquote>
-<p>替代除了 jstat 之外的所有命令。<a href="https://docs.oracle.com/en/java/javase/11/tools/jcmd.html" target="_blank" rel="noopener">帮助文档</a></p>
-</blockquote>
-<h1 id="GUI"><a href="#GUI" class="headerlink" title="GUI"></a>GUI</h1><h2 id="eclipse-MAT"><a href="#eclipse-MAT" class="headerlink" title="eclipse MAT"></a>eclipse MAT</h2><blockquote>
-<p>解析二进制快照工具。</p>
-</blockquote>
-<ul>
-<li><p>获取二级制快照的方式</p>
-<ol>
-<li>使用 Attach API</li>
-<li>新建一个 JVM 运行 Attach API</li>
-<li>使用 jmap</li>
-</ol>
+<h2 id="实现按访问顺序排序（最近最少使用）（LRU）"><a href="#实现按访问顺序排序（最近最少使用）（LRU）" class="headerlink" title="实现按访问顺序排序（最近最少使用）（LRU）"></a>实现按访问顺序排序（最近最少使用）（LRU）</h2><ul>
+<li><p>页面置换算法</p>
 </li>
-<li><p>进程启用 DisableAttachMechanism 参数时</p>
-<ol>
-<li>不显示</li>
-<li>不显示</li>
-<li>运行时报错</li>
-</ol>
-</li>
-<li><p>计算对象占据内存的<a href="https://help.eclipse.org/mars/topic/org.eclipse.mat.ui.help/concepts/shallowretainedheap.html?cp=46_2_1" target="_blank" rel="noopener">两种方式</a></p>
-<ol>
-<li>Shallow heap：对象自身所占据的内存。</li>
-<li>Retained heap：对象不再被引用时，垃圾回收器所能回收的总内存，包括对象自身所占据的内存，和仅能够通过该对象引用到的其他对象所占据的内存。</li>
-</ol>
-</li>
-<li><p>直方图（histogram）：展示各个类的实例数目和实例的堆总和。</p>
-</li>
-<li><p>支配树（dominator tree）：按照每个对象 Retained heap 的大小排列支配树。</p>
-</li>
-<li><p>自动匹配内存泄漏常见模式，汇报潜在内存泄漏问题。<a href="https://help.eclipse.org/mars/topic/org.eclipse.mat.ui.help/tasks/runningleaksuspectreport.html?cp=46_3_1" target="_blank" rel="noopener">帮助文档</a> <a href="http://memoryanalyzer.blogspot.com/2008/05/automated-heap-dump-analysis-finding.html" target="_blank" rel="noopener">博客</a></p>
+<li><p><strong>缓存机制</strong></p>
 </li>
 </ul>
-<h2 id="Java-Mission-Control"><a href="#Java-Mission-Control" class="headerlink" title="Java Mission Control"></a>Java Mission Control</h2><blockquote>
-<p>JVM 上的性能监控工具。包含一个 GUI 客户端，众多用来收集 JVM 性能数据的插件，虚拟机内置的高效 profiling 工具 Java Flight Recorder（JFR）。</p>
-</blockquote>
-<ul>
-<li>JFR 的性能开销很小，默认配置下平均低于 1%。</li>
-<li>JFR 能够直接访问虚拟机内的数据，不会影响虚拟机的优化。</li>
-<li>适用于生产环境下满负荷运行的 Java 程序。</li>
-<li>JFR 记录运行过程中发生的一系列事件（包括 Java 和 JVM）。</li>
-</ul>
-<table>
-<thead>
-<tr>
-<th>事件类型</th>
-<th>说明</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>瞬时事件（Instant Event）</td>
-<td>关心发生与否，如异常、线程启动</td>
-</tr>
-<tr>
-<td>持续事件（Duration Event）</td>
-<td>关心持续时间，如垃圾回收</td>
-</tr>
-<tr>
-<td>计时事件（Timed Event）</td>
-<td>时长超出指定阈值的持续事件</td>
-</tr>
-<tr>
-<td>取样事件（Sample Event）</td>
-<td>周期性取样的事件，如方法抽样</td>
-</tr>
-</tbody>
-</table>
-<ul>
-<li>JFR 的取样事件比其他工具更加精确。</li>
-<li>JFR 的 3 种启用方式<ol>
-<li>命令行中使用 -XX:StartFlightRecording= 参数。</li>
-<li>使用 jcmd 的 JFR.* 子命令。</li>
-<li>使用 JMC 的 JFR 插件。</li>
-</ol>
-</li>
-</ul>
-<h2 id="VisualVM"><a href="#VisualVM" class="headerlink" title="VisualVM"></a>VisualVM</h2><blockquote>
-<p><a href="https://visualvm.github.io/index.html" target="_blank" rel="noopener">https://visualvm.github.io/index.html</a></p>
-</blockquote>
-<h2 id="JITWatch"><a href="#JITWatch" class="headerlink" title="JITWatch"></a>JITWatch</h2><blockquote>
-<p><a href="https://github.com/AdoptOpenJDK/jitwatch" target="_blank" rel="noopener">https://github.com/AdoptOpenJDK/jitwatch</a></p>
-</blockquote>
-<h1 id="引用"><a href="#引用" class="headerlink" title="引用"></a>引用</h1><blockquote>
-<p><a href="https://time.geekbang.org/column/article/40821" target="_blank" rel="noopener">https://time.geekbang.org/column/article/40821</a></p>
-</blockquote>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://blog.ennis.info/2018/12/08/笔记-深入拆解Java虚拟机-33JavaAgent与字节码注入/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Ennis L.M. Wu">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar/portrait.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Ennis Wu">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/12/08/笔记-深入拆解Java虚拟机-33JavaAgent与字节码注入/" itemprop="url">笔记-深入拆解Java虚拟机-33JavaAgent与字节码注入</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-12-08T16:01:16+08:00">
-                2018-12-08
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Java虚拟机/" itemprop="url" rel="index">
-                    <span itemprop="name">Java虚拟机</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h1 id="premain-方法"><a href="#premain-方法" class="headerlink" title="premain 方法"></a>premain 方法</h1><ul>
-<li><strong>在 main 方法前执行的方法。</strong></li>
-<li>JVM 能识别的 premain 方法参数类型是 String</li>
-</ul>
-<h2 id="以-Java-agent-方式运行-premain-方法"><a href="#以-Java-agent-方式运行-premain-方法" class="headerlink" title="以 Java agent 方式运行 premain 方法"></a>以 Java agent 方式运行 premain 方法</h2><ul>
-<li>方法一：打包成 jar 包，在的 MANIFEST.MF 配置文件中，指定的 Premain-class。</li>
-<li>方法二：通过 Attach API 远程加载。<ul>
-<li>不会先于 main 方法执行。</li>
-<li>取决于调用 Attach API 的时机。</li>
-<li>运行不再是 premain 方法，而是 agentmain 方法。</li>
-<li>更新 jar 包的 manifest 文件，包含 Agent-Class 配置。</li>
-</ul>
-</li>
-<li>JVM 不限制 Java agent 的数量。</li>
-</ul>
-<h1 id="字节码注入"><a href="#字节码注入" class="headerlink" title="字节码注入"></a>字节码注入</h1><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> org.example;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> java.lang.instrument.*;</span><br><span class="line"><span class="keyword">import</span> java.security.ProtectionDomain;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">MyAgent</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">premain</span><span class="params">(String args, Instrumentation instrumentation)</span> </span>&#123;</span><br><span class="line">        instrumentation.addTransformer(<span class="keyword">new</span> MyTransformer());</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">static</span> <span class="class"><span class="keyword">class</span> <span class="title">MyTransformer</span> <span class="keyword">implements</span> <span class="title">ClassFileTransformer</span> </span>&#123;</span><br><span class="line">        <span class="keyword">public</span> <span class="keyword">byte</span>[] transform(ClassLoader loader, String className, Class&lt;?&gt; classBeingRedefined,</span><br><span class="line">                                ProtectionDomain protectionDomain, <span class="keyword">byte</span>[] classfileBuffer) <span class="keyword">throws</span> IllegalClassFormatException &#123;</span><br><span class="line">            <span class="comment">//打印该数组的前四个字节，也就是 Java class 文件的魔数（magic number）0xCAFEBABE。</span></span><br><span class="line">            System.out.printf(<span class="string">"Loaded %s: 0x%X%X%X%X\n"</span>, className, classfileBuffer[<span class="number">0</span>], classfileBuffer[<span class="number">1</span>],</span><br><span class="line">                    classfileBuffer[<span class="number">2</span>], classfileBuffer[<span class="number">3</span>]);</span><br><span class="line">            <span class="comment">//如果返回 null 或抛出异常，JVM 使用原来的 byte 数组完成类加载工作。</span></span><br><span class="line">            <span class="keyword">return</span> <span class="keyword">null</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<ul>
-<li><code>Instrumentation</code> 接口：注册类加载时间拦截器。</li>
-<li><code>ClassFileTransformer</code> 接口：拦截器需要实现，重写 transform 方法。</li>
-<li><code>transform</code> 方法：<ul>
-<li><code>byte[]</code> 参数：正在被加载的类的字节码。</li>
-<li><code>byte[]</code> 返回值：更新过后的类的字节码。</li>
-</ul>
-</li>
-</ul>
-<h2 id="redefine-和-retransform（不懂，怎么实现？）"><a href="#redefine-和-retransform（不懂，怎么实现？）" class="headerlink" title="redefine 和 retransform（不懂，怎么实现？）"></a>redefine 和 retransform（不懂，怎么实现？）</h2><ul>
-<li>要求传入所需类实例。</li>
-</ul>
-<h3 id="redefine"><a href="#redefine" class="headerlink" title="redefine"></a>redefine</h3><blockquote>
-<p>舍弃原本的字节码，并替换成由用户提供的 byte 数组。</p>
-</blockquote>
-<ul>
-<li><strong>比较危险，一般用于修复出错了的字节码。</strong></li>
-</ul>
-<h3 id="retransform"><a href="#retransform" class="headerlink" title="retransform"></a>retransform</h3><blockquote>
-<p>针对所传入的类，重新调用所有已注册的 ClassFileTransformer 的 transform 方法。</p>
-</blockquote>
-<ul>
-<li>使用 retransform <strong>注入已加载但未注入的类</strong>。</li>
-</ul>
-<p>在执行 premain 或者 agentmain 方法前，JVM 早已加载了不少类，这些类的加载事件并没有被拦截。</p>
-<ul>
-<li>定义了多个 Java agent，多个注入的情况下，移除部分注入。</li>
-</ul>
-<h1 id="JVMTI-agent（不懂）"><a href="#JVMTI-agent（不懂）" class="headerlink" title="JVMTI agent（不懂）"></a>JVMTI agent（不懂）</h1><blockquote>
-<p>JVMTI 是一个事件驱动的工具实现接口。</p>
-</blockquote>
-<ul>
-<li>Java agent 通过 JVMTI agent（C agent）实现。</li>
-<li>在 C agent 加载后的入口方法 Agent_OnLoad 注册各个事件的钩子（hook）方法。</li>
-<li>JVM 触发这些事件时，调用对应的钩子方法。</li>
-</ul>
-<p>为 JVMTI 中的 ClassFileLoadHook 事件设置钩子，在 C 层面拦截所有的类加载事件。</p>
-<p><a href="https://docs.oracle.com/en/java/javase/11/docs/specs/jvmti.html#EventIndex" target="_blank" rel="noopener">关于 JVMTI 的其他事件</a></p>
-<h1 id="基于字节码注入的-profiler"><a href="#基于字节码注入的-profiler" class="headerlink" title="基于字节码注入的 profiler"></a>基于字节码注入的 profiler</h1><ul>
-<li>实现代码覆盖工具，或者各式各样的 profiler。</li>
-<li>在某一程序行为的周围，注入某运行时类方法的调用，表示该程序行为正要发生或已经发生。</li>
-<li>需排除对 JDK 类和运行时类的注入（可能造成死循环调用）。</li>
-<li>设置一个线程私有标识位，区分应用代码上下文和注入代码上下文。（不懂）</li>
-<li>借助自定义类加载器来隔离命名空间。</li>
-<li>观察者效应（observer effect）对所收集的数据造成的影响。</li>
-<li>使用字节码注入开发 profiler 时，需要辩证地看待所收集的数据。</li>
-<li>仅表示在被注入的情况下程序的执行状态，不是没有注入情况下的程序执行状态。</li>
-</ul>
-<h1 id="面向方面（切面）编程（AOP）"><a href="#面向方面（切面）编程（AOP）" class="headerlink" title="面向方面（切面）编程（AOP）"></a>面向方面（切面）编程（AOP）</h1><ul>
-<li>字节码注入实现。</li>
-</ul>
-<h1 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h1><p>Q：如何注入方法出口。除了正常执行路径之外，还需考虑异常执行路径。</p>
-<p>A：不用管有没有 catch 块，有没有 throw，直接给所有代码罩一个 catch any 的异常处理就行了。</p>
-<h1 id="引用"><a href="#引用" class="headerlink" title="引用"></a>引用</h1><blockquote>
-<p><a href="https://time.geekbang.org/column/article/41186" target="_blank" rel="noopener">https://time.geekbang.org/column/article/41186</a></p>
-</blockquote>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://blog.ennis.info/2018/12/06/笔记-深入拆解Java虚拟机-27注解处理器/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Ennis L.M. Wu">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar/portrait.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Ennis Wu">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/12/06/笔记-深入拆解Java虚拟机-27注解处理器/" itemprop="url">笔记-深入拆解Java虚拟机-27注解处理器</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-12-06T18:17:16+08:00">
-                2018-12-06
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Java虚拟机/" itemprop="url" rel="index">
-                    <span itemprop="name">Java虚拟机</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h1 id="注解处理器（annotation-processor）"><a href="#注解处理器（annotation-processor）" class="headerlink" title="注解处理器（annotation processor）"></a>注解处理器（annotation processor）</h1><ul>
-<li>可以为 Java 编译器<strong>添加编译规则</strong>。</li>
-<li>可以<strong>修改</strong>已有的 Java <strong>源文件</strong>。</li>
-<li>可以<strong>生成</strong>新的 Java <strong>源文件</strong>。</li>
-</ul>
-<h1 id="注解处理器的原理"><a href="#注解处理器的原理" class="headerlink" title="注解处理器的原理"></a>注解处理器的原理</h1><h2 id="Java-编译器的工作流程"><a href="#Java-编译器的工作流程" class="headerlink" title="Java 编译器的工作流程"></a>Java 编译器的工作流程</h2><p><img src="/images/posts/JVM/27/compilation_process.png" alt="compilation_process"></p>
-<ol>
-<li><strong>将源文件解析为抽象语法树。</strong></li>
-<li><strong>调用已注册的注解处理器。</strong></li>
-<li><strong>生成字节码。</strong></li>
-</ol>
-<ul>
-<li>2 调用注解处理器生成了新的源文件将重复 1、2。</li>
-</ul>
-<h2 id="实现注解处理器"><a href="#实现注解处理器" class="headerlink" title="实现注解处理器"></a>实现注解处理器</h2><h3 id="Processor-接口"><a href="#Processor-接口" class="headerlink" title="Processor 接口"></a>Processor 接口</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">Processor</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//不用构造器</span></span><br><span class="line">    <span class="comment">//注解处理器的实例通过反射生成</span></span><br><span class="line">    <span class="comment">//注解处理器类需要定义一个无参数构造器</span></span><br><span class="line">    <span class="comment">//注解处理器通常不声明任何构造器</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">//存放注解处理器的初始化代码</span></span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">init</span><span class="params">(ProcessingEnvironment processingEnv)</span></span>;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">//返回注解处理器所支持的注解类型</span></span><br><span class="line">    <span class="comment">//注解类型用字符串形式表示</span></span><br><span class="line">    <span class="function">Set&lt;String&gt; <span class="title">getSupportedAnnotationTypes</span><span class="params">()</span></span>;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">//返回该处理器支持的 Java 版本</span></span><br><span class="line">    <span class="comment">//通常版本与 Java 编译器版本一致</span></span><br><span class="line">    <span class="function">SourceVersion <span class="title">getSupportedSourceVersion</span><span class="params">()</span></span>;</span><br><span class="line">  </span><br><span class="line">    <span class="comment">//注解处理方法</span></span><br><span class="line">    <span class="function"><span class="keyword">boolean</span> <span class="title">process</span><span class="params">(Set&lt;? extends TypeElement&gt; annotations, RoundEnvironment roundEnv)</span></span>;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//剩余方法略...</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h1 id="LinkedHashMap-实现原理"><a href="#LinkedHashMap-实现原理" class="headerlink" title="LinkedHashMap 实现原理"></a>LinkedHashMap 实现原理</h1><h2 id="继承关系图"><a href="#继承关系图" class="headerlink" title="继承关系图"></a>继承关系图</h2><p><img src="/images/posts/Java/Collection/class_diagram_linkedhashmap.png" alt="LinkedHashMap 类图" title="LinkedHashMap 类图"></p>
+<p><img src="/images/posts/Java/Collection/class_diagram_treenode.png" alt="所有节点类图" title="所有节点类图"></p>
+<h2 id="put-如何维护双链表"><a href="#put-如何维护双链表" class="headerlink" title="put() 如何维护双链表"></a>put() 如何维护双链表</h2><p><code>LinkedHashMap</code> 未重写 <code>put()</code> 方法，直接使用 <code>HashMap</code> 的 <code>put()</code> 方法，通过重写 <code>newNode()</code> 方法维护双链表的建立，通过重写 <code>afterNodeAccess()</code> 方法和 <code>afterNodeInsertion()</code> 方法维护 LRU。</p>
 <blockquote>
-<p>JDK 提供了一个实现 Processor 接口的抽象类 AbstractProcessor。</p>
+<p><code>afterNodeAccess()</code> 和 <code>afterNodeInsertion()</code> 在 <code>HashMap</code> 中为空方法</p>
+</blockquote>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//HashMap 源码</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> V <span class="title">put</span><span class="params">(K key, V value)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> putVal(hash(key), key, value, <span class="keyword">false</span>, <span class="keyword">true</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">final</span> V <span class="title">putVal</span><span class="params">(<span class="keyword">int</span> hash, K key, V value, <span class="keyword">boolean</span> onlyIfAbsent,</span></span></span><br><span class="line"><span class="function"><span class="params">               <span class="keyword">boolean</span> evict)</span> </span>&#123;</span><br><span class="line">    Node&lt;K,V&gt;[] tab; Node&lt;K,V&gt; p; <span class="keyword">int</span> n, i;</span><br><span class="line">    <span class="keyword">if</span> ((tab = table) == <span class="keyword">null</span> || (n = tab.length) == <span class="number">0</span>)</span><br><span class="line">        n = (tab = resize()).length;</span><br><span class="line">    <span class="keyword">if</span> ((p = tab[i = (n - <span class="number">1</span>) &amp; hash]) == <span class="keyword">null</span>)</span><br><span class="line">        <span class="comment">// LinkedHashMap 重写 newNode()</span></span><br><span class="line">        tab[i] = newNode(hash, key, value, <span class="keyword">null</span>);</span><br><span class="line">    <span class="keyword">else</span> &#123;</span><br><span class="line">        Node&lt;K,V&gt; e; K k;</span><br><span class="line">        <span class="keyword">if</span> (p.hash == hash &amp;&amp;</span><br><span class="line">            ((k = p.key) == key || (key != <span class="keyword">null</span> &amp;&amp; key.equals(k))))</span><br><span class="line">            e = p;</span><br><span class="line">        <span class="keyword">else</span> <span class="keyword">if</span> (p <span class="keyword">instanceof</span> TreeNode)</span><br><span class="line">            e = ((TreeNode&lt;K,V&gt;)p).putTreeVal(<span class="keyword">this</span>, tab, hash, key, value);</span><br><span class="line">        <span class="keyword">else</span> &#123;</span><br><span class="line">            <span class="keyword">for</span> (<span class="keyword">int</span> binCount = <span class="number">0</span>; ; ++binCount) &#123;</span><br><span class="line">                <span class="keyword">if</span> ((e = p.next) == <span class="keyword">null</span>) &#123;</span><br><span class="line">                    <span class="comment">// LinkedHashMap 重写 newNode()</span></span><br><span class="line">                    p.next = newNode(hash, key, value, <span class="keyword">null</span>);</span><br><span class="line">                    <span class="keyword">if</span> (binCount &gt;= TREEIFY_THRESHOLD - <span class="number">1</span>) <span class="comment">// -1 for 1st</span></span><br><span class="line">                        treeifyBin(tab, hash);</span><br><span class="line">                    <span class="keyword">break</span>;</span><br><span class="line">                &#125;</span><br><span class="line">                <span class="keyword">if</span> (e.hash == hash &amp;&amp;</span><br><span class="line">                    ((k = e.key) == key || (key != <span class="keyword">null</span> &amp;&amp; key.equals(k))))</span><br><span class="line">                    <span class="keyword">break</span>;</span><br><span class="line">                p = e;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span> (e != <span class="keyword">null</span>) &#123; <span class="comment">// existing mapping for key</span></span><br><span class="line">            V oldValue = e.value;</span><br><span class="line">            <span class="keyword">if</span> (!onlyIfAbsent || oldValue == <span class="keyword">null</span>)</span><br><span class="line">                e.value = value;</span><br><span class="line">            <span class="comment">//维护 LRU</span></span><br><span class="line">            afterNodeAccess(e);</span><br><span class="line">            <span class="keyword">return</span> oldValue;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    ++modCount;</span><br><span class="line">    <span class="keyword">if</span> (++size &gt; threshold)</span><br><span class="line">        resize();</span><br><span class="line">    <span class="comment">//维护 LRU</span></span><br><span class="line">    afterNodeInsertion(evict);</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">null</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><code>LinkedHashMap</code> 重写了 <code>newNode()</code> 方法，新建节点后调用 <code>linkNodeLast()</code> 方法连接链表。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//HashMap 源码</span></span><br><span class="line"><span class="function">Node&lt;K,V&gt; <span class="title">newNode</span><span class="params">(<span class="keyword">int</span> hash, K key, V value, Node&lt;K,V&gt; next)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">new</span> Node&lt;&gt;(hash, key, value, next);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//LinkedHashMap 源码</span></span><br><span class="line"><span class="function">Node&lt;K,V&gt; <span class="title">newNode</span><span class="params">(<span class="keyword">int</span> hash, K key, V value, Node&lt;K,V&gt; e)</span> </span>&#123;</span><br><span class="line">    LinkedHashMap.Entry&lt;K,V&gt; p =</span><br><span class="line">        <span class="keyword">new</span> LinkedHashMap.Entry&lt;&gt;(hash, key, value, e);</span><br><span class="line">    <span class="comment">//调用该方法维护双链表</span></span><br><span class="line">    linkNodeLast(p);</span><br><span class="line">    <span class="keyword">return</span> p;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">linkNodeLast</span><span class="params">(LinkedHashMap.Entry&lt;K,V&gt; p)</span> </span>&#123;</span><br><span class="line">    <span class="comment">//将新节点放入双链表尾</span></span><br><span class="line">    LinkedHashMap.Entry&lt;K,V&gt; last = tail;</span><br><span class="line">    tail = p;</span><br><span class="line">    <span class="keyword">if</span> (last == <span class="keyword">null</span>)</span><br><span class="line">        head = p;</span><br><span class="line">    <span class="keyword">else</span> &#123;</span><br><span class="line">        p.before = last;</span><br><span class="line">        last.after = p;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="remove-如何维护双链表"><a href="#remove-如何维护双链表" class="headerlink" title="remove() 如何维护双链表"></a>remove() 如何维护双链表</h2><p><code>LinkedHashMap</code> 没有重写 <code>remove()</code> 方法，通过重写 <code>afterNodeRemoval()</code> 方法维护双链表。</p>
 <blockquote>
-<p>该抽象类实现了 init、getSupportedAnnotationTypes 和 getSupportedSourceVersion方法。<br>它的子类可以通过 @SupportedAnnotationTypes 和 @SupportedSourceVersion 注解来声明所支持的注解类型以及 Java 版本。</p>
+<p><code>afterNodeRemoval()</code> 在 <code>HashMap</code> 中为空方法</p>
 </blockquote>
-</blockquote>
-<ul>
-<li>所有的<strong>注解处理器类需要实现 Processor 接口</strong>。</li>
-</ul>
-<h3 id="注册-Java-编译器的插件"><a href="#注册-Java-编译器的插件" class="headerlink" title="注册 Java 编译器的插件"></a>注册 Java 编译器的插件</h3><ul>
-<li>方法一：直接使用 javac 命令的 -processor 参数。</li>
-<li>方法二：将注解处理器编译生成的 class 文件压缩入 jar 包中，在 jar 包配置文件中记录该注解处理器的包名及类名。</li>
-</ul>
-<p>启动 Java 编译器时，会寻找 classpath 路径上的 jar 包是否包含上述配置文件，并自动注册其中记录的注解处理器。</p>
-<ul>
-<li>方法三：在 IDE 中配置注解处理器。</li>
-</ul>
-<h1 id="利用注解处理器修改已有的源码"><a href="#利用注解处理器修改已有的源码" class="headerlink" title="利用注解处理器修改已有的源码"></a>利用注解处理器修改已有的源码</h1><blockquote>
-<p>注解处理器并不能真正地修改已有源代码。这里指的是修改由 Java 源代码生成的抽象语法树，在其中修改已有树节点或者插入新的树节点，从而使生成的字节码发生变化。</p>
-</blockquote>
-<ul>
-<li><strong>修改抽象语法树</strong>涉及 Java 编译器的内部 API，<strong>可能随着版本变更失效</strong>。</li>
-</ul>
-<h1 id="利用注解处理器生成新的源码"><a href="#利用注解处理器生成新的源码" class="headerlink" title="利用注解处理器生成新的源码"></a>利用注解处理器生成新的源码</h1><ul>
-<li>通过 Filer.createSourceFile 方法获得一个文件的概念。</li>
-<li>并通过 PrintWriter 将具体的内容写入。</li>
-</ul>
-<h1 id="附件"><a href="#附件" class="headerlink" title="附件"></a>附件</h1><ul>
-<li><a href="https://docs.oracle.com/javase/10/docs/api/javax/lang/model/element/package-summary.html" target="_blank" rel="noopener">Element 类 API 3</a></li>
-<li><a href="http://notatube.blogspot.com/2010/11/project-lombok-trick-explained.html" target="_blank" rel="noopener">修改抽象语法树 API</a><ul>
-<li><a href="http://jnb.ociweb.com/jnb/jnbJan2010.html#controversy" target="_blank" rel="noopener">Lombok 的回应</a></li>
-</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//HashMap 源码</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> V <span class="title">remove</span><span class="params">(Object key)</span> </span>&#123;</span><br><span class="line">    Node&lt;K,V&gt; e;</span><br><span class="line">    <span class="keyword">return</span> (e = removeNode(hash(key), key, <span class="keyword">null</span>, <span class="keyword">false</span>, <span class="keyword">true</span>)) == <span class="keyword">null</span> ?</span><br><span class="line">        <span class="keyword">null</span> : e.value;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">final</span> Node&lt;K,V&gt; <span class="title">removeNode</span><span class="params">(<span class="keyword">int</span> hash, Object key, Object value,</span></span></span><br><span class="line"><span class="function"><span class="params">                           <span class="keyword">boolean</span> matchValue, <span class="keyword">boolean</span> movable)</span> </span>&#123;</span><br><span class="line">    Node&lt;K,V&gt;[] tab; Node&lt;K,V&gt; p; <span class="keyword">int</span> n, index;</span><br><span class="line">    <span class="keyword">if</span> ((tab = table) != <span class="keyword">null</span> &amp;&amp; (n = tab.length) &gt; <span class="number">0</span> &amp;&amp;</span><br><span class="line">        (p = tab[index = (n - <span class="number">1</span>) &amp; hash]) != <span class="keyword">null</span>) &#123;</span><br><span class="line">        Node&lt;K,V&gt; node = <span class="keyword">null</span>, e; K k; V v;</span><br><span class="line">        <span class="keyword">if</span> (p.hash == hash &amp;&amp;</span><br><span class="line">            ((k = p.key) == key || (key != <span class="keyword">null</span> &amp;&amp; key.equals(k))))</span><br><span class="line">            node = p;</span><br><span class="line">        <span class="keyword">else</span> <span class="keyword">if</span> ((e = p.next) != <span class="keyword">null</span>) &#123;</span><br><span class="line">            <span class="keyword">if</span> (p <span class="keyword">instanceof</span> TreeNode)</span><br><span class="line">                node = ((TreeNode&lt;K,V&gt;)p).getTreeNode(hash, key);</span><br><span class="line">            <span class="keyword">else</span> &#123;</span><br><span class="line">                <span class="keyword">do</span> &#123;</span><br><span class="line">                    <span class="keyword">if</span> (e.hash == hash &amp;&amp;</span><br><span class="line">                        ((k = e.key) == key ||</span><br><span class="line">                         (key != <span class="keyword">null</span> &amp;&amp; key.equals(k)))) &#123;</span><br><span class="line">                        node = e;</span><br><span class="line">                        <span class="keyword">break</span>;</span><br><span class="line">                    &#125;</span><br><span class="line">                    p = e;</span><br><span class="line">                &#125; <span class="keyword">while</span> ((e = e.next) != <span class="keyword">null</span>);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span> (node != <span class="keyword">null</span> &amp;&amp; (!matchValue || (v = node.value) == value ||</span><br><span class="line">                             (value != <span class="keyword">null</span> &amp;&amp; value.equals(v)))) &#123;</span><br><span class="line">            <span class="keyword">if</span> (node <span class="keyword">instanceof</span> TreeNode)</span><br><span class="line">                ((TreeNode&lt;K,V&gt;)node).removeTreeNode(<span class="keyword">this</span>, tab, movable);</span><br><span class="line">            <span class="keyword">else</span> <span class="keyword">if</span> (node == p)</span><br><span class="line">                tab[index] = node.next;</span><br><span class="line">            <span class="keyword">else</span></span><br><span class="line">                p.next = node.next;</span><br><span class="line">            ++modCount;</span><br><span class="line">            --size;</span><br><span class="line">            <span class="comment">//维护双链表</span></span><br><span class="line">            afterNodeRemoval(node);</span><br><span class="line">            <span class="keyword">return</span> node;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">null</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//LinkedHashMap 源码</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">afterNodeRemoval</span><span class="params">(Node&lt;K,V&gt; e)</span> </span>&#123; <span class="comment">// unlink</span></span><br><span class="line">    <span class="comment">//移除节点后断开双链表重新连接</span></span><br><span class="line">    LinkedHashMap.Entry&lt;K,V&gt; p =</span><br><span class="line">        (LinkedHashMap.Entry&lt;K,V&gt;)e, b = p.before, a = p.after;</span><br><span class="line">    p.before = p.after = <span class="keyword">null</span>;</span><br><span class="line">    <span class="keyword">if</span> (b == <span class="keyword">null</span>)</span><br><span class="line">        head = a;</span><br><span class="line">    <span class="keyword">else</span></span><br><span class="line">        b.after = a;</span><br><span class="line">    <span class="keyword">if</span> (a == <span class="keyword">null</span>)</span><br><span class="line">        tail = b;</span><br><span class="line">    <span class="keyword">else</span></span><br><span class="line">        a.before = b;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="get-和-put-如何维护-LRU"><a href="#get-和-put-如何维护-LRU" class="headerlink" title="get() 和 put() 如何维护 LRU"></a>get() 和 put() 如何维护 LRU</h2><p><code>LinkedHashMap</code> 通过重写 <code>afterNodeAccess()</code> 方法维护 LRU，该方法在 <code>HashMap</code> 的 <code>put()</code> 方法中被调用，在 <code>LinkedHashMap</code> 重写的 <code>get()</code> 方法中被调用。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//访问节点后将该节点移至链尾</span></span><br><span class="line"><span class="comment">//put() 方法中若新值覆盖旧值则会调用该方法</span></span><br><span class="line"><span class="comment">//get() 方法中调用该方法</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">afterNodeAccess</span><span class="params">(Node&lt;K,V&gt; e)</span> </span>&#123; <span class="comment">// move node to last</span></span><br><span class="line">    LinkedHashMap.Entry&lt;K,V&gt; last;</span><br><span class="line">    <span class="keyword">if</span> (accessOrder &amp;&amp; (last = tail) != e) &#123;</span><br><span class="line">        LinkedHashMap.Entry&lt;K,V&gt; p =</span><br><span class="line">            (LinkedHashMap.Entry&lt;K,V&gt;)e, b = p.before, a = p.after;</span><br><span class="line">        p.after = <span class="keyword">null</span>;</span><br><span class="line">        <span class="keyword">if</span> (b == <span class="keyword">null</span>)</span><br><span class="line">            head = a;</span><br><span class="line">        <span class="keyword">else</span></span><br><span class="line">            b.after = a;</span><br><span class="line">        <span class="keyword">if</span> (a != <span class="keyword">null</span>)</span><br><span class="line">            a.before = b;</span><br><span class="line">        <span class="keyword">else</span></span><br><span class="line">            last = b;</span><br><span class="line">        <span class="keyword">if</span> (last == <span class="keyword">null</span>)</span><br><span class="line">            head = p;</span><br><span class="line">        <span class="keyword">else</span> &#123;</span><br><span class="line">            p.before = last;</span><br><span class="line">            last.after = p;</span><br><span class="line">        &#125;</span><br><span class="line">        tail = p;</span><br><span class="line">        ++modCount;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">public</span> V <span class="title">get</span><span class="params">(Object key)</span> </span>&#123;</span><br><span class="line">    Node&lt;K,V&gt; e;</span><br><span class="line">    <span class="keyword">if</span> ((e = getNode(hash(key), key)) == <span class="keyword">null</span>)</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">null</span>;</span><br><span class="line">    <span class="keyword">if</span> (accessOrder)</span><br><span class="line">        <span class="comment">//维护 LRU</span></span><br><span class="line">        afterNodeAccess(e);</span><br><span class="line">    <span class="keyword">return</span> e.value;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><code>LinkedHashMap</code> 重写了 <code>afterNodeInsertion()</code> 方法，该方法在 <code>put()</code> 中添加新节点后被调用，<strong>该方法会移除头节点，也就是最久未被访问的节点</strong>。</p>
+<p>该方法中调用的 <code>removeEldestEntry()</code> 方法直接返回 <code>false</code>，所以该方法<strong>实际逻辑不执行</strong>。</p>
+<p>可以通过重写 <code>removeEldestEntry()</code> 方法实现在某条件下移除最久未被访问节点。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">afterNodeInsertion</span><span class="params">(<span class="keyword">boolean</span> evict)</span> </span>&#123; <span class="comment">// possibly remove eldest</span></span><br><span class="line">    LinkedHashMap.Entry&lt;K,V&gt; first;</span><br><span class="line">    <span class="comment">//put() 中 evict 传入 true</span></span><br><span class="line">    <span class="keyword">if</span> (evict &amp;&amp; (first = head) != <span class="keyword">null</span> &amp;&amp; removeEldestEntry(first)) &#123;</span><br><span class="line">        K key = first.key;</span><br><span class="line">        removeNode(hash(key), key, <span class="keyword">null</span>, <span class="keyword">false</span>, <span class="keyword">true</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">protected</span> <span class="keyword">boolean</span> <span class="title">removeEldestEntry</span><span class="params">(Map.Entry&lt;K,V&gt; eldest)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">false</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h1 id="如何开启按访问顺序排序（LRU）"><a href="#如何开启按访问顺序排序（LRU）" class="headerlink" title="如何开启按访问顺序排序（LRU）"></a>如何开启按访问顺序排序（LRU）</h1><p><code>LinkedHashMap</code> 有这样一个构造方法，第三个参数传入 <code>true</code> 即可，默认是 <code>false</code>。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="title">LinkedHashMap</span><span class="params">(<span class="keyword">int</span> initialCapacity,</span></span></span><br><span class="line"><span class="function"><span class="params">                     <span class="keyword">float</span> loadFactor,</span></span></span><br><span class="line"><span class="function"><span class="params">                     <span class="keyword">boolean</span> accessOrder)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">super</span>(initialCapacity, loadFactor);</span><br><span class="line">    <span class="keyword">this</span>.accessOrder = accessOrder;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h1 id="LinkedHashMap-对于-HashMap-的优化"><a href="#LinkedHashMap-对于-HashMap-的优化" class="headerlink" title="LinkedHashMap 对于 HashMap 的优化"></a>LinkedHashMap 对于 HashMap 的优化</h1><ul>
+<li><p><code>LinkedHashMap</code> 重写 <code>containsValue()</code> 方法。</p>
+</li>
+<li><p><code>LinkedHashIterator</code> 重写 <code>nextNode ()</code> 方法。</p>
 </li>
 </ul>
-<h1 id="引用"><a href="#引用" class="headerlink" title="引用"></a>引用</h1><blockquote>
-<p><a href="https://time.geekbang.org/column/article/40189" target="_blank" rel="noopener">https://time.geekbang.org/column/article/40189</a></p>
-</blockquote>
+<p>LinkedHashMap <strong>直接遍历双链表</strong>，即直接遍历有效数据。</p>
+<p>HashMap <strong>先遍历桶，再遍历链表</strong>，双重循环，但是并不是所有桶都有数据。</p>
 
           
         
@@ -1306,7 +1586,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://blog.ennis.info/2018/12/05/笔记-深入拆解Java虚拟机-32JNI的运行机制/">
+    <link itemprop="mainEntityOfPage" href="http://blog.ennis.info/2019/05/03/LayoutInflater中inflate方法各参数作用（二）/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Ennis L.M. Wu">
@@ -1325,7 +1605,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2018/12/05/笔记-深入拆解Java虚拟机-32JNI的运行机制/" itemprop="url">笔记-深入拆解Java虚拟机-32JNI的运行机制</a></h1>
+                <a class="post-title-link" href="/2019/05/03/LayoutInflater中inflate方法各参数作用（二）/" itemprop="url">「笔记」LayoutInflater 中 inflate 方法各参数作用（二）</a></h1>
         
 
         <div class="post-meta">
@@ -1337,8 +1617,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-12-05T16:27:03+08:00">
-                2018-12-05
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-05-03T20:40:47+08:00">
+                2019-05-03
               </time>
             
 
@@ -1360,8 +1640,8 @@
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Java虚拟机/" itemprop="url" rel="index">
-                    <span itemprop="name">Java虚拟机</span>
+                  <a href="/categories/Android/" itemprop="url" rel="index">
+                    <span itemprop="name">Android</span>
                   </a>
                 </span>
 
@@ -1399,159 +1679,340 @@
       
         
           
-            <h1 id="Java-无法表达的场景"><a href="#Java-无法表达的场景" class="headerlink" title="Java 无法表达的场景"></a>Java 无法表达的场景</h1><ul>
-<li>使用汇编语言提升关键代码的性能。</li>
-<li>调用 Java 核心类库无法提供的，某个体系架构或者操作系统特有的功能。</li>
-<li>牺牲可移植性，在 Java 代码中调用 C/C++ 代码实现。</li>
-</ul>
-<p>这种跨语言调用，需要借助 Java Native Interface 机制。</p>
-<h1 id="native-方法的链接"><a href="#native-方法的链接" class="headerlink" title="native 方法的链接"></a>native 方法的链接</h1><ul>
-<li>动态链接库的名字以 lib 为前缀，以 .dylib 或 .so 为扩展名。</li>
-<li>通过 <code>System.loadLibrary(&quot;---&quot;)</code> 方法加载 lib—.dylib。</li>
-<li>如果库不在当前路径下，可以配置 java.library.path 参数指向路径（JVM 启动时）。</li>
-</ul>
-<h2 id="JVM-自动查找符合默认命名规范的-C-函数并链接"><a href="#JVM-自动查找符合默认命名规范的-C-函数并链接" class="headerlink" title="JVM 自动查找符合默认命名规范的 C 函数并链接"></a>JVM 自动查找符合默认命名规范的 C 函数并链接</h2><ul>
-<li><code>javac -h</code> 命令可以根据 native 方法声明，自动生成包含符合命名规范的 C 函数的头文件。</li>
-</ul>
-<h3 id="命名规范"><a href="#命名规范" class="headerlink" title="命名规范"></a>命名规范</h3><ul>
-<li>函数都要以Java_为前缀，后跟完整的包名和方法名。<ul>
-<li>路径中 / 转换为 _</li>
-<li>原方法名中 _ 转换为 _1</li>
-</ul>
+            <h1 id="原文"><a href="#原文" class="headerlink" title="原文"></a>原文</h1><ul>
+<li><p><a href="https://blog.csdn.net/u012702547/article/details/52628453" target="_blank" rel="noopener">三个案例带你看懂LayoutInflater中inflate方法两个参数和三个参数的区别</a></p>
 </li>
-<li>有重载 native 方法时，自动链接对象时的考虑参数类型。</li>
-<li>重载方法函数名在原本基础上追加 __ 以及方法描述符作为后缀。</li>
-<li>方法描述符的特殊符号会被替换。<ul>
-<li>引用类型中 ; 替换为 _2</li>
-<li>数组类型中 [ 替换为 _3</li>
-</ul>
+<li><p><a href="https://www.jianshu.com/p/342890fcf5c9" target="_blank" rel="noopener">View.inflate() 的前世今生</a></p>
 </li>
 </ul>
-<h2 id="在-C-代码中主动链接"><a href="#在-C-代码中主动链接" class="headerlink" title="在 C 代码中主动链接"></a>在 C 代码中主动链接</h2><ul>
-<li>对 C 函数名没有要求。</li>
-<li>通常使用一个名为 registerNatives 的 native 方法，按照第一种链接方式定义所能自动链接的 C 函数。在该函数中，手动链接该类的其他 native 方法。</li>
-<li>需要在其他 native 方法被调用之前完成链接。</li>
-<li>通常在类的初始化方法里调用该 registerNatives 方法。</li>
-</ul>
-<h1 id="JNI-的-API"><a href="#JNI-的-API" class="headerlink" title="JNI 的 API"></a>JNI 的 API</h1><ul>
-<li><strong>C 代码中可以使用 Java 的语言特性</strong>（如 instanceof，通过特殊的 JNI 函数实现）。</li>
-</ul>
-<h2 id="JNIEnv"><a href="#JNIEnv" class="headerlink" title="JNIEnv"></a>JNIEnv</h2><ul>
-<li>JVM 会将所有 JNI 函数的函数指针聚合到一个名为 JNIEnv 的数据结构中。</li>
-<li><strong>JNIEnv 线程私有</strong>，每个线程都拥有一个 JNIEnv。</li>
-<li>规定 C 代码<strong>不能共享 JNIEnv 给其他线程</strong>，否则 JNI 函数无法保证正确性。</li>
-</ul>
-<h3 id="原因："><a href="#原因：" class="headerlink" title="原因："></a>原因：</h3><ol>
-<li>给 JNI 函数提供一个单独命名空间。</li>
-<li>允许 JVM 通过更改函数指针替换 JNI 函数的具体实现。</li>
-</ol>
-<h2 id="Java-类型与本地类型"><a href="#Java-类型与本地类型" class="headerlink" title="Java 类型与本地类型"></a>Java 类型与本地类型</h2><ul>
-<li>JNI 会<strong>将 Java 层面的基本类型以及引用类型映射为另一套可供 C 代码使用的数据结构</strong>。</li>
-</ul>
-<p>基本类型对应关系：</p>
-<table>
-<thead>
-<tr>
-<th>Java 类型</th>
-<th>c 数据结构</th>
-<th>位（bit）</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>boolean</td>
-<td>jboolean</td>
-<td>8, unsigned</td>
-</tr>
-<tr>
-<td>byte</td>
-<td>jbyte</td>
-<td>8</td>
-</tr>
-<tr>
-<td>char</td>
-<td>jchar</td>
-<td>16, unsigned</td>
-</tr>
-<tr>
-<td>short</td>
-<td>jshort</td>
-<td>16</td>
-</tr>
-<tr>
-<td>int</td>
-<td>jint</td>
-<td>32</td>
-</tr>
-<tr>
-<td>long</td>
-<td>jlong</td>
-<td>64</td>
-</tr>
-<tr>
-<td>float</td>
-<td>jfloat</td>
-<td>32</td>
-</tr>
-<tr>
-<td>double</td>
-<td>jdouble</td>
-<td>64</td>
-</tr>
-<tr>
-<td>void</td>
-<td>void</td>
-<td>n/a</td>
-</tr>
-</tbody>
-</table>
-<p>引用类型对应数据结构的继承关系：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">jobject</span><br><span class="line">|- jclass (java.lang.Class objects)</span><br><span class="line">|- jstring (java.lang.String objects)</span><br><span class="line">|- jthrowable (java.lang.Throwable objects)</span><br><span class="line">|- jarray (arrays)</span><br><span class="line">   |- jobjectArray (object arrays)</span><br><span class="line">   |- jbooleanArray (boolean arrays)</span><br><span class="line">   |- jbyteArray (byte arrays)</span><br><span class="line">   |- jcharArray (char arrays)</span><br><span class="line">   |- jshortArray (short arrays)</span><br><span class="line">   |- jintArray (int arrays)</span><br><span class="line">   |- jlongArray (long arrays)</span><br><span class="line">   |- jfloatArray (float arrays)</span><br><span class="line">   |- jdoubleArray (double arrays)</span><br></pre></td></tr></table></figure>
+<h1 id="View-inflate-和-LayoutInflater-inflate"><a href="#View-inflate-和-LayoutInflater-inflate" class="headerlink" title="View.inflate 和 LayoutInflater.inflate"></a>View.inflate 和 LayoutInflater.inflate</h1><p>View.inflate 实际上上只是简单的包装了 LayoutInflater.inflate</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> View <span class="title">inflate</span><span class="params">(Context context, @LayoutRes <span class="keyword">int</span> resource, ViewGroup root)</span> </span>&#123;</span><br><span class="line">    LayoutInflater factory = LayoutInflater.from(context);</span><br><span class="line">    <span class="keyword">return</span> factory.inflate(resource, root);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h1 id="LayoutInflater-inflate-两个参数和三个参数的区别"><a href="#LayoutInflater-inflate-两个参数和三个参数的区别" class="headerlink" title="LayoutInflater.inflate 两个参数和三个参数的区别"></a>LayoutInflater.inflate 两个参数和三个参数的区别</h1><h2 id="两个参数"><a href="#两个参数" class="headerlink" title="两个参数"></a>两个参数</h2><p>两个参数的方法实际上也只是简单调用了三个参数的方法</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> View <span class="title">inflate</span><span class="params">(@LayoutRes <span class="keyword">int</span> resource, @Nullable ViewGroup root)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> inflate(resource, root, root != <span class="keyword">null</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <ul>
-<li>JNI 访问字段类似反射 API。</li>
+<li>当 ViewGroup 传入 null 时调用</li>
 </ul>
-<h1 id="异常"><a href="#异常" class="headerlink" title="异常"></a>异常</h1><ul>
-<li><strong>调用 JNI 函数时，JVM 便已生成异常实例，并缓存在内存中。</strong></li>
-<li>不会显式地跳转至异常处理器或者调用者中，而是继续执行接下来的 C 代码。</li>
-<li>从可能触发异常的 JNI 函数返回时，需要<strong>通过 JNI 函数 ExceptionOccurred 检查是否发生了异常</strong>，并且作出相应的处理。</li>
-<li>如果无须抛出该异常，需要<strong>通过 JNI 函数 ExceptionClear 显式地清空已缓存的异常</strong>。</li>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">inflate(resource, <span class="keyword">null</span>, <span class="keyword">false</span>);</span><br></pre></td></tr></table></figure>
+<ul>
+<li>当 ViewGroup 传入非 null 时调用</li>
 </ul>
-<h1 id="局部引用（Local-Reference）与全局引用（Global-Reference）"><a href="#局部引用（Local-Reference）与全局引用（Global-Reference）" class="headerlink" title="局部引用（Local Reference）与全局引用（Global Reference）"></a>局部引用（Local Reference）与全局引用（Global Reference）</h1><ul>
-<li>C 代码中可以访问所传入的引用类型参数。</li>
-<li>可以通过 JNI 函数创建新的 Java 对象。</li>
-<li>JVM 需要一种机制告知垃圾回收算法不要回收 C 代码中可能引用到的 Java 对象。</li>
-<li>垃圾回收算法会将被<strong>局部引用</strong>和<strong>全局引用</strong>指向的对象标记为<strong>不可回收</strong>。</li>
-<li>无论是传入的引用类型参数，还是通过 JNI 函数（除NewGlobalRef及NewWeakGlobalRef之外）返回的引用类型对象，都属于局部引用。</li>
-<li><strong>从 C 函数中返回至 Java 方法中，局部引用将失效</strong>。</li>
-<li>不能缓存局部引用，以供另一 C 线程或下一次 native 方法调用时使用。</li>
-<li>通过 JNI 函数 NewGlobalRef，将该局部引用转换为全局引用。</li>
-<li>通过 JNI 函数 DeleteGlobalRef 消除全局引用。</li>
-<li>C 函数运行时间极其长时，应该考虑通过 JNI 函数DeleteLocalRef，消除不再使用的局部引用。</li>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">inflate(resource, root, <span class="keyword">true</span>);</span><br></pre></td></tr></table></figure>
+<h2 id="三个参数"><a href="#三个参数" class="headerlink" title="三个参数"></a>三个参数</h2><h3 id="ViewGroup-传入-null"><a href="#ViewGroup-传入-null" class="headerlink" title="ViewGroup 传入 null"></a>ViewGroup 传入 null</h3><ul>
+<li><p>View 没有父布局</p>
+</li>
+<li><p>View 没有 LayoutParams</p>
+</li>
+<li><p>返回该 View</p>
+</li>
+<li><p>attachToRoot 参数无效</p>
+</li>
 </ul>
-<h1 id="句柄（handle）"><a href="#句柄（handle）" class="headerlink" title="句柄（handle）"></a>句柄（handle）</h1><blockquote>
-<p>句柄指的是内存中 Java 对象的指针的指针。</p>
+<h3 id="ViewGroup-传入非-null"><a href="#ViewGroup-传入非-null" class="headerlink" title="ViewGroup 传入非 null"></a>ViewGroup 传入非 null</h3><h4 id="attachToRoot-为-true"><a href="#attachToRoot-为-true" class="headerlink" title="attachToRoot 为 true"></a>attachToRoot 为 true</h4><ul>
+<li><p>View 添加到父布局</p>
+</li>
+<li><p>View 设置 LayoutParams 参数</p>
+</li>
+<li><p>返回父布局</p>
+</li>
+</ul>
+<h4 id="attachToRoot-为-true-1"><a href="#attachToRoot-为-true-1" class="headerlink" title="attachToRoot 为 true"></a>attachToRoot 为 true</h4><ul>
+<li><p>View 没有父布局</p>
+</li>
+<li><p>View 设置 LayoutParams 参数</p>
+</li>
+<li><p>返回该 View</p>
+</li>
+</ul>
+<h1 id="ViewGroup-最好传入非-null-的情况"><a href="#ViewGroup-最好传入非-null-的情况" class="headerlink" title="ViewGroup 最好传入非 null 的情况"></a>ViewGroup 最好传入非 null 的情况</h1><p>如果在知道父布局的情况下，ViewGroup 最好传入父布局而不是 null，因为 View 的 LayoutParams 参数始终需要通过父布局来确定。</p>
+<p>当调用 ViewGroup.addView 时，如果添加的 View 的 LayoutParams 为 null，会调用 generateDefaultLayoutParams 方法生成一个宽高都包裹的 LayoutParams，这可能并不是我们想要的效果，因为在 xml 中指定的宽高等属性将失效。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">addView</span><span class="params">(View child, <span class="keyword">int</span> index)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (child == <span class="keyword">null</span>) &#123;</span><br><span class="line">        <span class="keyword">throw</span> <span class="keyword">new</span> IllegalArgumentException(<span class="string">"Cannot add a null child view to a ViewGroup"</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    LayoutParams params = child.getLayoutParams();</span><br><span class="line">    <span class="keyword">if</span> (params == <span class="keyword">null</span>) &#123;</span><br><span class="line">        params = generateDefaultLayoutParams();</span><br><span class="line">        <span class="keyword">if</span> (params == <span class="keyword">null</span>) &#123;</span><br><span class="line">            <span class="keyword">throw</span> <span class="keyword">new</span> IllegalArgumentException(<span class="string">"generateDefaultLayoutParams() cannot return null"</span>);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    addView(child, index, params);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h1 id="attachToRoot-最好传入-true-的情况"><a href="#attachToRoot-最好传入-true-的情况" class="headerlink" title="attachToRoot 最好传入 true 的情况"></a>attachToRoot 最好传入 true 的情况</h1><ul>
+<li>自定义组件</li>
+</ul>
+<h1 id="attachToRoot-必须传入-false-的情况"><a href="#attachToRoot-必须传入-false-的情况" class="headerlink" title="attachToRoot 必须传入 false 的情况"></a>attachToRoot 必须传入 false 的情况</h1><p>否则会抛出异常</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">java.lang.IllegalStateException: The specified child already has a parent. You must call removeView() on the child&apos;s parent first.</span><br></pre></td></tr></table></figure>
+<h2 id="不负责-View-的展示时，attachToRoot-必须传入-false"><a href="#不负责-View-的展示时，attachToRoot-必须传入-false" class="headerlink" title="不负责 View 的展示时，attachToRoot 必须传入 false"></a>不负责 View 的展示时，attachToRoot 必须传入 false</h2><ul>
+<li>RecyclerView#onCreateViewHolder</li>
+</ul>
+<p>由 RecyclerView 控制展示 ViewHolder 的 View</p>
+<ul>
+<li>Fragment#onCreateView</li>
+</ul>
+<p>由 FragmentManager 控制显示 Fragment</p>
+<h2 id="View-已有父布局时，attachToRoot-必须传入-false"><a href="#View-已有父布局时，attachToRoot-必须传入-false" class="headerlink" title="View 已有父布局时，attachToRoot 必须传入 false"></a>View 已有父布局时，attachToRoot 必须传入 false</h2>
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://blog.ennis.info/2019/03/18/转-Android类加载/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Ennis L.M. Wu">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar/portrait.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Ennis Wu">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2019/03/18/转-Android类加载/" itemprop="url">「转载」Android 类加载</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-03-18T19:11:04+08:00">
+                2019-03-18
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Android/" itemprop="url" rel="index">
+                    <span itemprop="name">Android</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>转自：<a href="https://juejin.im/post/5c31c3ebf265da614e2c3b68" target="_blank" rel="noopener">Android Classloader机制</a></p>
+<h1 id="JVM-类加载机制"><a href="#JVM-类加载机制" class="headerlink" title="JVM 类加载机制"></a>JVM 类加载机制</h1><p>JVM 将描述类的数据从 Class 文件加载到内存，并对数据进行校验、转换解析和初始化，最终形成可以被虚拟机直接使用的 Java 类型。</p>
+<h2 id="类的生命周期"><a href="#类的生命周期" class="headerlink" title="类的生命周期"></a>类的生命周期</h2><blockquote>
+<p>类从被加载到虚拟机内存中开始，到卸载出内存为止。</p>
+</blockquote>
+<p>整个生命周期包括 7 个阶段：<strong>加载（Loading）、验证（Verification）、准备（Preparation）、解析（Resolution）、初始化（Initialization）、使用（Using）和卸载（Unloading）</strong>。</p>
+<p>验证、准备、解析3个部分统称为连接（Linking）。</p>
+<p><img src="/images/posts/android/类加载/class_lifecycle.jpg" alt="各阶段发生顺序" title="各阶段发生顺序"></p>
+<h2 id="类加载器"><a href="#类加载器" class="headerlink" title="类加载器"></a>类加载器</h2><ul>
+<li><p><strong>对于任意一个类，需要由加载它的类加载器和这个类本身一同确立其在 JVM 中的唯一性。</strong></p>
+</li>
+<li><p>每一个类加载器，都拥有一个独立的类名称空间。</p>
+</li>
+</ul>
 <blockquote>
-<p>垃圾回收器可能会移动对象在内存中的位置，JVM 需要另一种机制保证局部引用或者全局引用将正确地指向移动过后的对象。HotSpot 虚拟机是通过句柄（handle）来完成。</p>
+<p>比较两个类是否“相等”，只有在这两个类是由同一个类加载器加载的前提下才有意义，否则，即使这两个类来源于同一个 Class 文件，被同一个虚拟机加载，只要加载它们的类加载器不同，那这两个类就必定不相等。 </p>
 </blockquote>
-</blockquote>
+<h2 id="JDK-8-及之前的双亲委派模型"><a href="#JDK-8-及之前的双亲委派模型" class="headerlink" title="JDK 8 及之前的双亲委派模型"></a>JDK 8 及之前的双亲委派模型</h2><ul>
+<li><p>Java 应用程序一般由 3 种类加载器互相配合进行加载。</p>
+</li>
+<li><p>如果有必要，可以自定义的类加载器。</p>
+</li>
+</ul>
+<p><img src="/images/posts/android/类加载/jvm_classloader.jpg" alt="类加载器之间的关系" title="类加载器之间的关系"></p>
 <ul>
-<li><strong>局部引用和全局引用都是句柄。</strong></li>
-<li>局部引用句柄的两种存储方式<ol>
-<li>在本地方法栈帧中：主要用于存放 C 函数所接收的来自 Java 层面的引用类型参数。</li>
-<li>在线程私有的句柄块：主要用于存放 C 函数中创建的局部引用。</li>
+<li><p>这种层次关系称为类加载器的双亲委派模型（Parents Delegation Model）。</p>
+</li>
+<li><p><strong>双亲委派模型要求除了顶层的启动类加载器外，其余的类加载器都应当有父类加载器。</strong></p>
+</li>
+<li><p><strong>父子关系一般不会以继承（Inheritance）的关系来实现，而是都使用组合（Composition）关系来复用父加载器的代码。</strong></p>
+</li>
+</ul>
+<h3 id="双亲委派模型的工作过程"><a href="#双亲委派模型的工作过程" class="headerlink" title="双亲委派模型的工作过程"></a>双亲委派模型的工作过程</h3><ol>
+<li><p>一个类加载器收到类加载的请求。</p>
+</li>
+<li><p><strong>把这个请求委派给父类加载器去完成。</strong></p>
+</li>
+<li><p>父加载器反馈自己无法完成这个加载请求（它的搜索范围中没有找到所需的类）。</p>
+</li>
+<li><p>子加载器尝试自己加载。</p>
+</li>
 </ol>
+<h3 id="启动类加载器（Bootstrap-ClassLoader）"><a href="#启动类加载器（Bootstrap-ClassLoader）" class="headerlink" title="启动类加载器（Bootstrap ClassLoader）"></a>启动类加载器（Bootstrap ClassLoader）</h3><ul>
+<li><p>加载以下类库到 JVM 内存</p>
+<ul>
+<li><p>存放在 ＜JAVA_HOME＞\lib 目录中的</p>
 </li>
-<li>从 C 函数返回至 Java 方法时，<strong>本地方法栈帧</strong>中的句柄将会被<strong>自动清除</strong>。</li>
-<li><strong>线程私有句柄块</strong>需要 JVM <strong>显式清理</strong>。</li>
+<li><p>或者被 -Xbootclasspath 参数所指定的路径中的</p>
+</li>
+<li><p>并且是虚拟机识别的类库</p>
+</li>
 </ul>
-<h1 id="JNI-调用的额外性能开销"><a href="#JNI-调用的额外性能开销" class="headerlink" title="JNI 调用的额外性能开销"></a>JNI 调用的额外性能开销</h1><ul>
-<li><strong>进入 C 函数时对引用类型参数的句柄化。</strong></li>
-<li><strong>调整参数位置</strong>（C 调用和 Java 调用传参的方式不一样）。</li>
-<li><strong>从 C 函数返回时清理线程私有句柄块。</strong></li>
+</li>
+<li><p>无法被 Java 程序直接引用。</p>
+</li>
+<li><p>把加载请求委派给引导类加载器，直接使用 null 代替。</p>
+</li>
 </ul>
-<h1 id="引用"><a href="#引用" class="headerlink" title="引用"></a>引用</h1><blockquote>
-<p><a href="https://time.geekbang.org/column/article/40839" target="_blank" rel="noopener">https://time.geekbang.org/column/article/40839</a></p>
+<h3 id="扩展类加载器（Extension-ClassLoader）"><a href="#扩展类加载器（Extension-ClassLoader）" class="headerlink" title="扩展类加载器（Extension ClassLoader）"></a>扩展类加载器（Extension ClassLoader）</h3><ul>
+<li><p>由 sun.misc.Launcher $ExtClassLoader 实现。</p>
+</li>
+<li><p>加载以下类库到 JVM 内存</p>
+<ul>
+<li><p>存放在＜JAVA_HOME＞\lib\ext目录中的</p>
+</li>
+<li><p>或者被 java.ext.dirs 系统变量所指定的路径中的所有类库</p>
+</li>
+</ul>
+</li>
+<li><p>开发者可以直接使用扩展类加载器。</p>
+</li>
+</ul>
+<h3 id="应用程序类加载器（Application-ClassLoader）"><a href="#应用程序类加载器（Application-ClassLoader）" class="headerlink" title="应用程序类加载器（Application ClassLoader）"></a>应用程序类加载器（Application ClassLoader）</h3><blockquote>
+<p>也称为系统类加载器</p>
 </blockquote>
+<ul>
+<li><p>由 sun.misc.Launcher $App-ClassLoader 实现。</p>
+</li>
+<li><p>加载以下类库到 JVM 内存</p>
+<ul>
+<li>用户类路径（ClassPath）上所指定的类库</li>
+</ul>
+</li>
+<li><p>开发者可以直接使用这个类加载器。</p>
+</li>
+<li><p>如果应用程序中没有自定义过自己的类加载器，一般情况下这个就是程序中默认的类加载器。</p>
+</li>
+</ul>
+<h3 id="JDK-9-双亲委派模型的更改"><a href="#JDK-9-双亲委派模型的更改" class="headerlink" title="JDK 9 双亲委派模型的更改"></a>JDK 9 双亲委派模型的更改</h3><ul>
+<li><p>Java 9 引入了模块系统，并且略微更改了上述的类加载器。</p>
+</li>
+<li><p>扩展类加载器被改名为平台类加载器（platform class loader）。</p>
+</li>
+<li><p>Java SE中除了少数几个关键模块，比如说 java.base 是由启动类加载器加载之外，其他的模块均由平台类加载器所加载。</p>
+</li>
+</ul>
+<h1 id="Android-类加载机制"><a href="#Android-类加载机制" class="headerlink" title="Android 类加载机制"></a>Android 类加载机制</h1><ul>
+<li><p><strong>本质上 Android 和传统的 JVM 是一样的。</strong></p>
+<ul>
+<li><p>需要通过类加载器将目标类加载到内存</p>
+</li>
+<li><p>类加载器之间符合双亲委派模型</p>
+</li>
+<li><p>类有对应的生命周期</p>
+</li>
+</ul>
+</li>
+<li><p>基于移动设备的特点，如内存以及电量等诸多方面跟一般的 PC 设备都有本质的区别，Google 开发了更符合移动设备的用于执行 Java 代码的虚拟机，即 Dalvik 和 ART。</p>
+</li>
+<li><p>Android 5.0 开始采用 ART 虚拟机替代 Dalvik。</p>
+</li>
+<li><p><strong>ART 从 dex 字节码加载类。将多个 Class 文件合并成一个 classes.dex 文件。</strong></p>
+</li>
+</ul>
+<p><img src="/images/posts/android/类加载/android_classloader.jpg" alt="类加载器关系图" title="类加载器关系图"></p>
+<ul>
+<li><p>在 8.0 之前</p>
+<ul>
+<li><p>DexClassLoader：能够加载未安装的 apk</p>
+</li>
+<li><p>PathClassLoader：只能加载系统中已经安装过的 apk</p>
+</li>
+</ul>
+</li>
+<li><p>从 8.0 开始</p>
+<ul>
+<li><p>PathClassLoader 也可以加载未安装的 apk</p>
+</li>
+<li><p>PathClassLoader 可以完全替代 DexClassLoader</p>
+</li>
+</ul>
+</li>
+</ul>
 
           
         
@@ -1600,7 +2061,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://blog.ennis.info/2018/12/04/笔记-深入拆解Java虚拟机-2829基准测试框架JMH/">
+    <link itemprop="mainEntityOfPage" href="http://blog.ennis.info/2019/02/18/Java并发之synchronized/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Ennis L.M. Wu">
@@ -1619,7 +2080,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2018/12/04/笔记-深入拆解Java虚拟机-2829基准测试框架JMH/" itemprop="url">笔记-深入拆解Java虚拟机-2829基准测试框架JMH</a></h1>
+                <a class="post-title-link" href="/2019/02/18/Java并发之synchronized/" itemprop="url">「笔记」synchronized 的相关问题</a></h1>
         
 
         <div class="post-meta">
@@ -1631,8 +2092,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-12-04T17:12:22+08:00">
-                2018-12-04
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-02-18T14:24:12+08:00">
+                2019-02-18
               </time>
             
 
@@ -1654,8 +2115,8 @@
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Java虚拟机/" itemprop="url" rel="index">
-                    <span itemprop="name">Java虚拟机</span>
+                  <a href="/categories/Java/" itemprop="url" rel="index">
+                    <span itemprop="name">Java</span>
                   </a>
                 </span>
 
@@ -1693,830 +2154,126 @@
       
         
           
-            <p>通过 <code>System.nanoTime</code> 或者 <code>System.currentTimeMillis</code> 来测量程序所花费的时间过于理性化，忽略了 Java 虚拟机、操作系统，硬件系统所带来的影响。</p>
-<h1 id="性能测试的坑"><a href="#性能测试的坑" class="headerlink" title="性能测试的坑"></a>性能测试的坑</h1><h2 id="Java-虚拟机的影响"><a href="#Java-虚拟机的影响" class="headerlink" title="Java 虚拟机的影响"></a>Java 虚拟机的影响</h2><ul>
-<li>Java 虚拟机堆空间的自适配</li>
-<li>即时编译</li>
-<li>循环展开</li>
-<li>等</li>
+            <h1 id="原文"><a href="#原文" class="headerlink" title="原文"></a>原文</h1><ul>
+<li><p><a href="https://juejin.im/post/594a24defe88c2006aa01f1c" target="_blank" rel="noopener">Java 之 synchronized 详解</a></p>
+</li>
+<li><p><a href="https://blog.csdn.net/xiao__gui/article/details/8188833" target="_blank" rel="noopener">Java线程同步：synchronized锁住的是代码还是对象</a></p>
+</li>
+<li><p><a href="https://www.jianshu.com/p/a499d13ca702" target="_blank" rel="noopener">Java并发之synchronized深度解析</a></p>
+</li>
 </ul>
-<h2 id="操作系统和硬件系统的影响"><a href="#操作系统和硬件系统的影响" class="headerlink" title="操作系统和硬件系统的影响"></a>操作系统和硬件系统的影响</h2><ul>
-<li>电源管理策略</li>
-<li>CPU 缓存</li>
-<li>分支预测器</li>
-<li>超线程技术</li>
-<li>等</li>
+<h1 id="锁机制的特性"><a href="#锁机制的特性" class="headerlink" title="锁机制的特性"></a>锁机制的特性</h1><ul>
+<li><p>互斥性</p>
+</li>
+<li><p>可见性</p>
+</li>
 </ul>
-<h1 id="JMH（Java-Microbenchmark-Harness）"><a href="#JMH（Java-Microbenchmark-Harness）" class="headerlink" title="JMH（Java Microbenchmark Harness）"></a>JMH（Java Microbenchmark Harness）</h1><blockquote>
-<p> OpenJDK 中的开源项目。是一个面向 Java 语言或者其他 Java 虚拟机语言的性能基准测试框架。</p>
+<h1 id="用法"><a href="#用法" class="headerlink" title="用法"></a>用法</h1><h2 id="修饰代码块"><a href="#修饰代码块" class="headerlink" title="修饰代码块"></a>修饰代码块</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">synchronized</span>(object) &#123;&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">synchronized</span>(类.class) &#123;&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="修饰方法"><a href="#修饰方法" class="headerlink" title="修饰方法"></a>修饰方法</h2><ul>
+<li>成员方法</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">synchronized</span> <span class="keyword">void</span> <span class="title">method1</span><span class="params">()</span> </span>&#123;&#125;</span><br></pre></td></tr></table></figure>
+<p>等同于</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">method1</span><span class="params">()</span> </span>&#123;</span><br><span class="line">	<span class="keyword">synchronized</span>(<span class="keyword">this</span>) &#123;&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>静态方法</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">synchronized</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">method2</span><span class="params">()</span> </span>&#123;&#125;</span><br></pre></td></tr></table></figure>
+<p>等同于</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">static</span> <span class="keyword">void</span> <span class="title">method2</span><span class="params">()</span> </span>&#123;</span><br><span class="line">	<span class="keyword">synchronized</span>(该类.class) &#123;&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h1 id="锁的是对象还是代码？"><a href="#锁的是对象还是代码？" class="headerlink" title="锁的是对象还是代码？"></a>锁的是对象还是代码？</h1><ul>
+<li><strong>synchronized 锁的是对象</strong>，线程只有拿到了锁对象才能执行 synchronized 那段代码，否则阻塞等待。</li>
+</ul>
+<p>也就是说，如果锁对象是 this，那么同步机制仅对该对象有效。</p>
+<ul>
+<li><p>线程拿到锁对象后，<strong>其他线程可以执行非 synchronized 代码</strong>。</p>
+</li>
+<li><p>同时访问 static synchronized 方法和 synchronized 方法可以并行。</p>
+</li>
+</ul>
+<p>前者锁对象是 Class 对象，后者锁对象是 this，锁对象不同，两个方法可以并行。</p>
+<h2 id="如果想锁全局怎么办"><a href="#如果想锁全局怎么办" class="headerlink" title="如果想锁全局怎么办"></a>如果想锁全局怎么办</h2><ul>
+<li><strong>锁住该类对应的 Class 对象。</strong></li>
+</ul>
+<p>Class 类比较特殊，每个类都会有一个对应的 Class 对象且唯一，由 JVM 维护。</p>
+<ul>
+<li>提供一个公用的锁对象。（例如声明为 static 的字段）</li>
+</ul>
+<h1 id="synchronized-的性质"><a href="#synchronized-的性质" class="headerlink" title="synchronized 的性质"></a>synchronized 的性质</h1><h2 id="可重入性"><a href="#可重入性" class="headerlink" title="可重入性"></a>可重入性</h2><ul>
+<li><p><strong>同一线程的外层函数获得锁之后，内层函数可以直接再次获取该锁。</strong></p>
+</li>
+<li><p>可避免死锁、提升封装性。</p>
+</li>
+</ul>
+<p>线程从 A 方法进入 B 方法时不需要释放锁后重新申请，可直接获得锁对象。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">synchronized</span> <span class="keyword">void</span> <span class="title">methodA</span><span class="params">()</span> </span>&#123;</span><br><span class="line">	methodB();</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">synchronized</span> <span class="keyword">void</span> <span class="title">methodB</span><span class="params">()</span> </span>&#123;&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li><p>同一个方法是可重入的。</p>
+</li>
+<li><p><strong>可重入不要求是同一个方法。</strong></p>
+</li>
+<li><p><strong>可重入不要求是同一个类中的。</strong></p>
+</li>
+</ul>
+<h2 id="不可中断性"><a href="#不可中断性" class="headerlink" title="不可中断性"></a>不可中断性</h2><ul>
+<li><p>如果锁对象被其他线程获得，只能阻塞等待。</p>
+</li>
+<li><p>如果锁对象永远不被释放，只能永远等待。</p>
+</li>
+</ul>
+<h1 id="其他注意事项"><a href="#其他注意事项" class="headerlink" title="其他注意事项"></a>其他注意事项</h1><ul>
+<li><p><strong>锁对象不能为 null。</strong></p>
+</li>
+<li><p><strong>synchronized 关键字不能被继承。</strong></p>
+</li>
+</ul>
+<p>父类中的 synchronized 修饰方法，子类重写该方法时，默认情况不同步，必须显示的使用 synchronized 关键字。</p>
+<ul>
+<li><p>抽象方法不能使用 synchronized 关键字。</p>
+</li>
+<li><p>构造方法不能使用 synchronized 关键字，但可以使用 <code>synchronized(this) {}</code>。</p>
+</li>
+<li><p>synchronized 有系统开销，尽量减小锁的粒度（作用域范围）。</p>
+</li>
+<li><p>避免死锁。</p>
+</li>
+</ul>
+<h1 id="synchronized-实现原理（字节码）"><a href="#synchronized-实现原理（字节码）" class="headerlink" title="synchronized 实现原理（字节码）"></a>synchronized 实现原理（字节码）</h1><blockquote>
+<p><a href="/2018/10/17/笔记-深入拆解Java虚拟机-14Java虚拟机是怎么实现synchronized的？">详细实现原理</a></p>
 </blockquote>
 <ul>
-<li>JMH 内置许多功能来控制即时编译器的优化。</li>
-<li>其他影响性能评测的因素也提供了不少策略降低影响，甚至彻底解决。</li>
-</ul>
-<h1 id="如何使用-JMH"><a href="#如何使用-JMH" class="headerlink" title="如何使用 JMH"></a>如何使用 JMH</h1><p><a href="http://www.baidu.com" target="_blank" rel="noopener">www.baidu.com</a><br><a href="http://www.google.com" target="_blank" rel="noopener">www.google.com</a></p>
-<h1 id="引用"><a href="#引用" class="headerlink" title="引用"></a>引用</h1><blockquote>
-<p><a href="https://time.geekbang.org/column/article/40275" target="_blank" rel="noopener">https://time.geekbang.org/column/article/40275</a><br><a href="https://time.geekbang.org/column/article/40281" target="_blank" rel="noopener">https://time.geekbang.org/column/article/40281</a></p>
-</blockquote>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://blog.ennis.info/2018/12/03/笔记-深入拆解Java虚拟机-26向量化/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Ennis L.M. Wu">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar/portrait.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Ennis Wu">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/12/03/笔记-深入拆解Java虚拟机-26向量化/" itemprop="url">笔记-深入拆解Java虚拟机-26向量化</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-12-03T10:25:32+08:00">
-                2018-12-03
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Java虚拟机/" itemprop="url" rel="index">
-                    <span itemprop="name">Java虚拟机</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h1 id="SIMD"><a href="#SIMD" class="headerlink" title="SIMD"></a>SIMD</h1><table>
-<thead>
-<tr>
-<th>寄存器名称</th>
-<th>所属指令集</th>
-<th>位数</th>
-<th>备注</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>XMM 寄存器</td>
-<td>SSE（Streaming SIMD Extensions）指令集</td>
-<td>128 位</td>
-<td></td>
-</tr>
-<tr>
-<td>YMM 寄存器</td>
-<td>AVX（Advanced Vector Extensions）指令集</td>
-<td>256 位</td>
-<td>XMM升级版</td>
-</tr>
-<tr>
-<td>ZMM 寄存器</td>
-<td>AVX512 指令集</td>
-<td>512 位</td>
-<td>YMM升级版</td>
-</tr>
-</tbody>
-</table>
-<p><img src="/images/posts/JVM/26/registers.png" alt="registers"></p>
-<p>原本使用 XMM 寄存器的指令，使用 YMM 寄存器的低 128 位。</p>
-<p>支持 AVX512 指令集的 CPU 都比较贵，目前在生产环境中很少见到。</p>
-<p>HotSpot 虚拟机更新了不少基于 AVX512 指令集以及 ZMM 寄存器的优化。</p>
-<blockquote>
-<p>单指令流多数据流（Single Instruction Multiple Data，SIMD）：即通过单条指令操控多组数据的计算操作。这些指令称之为 SIMD 指令。</p>
-</blockquote>
-<ul>
-<li><p>SIMD 指令将上述寄存器中的<strong>值看成多个整数或者浮点数组成的向量</strong>，进行<strong>批量计算</strong>。</p>
-<p>  <img src="/images/posts/JVM/26/XMM_register.png" alt="XMM_register"></p>
-<ul>
-<li>128 位 XMM 寄存器里的值可以看成 16 个 byte 值组成的向量，或者 8 个 short 值组成的向量，4 个 int 值组成的向量，两个 long 值组成的向量。</li>
-</ul>
+<li><p>同步块使用 monitorenter 和 moniterexit 指令。</p>
 </li>
-<li><p>SIMD 指令PADDB、PADDW、PADDD以及PADDQ，将分别实现 byte 值、short 值、int 值或者 long 值的向量加法。</p>
+<li><p>同步方法使用修饰符 ACC_SYNCHRONIZED 。</p>
+</li>
+<li><p>同步本质上都是通过监视器（monitor）提供支持。</p>
+</li>
+<li><p>所有对象都有一个自己的监视器（monitor）。</p>
+</li>
+<li><p>本地内存中共享变量副本发生变化后，解锁之前将本地内存中共享变量的值刷新到主存。</p>
+</li>
+<li><p>其他线程获取到锁后，去主内存中读取该共享变量的新值。</p>
 </li>
 </ul>
-<p><img src="/images/posts/JVM/26/PADDD.png" alt="PADDD"></p>
-<ul>
-<li>SIMD 指令也被看成 <strong>CPU 指令级别的并行</strong>。</li>
-</ul>
-<h1 id="使用-SIMD-指令的-HotSpot-Intrinsic"><a href="#使用-SIMD-指令的-HotSpot-Intrinsic" class="headerlink" title="使用 SIMD 指令的 HotSpot Intrinsic"></a>使用 SIMD 指令的 HotSpot Intrinsic</h1><ul>
-<li><p>SIMD 指令虽然非常高效，但是<strong>使用很麻烦</strong>。</p>
+<h2 id="可重入性原理"><a href="#可重入性原理" class="headerlink" title="可重入性原理"></a>可重入性原理</h2><ul>
+<li><p>锁对象监视器计数为 0 时，线程进入监视器，并设置计数器 为 1。（monitorenter）</p>
 </li>
-<li><p>不同的 CPU 所支持的 SIMD 指令可能不同。</p>
+<li><p>线程重入监视器时，计数器 +1。（monitorenter）</p>
 </li>
-<li><p><strong>Java 程序无法像 C++ 程序那样</strong>，直接<strong>使用由 Intel 提供的</strong>，将被替换为具体 SIMD 指令的 <strong>intrinsic 方法</strong>。</p>
+<li><p>线程退出监视器时，计数器 -1。（monitorexit）</p>
 </li>
-<li><p><strong>HotSpot 虚拟机提供 Java 层面的 intrinsic 方法</strong>，这些 intrinsic 方法的语义要<strong>比单个 SIMD 指令复杂得多</strong>。</p>
-</li>
-<li><p>使用 SIMD 指令的 HotSpot intrinsic 是虚拟机开发人员根据其语义定制的，因而性能相当优越。</p>
-</li>
-<li><p>由于<strong>开发及维护成本较高</strong>，这种类型的 intrinsic 屈指可数。</p>
-</li>
-<li><p><strong>intrinsic 方法只能做到点覆盖</strong>，在多数情况下，应用程序不会用到这些 intrinsic 的语义，却又存在向量化优化的机会（借助自动向量化）。</p>
+<li><p>如果监视器与其他线程关联，该线程阻塞等待，直到监视器计数器为 0。</p>
 </li>
 </ul>
-<h1 id="自动向量化（auto-vectorization）"><a href="#自动向量化（auto-vectorization）" class="headerlink" title="自动向量化（auto vectorization）"></a>自动向量化（auto vectorization）</h1><ul>
-<li><p>即时编译器的自动向量化将针对<strong>能够展开的计数循环，进行向量化优化</strong>。</p>
+<h1 id="synchronized-的缺陷"><a href="#synchronized-的缺陷" class="headerlink" title="synchronized 的缺陷"></a>synchronized 的缺陷</h1><ul>
+<li><p><strong>效率低</strong>：试图获得锁时<strong>不能设定超时</strong>，<strong>不能中断</strong>。</p>
 </li>
-<li><p><a href="/2018/11/24/笔记-深入拆解Java虚拟机-25循环优化/#计数循环需满足的-4-个条件">计数循环的判定</a></p>
+<li><p><strong>不灵活</strong>：加锁和解锁的<strong>时机和条件单一</strong>。</p>
 </li>
-<li><p>自动向量化的条件较为苛刻。</p>
-</li>
-<li><p><strong>C2 支持的整数向量化操作不多</strong>（加法，减法，按位与、或、异或，以及批量移位和批量乘法）。</p>
-</li>
-<li><p>C2 支持<strong>向量点积的自动向量化</strong>，需要多条 SIMD 指令完成，并不是十分高效。</p>
+<li><p><strong>无法知道是否成功获取到锁。</strong></p>
 </li>
 </ul>
-<!-- - 为了解决向量化 intrinsic 以及自动向量化覆盖面过窄的问题，在 OpenJDK 的 [Paname 项目](http://openjdk.java.net/projects/panama/) 中尝试引入开发人员可控的向量化抽象（[参考 Vladimir Ivanov 2018 年在 JVMLS 上的演讲](http://cr.openjdk.java.net/~vlivanov/talks/2018_JVMLS_VectorAPI.pdf)）。-->
-<h2 id="自动向量化的条件"><a href="#自动向量化的条件" class="headerlink" title="自动向量化的条件"></a>自动向量化的条件</h2><ol>
-<li>循环变量的<strong>增量为 1</strong>（能够遍历整个数组）。</li>
-<li>循环变量<strong>不能为 long 类型</strong>（ C2 无法将循环识别为计数循环）。</li>
-<li>循环<strong>迭代之间最好不要有数据依赖</strong>（循环展开之后，循环体内存在数据依赖，C2 无法进行自动向量化）。</li>
-<li>循环体内<strong>不要有分支跳转</strong>。</li>
-<li><strong>不要手工进行循环展开</strong>（如果 C2 无法自动展开，也无法进行自动向量化）。</li>
-</ol>
-<h1 id="引用"><a href="#引用" class="headerlink" title="引用"></a>引用</h1><blockquote>
-<p><a href="https://time.geekbang.org/column/article/39838" target="_blank" rel="noopener">https://time.geekbang.org/column/article/39838</a></p>
-</blockquote>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://blog.ennis.info/2018/11/24/笔记-深入拆解Java虚拟机-25循环优化/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Ennis L.M. Wu">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar/portrait.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Ennis Wu">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/11/24/笔记-深入拆解Java虚拟机-25循环优化/" itemprop="url">笔记-深入拆解Java虚拟机-25循环优化</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-11-24T18:59:41+08:00">
-                2018-11-24
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Java虚拟机/" itemprop="url" rel="index">
-                    <span itemprop="name">Java虚拟机</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h1 id="循环无关代码外提"><a href="#循环无关代码外提" class="headerlink" title="循环无关代码外提"></a>循环无关代码外提</h1><blockquote>
-<p>所谓的循环无关代码（Loop-invariant Code），指的是循环中值不变的表达式。</p>
-</blockquote>
-<ul>
-<li>在<strong>不改变程序语义</strong>的情况下，将<strong>循环无关代码提出循环之外</strong>。</li>
-</ul>
-<h2 id="外提循环中值不变的表达式"><a href="#外提循环中值不变的表达式" class="headerlink" title="外提循环中值不变的表达式"></a>外提循环中值不变的表达式</h2><ul>
-<li>通过 Sea-of-Nodes IR 以及节点调度共同完成。</li>
-</ul>
-<h2 id="外提循环无关检测"><a href="#外提循环无关检测" class="headerlink" title="外提循环无关检测"></a>外提循环无关检测</h2><ul>
-<li>通过循环预测（Loop Prediction）完成。</li>
-</ul>
-<p>比如 null 检测（null check），数组下标范围检测（range check）。</p>
-<p>null 检测涉及控制流依赖，无法通过 Sea-of-Nodes IR 转换以及节点调度外提。</p>
-<h1 id="循环展开（Loop-Unrolling）"><a href="#循环展开（Loop-Unrolling）" class="headerlink" title="循环展开（Loop Unrolling）"></a>循环展开（Loop Unrolling）</h1><blockquote>
-<p>指的是在循环体中重复多次循环迭代，并<strong>减少循环次数</strong>的编译优化。</p>
-</blockquote>
-<ul>
-<li>在 C2 中，<strong>只有计数循环</strong>（Counted Loop）才能被展开。</li>
-<li>随着循环体的增大，优化机会不断增加。</li>
-<li>如果循环展开能够触发进一步优化，总体的代码复杂度将降低。</li>
-<li>缺点：可能会<strong>增加代码的冗余度</strong>，导致所生成机器码的长度大幅上涨。</li>
-</ul>
-<h2 id="循环完全展开（Full-Unroll）"><a href="#循环完全展开（Full-Unroll）" class="headerlink" title="循环完全展开（Full Unroll）"></a>循环完全展开（Full Unroll）</h2><ul>
-<li>当<strong>循环数目</strong>是<strong>固定值</strong>而且<strong>非常小</strong>时，会将<strong>循环全部展开</strong>（Full Unroll）。</li>
-<li>仅迭代三次（或以下）的循环，即时编译器将进行完全展开。</li>
-<li>循环体 IR 节点数目超过阈值的循环，即时编译器不会进行任何循环展开。</li>
-</ul>
-<h2 id="计数循环需满足的-4-个条件"><a href="#计数循环需满足的-4-个条件" class="headerlink" title="计数循环需满足的 4 个条件"></a>计数循环需满足的 4 个条件</h2><ol>
-<li>维护一个循环计数器，并且基于计数器的循环出口只有一个（但可以有基于其他判断条件的出口）。</li>
-<li>循环计数器的类型为 int、short 或者 char（即不能是 byte、long，更不能是 float 或者 double）。</li>
-<li>每个迭代循环计数器的增量为常数。</li>
-<li>循环计数器的上限（增量为正数）或下限（增量为负数）是循环无关的数值。</li>
-</ol>
-<h1 id="循环判断外提（loop-unswitching）"><a href="#循环判断外提（loop-unswitching）" class="headerlink" title="循环判断外提（loop unswitching）"></a>循环判断外提（loop unswitching）</h1><blockquote>
-<p>指的是<strong>将循环中的 if 语句外提至循环之前</strong>，并且在该 if 语句的两个分支中分别放置一份循环代码。</p>
-</blockquote>
-<ul>
-<li>与循环无关检测外提所针对的代码模式比较类似。</li>
-</ul>
-<h1 id="循环剥离（loop-peeling）"><a href="#循环剥离（loop-peeling）" class="headerlink" title="循环剥离（loop peeling）"></a>循环剥离（loop peeling）</h1><blockquote>
-<p>指的是将循环的前几个迭代或者后几个迭代剥离出循环的优化方式。</p>
-</blockquote>
-<ul>
-<li>一般来说，循环的<strong>前几个迭代</strong>或者<strong>后几个迭代</strong>都包含<strong>特殊处理</strong>。</li>
-<li>剥离出去后，可以<strong>使原本的循环体的规律性更加明显</strong>，触发进一步的优化。</li>
-</ul>
-<h1 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h1><p>Q：</p>
-<p>如果有这样一段代码：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> ( ... ) &#123;</span><br><span class="line">	sum += x + y + a[i];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>借助 Sea-of-Nodes IR 能把 x + y 表达式外提出去。但，如果表达式变成如下：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sum += x + a[i] + y;</span><br></pre></td></tr></table></figure>
-<p>也能借助 IR 外提  x + y 吗？</p>
-<p>A：能。</p>
-<h1 id="引用"><a href="#引用" class="headerlink" title="引用"></a>引用</h1><blockquote>
-<p><a href="https://time.geekbang.org/column/article/39814" target="_blank" rel="noopener">https://time.geekbang.org/column/article/39814</a></p>
-</blockquote>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://blog.ennis.info/2018/11/22/笔记-深入拆解Java虚拟机-24字段访问相关优化/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Ennis L.M. Wu">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar/portrait.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Ennis Wu">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/11/22/笔记-深入拆解Java虚拟机-24字段访问相关优化/" itemprop="url">笔记-深入拆解Java虚拟机-24字段访问相关优化</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-11-22T19:20:50+08:00">
-                2018-11-22
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Java虚拟机/" itemprop="url" rel="index">
-                    <span itemprop="name">Java虚拟机</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h1 id="字段读取优化"><a href="#字段读取优化" class="headerlink" title="字段读取优化"></a>字段读取优化</h1><ul>
-<li><p>即时编译器会<strong>优化实例字段和静态字段访问</strong>，以减少总的内存访问数目。</p>
-<ul>
-<li>沿控制流，缓存各个字段存储节点将要存储的值，或者字段读取节点所得到的值。</li>
-<li>遇到对同一字段的读取节点时，如果缓存值还没有失效，将读取节点替换为该缓存值。</li>
-<li>遇到对同一字段的存储节点时，更新所缓存的值。</li>
-<li>遇到可能更新字段的节点时，采取保守策略，舍弃所有缓存值。</li>
-</ul>
-</li>
-<li><p>如果字段读取节点被替换成一个常量，将进一步触发更多优化。</p>
-<ul>
-<li>删除不可达条件分支代码，死循环后的代码。</li>
-</ul>
-</li>
-<li><p>即时编译器将在 volatile 字段访问前后插入内存屏障节点。</p>
-</li>
-<li><strong>内存屏障节点会阻止即时编译器将屏障之前所缓存的值用于屏障之后的读取节点之上。</strong></li>
-<li><strong>加锁、解锁操作会阻止即时编译器的字段读取优化。</strong></li>
-</ul>
-<h1 id="字段存储优化"><a href="#字段存储优化" class="headerlink" title="字段存储优化"></a>字段存储优化</h1><ul>
-<li>即时编译器会<strong>消除冗余的存储节点</strong>。</li>
-<li>如果字段被标记为 <strong>volatile</strong>，即时编译器<strong>不能</strong>将冗余的存储操作<strong>消除</strong>掉。</li>
-</ul>
-<h1 id="死代码消除（dead-code-eliminiation）"><a href="#死代码消除（dead-code-eliminiation）" class="headerlink" title="死代码消除（dead code eliminiation）"></a>死代码消除（dead code eliminiation）</h1><ul>
-<li><strong>消除局部变量的死存储</strong>（dead store）（涉及冗余存储）。</li>
-<li><strong>消除不可达分支。</strong></li>
-</ul>
-<h1 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h1><p>Q：思考即时编译器会怎么优化下面代码中的除法操作？</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">bar</span><span class="params">(<span class="keyword">int</span> x, <span class="keyword">int</span> y)</span> </span>&#123;</span><br><span class="line">	<span class="keyword">int</span> t = x/y;</span><br><span class="line">	t = x+y;</span><br><span class="line">	<span class="keyword">return</span> t;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>A：<strong>除法无法优化，因为可能存在除零异常。</strong>s即时编译器需要判断除数是否为 0。</p>
-<h1 id="引用"><a href="#引用" class="headerlink" title="引用"></a>引用</h1><blockquote>
-<p><a href="https://time.geekbang.org/column/article/39683" target="_blank" rel="noopener">https://time.geekbang.org/column/article/39683</a></p>
-</blockquote>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://blog.ennis.info/2018/11/15/笔记-深入拆解Java虚拟机-23逃逸分析/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Ennis L.M. Wu">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar/portrait.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Ennis Wu">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/11/15/笔记-深入拆解Java虚拟机-23逃逸分析/" itemprop="url">笔记-深入拆解Java虚拟机-23逃逸分析</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-11-15T16:40:59+08:00">
-                2018-11-15
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Java虚拟机/" itemprop="url" rel="index">
-                    <span itemprop="name">Java虚拟机</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h1 id="逃逸分析"><a href="#逃逸分析" class="headerlink" title="逃逸分析"></a>逃逸分析</h1><blockquote>
-<p>一种确定<strong>指针动态范围</strong>的<strong>静态分析</strong>，它可以分析在程序的哪些地方可以访问到指针。</p>
-</blockquote>
-<ul>
-<li>在 JVM 的<strong>即时编译</strong>语境下，逃逸分析将<strong>判断新建的对象是否逃逸</strong>。</li>
-</ul>
-<h2 id="判断对象是否逃逸的依据"><a href="#判断对象是否逃逸的依据" class="headerlink" title="判断对象是否逃逸的依据"></a>判断对象是否逃逸的依据</h2><ul>
-<li>对象是否被<strong>存入堆</strong>中（静态字段或者堆中对象的实例字段）。</li>
-<li><p>对象是否被<strong>传入未知代码</strong>中（对象是否作为方法调用的调用者或者参数）。</p>
-<ul>
-<li>方法中未被内联的方法调用当成未知代码。</li>
-<li>可以认为<strong>方法调用的调用者以及参数是逃逸的</strong>。</li>
-</ul>
-</li>
-<li><p>通常<strong>逃逸分析</strong>放在<strong>方法内联之后</strong>。</p>
-</li>
-</ul>
-<h1 id="基于逃逸分析的优化"><a href="#基于逃逸分析的优化" class="headerlink" title="基于逃逸分析的优化"></a>基于逃逸分析的优化</h1><h2 id="锁消除"><a href="#锁消除" class="headerlink" title="锁消除"></a>锁消除</h2><ul>
-<li><p>如果能证明<strong>锁对象不逃逸</strong>，对该锁对象的<strong>加锁、解锁</strong>操作<strong>没有意义</strong>。</p>
-<ul>
-<li>因为其他线程不能获得该所对象，即时编译器可以消除加锁、解锁操作。</li>
-<li>传统编译器仅需证明锁对象不逃逸出线程，便可以进行锁消除。</li>
-<li>由于即时编译的限制，条件被强化为证明锁<strong>对象不逃逸</strong>出当前编译的<strong>方法</strong>。</li>
-</ul>
-</li>
-<li><p>基于逃逸分析的锁消除实际上不多见。</p>
-</li>
-</ul>
-<h2 id="栈上分配（HotSpot-虚拟机未采用）"><a href="#栈上分配（HotSpot-虚拟机未采用）" class="headerlink" title="栈上分配（HotSpot 虚拟机未采用）"></a>栈上分配（HotSpot 虚拟机未采用）</h2><ul>
-<li>如果逃逸分析能证明某些<strong>新建的对象不逃逸</strong>，可以将其<strong>分配至栈上</strong>。</li>
-<li>new 语句所在的方法退出时，<strong>弹出</strong>当前方法的<strong>栈桢自动回收内存空间</strong>。</li>
-<li>无须借助垃圾回收器处理。</li>
-<li>实现需要<strong>更改大量</strong>假设“对象只能堆分配”的<strong>代码</strong>。</li>
-</ul>
-<h2 id="标量替换"><a href="#标量替换" class="headerlink" title="标量替换"></a>标量替换</h2><blockquote>
-<p>标量：就是仅能存储一个值的变量，如局部变量。<br>聚合量：可能同时存储多个值，如 Java 对象。</p>
-</blockquote>
-<ul>
-<li>可以看成将原本<strong>对对象的字段的访问，替换为一个个局部变量的访问</strong>。</li>
-<li>对象没有被实际分配，和栈上分配一样。</li>
-<li>可以减轻垃圾回收的压力。</li>
-<li>与栈上分配相比，<strong>对字段的内存连续性不做要求</strong>。</li>
-<li>字段甚至可以<strong>直接在寄存器中维护</strong>，无须浪费任何内存空间。</li>
-</ul>
-<h1 id="部分逃逸分析（partial-escape-analysis）"><a href="#部分逃逸分析（partial-escape-analysis）" class="headerlink" title="部分逃逸分析（partial escape analysis）"></a>部分逃逸分析（partial escape analysis）</h1><ul>
-<li>C2 的逃逸分析与控制流无关。</li>
-<li>Graal 引入一个<strong>与控制流有关</strong>的逃逸分析，即部分逃逸分析。</li>
-<li>部分逃逸分析能够<strong>优化更多的情况，编译时间更长</strong>。</li>
-<li><strong>解决</strong>所新建的实例仅在<strong>部分程序路径中逃逸</strong>的情况。</li>
-<li>根据控制流信息，判断出新建对象仅在部分分支中逃逸，<strong>将对象的新建操作推延至对象逃逸的分支中</strong>。</li>
-<li>使得原本因对象逃逸而无法避免的新建对象操作，不再出现在只执行 if-else 分支的程序路径之中。（不懂）</li>
-</ul>
-<h1 id="引用"><a href="#引用" class="headerlink" title="引用"></a>引用</h1><blockquote>
-<p><a href="https://time.geekbang.org/column/article/18048" target="_blank" rel="noopener">https://time.geekbang.org/column/article/18048</a></p>
-</blockquote>
 
           
         
@@ -2556,7 +2313,7 @@
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="page-number current">2</span><a class="page-number" href="/page/3/">3</a><span class="space">&hellip;</span><a class="page-number" href="/page/6/">6</a><a class="extend next" rel="next" href="/page/3/"><i class="fa fa-angle-right"></i></a>
+    <a class="extend prev" rel="prev" href="/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="page-number current">2</span><a class="page-number" href="/page/3/">3</a><span class="space">&hellip;</span><a class="page-number" href="/page/8/">8</a><a class="extend next" rel="next" href="/page/3/"><i class="fa fa-angle-right"></i></a>
   </nav>
 
 
@@ -2606,7 +2363,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">59</span>
+                  <span class="site-state-item-count">76</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -2617,7 +2374,7 @@
               
               <div class="site-state-item site-state-categories">
                 <a href="/categories/index.html">
-                  <span class="site-state-item-count">14</span>
+                  <span class="site-state-item-count">10</span>
                   <span class="site-state-item-name">分类</span>
                 </a>
               </div>
@@ -2628,7 +2385,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">26</span>
+                  <span class="site-state-item-count">37</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>
@@ -2688,7 +2445,7 @@
 
     <footer id="footer" class="footer">
       <div class="footer-inner">
-        <div class="copyright">&copy; 2018 &mdash; <span itemprop="copyrightYear">2019</span>
+        <div class="copyright">&copy; 2018 &mdash; <span itemprop="copyrightYear">2020</span>
   <span class="with-love">
     <i class="fa fa-user"></i>
   </span>

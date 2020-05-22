@@ -72,7 +72,7 @@
 
 
 
-  <meta name="keywords" content="JVM," />
+  <meta name="keywords" content="未完成,JVM," />
 
 
 
@@ -85,18 +85,18 @@
 
 
 
-<meta name="description" content="invokedynamic Java 7 引入的新指令 调用机制抽象出调用点的概念 允许将调用点链接至任意符合条件的方法上  MethodHandle（方法句柄） Java 7 引入 是一个强类型的，能被直接执行的引用 可以指向静态方法、实例方法、构造器、字段  方法句柄的类型（MethodType） 由参数类型、返回类型组成 确认方法句柄是否适配的唯一关键 不关心方法的类名或方法名  方法句柄的">
-<meta name="keywords" content="JVM">
+<meta name="description" content="invokedynamic Java 7 引入的新指令  调用机制抽象出调用点的概念  允许将调用点链接至任意符合条件的方法上   MethodHandle（方法句柄） Java 7 引入  是一个强类型的，能被直接执行的引用  可以指向静态方法、实例方法、构造器、字段   方法句柄的类型（MethodType） 由参数类型、返回类型组成  确认方法句柄是否适配的唯一关键  不关心方法的类名或方法">
+<meta name="keywords" content="未完成,JVM">
 <meta property="og:type" content="article">
-<meta property="og:title" content="笔记-深入拆解Java虚拟机-0809JVM是怎么实现invokedynamic的？">
+<meta property="og:title" content="「深入拆解 Java 虚拟机」08 09 JVM 是怎么实现 invokedynamic 的？">
 <meta property="og:url" content="http://blog.ennis.info/2018/08/10/笔记-深入拆解Java虚拟机-0809JVM是怎么实现invokedynamic的？/index.html">
 <meta property="og:site_name" content="Ennis Wu">
-<meta property="og:description" content="invokedynamic Java 7 引入的新指令 调用机制抽象出调用点的概念 允许将调用点链接至任意符合条件的方法上  MethodHandle（方法句柄） Java 7 引入 是一个强类型的，能被直接执行的引用 可以指向静态方法、实例方法、构造器、字段  方法句柄的类型（MethodType） 由参数类型、返回类型组成 确认方法句柄是否适配的唯一关键 不关心方法的类名或方法名  方法句柄的">
+<meta property="og:description" content="invokedynamic Java 7 引入的新指令  调用机制抽象出调用点的概念  允许将调用点链接至任意符合条件的方法上   MethodHandle（方法句柄） Java 7 引入  是一个强类型的，能被直接执行的引用  可以指向静态方法、实例方法、构造器、字段   方法句柄的类型（MethodType） 由参数类型、返回类型组成  确认方法句柄是否适配的唯一关键  不关心方法的类名或方法">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2019-01-26T13:26:29.075Z">
+<meta property="og:updated_time" content="2020-05-21T16:43:33.115Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="笔记-深入拆解Java虚拟机-0809JVM是怎么实现invokedynamic的？">
-<meta name="twitter:description" content="invokedynamic Java 7 引入的新指令 调用机制抽象出调用点的概念 允许将调用点链接至任意符合条件的方法上  MethodHandle（方法句柄） Java 7 引入 是一个强类型的，能被直接执行的引用 可以指向静态方法、实例方法、构造器、字段  方法句柄的类型（MethodType） 由参数类型、返回类型组成 确认方法句柄是否适配的唯一关键 不关心方法的类名或方法名  方法句柄的">
+<meta name="twitter:title" content="「深入拆解 Java 虚拟机」08 09 JVM 是怎么实现 invokedynamic 的？">
+<meta name="twitter:description" content="invokedynamic Java 7 引入的新指令  调用机制抽象出调用点的概念  允许将调用点链接至任意符合条件的方法上   MethodHandle（方法句柄） Java 7 引入  是一个强类型的，能被直接执行的引用  可以指向静态方法、实例方法、构造器、字段   方法句柄的类型（MethodType） 由参数类型、返回类型组成  确认方法句柄是否适配的唯一关键  不关心方法的类名或方法">
 
 
 
@@ -132,7 +132,7 @@
 
 
 
-  <title>笔记-深入拆解Java虚拟机-0809JVM是怎么实现invokedynamic的？ | Ennis Wu</title>
+  <title>「深入拆解 Java 虚拟机」08 09 JVM 是怎么实现 invokedynamic 的？ | Ennis Wu</title>
   
 
 
@@ -338,6 +338,18 @@
 
  </div>
     </header>
+    <script>
+      let images = [
+         'header0.jpg',
+         'header1.jpg',
+         'header2.png'
+      ];
+      let image = images[Math.floor(Math.random() * images.length)];
+      window.document.getElementById('header').style.cssText 
+      = 'background: url(/images/avatar/' 
+      + image
+      + '); no-repeat; background-size: auto 100%;';
+    </script>
 
     <main id="main" class="main">
       <div class="main-inner">
@@ -376,7 +388,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">笔记-深入拆解Java虚拟机-0809JVM是怎么实现invokedynamic的？</h1>
+          <h1 class="post-title" itemprop="name headline">「深入拆解 Java 虚拟机」08 09 JVM 是怎么实现 invokedynamic 的？</h1>
         
 
         <div class="post-meta">
@@ -411,8 +423,8 @@
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Java虚拟机/" itemprop="url" rel="index">
-                    <span itemprop="name">Java虚拟机</span>
+                  <a href="/categories/《深入拆解-Java-虚拟机》/" itemprop="url" rel="index">
+                    <span itemprop="name">《深入拆解 Java 虚拟机》</span>
                   </a>
                 </span>
 
@@ -449,51 +461,75 @@
 
       
         <h1 id="invokedynamic"><a href="#invokedynamic" class="headerlink" title="invokedynamic"></a>invokedynamic</h1><ul>
-<li>Java 7 引入的新指令</li>
-<li>调用机制抽象出调用点的概念</li>
-<li>允许将调用点链接至任意符合条件的方法上</li>
+<li><p>Java 7 引入的新指令</p>
+</li>
+<li><p>调用机制抽象出调用点的概念</p>
+</li>
+<li><p>允许将调用点链接至任意符合条件的方法上</p>
+</li>
 </ul>
 <h1 id="MethodHandle（方法句柄）"><a href="#MethodHandle（方法句柄）" class="headerlink" title="MethodHandle（方法句柄）"></a>MethodHandle（方法句柄）</h1><ul>
-<li>Java 7 引入</li>
-<li>是一个强类型的，能被直接执行的引用</li>
-<li>可以指向静态方法、实例方法、构造器、字段</li>
+<li><p>Java 7 引入</p>
+</li>
+<li><p>是一个强类型的，能被直接执行的引用</p>
+</li>
+<li><p>可以指向静态方法、实例方法、构造器、字段</p>
+</li>
 </ul>
 <h2 id="方法句柄的类型（MethodType）"><a href="#方法句柄的类型（MethodType）" class="headerlink" title="方法句柄的类型（MethodType）"></a>方法句柄的类型（MethodType）</h2><ul>
-<li>由参数类型、返回类型组成</li>
-<li>确认方法句柄是否适配的唯一关键</li>
-<li>不关心方法的类名或方法名</li>
+<li><p>由参数类型、返回类型组成</p>
+</li>
+<li><p>确认方法句柄是否适配的唯一关键</p>
+</li>
+<li><p>不关心方法的类名或方法名</p>
+</li>
 </ul>
 <h2 id="方法句柄的创建"><a href="#方法句柄的创建" class="headerlink" title="方法句柄的创建"></a>方法句柄的创建</h2><p>通过 MethodHandles.Lookup 类</p>
 <ul>
-<li>使用反射的 Method 类查找</li>
-<li>Lookup.findStatic 查找调用 invokestatic 的方法</li>
-<li>Lookup.findVirtual 查找调用 invokevirtual 和 invokeinterface 的方法</li>
-<li>Lookup.findSpecial 查找调用 invokespecial 的方法</li>
+<li><p>使用反射的 Method 类查找</p>
+</li>
+<li><p>Lookup.findStatic 查找调用 invokestatic 的方法</p>
+</li>
+<li><p>Lookup.findVirtual 查找调用 invokevirtual 和 invokeinterface 的方法</p>
+</li>
+<li><p>Lookup.findSpecial 查找调用 invokespecial 的方法</p>
+</li>
 </ul>
 <h2 id="方法句柄的权限"><a href="#方法句柄的权限" class="headerlink" title="方法句柄的权限"></a>方法句柄的权限</h2><ul>
-<li>权限检查在创建阶段完成</li>
-<li>实际调用过程中不检查</li>
-<li>取决于 Lookup 对象创建位置（不是方法句柄创建位置）</li>
+<li><p>权限检查在创建阶段完成</p>
+</li>
+<li><p>实际调用过程中不检查</p>
+</li>
+<li><p>取决于 Lookup 对象创建位置（不是方法句柄创建位置）</p>
+</li>
 </ul>
 <h2 id="方法句柄的操作"><a href="#方法句柄的操作" class="headerlink" title="方法句柄的操作"></a>方法句柄的操作</h2><h3 id="invokeExact"><a href="#invokeExact" class="headerlink" title="invokeExact"></a>invokeExact</h3><ul>
-<li>严格匹配参数类型（需要显示向上转型）</li>
-<li>@PolymorphicSignature 根据传入参数的声明类型来生成方法描述符（而不是目标方法）</li>
+<li><p>严格匹配参数类型（需要显示向上转型）</p>
+</li>
+<li><p>@PolymorphicSignature 根据传入参数的声明类型来生成方法描述符（而不是目标方法）</p>
+</li>
 </ul>
 <h3 id="invoke"><a href="#invoke" class="headerlink" title="invoke"></a>invoke</h3><ul>
-<li>自动适配参数类型</li>
-<li>会调用 MethodHandle.asType 方法生成一个适配器方法句柄</li>
+<li><p>自动适配参数类型</p>
+</li>
+<li><p>会调用 MethodHandle.asType 方法生成一个适配器方法句柄</p>
+</li>
 </ul>
 <h3 id="增删改"><a href="#增删改" class="headerlink" title="增删改"></a>增删改</h3><p>通过生成另一个充当适配器的方法句柄来实现</p>
 <p>捕获类型的 Lambda 表达式用增操作实现</p>
 <p>增操作可以实现方法的柯里化</p>
-<h2 id="方法句柄的实现"><a href="#方法句柄的实现" class="headerlink" title="方法句柄的实现"></a>方法句柄的实现</h2><p>HotSpot 虚拟机中方法句柄调用的具体实现，只讨论DirectMethodHandle</p>
+<h2 id="方法句柄的实现"><a href="#方法句柄的实现" class="headerlink" title="方法句柄的实现"></a>方法句柄的实现</h2><p>HotSpot 虚拟机中方法句柄调用的具体实现，只讨论 DirectMethodHandle</p>
 <h3 id="invokeExact-1"><a href="#invokeExact-1" class="headerlink" title="invokeExact"></a>invokeExact</h3><ul>
-<li>调用至一个共享的、与方法句柄类型相关的特殊适配器中</li>
-<li>适配器是一个 LambdaForm</li>
+<li><p>调用至一个共享的、与方法句柄类型相关的特殊适配器中</p>
+</li>
+<li><p>适配器是一个 LambdaForm</p>
+</li>
 </ul>
 <h2 id="方法句柄的缺点"><a href="#方法句柄的缺点" class="headerlink" title="方法句柄的缺点"></a>方法句柄的缺点</h2><ul>
-<li>与反射一样是简介调用</li>
-<li>无法内联</li>
+<li><p>与反射一样是简介调用</p>
+</li>
+<li><p>无法内联</p>
+</li>
 </ul>
 <p><strong>未更新09</strong></p>
 
@@ -542,6 +578,8 @@
       
         <div class="post-tags">
           
+            <a href="/tags/未完成/" rel="tag"># 未完成</a>
+          
             <a href="/tags/JVM/" rel="tag"># JVM</a>
           
         </div>
@@ -555,8 +593,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2018/08/06/笔记-深入拆解Java虚拟机-07JVM是如何实现反射的？/" rel="next" title="笔记-深入拆解Java虚拟机-07JVM是如何实现反射的？">
-                <i class="fa fa-chevron-left"></i> 笔记-深入拆解Java虚拟机-07JVM是如何实现反射的？
+              <a href="/2018/08/06/笔记-深入拆解Java虚拟机-07JVM是如何实现反射的？/" rel="next" title="「深入拆解 Java 虚拟机」07 JVM 是如何实现反射的？">
+                <i class="fa fa-chevron-left"></i> 「深入拆解 Java 虚拟机」07 JVM 是如何实现反射的？
               </a>
             
           </div>
@@ -565,8 +603,8 @@
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2018/08/29/笔记-深入拆解Java虚拟机-10Java对象的内存分布/" rel="prev" title="笔记-深入拆解Java虚拟机-10Java对象的内存分布">
-                笔记-深入拆解Java虚拟机-10Java对象的内存分布 <i class="fa fa-chevron-right"></i>
+              <a href="/2018/08/29/笔记-深入拆解Java虚拟机-10Java对象的内存分布/" rel="prev" title="「深入拆解 Java 虚拟机」10 Java 对象的内存分布">
+                「深入拆解 Java 虚拟机」10 Java 对象的内存分布 <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
@@ -648,7 +686,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">59</span>
+                  <span class="site-state-item-count">76</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -659,7 +697,7 @@
               
               <div class="site-state-item site-state-categories">
                 <a href="/categories/index.html">
-                  <span class="site-state-item-count">14</span>
+                  <span class="site-state-item-count">10</span>
                   <span class="site-state-item-name">分类</span>
                 </a>
               </div>
@@ -670,7 +708,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">26</span>
+                  <span class="site-state-item-count">37</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>
@@ -746,7 +784,7 @@
 
     <footer id="footer" class="footer">
       <div class="footer-inner">
-        <div class="copyright">&copy; 2018 &mdash; <span itemprop="copyrightYear">2019</span>
+        <div class="copyright">&copy; 2018 &mdash; <span itemprop="copyrightYear">2020</span>
   <span class="with-love">
     <i class="fa fa-user"></i>
   </span>

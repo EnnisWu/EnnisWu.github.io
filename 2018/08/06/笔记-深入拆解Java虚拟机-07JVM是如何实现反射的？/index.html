@@ -85,18 +85,18 @@
 
 
 
-<meta name="description" content="反射调用的实现Methond.invoke委派给MethodAccessor接口处理。 MethodAccessor两个具体实现：  本地方法实现反射调用 委派模式  委派实现 每个Method实例的第一次反射调用会生成一个委派实现。 委派的具体实现是一个本地实现。 Java的反射调用机制还设立了另一种动态生成字节码的动态实现。 采用委派实现，是为了能够在本地实现以及动态实现中切换。  动态实现">
+<meta name="description" content="原文：https://time.geekbang.org/column/article/12192 反射调用的实现Methond.invoke委派给 MethodAccessor 接口处理。 MethodAccessor 两个具体实现：  本地方法实现反射调用  委派模式   委派实现 每个 Method 实例的第一次反射调用会生成一个委派实现。 委派的具体实现是一个本地实现。 Java 的反射调">
 <meta name="keywords" content="JVM">
 <meta property="og:type" content="article">
-<meta property="og:title" content="笔记-深入拆解Java虚拟机-07JVM是如何实现反射的？">
+<meta property="og:title" content="「深入拆解 Java 虚拟机」07 JVM 是如何实现反射的？">
 <meta property="og:url" content="http://blog.ennis.info/2018/08/06/笔记-深入拆解Java虚拟机-07JVM是如何实现反射的？/index.html">
 <meta property="og:site_name" content="Ennis Wu">
-<meta property="og:description" content="反射调用的实现Methond.invoke委派给MethodAccessor接口处理。 MethodAccessor两个具体实现：  本地方法实现反射调用 委派模式  委派实现 每个Method实例的第一次反射调用会生成一个委派实现。 委派的具体实现是一个本地实现。 Java的反射调用机制还设立了另一种动态生成字节码的动态实现。 采用委派实现，是为了能够在本地实现以及动态实现中切换。  动态实现">
+<meta property="og:description" content="原文：https://time.geekbang.org/column/article/12192 反射调用的实现Methond.invoke委派给 MethodAccessor 接口处理。 MethodAccessor 两个具体实现：  本地方法实现反射调用  委派模式   委派实现 每个 Method 实例的第一次反射调用会生成一个委派实现。 委派的具体实现是一个本地实现。 Java 的反射调">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2019-01-26T13:26:29.068Z">
+<meta property="og:updated_time" content="2020-05-21T16:43:12.096Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="笔记-深入拆解Java虚拟机-07JVM是如何实现反射的？">
-<meta name="twitter:description" content="反射调用的实现Methond.invoke委派给MethodAccessor接口处理。 MethodAccessor两个具体实现：  本地方法实现反射调用 委派模式  委派实现 每个Method实例的第一次反射调用会生成一个委派实现。 委派的具体实现是一个本地实现。 Java的反射调用机制还设立了另一种动态生成字节码的动态实现。 采用委派实现，是为了能够在本地实现以及动态实现中切换。  动态实现">
+<meta name="twitter:title" content="「深入拆解 Java 虚拟机」07 JVM 是如何实现反射的？">
+<meta name="twitter:description" content="原文：https://time.geekbang.org/column/article/12192 反射调用的实现Methond.invoke委派给 MethodAccessor 接口处理。 MethodAccessor 两个具体实现：  本地方法实现反射调用  委派模式   委派实现 每个 Method 实例的第一次反射调用会生成一个委派实现。 委派的具体实现是一个本地实现。 Java 的反射调">
 
 
 
@@ -132,7 +132,7 @@
 
 
 
-  <title>笔记-深入拆解Java虚拟机-07JVM是如何实现反射的？ | Ennis Wu</title>
+  <title>「深入拆解 Java 虚拟机」07 JVM 是如何实现反射的？ | Ennis Wu</title>
   
 
 
@@ -338,6 +338,18 @@
 
  </div>
     </header>
+    <script>
+      let images = [
+         'header0.jpg',
+         'header1.jpg',
+         'header2.png'
+      ];
+      let image = images[Math.floor(Math.random() * images.length)];
+      window.document.getElementById('header').style.cssText 
+      = 'background: url(/images/avatar/' 
+      + image
+      + '); no-repeat; background-size: auto 100%;';
+    </script>
 
     <main id="main" class="main">
       <div class="main-inner">
@@ -376,7 +388,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">笔记-深入拆解Java虚拟机-07JVM是如何实现反射的？</h1>
+          <h1 class="post-title" itemprop="name headline">「深入拆解 Java 虚拟机」07 JVM 是如何实现反射的？</h1>
         
 
         <div class="post-meta">
@@ -411,8 +423,8 @@
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Java虚拟机/" itemprop="url" rel="index">
-                    <span itemprop="name">Java虚拟机</span>
+                  <a href="/categories/《深入拆解-Java-虚拟机》/" itemprop="url" rel="index">
+                    <span itemprop="name">《深入拆解 Java 虚拟机》</span>
                   </a>
                 </span>
 
@@ -448,49 +460,62 @@
       
 
       
-        <h1 id="反射调用的实现"><a href="#反射调用的实现" class="headerlink" title="反射调用的实现"></a>反射调用的实现</h1><h2 id="Methond-invoke"><a href="#Methond-invoke" class="headerlink" title="Methond.invoke"></a>Methond.invoke</h2><p>委派给MethodAccessor接口处理。</p>
-<p>MethodAccessor两个具体实现：</p>
+        <p>原文：<a href="https://time.geekbang.org/column/article/12192" target="_blank" rel="noopener">https://time.geekbang.org/column/article/12192</a></p>
+<h1 id="反射调用的实现"><a href="#反射调用的实现" class="headerlink" title="反射调用的实现"></a>反射调用的实现</h1><h2 id="Methond-invoke"><a href="#Methond-invoke" class="headerlink" title="Methond.invoke"></a>Methond.invoke</h2><p>委派给 MethodAccessor 接口处理。</p>
+<p>MethodAccessor 两个具体实现：</p>
 <ol>
-<li>本地方法实现反射调用</li>
-<li>委派模式</li>
+<li><p>本地方法实现反射调用</p>
+</li>
+<li><p>委派模式</p>
+</li>
 </ol>
 <h2 id="委派实现"><a href="#委派实现" class="headerlink" title="委派实现"></a>委派实现</h2><ul>
-<li>每个Method实例的<strong>第一次反射调用</strong>会生成一个委派实现。</li>
+<li>每个 Method 实例的<strong>第一次反射调用</strong>会生成一个委派实现。</li>
 <li>委派的具体实现是一个<strong>本地实现</strong>。</li>
-<li>Java的反射调用机制还设立了另一种动态生成字节码的<strong>动态实现</strong>。</li>
+<li>Java 的反射调用机制还设立了另一种动态生成字节码的<strong>动态实现</strong>。</li>
 <li>采用委派实现，是为了能够在本地实现以及动态实现中切换。</li>
 </ul>
 <h3 id="动态实现"><a href="#动态实现" class="headerlink" title="动态实现"></a>动态实现</h3><ul>
-<li><p><strong>运行效率比本地实现要快20倍。</strong><br>因为动态实现无需经过Java到C++再到Java的切换。</p>
-</li>
-<li><p>由于<strong>生成字节码十分耗时</strong>，仅<strong>调用一次</strong>的话，反而是<strong>本地实现要快上3到4倍</strong>。</p>
-</li>
+<li><strong>运行效率比本地实现要快 20 倍。</strong></li>
 </ul>
-<h3 id="Inflation"><a href="#Inflation" class="headerlink" title="Inflation"></a>Inflation</h3><p>Java虚拟机设置了一个阈值15（可以通过 -Dsun.reflect.inflationThreshold= 来调整）。<br>当某个反射调用的方法调用次数在 15 之下时，采用本地实现。<br>当达到 15 时，便开始动态生成字节码，并将委派实现的委派对象切换至动态实现，这个过程称之为Inflation。</p>
-<p>反射调用的Inflation机制是可以通过参数（-Dsun.reflect.noInflation=true）关闭。<br>反射调用一开始便会直接生成动态实现，而不会使用委派实现或者本地实现。</p>
+<p>因为动态实现无需经过 Java 到 C++ 再到 Java 的切换。</p>
+<ul>
+<li>由于<strong>生成字节码十分耗时</strong>，仅<strong>调用一次</strong>的话，反而是<strong>本地实现要快上3到4倍</strong>。</li>
+</ul>
+<h3 id="Inflation"><a href="#Inflation" class="headerlink" title="Inflation"></a>Inflation</h3><p>Java 虚拟机设置了一个阈值 15（可以通过 -Dsun.reflect.inflationThreshold= 来调整）。</p>
+<p>当某个反射调用的方法调用次数在 15 之下时，采用本地实现。</p>
+<p>当达到 15 时，便开始动态生成字节码，并将委派实现的委派对象切换至动态实现，这个过程称之为 Inflation。</p>
+<p>反射调用的 Inflation 机制是可以通过参数（-Dsun.reflect.noInflation=true）关闭。</p>
+<p>反射调用一开始便会直接生成动态实现，而不会使用委派实现或者本地实现。</p>
 <h1 id="反射调用的开销"><a href="#反射调用的开销" class="headerlink" title="反射调用的开销"></a>反射调用的开销</h1><h2 id="反射api性能开销"><a href="#反射api性能开销" class="headerlink" title="反射api性能开销"></a>反射api性能开销</h2><ul>
-<li>Class.getMethod会遍历该类的公有方法。如果没有匹配到，遍历父类的公有方法。</li>
-<li>以getMethod为代表的查找方法操作，会返回查找得到结果的一份拷贝。<br><strong>避免在热点代码中使用返回Method数组的方法，减少不必要的堆空间消耗。</strong></li>
+<li><p>Class.getMethod 会遍历该类的公有方法。如果没有匹配到，遍历父类的公有方法。</p>
+</li>
+<li><p>以 getMethod 为代表的查找方法操作，会返回查找得到结果的一份拷贝。</p>
+</li>
 </ul>
-<h2 id="反射本身性能开销"><a href="#反射本身性能开销" class="headerlink" title="反射本身性能开销"></a>反射本身性能开销</h2><h3 id="Method-invoke是一个变长参数方法。"><a href="#Method-invoke是一个变长参数方法。" class="headerlink" title="Method.invoke是一个变长参数方法。"></a>Method.invoke是一个变长参数方法。</h3><p>Java编译器会在方法调用处生成一个长度为传入参数个数的Object数组，并将传入参数一一存储进该数组中。</p>
-<h3 id="Java编译器会对传入的基本类型参数自动装箱。"><a href="#Java编译器会对传入的基本类型参数自动装箱。" class="headerlink" title="Java编译器会对传入的基本类型参数自动装箱。"></a>Java编译器会对传入的基本类型参数自动装箱。</h3><p>Java 缓存了 [-128, 127] 中所有整数所对应的 Integer 对象。<br>需要自动装箱的整数在这个范围之内时，返回缓存的 Integer，否则需要新建一个Integer对象。</p>
+<p><strong>避免在热点代码中使用返回 Method 数组的方法，减少不必要的堆空间消耗。</strong></p>
+<h2 id="反射本身性能开销"><a href="#反射本身性能开销" class="headerlink" title="反射本身性能开销"></a>反射本身性能开销</h2><h3 id="Method-invoke-是一个变长参数方法。"><a href="#Method-invoke-是一个变长参数方法。" class="headerlink" title="Method.invoke 是一个变长参数方法。"></a>Method.invoke 是一个变长参数方法。</h3><p>Java 编译器会在方法调用处生成一个长度为传入参数个数的 Object 数组，并将传入参数一一存储进该数组中。</p>
+<h3 id="Java-编译器会对传入的基本类型参数自动装箱。"><a href="#Java-编译器会对传入的基本类型参数自动装箱。" class="headerlink" title="Java 编译器会对传入的基本类型参数自动装箱。"></a>Java 编译器会对传入的基本类型参数自动装箱。</h3><p>Java 缓存了 [-128, 127] 中所有整数所对应的 Integer 对象。</p>
+<p>需要自动装箱的整数在这个范围之内时，返回缓存的 Integer，否则需要新建一个 Integer 对象。</p>
 <p>解决方法：</p>
 <ul>
-<li><strong>扩大缓存范围</strong>（对应参数-Djava.lang.Integer.IntegerCache.high=128）。</li>
-<li><strong>在外部缓存</strong>自动装箱得到的Integer对象。</li>
+<li><p><strong>扩大缓存范围</strong>（对应参数 -Djava.lang.Integer.IntegerCache.high=128）。</p>
+</li>
+<li><p><strong>在外部缓存</strong>自动装箱得到的 Integer 对象。</p>
+</li>
 </ul>
 <p><strong>上面两条除了带来性能开销外，还可能占用堆内存，使得 GC 更加频繁。</strong></p>
 <h3 id="权限检查带来的开销"><a href="#权限检查带来的开销" class="headerlink" title="权限检查带来的开销"></a>权限检查带来的开销</h3><ul>
-<li>关闭权限检查。<br>setAccessible(true)</li>
+<li>关闭权限检查。</li>
 </ul>
+<p>setAccessible(true)</p>
 <h3 id="方法内联"><a href="#方法内联" class="headerlink" title="方法内联"></a>方法内联</h3><ul>
-<li>没有方法内联优化</li>
-<li>逃逸分析不起效</li>
+<li><p>没有方法内联优化</p>
+</li>
+<li><p>逃逸分析不起效</p>
+</li>
 </ul>
 <p>具体代码具体分析。</p>
-<h1 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h1><blockquote>
-<p><a href="https://time.geekbang.org/column/article/12192" target="_blank" rel="noopener">https://time.geekbang.org/column/article/12192</a></p>
-</blockquote>
 
       
     </div>
@@ -550,8 +575,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2018/08/05/笔记-深入拆解Java虚拟机-【工具篇】常用工具介绍/" rel="next" title="笔记-深入拆解Java虚拟机-【工具篇】常用工具介绍">
-                <i class="fa fa-chevron-left"></i> 笔记-深入拆解Java虚拟机-【工具篇】常用工具介绍
+              <a href="/2018/08/05/笔记-深入拆解Java虚拟机-【工具篇】常用工具介绍/" rel="next" title="「深入拆解 Java 虚拟机」【工具篇】常用工具介绍">
+                <i class="fa fa-chevron-left"></i> 「深入拆解 Java 虚拟机」【工具篇】常用工具介绍
               </a>
             
           </div>
@@ -560,8 +585,8 @@
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2018/08/10/笔记-深入拆解Java虚拟机-0809JVM是怎么实现invokedynamic的？/" rel="prev" title="笔记-深入拆解Java虚拟机-0809JVM是怎么实现invokedynamic的？">
-                笔记-深入拆解Java虚拟机-0809JVM是怎么实现invokedynamic的？ <i class="fa fa-chevron-right"></i>
+              <a href="/2018/08/10/笔记-深入拆解Java虚拟机-0809JVM是怎么实现invokedynamic的？/" rel="prev" title="「深入拆解 Java 虚拟机」08 09 JVM 是怎么实现 invokedynamic 的？">
+                「深入拆解 Java 虚拟机」08 09 JVM 是怎么实现 invokedynamic 的？ <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
@@ -643,7 +668,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">59</span>
+                  <span class="site-state-item-count">76</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -654,7 +679,7 @@
               
               <div class="site-state-item site-state-categories">
                 <a href="/categories/index.html">
-                  <span class="site-state-item-count">14</span>
+                  <span class="site-state-item-count">10</span>
                   <span class="site-state-item-name">分类</span>
                 </a>
               </div>
@@ -665,7 +690,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">26</span>
+                  <span class="site-state-item-count">37</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>
@@ -721,7 +746,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#反射调用的实现"><span class="nav-number">1.</span> <span class="nav-text">反射调用的实现</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Methond-invoke"><span class="nav-number">1.1.</span> <span class="nav-text">Methond.invoke</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#委派实现"><span class="nav-number">1.2.</span> <span class="nav-text">委派实现</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#动态实现"><span class="nav-number">1.2.1.</span> <span class="nav-text">动态实现</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Inflation"><span class="nav-number">1.2.2.</span> <span class="nav-text">Inflation</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#反射调用的开销"><span class="nav-number">2.</span> <span class="nav-text">反射调用的开销</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#反射api性能开销"><span class="nav-number">2.1.</span> <span class="nav-text">反射api性能开销</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#反射本身性能开销"><span class="nav-number">2.2.</span> <span class="nav-text">反射本身性能开销</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Method-invoke是一个变长参数方法。"><span class="nav-number">2.2.1.</span> <span class="nav-text">Method.invoke是一个变长参数方法。</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Java编译器会对传入的基本类型参数自动装箱。"><span class="nav-number">2.2.2.</span> <span class="nav-text">Java编译器会对传入的基本类型参数自动装箱。</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#权限检查带来的开销"><span class="nav-number">2.2.3.</span> <span class="nav-text">权限检查带来的开销</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#方法内联"><span class="nav-number">2.2.4.</span> <span class="nav-text">方法内联</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#参考"><span class="nav-number">3.</span> <span class="nav-text">参考</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#反射调用的实现"><span class="nav-number">1.</span> <span class="nav-text">反射调用的实现</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Methond-invoke"><span class="nav-number">1.1.</span> <span class="nav-text">Methond.invoke</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#委派实现"><span class="nav-number">1.2.</span> <span class="nav-text">委派实现</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#动态实现"><span class="nav-number">1.2.1.</span> <span class="nav-text">动态实现</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Inflation"><span class="nav-number">1.2.2.</span> <span class="nav-text">Inflation</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#反射调用的开销"><span class="nav-number">2.</span> <span class="nav-text">反射调用的开销</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#反射api性能开销"><span class="nav-number">2.1.</span> <span class="nav-text">反射api性能开销</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#反射本身性能开销"><span class="nav-number">2.2.</span> <span class="nav-text">反射本身性能开销</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Method-invoke-是一个变长参数方法。"><span class="nav-number">2.2.1.</span> <span class="nav-text">Method.invoke 是一个变长参数方法。</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Java-编译器会对传入的基本类型参数自动装箱。"><span class="nav-number">2.2.2.</span> <span class="nav-text">Java 编译器会对传入的基本类型参数自动装箱。</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#权限检查带来的开销"><span class="nav-number">2.2.3.</span> <span class="nav-text">权限检查带来的开销</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#方法内联"><span class="nav-number">2.2.4.</span> <span class="nav-text">方法内联</span></a></li></ol></li></ol></li></ol></div>
             
 
           </div>
@@ -741,7 +766,7 @@
 
     <footer id="footer" class="footer">
       <div class="footer-inner">
-        <div class="copyright">&copy; 2018 &mdash; <span itemprop="copyrightYear">2019</span>
+        <div class="copyright">&copy; 2018 &mdash; <span itemprop="copyrightYear">2020</span>
   <span class="with-love">
     <i class="fa fa-user"></i>
   </span>

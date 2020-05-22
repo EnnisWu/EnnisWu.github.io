@@ -85,21 +85,21 @@
 
 
 
-<meta name="description" content="SIMD   寄存器名称 所属指令集 位数 备注     XMM 寄存器 SSE（Streaming SIMD Extensions）指令集 128 位    YMM 寄存器 AVX（Advanced Vector Extensions）指令集 256 位 XMM升级版   ZMM 寄存器 AVX512 指令集 512 位 YMM升级版     原本使用 XMM 寄存器的指令，使用 YMM 寄存器">
+<meta name="description" content="原文：https://time.geekbang.org/column/article/39838 SIMD   寄存器名称 所属指令集 位数 备注     XMM 寄存器 SSE（Streaming SIMD Extensions）指令集 128 位    YMM 寄存器 AVX（Advanced Vector Extensions）指令集 256 位 XMM升级版   ZMM 寄存器 AVX5">
 <meta name="keywords" content="JVM">
 <meta property="og:type" content="article">
-<meta property="og:title" content="笔记-深入拆解Java虚拟机-26向量化">
+<meta property="og:title" content="「深入拆解 Java 虚拟机」26 向量化">
 <meta property="og:url" content="http://blog.ennis.info/2018/12/03/笔记-深入拆解Java虚拟机-26向量化/index.html">
 <meta property="og:site_name" content="Ennis Wu">
-<meta property="og:description" content="SIMD   寄存器名称 所属指令集 位数 备注     XMM 寄存器 SSE（Streaming SIMD Extensions）指令集 128 位    YMM 寄存器 AVX（Advanced Vector Extensions）指令集 256 位 XMM升级版   ZMM 寄存器 AVX512 指令集 512 位 YMM升级版     原本使用 XMM 寄存器的指令，使用 YMM 寄存器">
+<meta property="og:description" content="原文：https://time.geekbang.org/column/article/39838 SIMD   寄存器名称 所属指令集 位数 备注     XMM 寄存器 SSE（Streaming SIMD Extensions）指令集 128 位    YMM 寄存器 AVX（Advanced Vector Extensions）指令集 256 位 XMM升级版   ZMM 寄存器 AVX5">
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="http://blog.ennis.info/images/posts/JVM/26/registers.png">
 <meta property="og:image" content="http://blog.ennis.info/images/posts/JVM/26/XMM_register.png">
 <meta property="og:image" content="http://blog.ennis.info/images/posts/JVM/26/PADDD.png">
-<meta property="og:updated_time" content="2019-01-26T13:26:29.139Z">
+<meta property="og:updated_time" content="2020-05-21T16:47:35.831Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="笔记-深入拆解Java虚拟机-26向量化">
-<meta name="twitter:description" content="SIMD   寄存器名称 所属指令集 位数 备注     XMM 寄存器 SSE（Streaming SIMD Extensions）指令集 128 位    YMM 寄存器 AVX（Advanced Vector Extensions）指令集 256 位 XMM升级版   ZMM 寄存器 AVX512 指令集 512 位 YMM升级版     原本使用 XMM 寄存器的指令，使用 YMM 寄存器">
+<meta name="twitter:title" content="「深入拆解 Java 虚拟机」26 向量化">
+<meta name="twitter:description" content="原文：https://time.geekbang.org/column/article/39838 SIMD   寄存器名称 所属指令集 位数 备注     XMM 寄存器 SSE（Streaming SIMD Extensions）指令集 128 位    YMM 寄存器 AVX（Advanced Vector Extensions）指令集 256 位 XMM升级版   ZMM 寄存器 AVX5">
 <meta name="twitter:image" content="http://blog.ennis.info/images/posts/JVM/26/registers.png">
 
 
@@ -136,7 +136,7 @@
 
 
 
-  <title>笔记-深入拆解Java虚拟机-26向量化 | Ennis Wu</title>
+  <title>「深入拆解 Java 虚拟机」26 向量化 | Ennis Wu</title>
   
 
 
@@ -342,6 +342,18 @@
 
  </div>
     </header>
+    <script>
+      let images = [
+         'header0.jpg',
+         'header1.jpg',
+         'header2.png'
+      ];
+      let image = images[Math.floor(Math.random() * images.length)];
+      window.document.getElementById('header').style.cssText 
+      = 'background: url(/images/avatar/' 
+      + image
+      + '); no-repeat; background-size: auto 100%;';
+    </script>
 
     <main id="main" class="main">
       <div class="main-inner">
@@ -380,7 +392,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">笔记-深入拆解Java虚拟机-26向量化</h1>
+          <h1 class="post-title" itemprop="name headline">「深入拆解 Java 虚拟机」26 向量化</h1>
         
 
         <div class="post-meta">
@@ -415,8 +427,8 @@
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Java虚拟机/" itemprop="url" rel="index">
-                    <span itemprop="name">Java虚拟机</span>
+                  <a href="/categories/《深入拆解-Java-虚拟机》/" itemprop="url" rel="index">
+                    <span itemprop="name">《深入拆解 Java 虚拟机》</span>
                   </a>
                 </span>
 
@@ -452,7 +464,8 @@
       
 
       
-        <h1 id="SIMD"><a href="#SIMD" class="headerlink" title="SIMD"></a>SIMD</h1><table>
+        <p>原文：<a href="https://time.geekbang.org/column/article/39838" target="_blank" rel="noopener">https://time.geekbang.org/column/article/39838</a></p>
+<h1 id="SIMD"><a href="#SIMD" class="headerlink" title="SIMD"></a>SIMD</h1><table>
 <thead>
 <tr>
 <th>寄存器名称</th>
@@ -496,7 +509,7 @@
 <li>128 位 XMM 寄存器里的值可以看成 16 个 byte 值组成的向量，或者 8 个 short 值组成的向量，4 个 int 值组成的向量，两个 long 值组成的向量。</li>
 </ul>
 </li>
-<li><p>SIMD 指令PADDB、PADDW、PADDD以及PADDQ，将分别实现 byte 值、short 值、int 值或者 long 值的向量加法。</p>
+<li><p>SIMD 指令 PADDB、PADDW、PADDD 以及 PADDQ，将分别实现 byte 值、short 值、int 值或者 long 值的向量加法。</p>
 </li>
 </ul>
 <p><img src="/images/posts/JVM/26/PADDD.png" alt="PADDD"></p>
@@ -533,15 +546,17 @@
 </ul>
 <!-- - 为了解决向量化 intrinsic 以及自动向量化覆盖面过窄的问题，在 OpenJDK 的 [Paname 项目](http://openjdk.java.net/projects/panama/) 中尝试引入开发人员可控的向量化抽象（[参考 Vladimir Ivanov 2018 年在 JVMLS 上的演讲](http://cr.openjdk.java.net/~vlivanov/talks/2018_JVMLS_VectorAPI.pdf)）。-->
 <h2 id="自动向量化的条件"><a href="#自动向量化的条件" class="headerlink" title="自动向量化的条件"></a>自动向量化的条件</h2><ol>
-<li>循环变量的<strong>增量为 1</strong>（能够遍历整个数组）。</li>
-<li>循环变量<strong>不能为 long 类型</strong>（ C2 无法将循环识别为计数循环）。</li>
-<li>循环<strong>迭代之间最好不要有数据依赖</strong>（循环展开之后，循环体内存在数据依赖，C2 无法进行自动向量化）。</li>
-<li>循环体内<strong>不要有分支跳转</strong>。</li>
-<li><strong>不要手工进行循环展开</strong>（如果 C2 无法自动展开，也无法进行自动向量化）。</li>
+<li><p>循环变量的<strong>增量为 1</strong>（能够遍历整个数组）。</p>
+</li>
+<li><p>循环变量<strong>不能为 long 类型</strong>（ C2 无法将循环识别为计数循环）。</p>
+</li>
+<li><p>循环<strong>迭代之间最好不要有数据依赖</strong>（循环展开之后，循环体内存在数据依赖，C2 无法进行自动向量化）。</p>
+</li>
+<li><p>循环体内<strong>不要有分支跳转</strong>。</p>
+</li>
+<li><p><strong>不要手工进行循环展开</strong>（如果 C2 无法自动展开，也无法进行自动向量化）。</p>
+</li>
 </ol>
-<h1 id="引用"><a href="#引用" class="headerlink" title="引用"></a>引用</h1><blockquote>
-<p><a href="https://time.geekbang.org/column/article/39838" target="_blank" rel="noopener">https://time.geekbang.org/column/article/39838</a></p>
-</blockquote>
 
       
     </div>
@@ -601,8 +616,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2018/11/24/笔记-深入拆解Java虚拟机-25循环优化/" rel="next" title="笔记-深入拆解Java虚拟机-25循环优化">
-                <i class="fa fa-chevron-left"></i> 笔记-深入拆解Java虚拟机-25循环优化
+              <a href="/2018/11/24/笔记-深入拆解Java虚拟机-25循环优化/" rel="next" title="「深入拆解 Java 虚拟机」25 循环优化">
+                <i class="fa fa-chevron-left"></i> 「深入拆解 Java 虚拟机」25 循环优化
               </a>
             
           </div>
@@ -611,8 +626,8 @@
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2018/12/04/笔记-深入拆解Java虚拟机-2829基准测试框架JMH/" rel="prev" title="笔记-深入拆解Java虚拟机-2829基准测试框架JMH">
-                笔记-深入拆解Java虚拟机-2829基准测试框架JMH <i class="fa fa-chevron-right"></i>
+              <a href="/2018/12/04/笔记-深入拆解Java虚拟机-2829基准测试框架JMH/" rel="prev" title="「深入拆解 Java 虚拟机」28 29 基准测试框架 JMH">
+                「深入拆解 Java 虚拟机」28 29 基准测试框架 JMH <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
@@ -694,7 +709,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">59</span>
+                  <span class="site-state-item-count">76</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -705,7 +720,7 @@
               
               <div class="site-state-item site-state-categories">
                 <a href="/categories/index.html">
-                  <span class="site-state-item-count">14</span>
+                  <span class="site-state-item-count">10</span>
                   <span class="site-state-item-name">分类</span>
                 </a>
               </div>
@@ -716,7 +731,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">26</span>
+                  <span class="site-state-item-count">37</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>
@@ -772,7 +787,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#SIMD"><span class="nav-number">1.</span> <span class="nav-text">SIMD</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#使用-SIMD-指令的-HotSpot-Intrinsic"><span class="nav-number">2.</span> <span class="nav-text">使用 SIMD 指令的 HotSpot Intrinsic</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#自动向量化（auto-vectorization）"><span class="nav-number">3.</span> <span class="nav-text">自动向量化（auto vectorization）</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#自动向量化的条件"><span class="nav-number">3.1.</span> <span class="nav-text">自动向量化的条件</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#引用"><span class="nav-number">4.</span> <span class="nav-text">引用</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#SIMD"><span class="nav-number">1.</span> <span class="nav-text">SIMD</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#使用-SIMD-指令的-HotSpot-Intrinsic"><span class="nav-number">2.</span> <span class="nav-text">使用 SIMD 指令的 HotSpot Intrinsic</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#自动向量化（auto-vectorization）"><span class="nav-number">3.</span> <span class="nav-text">自动向量化（auto vectorization）</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#自动向量化的条件"><span class="nav-number">3.1.</span> <span class="nav-text">自动向量化的条件</span></a></li></ol></li></ol></div>
             
 
           </div>
@@ -792,7 +807,7 @@
 
     <footer id="footer" class="footer">
       <div class="footer-inner">
-        <div class="copyright">&copy; 2018 &mdash; <span itemprop="copyrightYear">2019</span>
+        <div class="copyright">&copy; 2018 &mdash; <span itemprop="copyrightYear">2020</span>
   <span class="with-love">
     <i class="fa fa-user"></i>
   </span>

@@ -72,7 +72,7 @@
 
 
 
-  <meta name="keywords" content="JVM," />
+  <meta name="keywords" content="看不懂,JVM," />
 
 
 
@@ -85,18 +85,18 @@
 
 
 
-<meta name="description" content="声明 synchronized 的代码块，字节码包含 monitorenter 和 monitorexit 指令。 这两种指令会消耗操作数栈上的一个引用类型的元素。 这个元素是用来加解锁的锁对象。（synchronized 括号里的引用，实例方法是 this，静态方法是 class实例）。 用 synchronized 标记方法，字节码中方法的访问标记包括 ACC_SYNCHRONIZED。">
-<meta name="keywords" content="JVM">
+<meta name="description" content="原文：https://time.geekbang.org/column/article/13530  声明 synchronized 的代码块，字节码包含 monitorenter 和 monitorexit 指令。  这两种指令会消耗操作数栈上的一个引用类型的元素。  这个元素是用来加解锁的锁对象。（synchronized 括号里的引用，实例方法是 this，静态方法是 class 实例）。">
+<meta name="keywords" content="看不懂,JVM">
 <meta property="og:type" content="article">
-<meta property="og:title" content="笔记-深入拆解Java虚拟机-14Java虚拟机是怎么实现synchronized的？">
+<meta property="og:title" content="「深入拆解 Java 虚拟机」14 Java 虚拟机是怎么实现 synchronized 的？">
 <meta property="og:url" content="http://blog.ennis.info/2018/10/17/笔记-深入拆解Java虚拟机-14Java虚拟机是怎么实现synchronized的？/index.html">
 <meta property="og:site_name" content="Ennis Wu">
-<meta property="og:description" content="声明 synchronized 的代码块，字节码包含 monitorenter 和 monitorexit 指令。 这两种指令会消耗操作数栈上的一个引用类型的元素。 这个元素是用来加解锁的锁对象。（synchronized 括号里的引用，实例方法是 this，静态方法是 class实例）。 用 synchronized 标记方法，字节码中方法的访问标记包括 ACC_SYNCHRONIZED。">
+<meta property="og:description" content="原文：https://time.geekbang.org/column/article/13530  声明 synchronized 的代码块，字节码包含 monitorenter 和 monitorexit 指令。  这两种指令会消耗操作数栈上的一个引用类型的元素。  这个元素是用来加解锁的锁对象。（synchronized 括号里的引用，实例方法是 this，静态方法是 class 实例）。">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2019-01-26T13:26:29.096Z">
+<meta property="og:updated_time" content="2020-05-21T16:44:45.015Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="笔记-深入拆解Java虚拟机-14Java虚拟机是怎么实现synchronized的？">
-<meta name="twitter:description" content="声明 synchronized 的代码块，字节码包含 monitorenter 和 monitorexit 指令。 这两种指令会消耗操作数栈上的一个引用类型的元素。 这个元素是用来加解锁的锁对象。（synchronized 括号里的引用，实例方法是 this，静态方法是 class实例）。 用 synchronized 标记方法，字节码中方法的访问标记包括 ACC_SYNCHRONIZED。">
+<meta name="twitter:title" content="「深入拆解 Java 虚拟机」14 Java 虚拟机是怎么实现 synchronized 的？">
+<meta name="twitter:description" content="原文：https://time.geekbang.org/column/article/13530  声明 synchronized 的代码块，字节码包含 monitorenter 和 monitorexit 指令。  这两种指令会消耗操作数栈上的一个引用类型的元素。  这个元素是用来加解锁的锁对象。（synchronized 括号里的引用，实例方法是 this，静态方法是 class 实例）。">
 
 
 
@@ -132,7 +132,7 @@
 
 
 
-  <title>笔记-深入拆解Java虚拟机-14Java虚拟机是怎么实现synchronized的？ | Ennis Wu</title>
+  <title>「深入拆解 Java 虚拟机」14 Java 虚拟机是怎么实现 synchronized 的？ | Ennis Wu</title>
   
 
 
@@ -338,6 +338,18 @@
 
  </div>
     </header>
+    <script>
+      let images = [
+         'header0.jpg',
+         'header1.jpg',
+         'header2.png'
+      ];
+      let image = images[Math.floor(Math.random() * images.length)];
+      window.document.getElementById('header').style.cssText 
+      = 'background: url(/images/avatar/' 
+      + image
+      + '); no-repeat; background-size: auto 100%;';
+    </script>
 
     <main id="main" class="main">
       <div class="main-inner">
@@ -376,7 +388,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">笔记-深入拆解Java虚拟机-14Java虚拟机是怎么实现synchronized的？</h1>
+          <h1 class="post-title" itemprop="name headline">「深入拆解 Java 虚拟机」14 Java 虚拟机是怎么实现 synchronized 的？</h1>
         
 
         <div class="post-meta">
@@ -411,8 +423,8 @@
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Java虚拟机/" itemprop="url" rel="index">
-                    <span itemprop="name">Java虚拟机</span>
+                  <a href="/categories/《深入拆解-Java-虚拟机》/" itemprop="url" rel="index">
+                    <span itemprop="name">《深入拆解 Java 虚拟机》</span>
                   </a>
                 </span>
 
@@ -448,29 +460,41 @@
       
 
       
-        <ul>
-<li>声明 synchronized 的代码块，字节码包含 monitorenter 和 monitorexit 指令。</li>
-<li>这两种指令会<strong>消耗</strong>操作数栈上的<strong>一个引用类型的元素</strong>。</li>
-<li>这个元素是用来加解锁的锁对象。（synchronized 括号里的引用，实例方法是 this，静态方法是 class实例）。</li>
-<li>用 synchronized 标记方法，字节码中方法的访问标记包括 ACC_SYNCHRONIZED。</li>
+        <p>原文：<a href="https://time.geekbang.org/column/article/13530" target="_blank" rel="noopener">https://time.geekbang.org/column/article/13530</a></p>
+<ul>
+<li><p>声明 synchronized 的代码块，字节码包含 monitorenter 和 monitorexit 指令。</p>
+</li>
+<li><p>这两种指令会<strong>消耗</strong>操作数栈上的<strong>一个引用类型的元素</strong>。</p>
+</li>
+<li><p>这个元素是用来加解锁的锁对象。（synchronized 括号里的引用，实例方法是 this，静态方法是 class 实例）。</p>
+</li>
+<li><p>用 synchronized 标记方法，字节码中方法的访问标记包括 ACC_SYNCHRONIZED。</p>
+</li>
 </ul>
 <h1 id="monitorenter-和-monitorexit"><a href="#monitorenter-和-monitorexit" class="headerlink" title="monitorenter 和 monitorexit"></a>monitorenter 和 monitorexit</h1><h2 id="作用"><a href="#作用" class="headerlink" title="作用"></a>作用</h2><p>可以<strong>抽象</strong>地理解为<strong>每个锁对象</strong>有：</p>
 <ol>
-<li>一个锁<strong>计数器</strong></li>
-<li>一个指向持有该锁的<strong>线程的指针</strong></li>
+<li><p>一个锁<strong>计数器</strong></p>
+</li>
+<li><p>一个指向持有该锁的<strong>线程的指针</strong></p>
+</li>
 </ol>
 <h2 id="执行-monitorenter"><a href="#执行-monitorenter" class="headerlink" title="执行 monitorenter"></a>执行 monitorenter</h2><ul>
-<li><p>计数器为0</p>
+<li><p>计数器为 0</p>
 <ul>
-<li>说明没有被其他线程所持有。</li>
-<li>锁对象的持有线程设置为当前线程。</li>
-<li>计数器加 1。</li>
+<li><p>说明没有被其他线程所持有。</p>
+</li>
+<li><p>锁对象的持有线程设置为当前线程。</p>
+</li>
+<li><p>计数器加 1。</p>
+</li>
 </ul>
 </li>
-<li><p>计数器不为0</p>
+<li><p>计数器不为 0</p>
 <ul>
-<li>如果锁对象的持有当前线程，计数器加 1。</li>
-<li>否则等待，直至锁释放。</li>
+<li><p>如果锁对象的持有当前线程，计数器加 1。</p>
+</li>
+<li><p>否则等待，直至锁释放。</p>
+</li>
 </ul>
 </li>
 </ul>
@@ -485,21 +509,32 @@
 <p>HotSpot 虚拟机中具体的锁实现。</p>
 </blockquote>
 <h1 id="重量级锁"><a href="#重量级锁" class="headerlink" title="重量级锁"></a>重量级锁</h1><ul>
-<li>JVM中<strong>最基础</strong>的锁实现。</li>
-<li>阻塞加锁失败的线程，锁被释放时唤醒。</li>
-<li>阻塞及唤醒依靠操作系统完成，<strong>开销大</strong>。</li>
+<li><p>JVM 中<strong>最基础</strong>的锁实现。</p>
+</li>
+<li><p>阻塞加锁失败的线程，锁被释放时唤醒。</p>
+</li>
+<li><p>阻塞及唤醒依靠操作系统完成，<strong>开销大</strong>。</p>
+</li>
 </ul>
 <h2 id="自旋状态"><a href="#自旋状态" class="headerlink" title="自旋状态"></a>自旋状态</h2><ul>
-<li>为了尽量<strong>避免昂贵的线程阻塞、唤醒操作</strong>。</li>
-<li>在线程<strong>进入阻塞状态之前</strong>，或被<strong>唤醒后竞争不到锁</strong>的情况下<strong>进入自旋状态</strong>。</li>
-<li><strong>在处理器上空跑</strong>并且轮询锁是否被释放。</li>
-<li>与线程阻塞相比，<strong>自旋状态可能会浪费大量的处理器资源</strong>。</li>
-<li>JVM 不能根据等待时间的长短来选择自旋还是阻塞。</li>
-<li>JVM 采用<strong>自适应自旋</strong>，根据以往自旋等待时能否获得锁，<strong>动态调整自旋时间</strong>（循环数目）。</li>
+<li><p>为了尽量<strong>避免昂贵的线程阻塞、唤醒操作</strong>。</p>
+</li>
+<li><p>在线程<strong>进入阻塞状态之前</strong>，或被<strong>唤醒后竞争不到锁</strong>的情况下<strong>进入自旋状态</strong>。</p>
+</li>
+<li><p><strong>在处理器上空跑</strong>并且轮询锁是否被释放。</p>
+</li>
+<li><p>与线程阻塞相比，<strong>自旋状态可能会浪费大量的处理器资源</strong>。</p>
+</li>
+<li><p>JVM 不能根据等待时间的长短来选择自旋还是阻塞。</p>
+</li>
+<li><p>JVM 采用<strong>自适应自旋</strong>，根据以往自旋等待时能否获得锁，<strong>动态调整自旋时间</strong>（循环数目）。</p>
+</li>
 </ul>
 <h3 id="自旋状态的副作用：不公平的锁机制"><a href="#自旋状态的副作用：不公平的锁机制" class="headerlink" title="自旋状态的副作用：不公平的锁机制"></a>自旋状态的副作用：<strong>不公平的锁机制</strong></h3><ul>
-<li>阻塞状态的线程，没有办法立刻竞争被释放的锁。</li>
-<li>自旋状态的线程，很有可能优先获得锁。</li>
+<li><p>阻塞状态的线程，没有办法立刻竞争被释放的锁。</p>
+</li>
+<li><p>自旋状态的线程，很有可能优先获得锁。</p>
+</li>
 </ul>
 <h1 id="轻量级锁"><a href="#轻量级锁" class="headerlink" title="轻量级锁"></a>轻量级锁</h1><ul>
 <li><strong>没有锁竞争的情况。</strong></li>
@@ -533,33 +568,40 @@
 </table>
 <h2 id="加锁操作"><a href="#加锁操作" class="headerlink" title="加锁操作"></a>加锁操作</h2><p>判断是否是重量级锁</p>
 <h3 id="判断为非重量级锁"><a href="#判断为非重量级锁" class="headerlink" title="判断为非重量级锁"></a>判断为非重量级锁</h3><ul>
-<li>在当前线程的当前栈桢中划出一块空间作为该锁的锁记录。</li>
-<li><strong>将锁对象的标记字段复制到锁记录中。</strong></li>
-<li>JVM 尝试<strong>用 CAS 操作替换锁对象的标记字段</strong>。（不懂）<br>比较标记字段是否为X…X01<ul>
-<li>是，替换为锁记录地址，成功获得锁，继续执行。</li>
-<li>否<ul>
-<li>线程重复获得同一把锁，JVM 将锁记录清理，代表锁被重复获取。</li>
-<li><strong>其他线程持有锁，JVM 将该锁膨胀为重量级锁</strong>，阻塞该线程。</li>
-</ul>
+<li><p>在当前线程的当前栈桢中划出一块空间作为该锁的锁记录。</p>
+</li>
+<li><p><strong>将锁对象的标记字段复制到锁记录中。</strong></p>
+</li>
+<li><p>JVM 尝试<strong>用 CAS 操作替换锁对象的标记字段</strong>。（不懂）</p>
 </li>
 </ul>
-</li>
-</ul>
-<h2 id="解锁操作"><a href="#解锁操作" class="headerlink" title="解锁操作"></a>解锁操作</h2><h3 id="锁记录值为-0"><a href="#锁记录值为-0" class="headerlink" title="锁记录值为 0"></a>锁记录值为 0</h3><p>重复进入同一把锁，直接返回。（不懂）</p>
+<p>比较标记字段是否为 X…X01</p>
+<pre><code>- 是，替换为锁记录地址，成功获得锁，继续执行。
+- 否
+    - 线程重复获得同一把锁，JVM 将锁记录清理，代表锁被重复获取。
+    - **其他线程持有锁，JVM 将该锁膨胀为重量级锁**，阻塞该线程。
+</code></pre><h2 id="解锁操作"><a href="#解锁操作" class="headerlink" title="解锁操作"></a>解锁操作</h2><h3 id="锁记录值为-0"><a href="#锁记录值为-0" class="headerlink" title="锁记录值为 0"></a>锁记录值为 0</h3><p>重复进入同一把锁，直接返回。（不懂）</p>
 <h3 id="锁记录值不为-0"><a href="#锁记录值不为-0" class="headerlink" title="锁记录值不为 0"></a>锁记录值不为 0</h3><p>JVM 尝试用 CAS 操作比较标记字段是否为当前锁记录地址</p>
 <ul>
-<li>是，替换为锁记录的值，锁释放。</li>
-<li>否，表示锁已膨胀为重量级锁，进入重量级锁释放过程。</li>
+<li><p>是，替换为锁记录的值，锁释放。</p>
+</li>
+<li><p>否，表示锁已膨胀为重量级锁，进入重量级锁释放过程。</p>
+</li>
 </ul>
 <h1 id="偏向锁"><a href="#偏向锁" class="headerlink" title="偏向锁"></a>偏向锁</h1><h2 id="加锁操作-1"><a href="#加锁操作-1" class="headerlink" title="加锁操作"></a>加锁操作</h2><ul>
-<li>锁对象支持偏向锁。</li>
-<li>JVM 通过 CAS 操作，将<strong>当前线程地址记录在锁对象的标记字段</strong>，将标记字段<strong>最后三位设为 101</strong>。</li>
+<li><p>锁对象支持偏向锁。</p>
+</li>
+<li><p>JVM 通过 CAS 操作，将<strong>当前线程地址记录在锁对象的标记字段</strong>，将标记字段<strong>最后三位设为 101</strong>。</p>
+</li>
 </ul>
 <h3 id="线程请求锁时"><a href="#线程请求锁时" class="headerlink" title="线程请求锁时"></a>线程请求锁时</h3><p>判断锁对象标记字段：</p>
 <ol>
-<li><strong>最后三位是否为 101</strong></li>
-<li>是否<strong>包含当前线程的地址</strong></li>
-<li>epoch 值是否<strong>和锁对象的类的 epoch 值相同</strong></li>
+<li><p><strong>最后三位是否为 101</strong></p>
+</li>
+<li><p>是否<strong>包含当前线程的地址</strong></p>
+</li>
+<li><p>epoch 值是否<strong>和锁对象的类的 epoch 值相同</strong></p>
+</li>
 </ol>
 <ul>
 <li><p>都满足则当前线程持有该偏向锁，直接返回。</p>
@@ -570,25 +612,33 @@
 </li>
 </ul>
 <h2 id="epoch-值"><a href="#epoch-值" class="headerlink" title="epoch 值"></a>epoch 值</h2><ul>
-<li>每个类维护一个 epoch 值。</li>
-<li>设置偏向锁时，JVM 要将 epoch 值复制到锁对象标记字段中。</li>
-<li><strong>撤销偏向锁</strong>要求持有偏向锁的<strong>线程到达安全点</strong>，再将偏向锁<strong>替换成轻量级锁</strong>。</li>
-<li>某类锁对象<strong>撤销数超过一个阈值，JVM 宣布该类偏向锁失效</strong>。</li>
-<li>宣布偏向锁失效时，JVM 将该类的 epoch 值加 1。</li>
-<li>为了保证当前持有偏向锁并且已加锁的线程<strong>不丢锁</strong>，<ul>
-<li>JVM <strong>遍历所有线程的 Java 栈</strong>，找出该类已加锁实例，</li>
-<li>将标记字段的 epoch 值加 1（<strong>需要所有线程处于安全点状态</strong>）。</li>
+<li><p>每个类维护一个 epoch 值。</p>
+</li>
+<li><p>设置偏向锁时，JVM 要将 epoch 值复制到锁对象标记字段中。</p>
+</li>
+<li><p><strong>撤销偏向锁</strong>要求持有偏向锁的<strong>线程到达安全点</strong>，再将偏向锁<strong>替换成轻量级锁</strong>。</p>
+</li>
+<li><p>某类锁对象<strong>撤销数超过一个阈值，JVM 宣布该类偏向锁失效</strong>。</p>
+</li>
+<li><p>宣布偏向锁失效时，JVM 将该类的 epoch 值加 1。</p>
+</li>
+<li><p>为了保证当前持有偏向锁并且已加锁的线程<strong>不丢锁</strong>，</p>
+<ul>
+<li><p>JVM <strong>遍历所有线程的 Java 栈</strong>，找出该类已加锁实例，</p>
+</li>
+<li><p>将标记字段的 epoch 值加 1（<strong>需要所有线程处于安全点状态</strong>）。</p>
+</li>
 </ul>
 </li>
-<li><strong>总撤销数超过另一个阈值</strong> JVM 认为<strong>这个类不再适合偏向锁</strong>。<ul>
-<li>JVM 会<strong>撤销该类实例的偏向锁</strong>，</li>
-<li>之后<strong>加锁直接设置轻量级锁</strong>。</li>
+<li><p><strong>总撤销数超过另一个阈值</strong> JVM 认为<strong>这个类不再适合偏向锁</strong>。</p>
+<ul>
+<li><p>JVM 会<strong>撤销该类实例的偏向锁</strong>，</p>
+</li>
+<li><p>之后<strong>加锁直接设置轻量级锁</strong>。</p>
+</li>
 </ul>
 </li>
 </ul>
-<h1 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h1><blockquote>
-<p><a href="https://time.geekbang.org/column/article/13530" target="_blank" rel="noopener">https://time.geekbang.org/column/article/13530</a></p>
-</blockquote>
 
       
     </div>
@@ -635,6 +685,8 @@
       
         <div class="post-tags">
           
+            <a href="/tags/看不懂/" rel="tag"># 看不懂</a>
+          
             <a href="/tags/JVM/" rel="tag"># JVM</a>
           
         </div>
@@ -648,8 +700,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2018/08/31/笔记-深入拆解Java虚拟机-13Java内存模型/" rel="next" title="笔记-深入拆解Java虚拟机-13Java内存模型">
-                <i class="fa fa-chevron-left"></i> 笔记-深入拆解Java虚拟机-13Java内存模型
+              <a href="/2018/08/31/笔记-深入拆解Java虚拟机-13Java内存模型/" rel="next" title="「深入拆解 Java 虚拟机」13 Java 内存模型">
+                <i class="fa fa-chevron-left"></i> 「深入拆解 Java 虚拟机」13 Java 内存模型
               </a>
             
           </div>
@@ -658,8 +710,8 @@
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2018/10/20/笔记-深入拆解Java虚拟机-15Java语法糖与Java编译器/" rel="prev" title="笔记-深入拆解Java虚拟机-15Java语法糖与Java编译器">
-                笔记-深入拆解Java虚拟机-15Java语法糖与Java编译器 <i class="fa fa-chevron-right"></i>
+              <a href="/2018/10/20/笔记-深入拆解Java虚拟机-15Java语法糖与Java编译器/" rel="prev" title="「深入拆解 Java 虚拟机」15 Java 语法糖与 Java 编译器">
+                「深入拆解 Java 虚拟机」15 Java 语法糖与 Java 编译器 <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
@@ -741,7 +793,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">59</span>
+                  <span class="site-state-item-count">76</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -752,7 +804,7 @@
               
               <div class="site-state-item site-state-categories">
                 <a href="/categories/index.html">
-                  <span class="site-state-item-count">14</span>
+                  <span class="site-state-item-count">10</span>
                   <span class="site-state-item-name">分类</span>
                 </a>
               </div>
@@ -763,7 +815,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">26</span>
+                  <span class="site-state-item-count">37</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>
@@ -819,7 +871,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#monitorenter-和-monitorexit"><span class="nav-number">1.</span> <span class="nav-text">monitorenter 和 monitorexit</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#作用"><span class="nav-number">1.1.</span> <span class="nav-text">作用</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#执行-monitorenter"><span class="nav-number">1.2.</span> <span class="nav-text">执行 monitorenter</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#执行-monitorexit"><span class="nav-number">1.3.</span> <span class="nav-text">执行 monitorexit</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#为什么采用计数器的方式？"><span class="nav-number">1.4.</span> <span class="nav-text">为什么采用计数器的方式？</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#重量级锁"><span class="nav-number">2.</span> <span class="nav-text">重量级锁</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#自旋状态"><span class="nav-number">2.1.</span> <span class="nav-text">自旋状态</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#自旋状态的副作用：不公平的锁机制"><span class="nav-number">2.1.1.</span> <span class="nav-text">自旋状态的副作用：不公平的锁机制</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#轻量级锁"><span class="nav-number">3.</span> <span class="nav-text">轻量级锁</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#怎样区分轻量级锁和重量级锁？"><span class="nav-number">3.1.</span> <span class="nav-text">怎样区分轻量级锁和重量级锁？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#加锁操作"><span class="nav-number">3.2.</span> <span class="nav-text">加锁操作</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#判断为非重量级锁"><span class="nav-number">3.2.1.</span> <span class="nav-text">判断为非重量级锁</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#解锁操作"><span class="nav-number">3.3.</span> <span class="nav-text">解锁操作</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#锁记录值为-0"><span class="nav-number">3.3.1.</span> <span class="nav-text">锁记录值为 0</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#锁记录值不为-0"><span class="nav-number">3.3.2.</span> <span class="nav-text">锁记录值不为 0</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#偏向锁"><span class="nav-number">4.</span> <span class="nav-text">偏向锁</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#加锁操作-1"><span class="nav-number">4.1.</span> <span class="nav-text">加锁操作</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#线程请求锁时"><span class="nav-number">4.1.1.</span> <span class="nav-text">线程请求锁时</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#epoch-值"><span class="nav-number">4.2.</span> <span class="nav-text">epoch 值</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#参考"><span class="nav-number">5.</span> <span class="nav-text">参考</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#monitorenter-和-monitorexit"><span class="nav-number">1.</span> <span class="nav-text">monitorenter 和 monitorexit</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#作用"><span class="nav-number">1.1.</span> <span class="nav-text">作用</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#执行-monitorenter"><span class="nav-number">1.2.</span> <span class="nav-text">执行 monitorenter</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#执行-monitorexit"><span class="nav-number">1.3.</span> <span class="nav-text">执行 monitorexit</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#为什么采用计数器的方式？"><span class="nav-number">1.4.</span> <span class="nav-text">为什么采用计数器的方式？</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#重量级锁"><span class="nav-number">2.</span> <span class="nav-text">重量级锁</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#自旋状态"><span class="nav-number">2.1.</span> <span class="nav-text">自旋状态</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#自旋状态的副作用：不公平的锁机制"><span class="nav-number">2.1.1.</span> <span class="nav-text">自旋状态的副作用：不公平的锁机制</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#轻量级锁"><span class="nav-number">3.</span> <span class="nav-text">轻量级锁</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#怎样区分轻量级锁和重量级锁？"><span class="nav-number">3.1.</span> <span class="nav-text">怎样区分轻量级锁和重量级锁？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#加锁操作"><span class="nav-number">3.2.</span> <span class="nav-text">加锁操作</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#判断为非重量级锁"><span class="nav-number">3.2.1.</span> <span class="nav-text">判断为非重量级锁</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#解锁操作"><span class="nav-number">3.3.</span> <span class="nav-text">解锁操作</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#锁记录值为-0"><span class="nav-number">3.3.1.</span> <span class="nav-text">锁记录值为 0</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#锁记录值不为-0"><span class="nav-number">3.3.2.</span> <span class="nav-text">锁记录值不为 0</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#偏向锁"><span class="nav-number">4.</span> <span class="nav-text">偏向锁</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#加锁操作-1"><span class="nav-number">4.1.</span> <span class="nav-text">加锁操作</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#线程请求锁时"><span class="nav-number">4.1.1.</span> <span class="nav-text">线程请求锁时</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#epoch-值"><span class="nav-number">4.2.</span> <span class="nav-text">epoch 值</span></a></li></ol></li></ol></div>
             
 
           </div>
@@ -839,7 +891,7 @@
 
     <footer id="footer" class="footer">
       <div class="footer-inner">
-        <div class="copyright">&copy; 2018 &mdash; <span itemprop="copyrightYear">2019</span>
+        <div class="copyright">&copy; 2018 &mdash; <span itemprop="copyrightYear">2020</span>
   <span class="with-love">
     <i class="fa fa-user"></i>
   </span>

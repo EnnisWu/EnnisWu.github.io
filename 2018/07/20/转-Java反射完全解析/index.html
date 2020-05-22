@@ -85,19 +85,19 @@
 
 
 
-<meta name="description" content="转载请注明出处：https://www.jianshu.com/p/607ff4e79a13  本文相关知识点大部分总结自Oracle官方文档，对于英文比较好的朋友，建议直接阅读原文档。 按例，首先描述一下定义：  Reflection enables Java code to discover information about the fields, methods and construc">
+<meta name="description" content="转自：Java反射完全解析 本文相关知识点大部分总结自Oracle官方文档，对于英文比较好的朋友，建议直接阅读原文档。 按例，首先描述一下定义：  Reflection enables Java code to discover information about the fields, methods and constructors of loaded classes, and to use">
 <meta name="keywords" content="Java,反射">
 <meta property="og:type" content="article">
-<meta property="og:title" content="[转]Java反射完全解析">
+<meta property="og:title" content="「转载」Java 反射完全解析">
 <meta property="og:url" content="http://blog.ennis.info/2018/07/20/转-Java反射完全解析/index.html">
 <meta property="og:site_name" content="Ennis Wu">
-<meta property="og:description" content="转载请注明出处：https://www.jianshu.com/p/607ff4e79a13  本文相关知识点大部分总结自Oracle官方文档，对于英文比较好的朋友，建议直接阅读原文档。 按例，首先描述一下定义：  Reflection enables Java code to discover information about the fields, methods and construc">
+<meta property="og:description" content="转自：Java反射完全解析 本文相关知识点大部分总结自Oracle官方文档，对于英文比较好的朋友，建议直接阅读原文档。 按例，首先描述一下定义：  Reflection enables Java code to discover information about the fields, methods and constructors of loaded classes, and to use">
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="https://mmbiz.qpic.cn/mmbiz_png/v1LbPPWiaSt5tL9GD0n77s3FwJiarzao9SKeiccYrAOy1qStMPfiadTQhuy4bmt3kx18tyf5zaq3ITOmRK3ib4Be6eA/640?wx_fmt=png&tp=webp&wxfrom=5&wx_lazy=1">
-<meta property="og:updated_time" content="2019-01-26T13:26:29.224Z">
+<meta property="og:updated_time" content="2020-05-18T17:11:14.780Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="[转]Java反射完全解析">
-<meta name="twitter:description" content="转载请注明出处：https://www.jianshu.com/p/607ff4e79a13  本文相关知识点大部分总结自Oracle官方文档，对于英文比较好的朋友，建议直接阅读原文档。 按例，首先描述一下定义：  Reflection enables Java code to discover information about the fields, methods and construc">
+<meta name="twitter:title" content="「转载」Java 反射完全解析">
+<meta name="twitter:description" content="转自：Java反射完全解析 本文相关知识点大部分总结自Oracle官方文档，对于英文比较好的朋友，建议直接阅读原文档。 按例，首先描述一下定义：  Reflection enables Java code to discover information about the fields, methods and constructors of loaded classes, and to use">
 <meta name="twitter:image" content="https://mmbiz.qpic.cn/mmbiz_png/v1LbPPWiaSt5tL9GD0n77s3FwJiarzao9SKeiccYrAOy1qStMPfiadTQhuy4bmt3kx18tyf5zaq3ITOmRK3ib4Be6eA/640?wx_fmt=png&tp=webp&wxfrom=5&wx_lazy=1">
 
 
@@ -134,7 +134,7 @@
 
 
 
-  <title>[转]Java反射完全解析 | Ennis Wu</title>
+  <title>「转载」Java 反射完全解析 | Ennis Wu</title>
   
 
 
@@ -340,6 +340,18 @@
 
  </div>
     </header>
+    <script>
+      let images = [
+         'header0.jpg',
+         'header1.jpg',
+         'header2.png'
+      ];
+      let image = images[Math.floor(Math.random() * images.length)];
+      window.document.getElementById('header').style.cssText 
+      = 'background: url(/images/avatar/' 
+      + image
+      + '); no-repeat; background-size: auto 100%;';
+    </script>
 
     <main id="main" class="main">
       <div class="main-inner">
@@ -378,7 +390,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">[转]Java反射完全解析</h1>
+          <h1 class="post-title" itemprop="name headline">「转载」Java 反射完全解析</h1>
         
 
         <div class="post-meta">
@@ -413,8 +425,8 @@
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Java反射/" itemprop="url" rel="index">
-                    <span itemprop="name">Java反射</span>
+                  <a href="/categories/Java/" itemprop="url" rel="index">
+                    <span itemprop="name">Java</span>
                   </a>
                 </span>
 
@@ -450,9 +462,7 @@
       
 
       
-        <blockquote>
-<p>转载请注明出处：<a href="https://www.jianshu.com/p/607ff4e79a13" target="_blank" rel="noopener">https://www.jianshu.com/p/607ff4e79a13</a></p>
-</blockquote>
+        <p>转自：<a href="https://www.jianshu.com/p/607ff4e79a13" target="_blank" rel="noopener">Java反射完全解析</a></p>
 <p>本文相关知识点大部分总结自<a href="https://docs.oracle.com/javase/8/docs/technotes/guides/reflection/index.html" target="_blank" rel="noopener">Oracle官方文档</a>，对于英文比较好的朋友，建议直接阅读原文档。</p>
 <p>按例，首先描述一下定义：</p>
 <blockquote>
@@ -460,10 +470,12 @@
 </blockquote>
 <p>简而言之，你可以在运行状态中通过反射机制做到：</p>
 <ul>
-<li>对于任意一个类，都能够知道这个类的所有属性和方法；</li>
-<li>对于任意一个对象，都能够调用它的任意一个方法和属性;</li>
+<li><p>对于任意一个类，都能够知道这个类的所有属性和方法；</p>
+</li>
+<li><p>对于任意一个对象，都能够调用它的任意一个方法和属性;</p>
+</li>
 </ul>
-<p>这种动态获取的信息以及动态调用对象的方法的功能称为java语言的反射机制。</p>
+<p>这种动态获取的信息以及动态调用对象的方法的功能称为 java 语言的反射机制。</p>
 <p>在我看来我们平时使用 Java 反射主要涉及两个类(接口) <a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Class.html" target="_blank" rel="noopener">Class</a>， <a href="https://docs.oracle.com/javase/8/docs/api/java/lang/reflect/Member.html" target="_blank" rel="noopener">Member</a>，如果把这两个类搞清楚了，反射基本就 ok 了。</p>
 <h1 id="Class"><a href="#Class" class="headerlink" title="Class"></a>Class</h1><p>提到反射就不得不提到 Class，Class 可以说是反射能够实现的基础；注意这里说的 Class与 class 关键字<strong>不是同一种东西</strong>。class 关键字是在声明 java 类时使用的；而 Class 是 java JDK 提供的一个类,完整路径为 <a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Class.html" target="_blank" rel="noopener">java.lang.Class</a>，本质上与 Math, String 或者你自己定义各种类没什么区别。</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">final</span> <span class="class"><span class="keyword">class</span> <span class="title">Class</span>&lt;<span class="title">T</span>&gt; <span class="keyword">implements</span> <span class="title">java</span>.<span class="title">io</span>.<span class="title">Serializable</span>, <span class="title">GenericDeclaration</span>, <span class="title">Type</span>, <span class="title">AnnotatedElement</span> </span>&#123;</span><br><span class="line">   ...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
@@ -833,8 +845,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2018/06/13/《TCPIP详解卷1》010阅读笔记/" rel="next" title="《TCPIP详解卷1》010阅读笔记">
-                <i class="fa fa-chevron-left"></i> 《TCPIP详解卷1》010阅读笔记
+              <a href="/2018/06/13/《TCPIP详解卷1》010阅读笔记/" rel="next" title="「TCP/IP详解 卷1」010 阅读笔记">
+                <i class="fa fa-chevron-left"></i> 「TCP/IP详解 卷1」010 阅读笔记
               </a>
             
           </div>
@@ -843,8 +855,8 @@
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2018/07/22/5种写法实现单例模式/" rel="prev" title="5种写法实现单例模式">
-                5种写法实现单例模式 <i class="fa fa-chevron-right"></i>
+              <a href="/2018/07/22/5种写法实现单例模式/" rel="prev" title="「笔记」5 种写法实现单例模式">
+                「笔记」5 种写法实现单例模式 <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
@@ -926,7 +938,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">59</span>
+                  <span class="site-state-item-count">76</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -937,7 +949,7 @@
               
               <div class="site-state-item site-state-categories">
                 <a href="/categories/index.html">
-                  <span class="site-state-item-count">14</span>
+                  <span class="site-state-item-count">10</span>
                   <span class="site-state-item-name">分类</span>
                 </a>
               </div>
@@ -948,7 +960,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">26</span>
+                  <span class="site-state-item-count">37</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>
@@ -1024,7 +1036,7 @@
 
     <footer id="footer" class="footer">
       <div class="footer-inner">
-        <div class="copyright">&copy; 2018 &mdash; <span itemprop="copyrightYear">2019</span>
+        <div class="copyright">&copy; 2018 &mdash; <span itemprop="copyrightYear">2020</span>
   <span class="with-love">
     <i class="fa fa-user"></i>
   </span>

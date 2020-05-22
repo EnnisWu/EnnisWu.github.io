@@ -72,7 +72,7 @@
 
 
 
-  <meta name="keywords" content="Android,状态栏,沉静模式,透明," />
+  <meta name="keywords" content="Android,状态栏,沉静模式," />
 
 
 
@@ -85,18 +85,18 @@
 
 
 
-<meta name="description" content="Java实现通过Java代码实现的思路是通过当前界面DecorView设置UI可见性实现。    flag 作用     SYSTEM_UI_FLAG_FULLSCREEN 请求进入普通全屏模式   SYSTEM_UI_FLAG_HIDE_NAVIGATION 请求暂时隐藏系统导航栏   SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN    SYSTEM_UI_FLAG_LAYO">
-<meta name="keywords" content="Android,状态栏,沉静模式,透明">
+<meta name="description" content="原文 Android状态栏微技巧，带你真正理解沉浸式模式  Android全屏，隐藏状态栏和标题栏  Android透明状态栏与沉浸模式全解   Java 实现通过Java 代码实现的思路是通过当前界面 DecorView 设置 UI 可见性实现。    flag 作用     SYSTEM_UI_FLAG_FULLSCREEN 请求进入普通全屏模式   SYSTEM_UI_FLAG_HIDE_N">
+<meta name="keywords" content="Android,状态栏,沉静模式">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Android透明状态栏与沉浸模式总结">
+<meta property="og:title" content="「笔记」Android 透明状态栏与沉浸模式总结">
 <meta property="og:url" content="http://blog.ennis.info/2018/08/02/Android透明状态栏与沉浸模式总结/index.html">
 <meta property="og:site_name" content="Ennis Wu">
-<meta property="og:description" content="Java实现通过Java代码实现的思路是通过当前界面DecorView设置UI可见性实现。    flag 作用     SYSTEM_UI_FLAG_FULLSCREEN 请求进入普通全屏模式   SYSTEM_UI_FLAG_HIDE_NAVIGATION 请求暂时隐藏系统导航栏   SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN    SYSTEM_UI_FLAG_LAYO">
+<meta property="og:description" content="原文 Android状态栏微技巧，带你真正理解沉浸式模式  Android全屏，隐藏状态栏和标题栏  Android透明状态栏与沉浸模式全解   Java 实现通过Java 代码实现的思路是通过当前界面 DecorView 设置 UI 可见性实现。    flag 作用     SYSTEM_UI_FLAG_FULLSCREEN 请求进入普通全屏模式   SYSTEM_UI_FLAG_HIDE_N">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2019-01-26T13:26:28.963Z">
+<meta property="og:updated_time" content="2020-05-18T16:34:06.393Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Android透明状态栏与沉浸模式总结">
-<meta name="twitter:description" content="Java实现通过Java代码实现的思路是通过当前界面DecorView设置UI可见性实现。    flag 作用     SYSTEM_UI_FLAG_FULLSCREEN 请求进入普通全屏模式   SYSTEM_UI_FLAG_HIDE_NAVIGATION 请求暂时隐藏系统导航栏   SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN    SYSTEM_UI_FLAG_LAYO">
+<meta name="twitter:title" content="「笔记」Android 透明状态栏与沉浸模式总结">
+<meta name="twitter:description" content="原文 Android状态栏微技巧，带你真正理解沉浸式模式  Android全屏，隐藏状态栏和标题栏  Android透明状态栏与沉浸模式全解   Java 实现通过Java 代码实现的思路是通过当前界面 DecorView 设置 UI 可见性实现。    flag 作用     SYSTEM_UI_FLAG_FULLSCREEN 请求进入普通全屏模式   SYSTEM_UI_FLAG_HIDE_N">
 
 
 
@@ -132,7 +132,7 @@
 
 
 
-  <title>Android透明状态栏与沉浸模式总结 | Ennis Wu</title>
+  <title>「笔记」Android 透明状态栏与沉浸模式总结 | Ennis Wu</title>
   
 
 
@@ -338,6 +338,18 @@
 
  </div>
     </header>
+    <script>
+      let images = [
+         'header0.jpg',
+         'header1.jpg',
+         'header2.png'
+      ];
+      let image = images[Math.floor(Math.random() * images.length)];
+      window.document.getElementById('header').style.cssText 
+      = 'background: url(/images/avatar/' 
+      + image
+      + '); no-repeat; background-size: auto 100%;';
+    </script>
 
     <main id="main" class="main">
       <div class="main-inner">
@@ -376,7 +388,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">Android透明状态栏与沉浸模式总结</h1>
+          <h1 class="post-title" itemprop="name headline">「笔记」Android 透明状态栏与沉浸模式总结</h1>
         
 
         <div class="post-meta">
@@ -411,8 +423,8 @@
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Android视图/" itemprop="url" rel="index">
-                    <span itemprop="name">Android视图</span>
+                  <a href="/categories/Android/" itemprop="url" rel="index">
+                    <span itemprop="name">Android</span>
                   </a>
                 </span>
 
@@ -448,7 +460,15 @@
       
 
       
-        <h1 id="Java实现"><a href="#Java实现" class="headerlink" title="Java实现"></a>Java实现</h1><p>通过Java代码实现的思路是通过当前界面DecorView设置UI可见性实现。</p>
+        <h1 id="原文"><a href="#原文" class="headerlink" title="原文"></a>原文</h1><ul>
+<li><p><a href="https://blog.csdn.net/guolin_blog/article/details/51763825" target="_blank" rel="noopener">Android状态栏微技巧，带你真正理解沉浸式模式</a></p>
+</li>
+<li><p><a href="https://blog.csdn.net/do168/article/details/51587935" target="_blank" rel="noopener">Android全屏，隐藏状态栏和标题栏</a></p>
+</li>
+<li><p><a href="https://blog.csdn.net/tc_xingdechen/article/details/68958337" target="_blank" rel="noopener">Android透明状态栏与沉浸模式全解</a></p>
+</li>
+</ul>
+<h1 id="Java-实现"><a href="#Java-实现" class="headerlink" title="Java 实现"></a>Java 实现</h1><p>通过Java 代码实现的思路是通过当前界面 DecorView 设置 UI 可见性实现。</p>
 <table>
 <thead>
 <tr>
@@ -482,35 +502,28 @@
 </tr>
 </tbody>
 </table>
-<p>通过组合上面的6中flag实现各种效果</p>
-<h2 id="隐藏状态栏"><a href="#隐藏状态栏" class="headerlink" title="隐藏状态栏"></a>隐藏状态栏</h2><p>支持Android4.1及以上</p>
+<p>通过组合上面的 6 中 flag 实现各种效果</p>
+<h2 id="隐藏状态栏"><a href="#隐藏状态栏" class="headerlink" title="隐藏状态栏"></a>隐藏状态栏</h2><p>支持 Android 4.1 及以上</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span> option = View.SYSTEM_UI_FLAG_FULLSCREEN;</span><br><span class="line">getWindow().getDecorView().setSystemUiVisibility(option);</span><br></pre></td></tr></table></figure>
 <p>注：下滑顶部会重新显示</p>
-<h2 id="透明状态栏"><a href="#透明状态栏" class="headerlink" title="透明状态栏"></a>透明状态栏</h2><p>支持Android5.0及以上</p>
+<h2 id="透明状态栏"><a href="#透明状态栏" class="headerlink" title="透明状态栏"></a>透明状态栏</h2><p>支持 Android 5.0 及以上</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span> option = View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN | View.SYSTEM_UI_FLAG_LAYOUT_STABLE;</span><br><span class="line">getWindow().getDecorView().setSystemUiVisibility(option);</span><br><span class="line">getWindow().setStatusBarColor(Color.TRANSPARENT);</span><br></pre></td></tr></table></figure>
-<h2 id="隐藏状态栏及导航栏"><a href="#隐藏状态栏及导航栏" class="headerlink" title="隐藏状态栏及导航栏"></a>隐藏状态栏及导航栏</h2><p>支持Android4.1及以上</p>
+<h2 id="隐藏状态栏及导航栏"><a href="#隐藏状态栏及导航栏" class="headerlink" title="隐藏状态栏及导航栏"></a>隐藏状态栏及导航栏</h2><p>支持 Android 4.1 及以上</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span> option = View.SYSTEM_UI_FLAG_FULLSCREEN | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION;</span><br><span class="line">getWindow().getDecorView().setSystemUiVisibility(option);</span><br></pre></td></tr></table></figure>
 <p>注：点击屏幕会退出全屏</p>
-<h2 id="透明状态栏及透明导航栏"><a href="#透明状态栏及透明导航栏" class="headerlink" title="透明状态栏及透明导航栏"></a>透明状态栏及透明导航栏</h2><p>支持Android5.0及以上</p>
+<h2 id="透明状态栏及透明导航栏"><a href="#透明状态栏及透明导航栏" class="headerlink" title="透明状态栏及透明导航栏"></a>透明状态栏及透明导航栏</h2><p>支持 Android 5.0 及以上</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span> option = <span class="keyword">int</span> option = View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION | View.SYSTEM_UI_FLAG_LAYOUT_STABLE;</span><br><span class="line">getWindow().getDecorView().setSystemUiVisibility(option);</span><br><span class="line">getWindow().setStatusBarColor(Color.TRANSPARENT);</span><br><span class="line">getWindow().setNavigationBarColor(Color.TRANSPARENT);</span><br></pre></td></tr></table></figure>
-<h2 id="沉浸模式"><a href="#沉浸模式" class="headerlink" title="沉浸模式"></a>沉浸模式</h2><p>支持Android4.4及以上</p>
+<h2 id="沉浸模式"><a href="#沉浸模式" class="headerlink" title="沉浸模式"></a>沉浸模式</h2><p>支持 Android 4.4 及以上</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span> option = View.SYSTEM_UI_FLAG_FULLSCREEN | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN | View.SYSTEM_UI_FLAG_LAYOUT_STABLE | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY;</span><br><span class="line">getWindow().getDecorView().setSystemUiVisibility(option);</span><br></pre></td></tr></table></figure>
 <p>注：滑动状态栏或导航栏的位置显示状态栏和导航栏，一段时间未操作再次隐藏</p>
-<h1 id="XML实现"><a href="#XML实现" class="headerlink" title="XML实现"></a>XML实现</h1><p>通过设置activity的style实现</p>
+<h1 id="XML-实现"><a href="#XML-实现" class="headerlink" title="XML 实现"></a>XML 实现</h1><p>通过设置 activity 的 style 实现</p>
 <h2 id="隐藏状态栏-1"><a href="#隐藏状态栏-1" class="headerlink" title="隐藏状态栏"></a>隐藏状态栏</h2><figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">style</span> <span class="attr">name</span>=<span class="string">"AppTheme"</span> <span class="attr">parent</span>=<span class="string">"@style/Theme.AppCompat.Light.NoActionBar"</span>&gt;</span><span class="undefined"></span></span><br><span class="line"><span class="xml">	<span class="tag">&lt;<span class="name">item</span> <span class="attr">name</span>=<span class="string">"windowNoTitle"</span>&gt;</span>true<span class="tag">&lt;/<span class="name">item</span>&gt;</span></span></span><br><span class="line"><span class="xml">	<span class="tag">&lt;<span class="name">item</span> <span class="attr">name</span>=<span class="string">"android:windowFullscreen"</span>&gt;</span>true<span class="tag">&lt;/<span class="name">item</span>&gt;</span></span></span><br><span class="line"><span class="undefined"></span><span class="tag">&lt;/<span class="name">style</span>&gt;</span></span><br></pre></td></tr></table></figure>
-<h2 id="透明状态栏-1"><a href="#透明状态栏-1" class="headerlink" title="透明状态栏"></a>透明状态栏</h2><p>Android4.4</p>
+<h2 id="透明状态栏-1"><a href="#透明状态栏-1" class="headerlink" title="透明状态栏"></a>透明状态栏</h2><p>Android 4.4</p>
 <figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">style</span> <span class="attr">name</span>=<span class="string">"fullScreenTheme"</span> <span class="attr">parent</span>=<span class="string">"Theme.AppCompat.Light.DarkActionBar"</span>&gt;</span><span class="undefined"></span></span><br><span class="line"><span class="xml">	<span class="tag">&lt;<span class="name">item</span> <span class="attr">name</span>=<span class="string">"android:windowTranslucentStatus"</span>&gt;</span>true<span class="tag">&lt;/<span class="name">item</span>&gt;</span></span></span><br><span class="line"><span class="xml">	<span class="tag">&lt;<span class="name">item</span> <span class="attr">name</span>=<span class="string">"android:windowTranslucentNavigation"</span>&gt;</span>true<span class="tag">&lt;/<span class="name">item</span>&gt;</span></span></span><br><span class="line"><span class="undefined"></span><span class="tag">&lt;/<span class="name">style</span>&gt;</span></span><br></pre></td></tr></table></figure>
-<p>如果添加了DrawerLayout需要设置，否则DrawerLayout部分状态栏是灰色的。</p>
+<p>如果添加了 DrawerLayout 需要设置，否则 DrawerLayout 部分状态栏是灰色的。</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">mDrawerLayout.setFitsSystemWindows(<span class="keyword">true</span>);</span><br><span class="line">mDrawerLayout.setClipToPadding(<span class="keyword">false</span>);</span><br></pre></td></tr></table></figure>
-<p>Android5.0</p>
+<p>Android 5.0</p>
 <figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">style</span> <span class="attr">name</span>=<span class="string">"fullScreenTheme"</span> <span class="attr">parent</span>=<span class="string">"Theme.AppCompat.Light.DarkActionBar"</span>&gt;</span><span class="undefined"></span></span><br><span class="line"><span class="xml">	<span class="tag">&lt;<span class="name">item</span> <span class="attr">name</span>=<span class="string">"android:windowTranslucentStatus"</span>&gt;</span>false<span class="tag">&lt;/<span class="name">item</span>&gt;</span></span></span><br><span class="line"><span class="xml">	<span class="tag">&lt;<span class="name">item</span> <span class="attr">name</span>=<span class="string">"android:windowTranslucentNavigation"</span>&gt;</span>true<span class="tag">&lt;/<span class="name">item</span>&gt;</span></span></span><br><span class="line"><span class="xml">	<span class="tag">&lt;<span class="name">item</span> <span class="attr">name</span>=<span class="string">"android:statusBarColor"</span>&gt;</span>@android:color/transparent<span class="tag">&lt;/<span class="name">item</span>&gt;</span></span></span><br><span class="line"><span class="undefined"></span><span class="tag">&lt;/<span class="name">style</span>&gt;</span></span><br></pre></td></tr></table></figure>
-<h1 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h1><blockquote>
-<ul>
-<li><a href="https://blog.csdn.net/guolin_blog/article/details/51763825" target="_blank" rel="noopener">https://blog.csdn.net/guolin_blog/article/details/51763825</a></li>
-<li><a href="https://blog.csdn.net/do168/article/details/51587935" target="_blank" rel="noopener">https://blog.csdn.net/do168/article/details/51587935</a></li>
-<li><a href="https://blog.csdn.net/tc_xingdechen/article/details/68958337" target="_blank" rel="noopener">https://blog.csdn.net/tc_xingdechen/article/details/68958337</a></li>
-</ul>
-</blockquote>
 
       
     </div>
@@ -563,8 +576,6 @@
           
             <a href="/tags/沉静模式/" rel="tag"># 沉静模式</a>
           
-            <a href="/tags/透明/" rel="tag"># 透明</a>
-          
         </div>
       
 
@@ -576,8 +587,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2018/08/01/获取Activity根布局/" rel="next" title="获取Activity根布局">
-                <i class="fa fa-chevron-left"></i> 获取Activity根布局
+              <a href="/2018/08/01/获取Activity根布局/" rel="next" title="「笔记」获取 Activity 根布局">
+                <i class="fa fa-chevron-left"></i> 「笔记」获取 Activity 根布局
               </a>
             
           </div>
@@ -586,8 +597,8 @@
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2018/08/03/Java中进制转换/" rel="prev" title="Java中进制转换">
-                Java中进制转换 <i class="fa fa-chevron-right"></i>
+              <a href="/2018/08/03/Java中进制转换/" rel="prev" title="「笔记」Java 中进制转换">
+                「笔记」Java 中进制转换 <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
@@ -669,7 +680,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">59</span>
+                  <span class="site-state-item-count">76</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -680,7 +691,7 @@
               
               <div class="site-state-item site-state-categories">
                 <a href="/categories/index.html">
-                  <span class="site-state-item-count">14</span>
+                  <span class="site-state-item-count">10</span>
                   <span class="site-state-item-name">分类</span>
                 </a>
               </div>
@@ -691,7 +702,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">26</span>
+                  <span class="site-state-item-count">37</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>
@@ -747,7 +758,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Java实现"><span class="nav-number">1.</span> <span class="nav-text">Java实现</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#隐藏状态栏"><span class="nav-number">1.1.</span> <span class="nav-text">隐藏状态栏</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#透明状态栏"><span class="nav-number">1.2.</span> <span class="nav-text">透明状态栏</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#隐藏状态栏及导航栏"><span class="nav-number">1.3.</span> <span class="nav-text">隐藏状态栏及导航栏</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#透明状态栏及透明导航栏"><span class="nav-number">1.4.</span> <span class="nav-text">透明状态栏及透明导航栏</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#沉浸模式"><span class="nav-number">1.5.</span> <span class="nav-text">沉浸模式</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#XML实现"><span class="nav-number">2.</span> <span class="nav-text">XML实现</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#隐藏状态栏-1"><span class="nav-number">2.1.</span> <span class="nav-text">隐藏状态栏</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#透明状态栏-1"><span class="nav-number">2.2.</span> <span class="nav-text">透明状态栏</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#参考"><span class="nav-number">3.</span> <span class="nav-text">参考</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#原文"><span class="nav-number">1.</span> <span class="nav-text">原文</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Java-实现"><span class="nav-number">2.</span> <span class="nav-text">Java 实现</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#隐藏状态栏"><span class="nav-number">2.1.</span> <span class="nav-text">隐藏状态栏</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#透明状态栏"><span class="nav-number">2.2.</span> <span class="nav-text">透明状态栏</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#隐藏状态栏及导航栏"><span class="nav-number">2.3.</span> <span class="nav-text">隐藏状态栏及导航栏</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#透明状态栏及透明导航栏"><span class="nav-number">2.4.</span> <span class="nav-text">透明状态栏及透明导航栏</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#沉浸模式"><span class="nav-number">2.5.</span> <span class="nav-text">沉浸模式</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#XML-实现"><span class="nav-number">3.</span> <span class="nav-text">XML 实现</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#隐藏状态栏-1"><span class="nav-number">3.1.</span> <span class="nav-text">隐藏状态栏</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#透明状态栏-1"><span class="nav-number">3.2.</span> <span class="nav-text">透明状态栏</span></a></li></ol></li></ol></div>
             
 
           </div>
@@ -767,7 +778,7 @@
 
     <footer id="footer" class="footer">
       <div class="footer-inner">
-        <div class="copyright">&copy; 2018 &mdash; <span itemprop="copyrightYear">2019</span>
+        <div class="copyright">&copy; 2018 &mdash; <span itemprop="copyrightYear">2020</span>
   <span class="with-love">
     <i class="fa fa-user"></i>
   </span>

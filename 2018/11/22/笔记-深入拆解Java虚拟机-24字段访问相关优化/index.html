@@ -85,18 +85,18 @@
 
 
 
-<meta name="description" content="字段读取优化 即时编译器会优化实例字段和静态字段访问，以减少总的内存访问数目。  沿控制流，缓存各个字段存储节点将要存储的值，或者字段读取节点所得到的值。 遇到对同一字段的读取节点时，如果缓存值还没有失效，将读取节点替换为该缓存值。 遇到对同一字段的存储节点时，更新所缓存的值。 遇到可能更新字段的节点时，采取保守策略，舍弃所有缓存值。   如果字段读取节点被替换成一个常量，将进一步触发更多优化。">
+<meta name="description" content="原文：https://time.geekbang.org/column/article/39683 字段读取优化 即时编译器会优化实例字段和静态字段访问，以减少总的内存访问数目。  沿控制流，缓存各个字段存储节点将要存储的值，或者字段读取节点所得到的值。  遇到对同一字段的读取节点时，如果缓存值还没有失效，将读取节点替换为该缓存值。  遇到对同一字段的存储节点时，更新所缓存的值。  遇到可能更新字">
 <meta name="keywords" content="JVM">
 <meta property="og:type" content="article">
-<meta property="og:title" content="笔记-深入拆解Java虚拟机-24字段访问相关优化">
+<meta property="og:title" content="「深入拆解 Java 虚拟机」24 字段访问相关优化">
 <meta property="og:url" content="http://blog.ennis.info/2018/11/22/笔记-深入拆解Java虚拟机-24字段访问相关优化/index.html">
 <meta property="og:site_name" content="Ennis Wu">
-<meta property="og:description" content="字段读取优化 即时编译器会优化实例字段和静态字段访问，以减少总的内存访问数目。  沿控制流，缓存各个字段存储节点将要存储的值，或者字段读取节点所得到的值。 遇到对同一字段的读取节点时，如果缓存值还没有失效，将读取节点替换为该缓存值。 遇到对同一字段的存储节点时，更新所缓存的值。 遇到可能更新字段的节点时，采取保守策略，舍弃所有缓存值。   如果字段读取节点被替换成一个常量，将进一步触发更多优化。">
+<meta property="og:description" content="原文：https://time.geekbang.org/column/article/39683 字段读取优化 即时编译器会优化实例字段和静态字段访问，以减少总的内存访问数目。  沿控制流，缓存各个字段存储节点将要存储的值，或者字段读取节点所得到的值。  遇到对同一字段的读取节点时，如果缓存值还没有失效，将读取节点替换为该缓存值。  遇到对同一字段的存储节点时，更新所缓存的值。  遇到可能更新字">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2019-01-26T13:26:29.132Z">
+<meta property="og:updated_time" content="2020-05-21T16:47:06.927Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="笔记-深入拆解Java虚拟机-24字段访问相关优化">
-<meta name="twitter:description" content="字段读取优化 即时编译器会优化实例字段和静态字段访问，以减少总的内存访问数目。  沿控制流，缓存各个字段存储节点将要存储的值，或者字段读取节点所得到的值。 遇到对同一字段的读取节点时，如果缓存值还没有失效，将读取节点替换为该缓存值。 遇到对同一字段的存储节点时，更新所缓存的值。 遇到可能更新字段的节点时，采取保守策略，舍弃所有缓存值。   如果字段读取节点被替换成一个常量，将进一步触发更多优化。">
+<meta name="twitter:title" content="「深入拆解 Java 虚拟机」24 字段访问相关优化">
+<meta name="twitter:description" content="原文：https://time.geekbang.org/column/article/39683 字段读取优化 即时编译器会优化实例字段和静态字段访问，以减少总的内存访问数目。  沿控制流，缓存各个字段存储节点将要存储的值，或者字段读取节点所得到的值。  遇到对同一字段的读取节点时，如果缓存值还没有失效，将读取节点替换为该缓存值。  遇到对同一字段的存储节点时，更新所缓存的值。  遇到可能更新字">
 
 
 
@@ -132,7 +132,7 @@
 
 
 
-  <title>笔记-深入拆解Java虚拟机-24字段访问相关优化 | Ennis Wu</title>
+  <title>「深入拆解 Java 虚拟机」24 字段访问相关优化 | Ennis Wu</title>
   
 
 
@@ -338,6 +338,18 @@
 
  </div>
     </header>
+    <script>
+      let images = [
+         'header0.jpg',
+         'header1.jpg',
+         'header2.png'
+      ];
+      let image = images[Math.floor(Math.random() * images.length)];
+      window.document.getElementById('header').style.cssText 
+      = 'background: url(/images/avatar/' 
+      + image
+      + '); no-repeat; background-size: auto 100%;';
+    </script>
 
     <main id="main" class="main">
       <div class="main-inner">
@@ -376,7 +388,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">笔记-深入拆解Java虚拟机-24字段访问相关优化</h1>
+          <h1 class="post-title" itemprop="name headline">「深入拆解 Java 虚拟机」24 字段访问相关优化</h1>
         
 
         <div class="post-meta">
@@ -411,8 +423,8 @@
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Java虚拟机/" itemprop="url" rel="index">
-                    <span itemprop="name">Java虚拟机</span>
+                  <a href="/categories/《深入拆解-Java-虚拟机》/" itemprop="url" rel="index">
+                    <span itemprop="name">《深入拆解 Java 虚拟机》</span>
                   </a>
                 </span>
 
@@ -448,13 +460,18 @@
       
 
       
-        <h1 id="字段读取优化"><a href="#字段读取优化" class="headerlink" title="字段读取优化"></a>字段读取优化</h1><ul>
+        <p>原文：<a href="https://time.geekbang.org/column/article/39683" target="_blank" rel="noopener">https://time.geekbang.org/column/article/39683</a></p>
+<h1 id="字段读取优化"><a href="#字段读取优化" class="headerlink" title="字段读取优化"></a>字段读取优化</h1><ul>
 <li><p>即时编译器会<strong>优化实例字段和静态字段访问</strong>，以减少总的内存访问数目。</p>
 <ul>
-<li>沿控制流，缓存各个字段存储节点将要存储的值，或者字段读取节点所得到的值。</li>
-<li>遇到对同一字段的读取节点时，如果缓存值还没有失效，将读取节点替换为该缓存值。</li>
-<li>遇到对同一字段的存储节点时，更新所缓存的值。</li>
-<li>遇到可能更新字段的节点时，采取保守策略，舍弃所有缓存值。</li>
+<li><p>沿控制流，缓存各个字段存储节点将要存储的值，或者字段读取节点所得到的值。</p>
+</li>
+<li><p>遇到对同一字段的读取节点时，如果缓存值还没有失效，将读取节点替换为该缓存值。</p>
+</li>
+<li><p>遇到对同一字段的存储节点时，更新所缓存的值。</p>
+</li>
+<li><p>遇到可能更新字段的节点时，采取保守策略，舍弃所有缓存值。</p>
+</li>
 </ul>
 </li>
 <li><p>如果字段读取节点被替换成一个常量，将进一步触发更多优化。</p>
@@ -464,23 +481,26 @@
 </li>
 <li><p>即时编译器将在 volatile 字段访问前后插入内存屏障节点。</p>
 </li>
-<li><strong>内存屏障节点会阻止即时编译器将屏障之前所缓存的值用于屏障之后的读取节点之上。</strong></li>
-<li><strong>加锁、解锁操作会阻止即时编译器的字段读取优化。</strong></li>
+<li><p><strong>内存屏障节点会阻止即时编译器将屏障之前所缓存的值用于屏障之后的读取节点之上。</strong></p>
+</li>
+<li><p><strong>加锁、解锁操作会阻止即时编译器的字段读取优化。</strong></p>
+</li>
 </ul>
 <h1 id="字段存储优化"><a href="#字段存储优化" class="headerlink" title="字段存储优化"></a>字段存储优化</h1><ul>
-<li>即时编译器会<strong>消除冗余的存储节点</strong>。</li>
-<li>如果字段被标记为 <strong>volatile</strong>，即时编译器<strong>不能</strong>将冗余的存储操作<strong>消除</strong>掉。</li>
+<li><p>即时编译器会<strong>消除冗余的存储节点</strong>。</p>
+</li>
+<li><p>如果字段被标记为 <strong>volatile</strong>，即时编译器<strong>不能</strong>将冗余的存储操作<strong>消除</strong>掉。</p>
+</li>
 </ul>
 <h1 id="死代码消除（dead-code-eliminiation）"><a href="#死代码消除（dead-code-eliminiation）" class="headerlink" title="死代码消除（dead code eliminiation）"></a>死代码消除（dead code eliminiation）</h1><ul>
-<li><strong>消除局部变量的死存储</strong>（dead store）（涉及冗余存储）。</li>
-<li><strong>消除不可达分支。</strong></li>
+<li><p><strong>消除局部变量的死存储</strong>（dead store）（涉及冗余存储）。</p>
+</li>
+<li><p><strong>消除不可达分支。</strong></p>
+</li>
 </ul>
 <h1 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h1><p>Q：思考即时编译器会怎么优化下面代码中的除法操作？</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">bar</span><span class="params">(<span class="keyword">int</span> x, <span class="keyword">int</span> y)</span> </span>&#123;</span><br><span class="line">	<span class="keyword">int</span> t = x/y;</span><br><span class="line">	t = x+y;</span><br><span class="line">	<span class="keyword">return</span> t;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>A：<strong>除法无法优化，因为可能存在除零异常。</strong>s即时编译器需要判断除数是否为 0。</p>
-<h1 id="引用"><a href="#引用" class="headerlink" title="引用"></a>引用</h1><blockquote>
-<p><a href="https://time.geekbang.org/column/article/39683" target="_blank" rel="noopener">https://time.geekbang.org/column/article/39683</a></p>
-</blockquote>
 
       
     </div>
@@ -540,8 +560,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2018/11/15/笔记-深入拆解Java虚拟机-23逃逸分析/" rel="next" title="笔记-深入拆解Java虚拟机-23逃逸分析">
-                <i class="fa fa-chevron-left"></i> 笔记-深入拆解Java虚拟机-23逃逸分析
+              <a href="/2018/11/15/笔记-深入拆解Java虚拟机-23逃逸分析/" rel="next" title="「深入拆解 Java 虚拟机」23 逃逸分析">
+                <i class="fa fa-chevron-left"></i> 「深入拆解 Java 虚拟机」23 逃逸分析
               </a>
             
           </div>
@@ -550,8 +570,8 @@
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2018/11/24/笔记-深入拆解Java虚拟机-25循环优化/" rel="prev" title="笔记-深入拆解Java虚拟机-25循环优化">
-                笔记-深入拆解Java虚拟机-25循环优化 <i class="fa fa-chevron-right"></i>
+              <a href="/2018/11/24/笔记-深入拆解Java虚拟机-25循环优化/" rel="prev" title="「深入拆解 Java 虚拟机」25 循环优化">
+                「深入拆解 Java 虚拟机」25 循环优化 <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
@@ -633,7 +653,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">59</span>
+                  <span class="site-state-item-count">76</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -644,7 +664,7 @@
               
               <div class="site-state-item site-state-categories">
                 <a href="/categories/index.html">
-                  <span class="site-state-item-count">14</span>
+                  <span class="site-state-item-count">10</span>
                   <span class="site-state-item-name">分类</span>
                 </a>
               </div>
@@ -655,7 +675,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">26</span>
+                  <span class="site-state-item-count">37</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>
@@ -711,7 +731,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#字段读取优化"><span class="nav-number">1.</span> <span class="nav-text">字段读取优化</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#字段存储优化"><span class="nav-number">2.</span> <span class="nav-text">字段存储优化</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#死代码消除（dead-code-eliminiation）"><span class="nav-number">3.</span> <span class="nav-text">死代码消除（dead code eliminiation）</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#问题"><span class="nav-number">4.</span> <span class="nav-text">问题</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#引用"><span class="nav-number">5.</span> <span class="nav-text">引用</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#字段读取优化"><span class="nav-number">1.</span> <span class="nav-text">字段读取优化</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#字段存储优化"><span class="nav-number">2.</span> <span class="nav-text">字段存储优化</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#死代码消除（dead-code-eliminiation）"><span class="nav-number">3.</span> <span class="nav-text">死代码消除（dead code eliminiation）</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#问题"><span class="nav-number">4.</span> <span class="nav-text">问题</span></a></li></ol></div>
             
 
           </div>
@@ -731,7 +751,7 @@
 
     <footer id="footer" class="footer">
       <div class="footer-inner">
-        <div class="copyright">&copy; 2018 &mdash; <span itemprop="copyrightYear">2019</span>
+        <div class="copyright">&copy; 2018 &mdash; <span itemprop="copyrightYear">2020</span>
   <span class="with-love">
     <i class="fa fa-user"></i>
   </span>

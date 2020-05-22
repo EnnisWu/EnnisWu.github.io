@@ -88,15 +88,15 @@
 <meta name="description" content="过度绘制（Overdraw） 过度绘制（Overdraw）指的是屏幕上的某个像素在同一帧的时间内被绘制了多次。  检测过度绘制Android 中打开过度绘制检测工具的方式：  开发者选项 ➡ 调试GPU过度绘制 ➡ 显示过度绘制区域  界面中会出现不同颜色的区域，各颜色代表的意思：  过度绘制优化移除布局中不需要的背景移除 Window 默认的 Background通常使用的 theme 会包含一">
 <meta name="keywords" content="Android,优化,视图">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Android的视图优化方法">
+<meta property="og:title" content="「笔记」Android 的视图优化方法">
 <meta property="og:url" content="http://blog.ennis.info/2018/11/07/Android的视图优化方法/index.html">
 <meta property="og:site_name" content="Ennis Wu">
 <meta property="og:description" content="过度绘制（Overdraw） 过度绘制（Overdraw）指的是屏幕上的某个像素在同一帧的时间内被绘制了多次。  检测过度绘制Android 中打开过度绘制检测工具的方式：  开发者选项 ➡ 调试GPU过度绘制 ➡ 显示过度绘制区域  界面中会出现不同颜色的区域，各颜色代表的意思：  过度绘制优化移除布局中不需要的背景移除 Window 默认的 Background通常使用的 theme 会包含一">
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="http://blog.ennis.info/images/posts/android/Android的视图优化方法/overdraw.webp">
-<meta property="og:updated_time" content="2019-01-26T13:26:28.945Z">
+<meta property="og:updated_time" content="2020-05-18T16:54:02.976Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Android的视图优化方法">
+<meta name="twitter:title" content="「笔记」Android 的视图优化方法">
 <meta name="twitter:description" content="过度绘制（Overdraw） 过度绘制（Overdraw）指的是屏幕上的某个像素在同一帧的时间内被绘制了多次。  检测过度绘制Android 中打开过度绘制检测工具的方式：  开发者选项 ➡ 调试GPU过度绘制 ➡ 显示过度绘制区域  界面中会出现不同颜色的区域，各颜色代表的意思：  过度绘制优化移除布局中不需要的背景移除 Window 默认的 Background通常使用的 theme 会包含一">
 <meta name="twitter:image" content="http://blog.ennis.info/images/posts/android/Android的视图优化方法/overdraw.webp">
 
@@ -134,7 +134,7 @@
 
 
 
-  <title>Android的视图优化方法 | Ennis Wu</title>
+  <title>「笔记」Android 的视图优化方法 | Ennis Wu</title>
   
 
 
@@ -340,6 +340,18 @@
 
  </div>
     </header>
+    <script>
+      let images = [
+         'header0.jpg',
+         'header1.jpg',
+         'header2.png'
+      ];
+      let image = images[Math.floor(Math.random() * images.length)];
+      window.document.getElementById('header').style.cssText 
+      = 'background: url(/images/avatar/' 
+      + image
+      + '); no-repeat; background-size: auto 100%;';
+    </script>
 
     <main id="main" class="main">
       <div class="main-inner">
@@ -378,7 +390,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">Android的视图优化方法</h1>
+          <h1 class="post-title" itemprop="name headline">「笔记」Android 的视图优化方法</h1>
         
 
         <div class="post-meta">
@@ -413,8 +425,8 @@
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Android优化/" itemprop="url" rel="index">
-                    <span itemprop="name">Android优化</span>
+                  <a href="/categories/Android/" itemprop="url" rel="index">
+                    <span itemprop="name">Android</span>
                   </a>
                 </span>
 
@@ -476,9 +488,12 @@
 </ul>
 <h2 id="减少透明度的使用"><a href="#减少透明度的使用" class="headerlink" title="减少透明度的使用"></a>减少透明度的使用</h2><p>View 设置了 alpha 值至少渲染两次。</p>
 <h1 id="布局优化"><a href="#布局优化" class="headerlink" title="布局优化"></a>布局优化</h1><ul>
-<li>LinearLayout 与 RelativeLayout 作用相同时使用 LinearLayout。</li>
-<li>LinearLayout 需要嵌套时使用 RelativeLayout。</li>
-<li>使用 ConstraintLayout。</li>
+<li><p>LinearLayout 与 RelativeLayout 作用相同时使用 LinearLayout。</p>
+</li>
+<li><p>LinearLayout 需要嵌套时使用 RelativeLayout。</p>
+</li>
+<li><p>使用 ConstraintLayout。</p>
+</li>
 </ul>
 <h2 id="使用-Layout-Inspector-查看-layout-层次结构"><a href="#使用-Layout-Inspector-查看-layout-层次结构" class="headerlink" title="使用 Layout Inspector 查看 layout 层次结构"></a>使用 Layout Inspector 查看 layout 层次结构</h2><blockquote>
 <p>Tools &gt; Android &gt; Layout Inspector</p>
@@ -490,17 +505,23 @@
 </blockquote>
 </blockquote>
 <h2 id="lt-include-标签"><a href="#lt-include-标签" class="headerlink" title="&lt;include> 标签"></a>&lt;include> 标签</h2><ul>
-<li>只支持 android:layout_ 开头的属性（android:id 是特例）。</li>
-<li>&lt;include> 指定了 id 属性，包含的布局文件根元素也指定了 id 属性，以 &lt;include> 指定的为准。</li>
+<li><p>只支持 android:layout_ 开头的属性（android:id 是特例）。</p>
+</li>
+<li><p>&lt;include> 指定了 id 属性，包含的布局文件根元素也指定了 id 属性，以 &lt;include> 指定的为准。</p>
+</li>
 </ul>
 <h2 id="lt-merge-标签"><a href="#lt-merge-标签" class="headerlink" title="&lt;merge> 标签"></a>&lt;merge> 标签</h2><ul>
 <li>配合 &lt;include> 标签使用可以减少布局的层级。</li>
 </ul>
 <h2 id="ViewStub"><a href="#ViewStub" class="headerlink" title="ViewStub"></a>ViewStub</h2><ul>
-<li>继承自 View，宽高都是 0，本身不参与任何的布局和绘制过程。</li>
-<li>按需加载所需的布局文件（如网络异常时的界面），使用的时候再加载，提高初始化性能。</li>
-<li>不支持 &lt;merge> 标签。</li>
-<li>使用 inflateedId 属性指定加载的布局 id。</li>
+<li><p>继承自 View，宽高都是 0，本身不参与任何的布局和绘制过程。</p>
+</li>
+<li><p>按需加载所需的布局文件（如网络异常时的界面），使用的时候再加载，提高初始化性能。</p>
+</li>
+<li><p>不支持 &lt;merge> 标签。</p>
+</li>
+<li><p>使用 inflatedId 属性指定加载的布局 id。</p>
+</li>
 </ul>
 <figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">ViewStub</span></span></span><br><span class="line"><span class="tag">	<span class="attr">android:id</span>=<span class="string">"@+id/stub_import"</span></span></span><br><span class="line"><span class="tag">	<span class="attr">android:inflatedId</span>=<span class="string">"@+id/panel_import"</span> /&gt;</span></span><br></pre></td></tr></table></figure>
 <h3 id="怎样加载？"><a href="#怎样加载？" class="headerlink" title="怎样加载？"></a>怎样加载？</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">((ViewStub) findViewById(R.id.stub_import)).setVisibility(View.VISIBLE);</span><br></pre></td></tr></table></figure>
@@ -510,8 +531,10 @@
 <li>加载后 ViewStub 不在属于布局，为 null。</li>
 </ul>
 <h1 id="绘制优化"><a href="#绘制优化" class="headerlink" title="绘制优化"></a>绘制优化</h1><h2 id="onDraw-方法"><a href="#onDraw-方法" class="headerlink" title="onDraw 方法"></a>onDraw 方法</h2><ul>
-<li>不要创建新的布局对象。</li>
-<li>不要做耗时的任务。</li>
+<li><p>不要创建新的布局对象。</p>
+</li>
+<li><p>不要做耗时的任务。</p>
+</li>
 </ul>
 <h3 id="减少自定义-View-的过度绘制"><a href="#减少自定义-View-的过度绘制" class="headerlink" title="减少自定义 View 的过度绘制"></a>减少自定义 View 的过度绘制</h3><ul>
 <li>假如有多张图片叠层显示时，可以使用 <code>Canvas</code> 的 <code>clipRect()</code> 等方法将图片裁剪。</li>
@@ -583,8 +606,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2018/11/06/笔记-深入拆解Java虚拟机-1617即时编译/" rel="next" title="笔记-深入拆解Java虚拟机-1617即时编译">
-                <i class="fa fa-chevron-left"></i> 笔记-深入拆解Java虚拟机-1617即时编译
+              <a href="/2018/11/06/笔记-深入拆解Java虚拟机-1617即时编译/" rel="next" title="「深入拆解 Java 虚拟机」16 17 即时编译">
+                <i class="fa fa-chevron-left"></i> 「深入拆解 Java 虚拟机」16 17 即时编译
               </a>
             
           </div>
@@ -593,8 +616,8 @@
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2018/11/08/笔记-深入拆解Java虚拟机-18即时编译器的中间表达形式/" rel="prev" title="笔记-深入拆解Java虚拟机-18即时编译器的中间表达形式">
-                笔记-深入拆解Java虚拟机-18即时编译器的中间表达形式 <i class="fa fa-chevron-right"></i>
+              <a href="/2018/11/08/笔记-深入拆解Java虚拟机-18即时编译器的中间表达形式/" rel="prev" title="「深入拆解 Java 虚拟机」18 即时编译器的中间表达形式">
+                「深入拆解 Java 虚拟机」18 即时编译器的中间表达形式 <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
@@ -676,7 +699,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">59</span>
+                  <span class="site-state-item-count">76</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -687,7 +710,7 @@
               
               <div class="site-state-item site-state-categories">
                 <a href="/categories/index.html">
-                  <span class="site-state-item-count">14</span>
+                  <span class="site-state-item-count">10</span>
                   <span class="site-state-item-name">分类</span>
                 </a>
               </div>
@@ -698,7 +721,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">26</span>
+                  <span class="site-state-item-count">37</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>
@@ -774,7 +797,7 @@
 
     <footer id="footer" class="footer">
       <div class="footer-inner">
-        <div class="copyright">&copy; 2018 &mdash; <span itemprop="copyrightYear">2019</span>
+        <div class="copyright">&copy; 2018 &mdash; <span itemprop="copyrightYear">2020</span>
   <span class="with-love">
     <i class="fa fa-user"></i>
   </span>

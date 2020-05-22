@@ -72,7 +72,7 @@
 
 
 
-  <meta name="keywords" content="计算机网络,TCP/IP," />
+  <meta name="keywords" content="计算机网络,TCP,IP," />
 
 
 
@@ -85,18 +85,18 @@
 
 
 
-<meta name="description" content="RFC 826 [Plummer 1982] 是ARP规范描述文档。ARP（地址解析协议）RARP（逆地址解析协议） ARP为IP地址到对应硬件地址之间提供动态映射，因为是自动完成的。RARP被没有磁盘驱动器的系统使用，需要系统管理员手工设置。 ARP发送一份称作ARP请求的以太网数据帧给以太网上的每个主机。称作广播。 点对点链路不使用ARP。设置这些链路时，必须告知内核链路每一端的IP地址，而不">
-<meta name="keywords" content="计算机网络,TCP&#x2F;IP">
+<meta name="description" content="RFC 826 [Plummer 1982] 是 ARP 规范描述文档。 ARP（地址解析协议） RARP（逆地址解析协议） ARP 为 IP 地址到对应硬件地址之间提供动态映射，因为是自动完成的。 RARP 被没有磁盘驱动器的系统使用，需要系统管理员手工设置。 ARP 发送一份称作 ARP 请求的以太网数据帧给以太网上的每个主机。称作广播。 点对点链路不使用 ARP。设置这些链路时，必须告知内核">
+<meta name="keywords" content="计算机网络,TCP,IP">
 <meta property="og:type" content="article">
-<meta property="og:title" content="《TCPIP详解卷1》004阅读笔记">
+<meta property="og:title" content="「TCP&#x2F;IP详解 卷1」004 阅读笔记">
 <meta property="og:url" content="http://blog.ennis.info/2018/06/12/《TCPIP详解卷1》004阅读笔记/index.html">
 <meta property="og:site_name" content="Ennis Wu">
-<meta property="og:description" content="RFC 826 [Plummer 1982] 是ARP规范描述文档。ARP（地址解析协议）RARP（逆地址解析协议） ARP为IP地址到对应硬件地址之间提供动态映射，因为是自动完成的。RARP被没有磁盘驱动器的系统使用，需要系统管理员手工设置。 ARP发送一份称作ARP请求的以太网数据帧给以太网上的每个主机。称作广播。 点对点链路不使用ARP。设置这些链路时，必须告知内核链路每一端的IP地址，而不">
+<meta property="og:description" content="RFC 826 [Plummer 1982] 是 ARP 规范描述文档。 ARP（地址解析协议） RARP（逆地址解析协议） ARP 为 IP 地址到对应硬件地址之间提供动态映射，因为是自动完成的。 RARP 被没有磁盘驱动器的系统使用，需要系统管理员手工设置。 ARP 发送一份称作 ARP 请求的以太网数据帧给以太网上的每个主机。称作广播。 点对点链路不使用 ARP。设置这些链路时，必须告知内核">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2019-01-26T13:26:29.009Z">
+<meta property="og:updated_time" content="2020-05-21T16:59:21.657Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="《TCPIP详解卷1》004阅读笔记">
-<meta name="twitter:description" content="RFC 826 [Plummer 1982] 是ARP规范描述文档。ARP（地址解析协议）RARP（逆地址解析协议） ARP为IP地址到对应硬件地址之间提供动态映射，因为是自动完成的。RARP被没有磁盘驱动器的系统使用，需要系统管理员手工设置。 ARP发送一份称作ARP请求的以太网数据帧给以太网上的每个主机。称作广播。 点对点链路不使用ARP。设置这些链路时，必须告知内核链路每一端的IP地址，而不">
+<meta name="twitter:title" content="「TCP&#x2F;IP详解 卷1」004 阅读笔记">
+<meta name="twitter:description" content="RFC 826 [Plummer 1982] 是 ARP 规范描述文档。 ARP（地址解析协议） RARP（逆地址解析协议） ARP 为 IP 地址到对应硬件地址之间提供动态映射，因为是自动完成的。 RARP 被没有磁盘驱动器的系统使用，需要系统管理员手工设置。 ARP 发送一份称作 ARP 请求的以太网数据帧给以太网上的每个主机。称作广播。 点对点链路不使用 ARP。设置这些链路时，必须告知内核">
 
 
 
@@ -132,7 +132,7 @@
 
 
 
-  <title>《TCPIP详解卷1》004阅读笔记 | Ennis Wu</title>
+  <title>「TCP/IP详解 卷1」004 阅读笔记 | Ennis Wu</title>
   
 
 
@@ -338,6 +338,18 @@
 
  </div>
     </header>
+    <script>
+      let images = [
+         'header0.jpg',
+         'header1.jpg',
+         'header2.png'
+      ];
+      let image = images[Math.floor(Math.random() * images.length)];
+      window.document.getElementById('header').style.cssText 
+      = 'background: url(/images/avatar/' 
+      + image
+      + '); no-repeat; background-size: auto 100%;';
+    </script>
 
     <main id="main" class="main">
       <div class="main-inner">
@@ -376,7 +388,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">《TCPIP详解卷1》004阅读笔记</h1>
+          <h1 class="post-title" itemprop="name headline">「TCP/IP详解 卷1」004 阅读笔记</h1>
         
 
         <div class="post-meta">
@@ -411,8 +423,8 @@
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/TCP-IP/" itemprop="url" rel="index">
-                    <span itemprop="name">TCP/IP</span>
+                  <a href="/categories/《TCP-IP详解-卷1》/" itemprop="url" rel="index">
+                    <span itemprop="name">《TCP/IP详解 卷1》</span>
                   </a>
                 </span>
 
@@ -448,12 +460,15 @@
       
 
       
-        <p>RFC 826 [Plummer 1982] 是ARP规范描述文档。<br>ARP（地址解析协议）<br>RARP（逆地址解析协议）<br><br></p>
-<p>ARP为IP地址到对应硬件地址之间提供动态映射，因为是自动完成的。<br>RARP被没有磁盘驱动器的系统使用，需要系统管理员手工设置。<br><br></p>
-<p>ARP发送一份称作ARP请求的以太网数据帧给以太网上的每个主机。称作广播。<br><br></p>
-<p>点对点链路不使用ARP。设置这些链路时，必须告知内核链路每一端的IP地址，而不需要硬件地址。<br><br></p>
-<p>ARP高效运行因为每个主机上都有一个ARP高速缓存<br><br></p>
-<h4 id="ARP的分组格式"><a href="#ARP的分组格式" class="headerlink" title="ARP的分组格式"></a>ARP的分组格式</h4><table>
+        <p>RFC 826 [Plummer 1982] 是 ARP 规范描述文档。</p>
+<p>ARP（地址解析协议）</p>
+<p>RARP（逆地址解析协议）</p>
+<p>ARP 为 IP 地址到对应硬件地址之间提供动态映射，因为是自动完成的。</p>
+<p>RARP 被没有磁盘驱动器的系统使用，需要系统管理员手工设置。</p>
+<p>ARP 发送一份称作 ARP 请求的以太网数据帧给以太网上的每个主机。称作广播。</p>
+<p>点对点链路不使用 ARP。设置这些链路时，必须告知内核链路每一端的 IP 地址，而不需要硬件地址。</p>
+<p>ARP 高效运行因为每个主机上都有一个 ARP 高速缓存</p>
+<h1 id="ARP的分组格式"><a href="#ARP的分组格式" class="headerlink" title="ARP的分组格式"></a>ARP的分组格式</h1><table>
 <thead>
 <tr>
 <th>以太网目的地址</th>
@@ -502,11 +517,11 @@
 <tr>
 <td>广播地址</td>
 <td></td>
-<td>ARP请求或应答</td>
+<td>ARP 请求或应答</td>
 <td>表示以太网地址</td>
-<td>表示IP地址</td>
-<td>MAC地址长度</td>
-<td>IP地址长度</td>
+<td>表示 IP 地址</td>
+<td>MAC 地址长度</td>
+<td>IP 地址长度</td>
 <td></td>
 <td></td>
 <td></td>
@@ -515,32 +530,39 @@
 </tbody>
 </table>
 <ul>
-<li>目的地址：全1的特殊地址是广播地址，电缆上的所有以太网接口都要接收广播的数据帧。</li>
-<li>操作字段（OP）：ARP请求（1）、ARP应答（2）、RARP请求（3）、RARP应答（4），必须字段，因为ARP请求和应答的帧类型字段相同。<br><br></li>
-</ul>
-<h4 id="ARP高速缓存超时设置"><a href="#ARP高速缓存超时设置" class="headerlink" title="ARP高速缓存超时设置"></a>ARP高速缓存超时设置</h4><ul>
-<li>BSD演变来的系统一般设置完整表项超时20分钟，不完整表项超时3分钟。</li>
-<li>表项再次使用时，超时值重设为20分钟。<br><br></li>
-</ul>
-<h4 id="ARP代理"><a href="#ARP代理" class="headerlink" title="ARP代理"></a>ARP代理</h4><ul>
-<li>路由器相当于目的主机的代理，把分组从其他主机转发给它。<br><br></li>
-</ul>
-<h4 id="免费ARP"><a href="#免费ARP" class="headerlink" title="免费ARP"></a>免费ARP</h4><ul>
-<li>是指发送ARP查找自己的IP地址。</li>
-<li>两方面作用：</li>
-<li><ol>
-<li>验证IP是否冲突，一个主机能够通过它来确定是否还有一个主机设置了相同的IP地址。</li>
-</ol>
+<li><p>目的地址：全1的特殊地址是广播地址，电缆上的所有以太网接口都要接收广播的数据帧。</p>
 </li>
-<li><ol>
-<li>更换物理网卡，假设发送ARP的主机正好改变了物理地址，能够使用此方法通知网络中其他主机及时更新ARP缓存。<br><br></li>
-</ol>
+<li><p>操作字段（OP）：ARP 请求（1）、ARP 应答（2）、RARP 请求（3）、RARP 应答（4），必须字段，因为 ARP 请求和应答的帧类型字段相同。</p>
 </li>
 </ul>
-<h4 id="ARP命令"><a href="#ARP命令" class="headerlink" title="ARP命令"></a>ARP命令</h4><ul>
-<li>arp -a 显示ARP高速缓存。</li>
-<li>arp -d 删除ARP高速缓存中某一项。</li>
-<li>arp -s 增加高速缓存中的内容，是永久性的，除非末尾加上关键字temp。</li>
+<h1 id="ARP-高速缓存超时设置"><a href="#ARP-高速缓存超时设置" class="headerlink" title="ARP 高速缓存超时设置"></a>ARP 高速缓存超时设置</h1><ul>
+<li><p>BSD 演变来的系统一般设置完整表项超时 20 分钟，不完整表项超时 3 分钟。</p>
+</li>
+<li><p>表项再次使用时，超时值重设为 20 分钟。</p>
+</li>
+</ul>
+<h1 id="ARP-代理"><a href="#ARP-代理" class="headerlink" title="ARP 代理"></a>ARP 代理</h1><ul>
+<li>路由器相当于目的主机的代理，把分组从其他主机转发给它。</li>
+</ul>
+<h1 id="免费-ARP"><a href="#免费-ARP" class="headerlink" title="免费 ARP"></a>免费 ARP</h1><ul>
+<li><p>是指发送 ARP 查找自己的 IP 地址。</p>
+</li>
+<li><p>两方面作用：</p>
+<ol>
+<li><p>验证 IP 是否冲突，一个主机能够通过它来确定是否还有一个主机设置了相同的 IP 地址。</p>
+</li>
+<li><p>更换物理网卡，假设发送ARP的主机正好改变了物理地址，能够使用此方法通知网络中其他主机及时更新 ARP 缓存。</p>
+</li>
+</ol>
+</li>
+</ul>
+<h1 id="ARP-命令"><a href="#ARP-命令" class="headerlink" title="ARP 命令"></a>ARP 命令</h1><ul>
+<li><p>arp -a 显示 ARP 高速缓存。</p>
+</li>
+<li><p>arp -d 删除 ARP 高速缓存中某一项。</p>
+</li>
+<li><p>arp -s 增加高速缓存中的内容，是永久性的，除非末尾加上关键字 temp。</p>
+</li>
 </ul>
 
       
@@ -590,7 +612,9 @@
           
             <a href="/tags/计算机网络/" rel="tag"># 计算机网络</a>
           
-            <a href="/tags/TCP-IP/" rel="tag"># TCP/IP</a>
+            <a href="/tags/TCP/" rel="tag"># TCP</a>
+          
+            <a href="/tags/IP/" rel="tag"># IP</a>
           
         </div>
       
@@ -603,8 +627,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2018/06/02/《TCPIP详解卷1》003阅读笔记/" rel="next" title="《TCP/IP详解卷1》003阅读笔记">
-                <i class="fa fa-chevron-left"></i> 《TCP/IP详解卷1》003阅读笔记
+              <a href="/2018/06/02/《TCPIP详解卷1》003阅读笔记/" rel="next" title="「TCP/IP详解 卷1」003 阅读笔记">
+                <i class="fa fa-chevron-left"></i> 「TCP/IP详解 卷1」003 阅读笔记
               </a>
             
           </div>
@@ -613,8 +637,8 @@
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2018/06/12/《TCPIP详解卷1》006阅读笔记/" rel="prev" title="《TCPIP详解卷1》006阅读笔记">
-                《TCPIP详解卷1》006阅读笔记 <i class="fa fa-chevron-right"></i>
+              <a href="/2018/06/12/《TCPIP详解卷1》006阅读笔记/" rel="prev" title="「TCP/IP详解 卷1」006 阅读笔记">
+                「TCP/IP详解 卷1」006 阅读笔记 <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
@@ -696,7 +720,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">59</span>
+                  <span class="site-state-item-count">76</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -707,7 +731,7 @@
               
               <div class="site-state-item site-state-categories">
                 <a href="/categories/index.html">
-                  <span class="site-state-item-count">14</span>
+                  <span class="site-state-item-count">10</span>
                   <span class="site-state-item-name">分类</span>
                 </a>
               </div>
@@ -718,7 +742,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">26</span>
+                  <span class="site-state-item-count">37</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>
@@ -774,7 +798,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#ARP的分组格式"><span class="nav-number">1.</span> <span class="nav-text">ARP的分组格式</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#ARP高速缓存超时设置"><span class="nav-number">2.</span> <span class="nav-text">ARP高速缓存超时设置</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#ARP代理"><span class="nav-number">3.</span> <span class="nav-text">ARP代理</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#免费ARP"><span class="nav-number">4.</span> <span class="nav-text">免费ARP</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#ARP命令"><span class="nav-number">5.</span> <span class="nav-text">ARP命令</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#ARP的分组格式"><span class="nav-number">1.</span> <span class="nav-text">ARP的分组格式</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#ARP-高速缓存超时设置"><span class="nav-number">2.</span> <span class="nav-text">ARP 高速缓存超时设置</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#ARP-代理"><span class="nav-number">3.</span> <span class="nav-text">ARP 代理</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#免费-ARP"><span class="nav-number">4.</span> <span class="nav-text">免费 ARP</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#ARP-命令"><span class="nav-number">5.</span> <span class="nav-text">ARP 命令</span></a></li></ol></div>
             
 
           </div>
@@ -794,7 +818,7 @@
 
     <footer id="footer" class="footer">
       <div class="footer-inner">
-        <div class="copyright">&copy; 2018 &mdash; <span itemprop="copyrightYear">2019</span>
+        <div class="copyright">&copy; 2018 &mdash; <span itemprop="copyrightYear">2020</span>
   <span class="with-love">
     <i class="fa fa-user"></i>
   </span>

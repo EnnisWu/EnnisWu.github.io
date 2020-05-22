@@ -85,18 +85,18 @@
 
 
 
-<meta name="description" content="View.inflate 和 LayoutInflater.inflateView.inflate 实际上上只是简单的包装了 LayoutInflater.inflate 1234public static View inflate(Context context, @LayoutRes int resource, ViewGroup root) &amp;#123;    LayoutInflater">
+<meta name="description" content="原文 三个案例带你看懂LayoutInflater中inflate方法两个参数和三个参数的区别  View.inflate() 的前世今生   View.inflate 和 LayoutInflater.inflateView.inflate 实际上上只是简单的包装了 LayoutInflater.inflate 1234public static View inflate(Context con">
 <meta name="keywords" content="Android">
 <meta property="og:type" content="article">
-<meta property="og:title" content="LayoutInflater中inflate方法各参数作用（二）">
+<meta property="og:title" content="「笔记」LayoutInflater 中 inflate 方法各参数作用（二）">
 <meta property="og:url" content="http://blog.ennis.info/2019/05/03/LayoutInflater中inflate方法各参数作用（二）/index.html">
 <meta property="og:site_name" content="Ennis Wu">
-<meta property="og:description" content="View.inflate 和 LayoutInflater.inflateView.inflate 实际上上只是简单的包装了 LayoutInflater.inflate 1234public static View inflate(Context context, @LayoutRes int resource, ViewGroup root) &amp;#123;    LayoutInflater">
+<meta property="og:description" content="原文 三个案例带你看懂LayoutInflater中inflate方法两个参数和三个参数的区别  View.inflate() 的前世今生   View.inflate 和 LayoutInflater.inflateView.inflate 实际上上只是简单的包装了 LayoutInflater.inflate 1234public static View inflate(Context con">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2019-05-03T13:34:34.013Z">
+<meta property="og:updated_time" content="2020-05-18T17:34:54.836Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="LayoutInflater中inflate方法各参数作用（二）">
-<meta name="twitter:description" content="View.inflate 和 LayoutInflater.inflateView.inflate 实际上上只是简单的包装了 LayoutInflater.inflate 1234public static View inflate(Context context, @LayoutRes int resource, ViewGroup root) &amp;#123;    LayoutInflater">
+<meta name="twitter:title" content="「笔记」LayoutInflater 中 inflate 方法各参数作用（二）">
+<meta name="twitter:description" content="原文 三个案例带你看懂LayoutInflater中inflate方法两个参数和三个参数的区别  View.inflate() 的前世今生   View.inflate 和 LayoutInflater.inflateView.inflate 实际上上只是简单的包装了 LayoutInflater.inflate 1234public static View inflate(Context con">
 
 
 
@@ -132,7 +132,7 @@
 
 
 
-  <title>LayoutInflater中inflate方法各参数作用（二） | Ennis Wu</title>
+  <title>「笔记」LayoutInflater 中 inflate 方法各参数作用（二） | Ennis Wu</title>
   
 
 
@@ -338,6 +338,18 @@
 
  </div>
     </header>
+    <script>
+      let images = [
+         'header0.jpg',
+         'header1.jpg',
+         'header2.png'
+      ];
+      let image = images[Math.floor(Math.random() * images.length)];
+      window.document.getElementById('header').style.cssText 
+      = 'background: url(/images/avatar/' 
+      + image
+      + '); no-repeat; background-size: auto 100%;';
+    </script>
 
     <main id="main" class="main">
       <div class="main-inner">
@@ -376,7 +388,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">LayoutInflater中inflate方法各参数作用（二）</h1>
+          <h1 class="post-title" itemprop="name headline">「笔记」LayoutInflater 中 inflate 方法各参数作用（二）</h1>
         
 
         <div class="post-meta">
@@ -411,8 +423,8 @@
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Android视图/" itemprop="url" rel="index">
-                    <span itemprop="name">Android视图</span>
+                  <a href="/categories/Android/" itemprop="url" rel="index">
+                    <span itemprop="name">Android</span>
                   </a>
                 </span>
 
@@ -448,7 +460,13 @@
       
 
       
-        <h1 id="View-inflate-和-LayoutInflater-inflate"><a href="#View-inflate-和-LayoutInflater-inflate" class="headerlink" title="View.inflate 和 LayoutInflater.inflate"></a>View.inflate 和 LayoutInflater.inflate</h1><p>View.inflate 实际上上只是简单的包装了 LayoutInflater.inflate</p>
+        <h1 id="原文"><a href="#原文" class="headerlink" title="原文"></a>原文</h1><ul>
+<li><p><a href="https://blog.csdn.net/u012702547/article/details/52628453" target="_blank" rel="noopener">三个案例带你看懂LayoutInflater中inflate方法两个参数和三个参数的区别</a></p>
+</li>
+<li><p><a href="https://www.jianshu.com/p/342890fcf5c9" target="_blank" rel="noopener">View.inflate() 的前世今生</a></p>
+</li>
+</ul>
+<h1 id="View-inflate-和-LayoutInflater-inflate"><a href="#View-inflate-和-LayoutInflater-inflate" class="headerlink" title="View.inflate 和 LayoutInflater.inflate"></a>View.inflate 和 LayoutInflater.inflate</h1><p>View.inflate 实际上上只是简单的包装了 LayoutInflater.inflate</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> View <span class="title">inflate</span><span class="params">(Context context, @LayoutRes <span class="keyword">int</span> resource, ViewGroup root)</span> </span>&#123;</span><br><span class="line">    LayoutInflater factory = LayoutInflater.from(context);</span><br><span class="line">    <span class="keyword">return</span> factory.inflate(resource, root);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <h1 id="LayoutInflater-inflate-两个参数和三个参数的区别"><a href="#LayoutInflater-inflate-两个参数和三个参数的区别" class="headerlink" title="LayoutInflater.inflate 两个参数和三个参数的区别"></a>LayoutInflater.inflate 两个参数和三个参数的区别</h1><h2 id="两个参数"><a href="#两个参数" class="headerlink" title="两个参数"></a>两个参数</h2><p>两个参数的方法实际上也只是简单调用了三个参数的方法</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> View <span class="title">inflate</span><span class="params">(@LayoutRes <span class="keyword">int</span> resource, @Nullable ViewGroup root)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> inflate(resource, root, root != <span class="keyword">null</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
@@ -461,20 +479,30 @@
 </ul>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">inflate(resource, root, <span class="keyword">true</span>);</span><br></pre></td></tr></table></figure>
 <h2 id="三个参数"><a href="#三个参数" class="headerlink" title="三个参数"></a>三个参数</h2><h3 id="ViewGroup-传入-null"><a href="#ViewGroup-传入-null" class="headerlink" title="ViewGroup 传入 null"></a>ViewGroup 传入 null</h3><ul>
-<li>View 没有父布局</li>
-<li>View 没有 LayoutParams</li>
-<li>返回该 View</li>
-<li>attachToRoot 参数无效</li>
+<li><p>View 没有父布局</p>
+</li>
+<li><p>View 没有 LayoutParams</p>
+</li>
+<li><p>返回该 View</p>
+</li>
+<li><p>attachToRoot 参数无效</p>
+</li>
 </ul>
 <h3 id="ViewGroup-传入非-null"><a href="#ViewGroup-传入非-null" class="headerlink" title="ViewGroup 传入非 null"></a>ViewGroup 传入非 null</h3><h4 id="attachToRoot-为-true"><a href="#attachToRoot-为-true" class="headerlink" title="attachToRoot 为 true"></a>attachToRoot 为 true</h4><ul>
-<li>View 添加到父布局</li>
-<li>View 设置 LayoutParams 参数</li>
-<li>返回父布局</li>
+<li><p>View 添加到父布局</p>
+</li>
+<li><p>View 设置 LayoutParams 参数</p>
+</li>
+<li><p>返回父布局</p>
+</li>
 </ul>
 <h4 id="attachToRoot-为-true-1"><a href="#attachToRoot-为-true-1" class="headerlink" title="attachToRoot 为 true"></a>attachToRoot 为 true</h4><ul>
-<li>View 没有父布局</li>
-<li>View 设置 LayoutParams 参数</li>
-<li>返回该 View</li>
+<li><p>View 没有父布局</p>
+</li>
+<li><p>View 设置 LayoutParams 参数</p>
+</li>
+<li><p>返回该 View</p>
+</li>
 </ul>
 <h1 id="ViewGroup-最好传入非-null-的情况"><a href="#ViewGroup-最好传入非-null-的情况" class="headerlink" title="ViewGroup 最好传入非 null 的情况"></a>ViewGroup 最好传入非 null 的情况</h1><p>如果在知道父布局的情况下，ViewGroup 最好传入父布局而不是 null，因为 View 的 LayoutParams 参数始终需要通过父布局来确定。</p>
 <p>当调用 ViewGroup.addView 时，如果添加的 View 的 LayoutParams 为 null，会调用 generateDefaultLayoutParams 方法生成一个宽高都包裹的 LayoutParams，这可能并不是我们想要的效果，因为在 xml 中指定的宽高等属性将失效。</p>
@@ -492,10 +520,7 @@
 <li>Fragment#onCreateView</li>
 </ul>
 <p>由 FragmentManager 控制显示 Fragment</p>
-<h2 id="View-已有父布局时，attachToRoot-必须传入-false"><a href="#View-已有父布局时，attachToRoot-必须传入-false" class="headerlink" title="View 已有父布局时，attachToRoot 必须传入 false"></a>View 已有父布局时，attachToRoot 必须传入 false</h2><h1 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h1><blockquote>
-<p><a href="https://blog.csdn.net/u012702547/article/details/52628453" target="_blank" rel="noopener">https://blog.csdn.net/u012702547/article/details/52628453</a><br><a href="https://www.jianshu.com/p/342890fcf5c9" target="_blank" rel="noopener">https://www.jianshu.com/p/342890fcf5c9</a></p>
-</blockquote>
-
+<h2 id="View-已有父布局时，attachToRoot-必须传入-false"><a href="#View-已有父布局时，attachToRoot-必须传入-false" class="headerlink" title="View 已有父布局时，attachToRoot 必须传入 false"></a>View 已有父布局时，attachToRoot 必须传入 false</h2>
       
     </div>
     
@@ -554,8 +579,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2019/03/18/转-Android类加载/" rel="next" title="转-Android类加载">
-                <i class="fa fa-chevron-left"></i> 转-Android类加载
+              <a href="/2019/03/18/转-Android类加载/" rel="next" title="「转载」Android 类加载">
+                <i class="fa fa-chevron-left"></i> 「转载」Android 类加载
               </a>
             
           </div>
@@ -563,6 +588,10 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2020/02/29/LinkedHashMap的相关问题/" rel="prev" title="「原创」LinkedHashMap 的相关问题">
+                「原创」LinkedHashMap 的相关问题 <i class="fa fa-chevron-right"></i>
+              </a>
             
           </div>
         </div>
@@ -643,7 +672,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">59</span>
+                  <span class="site-state-item-count">76</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -654,7 +683,7 @@
               
               <div class="site-state-item site-state-categories">
                 <a href="/categories/index.html">
-                  <span class="site-state-item-count">14</span>
+                  <span class="site-state-item-count">10</span>
                   <span class="site-state-item-name">分类</span>
                 </a>
               </div>
@@ -665,7 +694,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">26</span>
+                  <span class="site-state-item-count">37</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>
@@ -721,7 +750,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#View-inflate-和-LayoutInflater-inflate"><span class="nav-number">1.</span> <span class="nav-text">View.inflate 和 LayoutInflater.inflate</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#LayoutInflater-inflate-两个参数和三个参数的区别"><span class="nav-number">2.</span> <span class="nav-text">LayoutInflater.inflate 两个参数和三个参数的区别</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#两个参数"><span class="nav-number">2.1.</span> <span class="nav-text">两个参数</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#三个参数"><span class="nav-number">2.2.</span> <span class="nav-text">三个参数</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#ViewGroup-传入-null"><span class="nav-number">2.2.1.</span> <span class="nav-text">ViewGroup 传入 null</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#ViewGroup-传入非-null"><span class="nav-number">2.2.2.</span> <span class="nav-text">ViewGroup 传入非 null</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#attachToRoot-为-true"><span class="nav-number">2.2.2.1.</span> <span class="nav-text">attachToRoot 为 true</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#attachToRoot-为-true-1"><span class="nav-number">2.2.2.2.</span> <span class="nav-text">attachToRoot 为 true</span></a></li></ol></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#ViewGroup-最好传入非-null-的情况"><span class="nav-number">3.</span> <span class="nav-text">ViewGroup 最好传入非 null 的情况</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#attachToRoot-最好传入-true-的情况"><span class="nav-number">4.</span> <span class="nav-text">attachToRoot 最好传入 true 的情况</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#attachToRoot-必须传入-false-的情况"><span class="nav-number">5.</span> <span class="nav-text">attachToRoot 必须传入 false 的情况</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#不负责-View-的展示时，attachToRoot-必须传入-false"><span class="nav-number">5.1.</span> <span class="nav-text">不负责 View 的展示时，attachToRoot 必须传入 false</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#View-已有父布局时，attachToRoot-必须传入-false"><span class="nav-number">5.2.</span> <span class="nav-text">View 已有父布局时，attachToRoot 必须传入 false</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#参考"><span class="nav-number">6.</span> <span class="nav-text">参考</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#原文"><span class="nav-number">1.</span> <span class="nav-text">原文</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#View-inflate-和-LayoutInflater-inflate"><span class="nav-number">2.</span> <span class="nav-text">View.inflate 和 LayoutInflater.inflate</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#LayoutInflater-inflate-两个参数和三个参数的区别"><span class="nav-number">3.</span> <span class="nav-text">LayoutInflater.inflate 两个参数和三个参数的区别</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#两个参数"><span class="nav-number">3.1.</span> <span class="nav-text">两个参数</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#三个参数"><span class="nav-number">3.2.</span> <span class="nav-text">三个参数</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#ViewGroup-传入-null"><span class="nav-number">3.2.1.</span> <span class="nav-text">ViewGroup 传入 null</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#ViewGroup-传入非-null"><span class="nav-number">3.2.2.</span> <span class="nav-text">ViewGroup 传入非 null</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#attachToRoot-为-true"><span class="nav-number">3.2.2.1.</span> <span class="nav-text">attachToRoot 为 true</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#attachToRoot-为-true-1"><span class="nav-number">3.2.2.2.</span> <span class="nav-text">attachToRoot 为 true</span></a></li></ol></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#ViewGroup-最好传入非-null-的情况"><span class="nav-number">4.</span> <span class="nav-text">ViewGroup 最好传入非 null 的情况</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#attachToRoot-最好传入-true-的情况"><span class="nav-number">5.</span> <span class="nav-text">attachToRoot 最好传入 true 的情况</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#attachToRoot-必须传入-false-的情况"><span class="nav-number">6.</span> <span class="nav-text">attachToRoot 必须传入 false 的情况</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#不负责-View-的展示时，attachToRoot-必须传入-false"><span class="nav-number">6.1.</span> <span class="nav-text">不负责 View 的展示时，attachToRoot 必须传入 false</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#View-已有父布局时，attachToRoot-必须传入-false"><span class="nav-number">6.2.</span> <span class="nav-text">View 已有父布局时，attachToRoot 必须传入 false</span></a></li></ol></li></ol></div>
             
 
           </div>
@@ -741,7 +770,7 @@
 
     <footer id="footer" class="footer">
       <div class="footer-inner">
-        <div class="copyright">&copy; 2018 &mdash; <span itemprop="copyrightYear">2019</span>
+        <div class="copyright">&copy; 2018 &mdash; <span itemprop="copyrightYear">2020</span>
   <span class="with-love">
     <i class="fa fa-user"></i>
   </span>

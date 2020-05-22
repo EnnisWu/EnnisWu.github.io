@@ -85,20 +85,20 @@
 
 
 
-<meta name="description" content="异常的基本概念  Error：涵盖程序不应捕获的异常（JVM抛出）。程序出发Error时，执行状态已经无法恢复，需要终止线程甚至终止虚拟机。  Exception：涵盖程序可能需要捕获且处理的异常。  RuntimeException：表示“程序虽然无法继续执行，但是还能抢救一下”的情况。 RuntimeException和Error非检查异常（unchecked exception）。其他异常属">
+<meta name="description" content="原文：https://time.geekbang.org/column/article/12134 异常的基本概念  Error：涵盖程序不应捕获的异常（JVM 抛出）。  程序出发 Error 时，执行状态已经无法恢复，需要终止线程甚至终止虚拟机。  Exception：涵盖程序可能需要捕获且处理的异常。  RuntimeException：表示“程序虽然无法继续执行，但是还能抢救一下”的情况。">
 <meta name="keywords" content="JVM">
 <meta property="og:type" content="article">
-<meta property="og:title" content="笔记-深入拆解Java虚拟机-06JVM是如何处理异常的？">
+<meta property="og:title" content="「深入拆解 Java 虚拟机」06 JVM 是如何处理异常的？">
 <meta property="og:url" content="http://blog.ennis.info/2018/08/01/笔记-深入拆解Java虚拟机-06JVM是如何处理异常的？/index.html">
 <meta property="og:site_name" content="Ennis Wu">
-<meta property="og:description" content="异常的基本概念  Error：涵盖程序不应捕获的异常（JVM抛出）。程序出发Error时，执行状态已经无法恢复，需要终止线程甚至终止虚拟机。  Exception：涵盖程序可能需要捕获且处理的异常。  RuntimeException：表示“程序虽然无法继续执行，但是还能抢救一下”的情况。 RuntimeException和Error非检查异常（unchecked exception）。其他异常属">
+<meta property="og:description" content="原文：https://time.geekbang.org/column/article/12134 异常的基本概念  Error：涵盖程序不应捕获的异常（JVM 抛出）。  程序出发 Error 时，执行状态已经无法恢复，需要终止线程甚至终止虚拟机。  Exception：涵盖程序可能需要捕获且处理的异常。  RuntimeException：表示“程序虽然无法继续执行，但是还能抢救一下”的情况。">
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="http://blog.ennis.info/images/posts/JVM/06/throwable.png">
 <meta property="og:image" content="http://blog.ennis.info/images/posts/JVM/06/trigger_exception.png">
-<meta property="og:updated_time" content="2019-01-26T13:26:29.063Z">
+<meta property="og:updated_time" content="2020-05-21T16:42:28.859Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="笔记-深入拆解Java虚拟机-06JVM是如何处理异常的？">
-<meta name="twitter:description" content="异常的基本概念  Error：涵盖程序不应捕获的异常（JVM抛出）。程序出发Error时，执行状态已经无法恢复，需要终止线程甚至终止虚拟机。  Exception：涵盖程序可能需要捕获且处理的异常。  RuntimeException：表示“程序虽然无法继续执行，但是还能抢救一下”的情况。 RuntimeException和Error非检查异常（unchecked exception）。其他异常属">
+<meta name="twitter:title" content="「深入拆解 Java 虚拟机」06 JVM 是如何处理异常的？">
+<meta name="twitter:description" content="原文：https://time.geekbang.org/column/article/12134 异常的基本概念  Error：涵盖程序不应捕获的异常（JVM 抛出）。  程序出发 Error 时，执行状态已经无法恢复，需要终止线程甚至终止虚拟机。  Exception：涵盖程序可能需要捕获且处理的异常。  RuntimeException：表示“程序虽然无法继续执行，但是还能抢救一下”的情况。">
 <meta name="twitter:image" content="http://blog.ennis.info/images/posts/JVM/06/throwable.png">
 
 
@@ -135,7 +135,7 @@
 
 
 
-  <title>笔记-深入拆解Java虚拟机-06JVM是如何处理异常的？ | Ennis Wu</title>
+  <title>「深入拆解 Java 虚拟机」06 JVM 是如何处理异常的？ | Ennis Wu</title>
   
 
 
@@ -341,6 +341,18 @@
 
  </div>
     </header>
+    <script>
+      let images = [
+         'header0.jpg',
+         'header1.jpg',
+         'header2.png'
+      ];
+      let image = images[Math.floor(Math.random() * images.length)];
+      window.document.getElementById('header').style.cssText 
+      = 'background: url(/images/avatar/' 
+      + image
+      + '); no-repeat; background-size: auto 100%;';
+    </script>
 
     <main id="main" class="main">
       <div class="main-inner">
@@ -379,7 +391,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">笔记-深入拆解Java虚拟机-06JVM是如何处理异常的？</h1>
+          <h1 class="post-title" itemprop="name headline">「深入拆解 Java 虚拟机」06 JVM 是如何处理异常的？</h1>
         
 
         <div class="post-meta">
@@ -414,8 +426,8 @@
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Java虚拟机/" itemprop="url" rel="index">
-                    <span itemprop="name">Java虚拟机</span>
+                  <a href="/categories/《深入拆解-Java-虚拟机》/" itemprop="url" rel="index">
+                    <span itemprop="name">《深入拆解 Java 虚拟机》</span>
                   </a>
                 </span>
 
@@ -451,61 +463,79 @@
       
 
       
-        <h1 id="异常的基本概念"><a href="#异常的基本概念" class="headerlink" title="异常的基本概念"></a>异常的基本概念</h1><p><img src="/images/posts/JVM/06/throwable.png" alt="throwable"></p>
+        <p>原文：<a href="https://time.geekbang.org/column/article/12134" target="_blank" rel="noopener">https://time.geekbang.org/column/article/12134</a></p>
+<h1 id="异常的基本概念"><a href="#异常的基本概念" class="headerlink" title="异常的基本概念"></a>异常的基本概念</h1><p><img src="/images/posts/JVM/06/throwable.png" alt="throwable"></p>
 <ul>
-<li><p>Error：涵盖程序不应捕获的异常（JVM抛出）。<br>程序出发Error时，执行状态已经无法恢复，需要终止线程甚至终止虚拟机。</p>
-</li>
+<li>Error：涵盖程序不应捕获的异常（JVM 抛出）。</li>
+</ul>
+<p>程序出发 Error 时，执行状态已经无法恢复，需要终止线程甚至终止虚拟机。</p>
+<ul>
 <li><p>Exception：涵盖程序可能需要捕获且处理的异常。</p>
 </li>
-<li>RuntimeException：表示“程序虽然无法继续执行，但是还能抢救一下”的情况。</li>
-<li><strong>RuntimeException和Error非检查异常（unchecked exception）。其他异常属于检查异常（checked exception）。</strong></li>
-<li>检查异常需要程序显式地捕获，或者在方法声明中用throws关键字再次抛出。</li>
+<li><p>RuntimeException：表示“程序虽然无法继续执行，但是还能抢救一下”的情况。</p>
+</li>
+<li><p><strong>RuntimeException 和 Error 非检查异常（unchecked exception）。其他异常属于检查异常（checked exception）。</strong></p>
+</li>
+<li><p>检查异常需要程序显式地捕获，或者在方法声明中用 throws 关键字再次抛出。</p>
+</li>
 </ul>
-<h2 id="常实例的构造十分昂贵。"><a href="#常实例的构造十分昂贵。" class="headerlink" title="常实例的构造十分昂贵。"></a>常实例的构造十分昂贵。</h2><p>在构造异常实例时，Java虚拟机需要<strong>生成该异常的栈轨迹</strong>（stack trace）。</p>
+<h2 id="常实例的构造十分昂贵。"><a href="#常实例的构造十分昂贵。" class="headerlink" title="常实例的构造十分昂贵。"></a>常实例的构造十分昂贵。</h2><p>在构造异常实例时，Java 虚拟机需要<strong>生成该异常的栈轨迹</strong>（stack trace）。</p>
 <ul>
-<li>逐一访问当前线程的Java栈帧。</li>
-<li>记录下各种调试信息（方法名，方法所在类名，文件名，代码中第几行）。</li>
-<li>Java虚拟机会<strong>忽略异常构造器和填充栈帧的Java方法</strong>（Throwable.fillInStackTrace），直接从新建异常位置开始算起。</li>
-<li>Java虚拟机会<strong>忽略标记为不可见的Java方法栈帧</strong>。</li>
+<li><p>逐一访问当前线程的 Java 栈帧。</p>
+</li>
+<li><p>记录下各种调试信息（方法名，方法所在类名，文件名，代码中第几行）。</p>
+</li>
+<li><p>Java 虚拟机会<strong>忽略异常构造器和填充栈帧的Java方法</strong>（Throwable.fillInStackTrace），直接从新建异常位置开始算起。</p>
+</li>
+<li><p>Java 虚拟机会<strong>忽略标记为不可见的 Java 方法栈帧</strong>。</p>
+</li>
 </ul>
 <h3 id="是否可以缓存异常实例，在需要用到的时候直接抛出？"><a href="#是否可以缓存异常实例，在需要用到的时候直接抛出？" class="headerlink" title="是否可以缓存异常实例，在需要用到的时候直接抛出？"></a>是否可以缓存异常实例，在需要用到的时候直接抛出？</h3><ul>
-<li>从语法角度上，是允许的。</li>
-<li><strong>对应的栈轨迹并非throw语句的位置，而是新建异常的位置。</strong></li>
+<li><p>从语法角度上，是允许的。</p>
+</li>
+<li><p><strong>对应的栈轨迹并非 throw 语句的位置，而是新建异常的位置。</strong></p>
+</li>
 </ul>
-<h1 id="Java虚拟机是如何捕获异常的？"><a href="#Java虚拟机是如何捕获异常的？" class="headerlink" title="Java虚拟机是如何捕获异常的？"></a>Java虚拟机是如何捕获异常的？</h1><p>编译生成的字节码中，<strong>每个方法都附带一个异常表</strong>。</p>
+<h1 id="Java-虚拟机是如何捕获异常的？"><a href="#Java-虚拟机是如何捕获异常的？" class="headerlink" title="Java 虚拟机是如何捕获异常的？"></a>Java 虚拟机是如何捕获异常的？</h1><p>编译生成的字节码中，<strong>每个方法都附带一个异常表</strong>。</p>
 <p>异常表中每一个条目代表一个异常处理器。</p>
 <p>异常处理器的组成：</p>
 <ul>
-<li>from指针</li>
-<li>to指针</li>
-<li>target指针</li>
-<li>所捕获的异常类型</li>
+<li><p>from 指针</p>
+</li>
+<li><p>to 指针</p>
+</li>
+<li><p>target 指针</p>
+</li>
+<li><p>所捕获的异常类型</p>
+</li>
 </ul>
 <p>注：指针的值是字节码索引（bytecode index，bci），用来定位字节码。</p>
-<p><strong>from指针和to指针：标示异常处理器所监控的范围（如try代码块范围）。</strong></p>
-<p><strong>target指针：指向异常处理器的起始位置（如catch代码块起始位置）。</strong></p>
+<p><strong>from 指针和 to 指针：标示异常处理器所监控的范围（如 try 代码块范围）。</strong></p>
+<p><strong>target 指针：指向异常处理器的起始位置（如 catch 代码块起始位置）。</strong></p>
 <h2 id="触发异常的处理流程"><a href="#触发异常的处理流程" class="headerlink" title="触发异常的处理流程"></a>触发异常的处理流程</h2><ol>
-<li>Java虚拟机<strong>从上至下遍历异常表</strong>中的所有条目。</li>
-<li><strong>触发异常</strong>的字节码的索引值<strong>在某个异常表条目的监控范围内</strong>，Java虚拟机判断所抛出的异常和该条目想要捕获的异常<strong>是否匹配</strong>。</li>
-<li>如果<strong>匹配</strong>，Java 虚拟机将控制流<strong>转移至该条目target指针指向</strong>的字节码。</li>
-<li>如果<strong>遍历完所有</strong>异常表条目，仍<strong>未匹配</strong>到异常处理器，<strong>弹出当前方法对应的Java栈帧，在调用者（caller）中重复上述操作</strong>。</li>
-<li>finally代码块的编译，当前版本Java编译器，是<strong>复制finally代码块的内容，分别放在try-catch代码块所有正常执行路径和异常执行路径的出口中</strong>。</li>
+<li><p>Java 虚拟机<strong>从上至下遍历异常表</strong>中的所有条目。</p>
+</li>
+<li><p><strong>触发异常</strong>的字节码的索引值<strong>在某个异常表条目的监控范围内</strong>，Java 虚拟机判断所抛出的异常和该条目想要捕获的异常<strong>是否匹配</strong>。</p>
+</li>
+<li><p>如果<strong>匹配</strong>，Java 虚拟机将控制流<strong>转移至该条目 target 指针指向</strong>的字节码。</p>
+</li>
+<li><p>如果<strong>遍历完所有</strong>异常表条目，仍<strong>未匹配</strong>到异常处理器，<strong>弹出当前方法对应的 Java 栈帧，在调用者（caller）中重复上述操作</strong>。</p>
+</li>
+<li><p>finally 代码块的编译，当前版本 Java 编译器，是<strong>复制 finally 代码块的内容，分别放在 try-catch 代码块所有正常执行路径和异常执行路径的出口中</strong>。</p>
+</li>
 </ol>
 <p><img src="/images/posts/JVM/06/trigger_exception.png" alt="trigger_exception"></p>
-<p>针对异常执行路径，Java编译器会生成一个或多个异常表条目，监控整个try-catch代码块，并且捕获所有种类的异常（在 javap 中以 any 指代）。</p>
-<p>这些异常表条目的 target 指针将指向另一份复制的finally代码块。</p>
-<p>在这个finally代码块的最后，Java编译器会重新抛出所捕获的异常。</p>
-<p><strong>如果catch代码块捕获了异常，并且触发了另一个异常，那么finally捕获并且重抛后者，忽略前者。</strong></p>
-<h1 id="Java7的Suppressed异常以及语法糖"><a href="#Java7的Suppressed异常以及语法糖" class="headerlink" title="Java7的Suppressed异常以及语法糖"></a>Java7的Suppressed异常以及语法糖</h1><h2 id="Suppressed异常"><a href="#Suppressed异常" class="headerlink" title="Suppressed异常"></a>Suppressed异常</h2><p>允许将一个异常附于另一个异常之上。</p>
+<p>针对异常执行路径，Java 编译器会生成一个或多个异常表条目，监控整个 try-catch 代码块，并且捕获所有种类的异常（在 javap 中以 any 指代）。</p>
+<p>这些异常表条目的 target 指针将指向另一份复制的 finally 代码块。</p>
+<p>在这个 finally 代码块的最后，Java 编译器会重新抛出所捕获的异常。</p>
+<p><strong>如果 catch 代码块捕获了异常，并且触发了另一个异常，那么 finally 捕获并且重抛后者，忽略前者。</strong></p>
+<h1 id="Java-7-的-Suppressed-异常以及语法糖"><a href="#Java-7-的-Suppressed-异常以及语法糖" class="headerlink" title="Java 7 的 Suppressed 异常以及语法糖"></a>Java 7 的 Suppressed 异常以及语法糖</h1><h2 id="Suppressed-异常"><a href="#Suppressed-异常" class="headerlink" title="Suppressed 异常"></a>Suppressed 异常</h2><p>允许将一个异常附于另一个异常之上。</p>
 <p><strong>抛出的异常可以附带多个异常信息。</strong></p>
-<p>finally代码块缺少指向所捕获异常的引用，这个新特性使用起来非常繁琐。</p>
+<p>finally 代码块缺少指向所捕获异常的引用，这个新特性使用起来非常繁琐。</p>
 <h2 id="try-with-resources"><a href="#try-with-resources" class="headerlink" title="try-with-resources"></a>try-with-resources</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">try</span> (  ); <span class="comment">// try-with-resources</span></span><br></pre></td></tr></table></figure>
-<p>在字节码层面自动使用Suppressed异常。</p>
-<p><strong>自动关闭资源</strong>（实现AutoCloseable接口）。</p>
-<h2 id="同一catch代码块捕获多种异常"><a href="#同一catch代码块捕获多种异常" class="headerlink" title="同一catch代码块捕获多种异常"></a>同一catch代码块捕获多种异常</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">try</span> &#123;</span><br><span class="line">  </span><br><span class="line">&#125; <span class="keyword">catch</span> (SomeException | OtherException e) &#123;</span><br><span class="line">  </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h1 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h1><blockquote>
-<p><a href="https://time.geekbang.org/column/article/12134" target="_blank" rel="noopener">https://time.geekbang.org/column/article/12134</a></p>
-</blockquote>
+<p>在字节码层面自动使用 Suppressed 异常。</p>
+<p><strong>自动关闭资源</strong>（实现 AutoCloseable 接口）。</p>
+<h2 id="同一-catch-代码块捕获多种异常"><a href="#同一-catch-代码块捕获多种异常" class="headerlink" title="同一 catch 代码块捕获多种异常"></a>同一 catch 代码块捕获多种异常</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">try</span> &#123;</span><br><span class="line">  </span><br><span class="line">&#125; <span class="keyword">catch</span> (SomeException | OtherException e) &#123;</span><br><span class="line">  </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
       
     </div>
@@ -565,8 +595,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2018/08/01/转-传输层和应用层的协议和作用/" rel="next" title="[转]传输层和应用层的协议和作用">
-                <i class="fa fa-chevron-left"></i> [转]传输层和应用层的协议和作用
+              <a href="/2018/08/01/转-传输层和应用层的协议和作用/" rel="next" title="「转载」传输层和应用层的协议和作用">
+                <i class="fa fa-chevron-left"></i> 「转载」传输层和应用层的协议和作用
               </a>
             
           </div>
@@ -575,8 +605,8 @@
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2018/08/01/如何修改ActionBar的字体颜色？/" rel="prev" title="如何修改ActionBar的字体颜色？">
-                如何修改ActionBar的字体颜色？ <i class="fa fa-chevron-right"></i>
+              <a href="/2018/08/01/如何修改ActionBar的字体颜色？/" rel="prev" title="「笔记」如何修改 ActionBar 的字体颜色？">
+                「笔记」如何修改 ActionBar 的字体颜色？ <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
@@ -658,7 +688,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">59</span>
+                  <span class="site-state-item-count">76</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -669,7 +699,7 @@
               
               <div class="site-state-item site-state-categories">
                 <a href="/categories/index.html">
-                  <span class="site-state-item-count">14</span>
+                  <span class="site-state-item-count">10</span>
                   <span class="site-state-item-name">分类</span>
                 </a>
               </div>
@@ -680,7 +710,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">26</span>
+                  <span class="site-state-item-count">37</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>
@@ -736,7 +766,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#异常的基本概念"><span class="nav-number">1.</span> <span class="nav-text">异常的基本概念</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#常实例的构造十分昂贵。"><span class="nav-number">1.1.</span> <span class="nav-text">常实例的构造十分昂贵。</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#是否可以缓存异常实例，在需要用到的时候直接抛出？"><span class="nav-number">1.1.1.</span> <span class="nav-text">是否可以缓存异常实例，在需要用到的时候直接抛出？</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Java虚拟机是如何捕获异常的？"><span class="nav-number">2.</span> <span class="nav-text">Java虚拟机是如何捕获异常的？</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#触发异常的处理流程"><span class="nav-number">2.1.</span> <span class="nav-text">触发异常的处理流程</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Java7的Suppressed异常以及语法糖"><span class="nav-number">3.</span> <span class="nav-text">Java7的Suppressed异常以及语法糖</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Suppressed异常"><span class="nav-number">3.1.</span> <span class="nav-text">Suppressed异常</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#try-with-resources"><span class="nav-number">3.2.</span> <span class="nav-text">try-with-resources</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#同一catch代码块捕获多种异常"><span class="nav-number">3.3.</span> <span class="nav-text">同一catch代码块捕获多种异常</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#参考"><span class="nav-number">4.</span> <span class="nav-text">参考</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#异常的基本概念"><span class="nav-number">1.</span> <span class="nav-text">异常的基本概念</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#常实例的构造十分昂贵。"><span class="nav-number">1.1.</span> <span class="nav-text">常实例的构造十分昂贵。</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#是否可以缓存异常实例，在需要用到的时候直接抛出？"><span class="nav-number">1.1.1.</span> <span class="nav-text">是否可以缓存异常实例，在需要用到的时候直接抛出？</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Java-虚拟机是如何捕获异常的？"><span class="nav-number">2.</span> <span class="nav-text">Java 虚拟机是如何捕获异常的？</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#触发异常的处理流程"><span class="nav-number">2.1.</span> <span class="nav-text">触发异常的处理流程</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Java-7-的-Suppressed-异常以及语法糖"><span class="nav-number">3.</span> <span class="nav-text">Java 7 的 Suppressed 异常以及语法糖</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Suppressed-异常"><span class="nav-number">3.1.</span> <span class="nav-text">Suppressed 异常</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#try-with-resources"><span class="nav-number">3.2.</span> <span class="nav-text">try-with-resources</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#同一-catch-代码块捕获多种异常"><span class="nav-number">3.3.</span> <span class="nav-text">同一 catch 代码块捕获多种异常</span></a></li></ol></li></ol></div>
             
 
           </div>
@@ -756,7 +786,7 @@
 
     <footer id="footer" class="footer">
       <div class="footer-inner">
-        <div class="copyright">&copy; 2018 &mdash; <span itemprop="copyrightYear">2019</span>
+        <div class="copyright">&copy; 2018 &mdash; <span itemprop="copyrightYear">2020</span>
   <span class="with-love">
     <i class="fa fa-user"></i>
   </span>

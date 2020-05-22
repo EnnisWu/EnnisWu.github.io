@@ -1,0 +1,1323 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/avatar/portrait.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/avatar/portrait.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/avatar/portrait.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/avatar/portrait.png?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Android,Activity,四大组件,启动模式," />
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="Ennis Wu" type="application/atom+xml" />
+
+
+
+
+
+
+<meta name="description" content="转自：Activity 的 36 大难点，你会几个？「建议收藏」 生命周期Dialog 弹出 如果是单纯是创建的 Dialog，Activity 并不会执行生命周期的方法  什么是 onNewIntent 如果 IntentActivity 处于任务栈的顶端，也就是说之前打开过的 Activity，现在处于 onPause、onStop 状态的话，其他应用再发送 Intent 的话  执行顺序为：">
+<meta name="keywords" content="Android,Activity,四大组件,启动模式">
+<meta property="og:type" content="article">
+<meta property="og:title" content="「转载」Activity 的相关问题">
+<meta property="og:url" content="http://blog.ennis.info/2020/04/17/转-Activity相关问题/index.html">
+<meta property="og:site_name" content="Ennis Wu">
+<meta property="og:description" content="转自：Activity 的 36 大难点，你会几个？「建议收藏」 生命周期Dialog 弹出 如果是单纯是创建的 Dialog，Activity 并不会执行生命周期的方法  什么是 onNewIntent 如果 IntentActivity 处于任务栈的顶端，也就是说之前打开过的 Activity，现在处于 onPause、onStop 状态的话，其他应用再发送 Intent 的话  执行顺序为：">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2020-05-18T17:50:03.644Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="「转载」Activity 的相关问题">
+<meta name="twitter:description" content="转自：Activity 的 36 大难点，你会几个？「建议收藏」 生命周期Dialog 弹出 如果是单纯是创建的 Dialog，Activity 并不会执行生命周期的方法  什么是 onNewIntent 如果 IntentActivity 处于任务栈的顶端，也就是说之前打开过的 Activity，现在处于 onPause、onStop 状态的话，其他应用再发送 Intent 的话  执行顺序为：">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"always","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://blog.ennis.info/2020/04/17/转-Activity相关问题/"/>
+
+
+
+
+
+  <title>「转载」Activity 的相关问题 | Ennis Wu</title>
+  
+
+
+
+
+
+
+
+
+  <script src="/lib/photo/photoswipe.min.js"></script>
+  <script src="/lib/photo/photoswipe-ui-default.min.js"></script>
+  <script src="/lib/public/jquery-3.3.1.min.js"></script>
+  <link href="/lib/moment/jquery.fancybox.min.css" rel="stylesheet">
+  <script src="/lib/moment/jquery.fancybox.min.js"></script>
+  <script src="/lib/moment/moment.js"></script>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Ennis Wu</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">ARTPOP = artistic revolution through the potential of pop.</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            日志
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-瞬间">
+          <a href="/moments/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-bolt"></i> <br />
+            
+            瞬间
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-相册">
+          <a href="/photos/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-image"></i> <br />
+            
+            相册
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-足迹">
+          <a href="/footprints/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-map-marker"></i> <br />
+            
+            足迹
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-影视">
+          <a href="/movies/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-film"></i> <br />
+            
+            影视
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-留言">
+          <a href="/comments/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-comments"></i> <br />
+            
+            留言
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off"
+             placeholder="搜索..." spellcheck="false"
+             type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+    <script>
+      let images = [
+         'header0.jpg',
+         'header1.jpg',
+         'header2.png'
+      ];
+      let image = images[Math.floor(Math.random() * images.length)];
+      window.document.getElementById('header').style.cssText 
+      = 'background: url(/images/avatar/' 
+      + image
+      + '); no-repeat; background-size: auto 100%;';
+    </script>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://blog.ennis.info/2020/04/17/转-Activity相关问题/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Ennis L.M. Wu">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar/portrait.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Ennis Wu">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">「转载」Activity 的相关问题</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-04-17T12:35:27+08:00">
+                2020-04-17
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Android/" itemprop="url" rel="index">
+                    <span itemprop="name">Android</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>转自：<a href="https://www.jianshu.com/p/86c0a4afd28e" target="_blank" rel="noopener">Activity 的 36 大难点，你会几个？「建议收藏」</a></p>
+<h1 id="生命周期"><a href="#生命周期" class="headerlink" title="生命周期"></a>生命周期</h1><h2 id="Dialog-弹出"><a href="#Dialog-弹出" class="headerlink" title="Dialog 弹出"></a>Dialog 弹出</h2><ul>
+<li>如果是单纯是创建的 Dialog，Activity 并不会执行生命周期的方法</li>
+</ul>
+<h2 id="什么是-onNewIntent"><a href="#什么是-onNewIntent" class="headerlink" title="什么是 onNewIntent"></a>什么是 onNewIntent</h2><ul>
+<li><p>如果 IntentActivity 处于任务栈的顶端，也就是说之前打开过的 Activity，现在处于 onPause、onStop 状态的话，其他应用再发送 Intent 的话</p>
+</li>
+<li><p>执行顺序为：onNewIntent，onRestart，onStart，onResume</p>
+</li>
+</ul>
+<h1 id="启动模式"><a href="#启动模式" class="headerlink" title="启动模式"></a>启动模式</h1><p>Activity 一共有四种 launchMode：Standard、SingleTop、SingleTask、SingleInstance。</p>
+<h2 id="Standard-模式（默认模式）"><a href="#Standard-模式（默认模式）" class="headerlink" title="Standard 模式（默认模式）"></a>Standard 模式（默认模式）</h2><ol>
+<li><p>说明：每次启动一个 Activity 都会又一次创建一个新的实例入栈，无论这个实例是否存在。</p>
+</li>
+<li><p>生命周期：每次被创建的实例 Activity 的生命周期符合典型情况，它的 onCreate、onStart、onResume 都会被调用。</p>
+</li>
+<li><p>举例：此时 Activity 栈中以此有 A、B、C 三个 Activity ，此时 C 处于栈顶，启动模式为 Standard 模式。若在 C Activity 中加入点击事件，须要跳转到还有一个同类型的 C Activity 。结果是还有一个 C Activity 进入栈中，成为栈顶。</p>
+</li>
+</ol>
+<h2 id="SingleTop-模式（栈顶复用模式）"><a href="#SingleTop-模式（栈顶复用模式）" class="headerlink" title="SingleTop 模式（栈顶复用模式）"></a>SingleTop 模式（栈顶复用模式）</h2><ol>
+<li><p>说明：分两种处理情况：须要创建的 Activity 已经处于栈顶时，此时会直接复用栈顶的 Activity。不会再创建新的 Activity；若须要创建的 Activity 不处于栈顶，此时会又一次创建一个新的 Activity 入栈，同 Standard 模式一样。</p>
+</li>
+<li><p>生命周期：若情况一中栈顶的 Activity 被直接复用时，它的 onCreate、onStart 不会被系统调用，由于它并没有发生改变。可是一个新的方法 onNewIntent 会被回调（Activity 被正常创建时不会回调此方法）。</p>
+</li>
+<li><p>举例：此时 Activity 栈中以此有 A、B、C 三个 Activity ，此时 C 处于栈顶，启动模式为 SingleTop 模式。情况一：在 C Activity 中加入点击事件，须要跳转到还有一个同类型的 C Activity。结果是直接复用栈顶的 C Activity。情况二：在 C Activity 中加入点击事件，须要跳转到还有一个 A Activity。结果是创建一个新的 Activity 入栈。成为栈顶。</p>
+</li>
+</ol>
+<h2 id="SingleTask-模式（栈内复用模式）"><a href="#SingleTask-模式（栈内复用模式）" class="headerlink" title="SingleTask 模式（栈内复用模式）"></a>SingleTask 模式（栈内复用模式）</h2><ol>
+<li><p>说明：若须要创建的 Activity 已经处于栈中时，此时不会创建新的 Activity，而是将存在栈中的 Activity 上面的其他 Activity 所有销毁，使它成为栈顶。</p>
+</li>
+<li><p>如果是在别的应用程序中启动它，则会新建一个 task ，并在该 task 中启动这个 Activity ，SingleTask 允许别的 Activity 与其在一个 task 中共存，也就是说，如果我在这个 SingleTask 的实例中再打开新的 Activity ，这个新的 Activity 还是会在 SingleTask 的实例的 task 中。</p>
+</li>
+<li><p>生命周期：同 SingleTop 模式中的情况一同样。仅仅会又一次回调 Activity 中的 onNewIntent 方法</p>
+</li>
+<li><p>举例：此时 Activity 栈中以此有 A、B、C 三个 Activity 。此时 C 处于栈顶，启动模式为 SingleTask 模式。情况一：在 C Activity 中加入点击事件，须要跳转到还有一个同类型的 C Activity 。结果是直接用栈顶的 C Activity 。情况二：在 C Activity 中加入点击事件，须要跳转到还有一个 A Activity 。结果是将 A Activity 上面的 B、C 所有销毁，使 A Activity 成为栈顶。</p>
+</li>
+</ol>
+<h2 id="SingleInstance-模式（单实例模式）"><a href="#SingleInstance-模式（单实例模式）" class="headerlink" title="SingleInstance 模式（单实例模式）"></a>SingleInstance 模式（单实例模式）</h2><ol>
+<li><p>说明：SingleInstance 比较特殊，是全局单例模式，是一种加强的 SingleTask 模式。它除了具有它所有特性外，还加强了一点：只有一个实例，并且这个实例独立运行在一个 task 中，这个 task 只有这个实例，不允许有别的 Activity 存在。</p>
+</li>
+<li><p>这个经常使用于系统中的应用，比如 Launch、锁屏键的应用等等，整个系统中仅仅有一个！所以在我们的应用中一般不会用到。了解就可以。</p>
+</li>
+<li><p>举例：比方 A Activity 是该模式，启动 A 后。系统会为它创建一个单独的任务栈，由于栈内复用的特性。兴许的请求均不会创建新的 Activity ，除非这个独特的任务栈被系统销毁。</p>
+</li>
+</ol>
+<h2 id="SingleTask-模式的运用场景"><a href="#SingleTask-模式的运用场景" class="headerlink" title="SingleTask 模式的运用场景"></a>SingleTask 模式的运用场景</h2><ol>
+<li><p>最常见的应用场景就是保持我们应用开启后仅仅有一个 Activity 的实例。</p>
+</li>
+<li><p>最典型的样例就是应用中展示的主页（Home 页）。</p>
+</li>
+<li><p>假设用户在主页跳转到其他页面，运行多次操作后想返回到主页，假设不使用 SingleTask 模式，在点击返回的过程中会多次看到主页，这明显就是设计不合理了。</p>
+</li>
+</ol>
+<h2 id="SingleTop-模式的运用场景"><a href="#SingleTop-模式的运用场景" class="headerlink" title="SingleTop 模式的运用场景"></a>SingleTop 模式的运用场景</h2><ol>
+<li><p>假设你在当前的 Activity 中又要启动同类型的 Activity</p>
+</li>
+<li><p>此时建议将此类型 Activity 的启动模式指定为 SingleTop ，能够降低Activity的创建，节省内存！</p>
+</li>
+</ol>
+<h2 id="注意：复用-Activity-时的生命周期回调"><a href="#注意：复用-Activity-时的生命周期回调" class="headerlink" title="注意：复用 Activity 时的生命周期回调"></a>注意：复用 Activity 时的生命周期回调</h2><ol>
+<li><p>这里还须要考虑一个 Activity 跳转时携带页面參数的问题。</p>
+</li>
+<li><p>由于当一个 Activity 设置了 SingleTop 或者 SingleTask 模式后，跳转此 Activity 出现复用原有 Activity 的情况时，此 Activity 的 onCreate 方法将不会再次运行。onCreate 方法仅仅会在第一次创建 Activity 时被运行。</p>
+</li>
+<li><p>而一般 onCreate 方法中会进行该页面的数据初始化、UI 初始化，假设页面的展示数据无关页面跳转传递的參数，则不必操心此问题</p>
+</li>
+<li><p>若页面展示的数据就是通过 getIntent() 方法来获取，那么问题就会出现：getIntent() 获取的一直都是老数据，根本无法接收跳转时传送的新数据！</p>
+</li>
+<li><p>这时我们须要另外一个回调 onNewIntent（Intent intent）方法。此方法会传入最新的 intent ，这样我们就能够解决上述问题。这里建议的方法是又一次去 setIntent。然后又一次去初始化数据和 UI。</p>
+</li>
+</ol>
+<h1 id="数据"><a href="#数据" class="headerlink" title="数据"></a>数据</h1><h2 id="Activity-间通过-Intent-传递数据大小限制"><a href="#Activity-间通过-Intent-传递数据大小限制" class="headerlink" title="Activity 间通过 Intent 传递数据大小限制"></a>Activity 间通过 Intent 传递数据大小限制</h2><ul>
+<li><p>Intent 在传递数据时是有大小限制的，这里官方并未详细说明，不过通过实验的方法可以测出数据应该被限制在 1MB 之内（1024KB）</p>
+</li>
+<li><p>我们采用传递 Bitmap 的方法，发现当图片大小超过 1024（准确地说是 1020 左右）的时候，程序就会出现闪退、停止运行等异常(不同的手机反应不同)</p>
+</li>
+<li><p>因此可以判断 Intent 的传输容量在 1MB 之内。</p>
+</li>
+</ul>
+<h2 id="内存不足时系统会杀掉后台的-Activity，若需要进行一些临时状态的保存，在哪个方法进行"><a href="#内存不足时系统会杀掉后台的-Activity，若需要进行一些临时状态的保存，在哪个方法进行" class="headerlink" title="内存不足时系统会杀掉后台的 Activity，若需要进行一些临时状态的保存，在哪个方法进行"></a>内存不足时系统会杀掉后台的 Activity，若需要进行一些临时状态的保存，在哪个方法进行</h2><ul>
+<li><p>Activity 的 onSaveInstanceState() 和 onRestoreInstanceState() 并不是生命周期方法，它们不同于 onCreate()、onPause() 等生命周期方法，它们并不一定会被触发。</p>
+</li>
+<li><p>onSaveInstanceState() 方法，当应用遇到意外情况（如：内存不足、用户直接按 Home 键）由系统销毁一个 Activity， onSaveInstanceState() 会被调用。</p>
+</li>
+<li><p>但是当用户主动去销毁一个 Activity 时，例如在应用中按返回键，onSaveInstanceState() 就不会被调用。</p>
+</li>
+<li><p>除非该 Activity 不是被用户主动销毁的，通常 onSaveInstanceState() 只适合用于保存一些临时性的状态，而 onPause() 适合用于数据的持久化保存。</p>
+</li>
+</ul>
+<h2 id="onSaveInstanceState-被执行的场景"><a href="#onSaveInstanceState-被执行的场景" class="headerlink" title="onSaveInstanceState() 被执行的场景"></a>onSaveInstanceState() 被执行的场景</h2><p>系统不知道你按下 HOME 后要运行多少其他的程序，自然也不知道 Activity A 是否会被销毁</p>
+<p>因此系统都会调用 onSaveInstanceState() ，让用户有机会保存某些非永久性的数据。以下几种情况的分析都遵循该原则：</p>
+<ol>
+<li><p>当用户按下 HOME 键时</p>
+</li>
+<li><p>长按 HOME 键，选择运行其他的程序时</p>
+</li>
+<li><p>锁屏时</p>
+</li>
+<li><p>从 Activity A 中启动一个新的 Activity 时</p>
+</li>
+<li><p>屏幕方向切换时</p>
+</li>
+</ol>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+      <div>
+        <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+  <div>如果你喜欢这篇文章的话。。。能给我一个小红包吗，爱你呦~(*´∀`)~♥</div>
+  <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+    <span>打赏</span>
+  </button>
+  <div id="QR" style="display: none;">
+
+    
+      <div id="wechat" style="display: inline-block">
+        <img id="wechat_qr" src="/images/reward/reward_wechatpay.jpg" alt="Ennis L.M. Wu 微信支付"/>
+        <p>微信支付</p>
+      </div>
+    
+
+    
+      <div id="alipay" style="display: inline-block">
+        <img id="alipay_qr" src="/images/reward/reward_alipay.jpg" alt="Ennis L.M. Wu 支付宝"/>
+        <p>支付宝</p>
+      </div>
+    
+
+    
+
+  </div>
+</div>
+
+      </div>
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Android/" rel="tag"># Android</a>
+          
+            <a href="/tags/Activity/" rel="tag"># Activity</a>
+          
+            <a href="/tags/四大组件/" rel="tag"># 四大组件</a>
+          
+            <a href="/tags/启动模式/" rel="tag"># 启动模式</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2020/04/17/HashMap之扰动函数/" rel="next" title="「笔记」HashMap 之扰动函数">
+                <i class="fa fa-chevron-left"></i> 「笔记」HashMap 之扰动函数
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2020/04/26/JVM内存区域与垃圾回收/" rel="prev" title="「笔记」JVM 内存区域与垃圾回收">
+                「笔记」JVM 内存区域与垃圾回收 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/images/avatar/portrait.png"
+                alt="Ennis L.M. Wu" />
+            
+              <p class="site-author-name" itemprop="name">Ennis L.M. Wu</p>
+              <p class="site-description motion-element" itemprop="description">We could, we could belong togeter, <br>ARTPOP.</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">76</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">10</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">37</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+            <div class="feed-link motion-element">
+              <a href="/atom.xml" rel="alternate">
+                <i class="fa fa-rss"></i>
+                RSS
+              </a>
+            </div>
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="mailto:ennis.wu@outlook.com" target="_blank" title="E-Mail">
+                      
+                        <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/EnnisWu" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#生命周期"><span class="nav-number">1.</span> <span class="nav-text">生命周期</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Dialog-弹出"><span class="nav-number">1.1.</span> <span class="nav-text">Dialog 弹出</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#什么是-onNewIntent"><span class="nav-number">1.2.</span> <span class="nav-text">什么是 onNewIntent</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#启动模式"><span class="nav-number">2.</span> <span class="nav-text">启动模式</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Standard-模式（默认模式）"><span class="nav-number">2.1.</span> <span class="nav-text">Standard 模式（默认模式）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#SingleTop-模式（栈顶复用模式）"><span class="nav-number">2.2.</span> <span class="nav-text">SingleTop 模式（栈顶复用模式）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#SingleTask-模式（栈内复用模式）"><span class="nav-number">2.3.</span> <span class="nav-text">SingleTask 模式（栈内复用模式）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#SingleInstance-模式（单实例模式）"><span class="nav-number">2.4.</span> <span class="nav-text">SingleInstance 模式（单实例模式）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#SingleTask-模式的运用场景"><span class="nav-number">2.5.</span> <span class="nav-text">SingleTask 模式的运用场景</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#SingleTop-模式的运用场景"><span class="nav-number">2.6.</span> <span class="nav-text">SingleTop 模式的运用场景</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#注意：复用-Activity-时的生命周期回调"><span class="nav-number">2.7.</span> <span class="nav-text">注意：复用 Activity 时的生命周期回调</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#数据"><span class="nav-number">3.</span> <span class="nav-text">数据</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Activity-间通过-Intent-传递数据大小限制"><span class="nav-number">3.1.</span> <span class="nav-text">Activity 间通过 Intent 传递数据大小限制</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#内存不足时系统会杀掉后台的-Activity，若需要进行一些临时状态的保存，在哪个方法进行"><span class="nav-number">3.2.</span> <span class="nav-text">内存不足时系统会杀掉后台的 Activity，若需要进行一些临时状态的保存，在哪个方法进行</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#onSaveInstanceState-被执行的场景"><span class="nav-number">3.3.</span> <span class="nav-text">onSaveInstanceState() 被执行的场景</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; 2018 &mdash; <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Ennis L.M. Wu</span>
+
+  
+</div>
+
+
+
+
+
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+<script type="text/javascript" src="/lib/photo/photoswipe.min.js?v=5.1.4"></script>
+<script type="text/javascript" src="/lib/photo/photoswipe-ui-default.min.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+
+  
+<script src="/live2dw/lib/L2Dwidget.min.js?0c58a1486de42ac6cc1c59c7d98ae887"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"debug":false,"model":{"jsonPath":"/live2dw/assets/haruto.model.json"},"display":{"position":"left","width":80,"height":160,"hOffset":-15},"mobile":{"show":false,"scale":0.2},"log":false});</script></body>
+</html>

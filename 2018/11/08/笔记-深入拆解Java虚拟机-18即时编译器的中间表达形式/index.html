@@ -72,7 +72,7 @@
 
 
 
-  <meta name="keywords" content="JVM," />
+  <meta name="keywords" content="看不懂,未完成,JVM," />
 
 
 
@@ -85,18 +85,18 @@
 
 
 
-<meta name="description" content="目测太难看不懂。。。 待更新 https://time.geekbang.org/column/article/14270">
-<meta name="keywords" content="JVM">
+<meta name="description" content="原文：https://time.geekbang.org/column/article/14270 目测太难看不懂。。。 待更新">
+<meta name="keywords" content="看不懂,未完成,JVM">
 <meta property="og:type" content="article">
-<meta property="og:title" content="笔记-深入拆解Java虚拟机-18即时编译器的中间表达形式">
+<meta property="og:title" content="「深入拆解 Java 虚拟机」18 即时编译器的中间表达形式">
 <meta property="og:url" content="http://blog.ennis.info/2018/11/08/笔记-深入拆解Java虚拟机-18即时编译器的中间表达形式/index.html">
 <meta property="og:site_name" content="Ennis Wu">
-<meta property="og:description" content="目测太难看不懂。。。 待更新 https://time.geekbang.org/column/article/14270">
+<meta property="og:description" content="原文：https://time.geekbang.org/column/article/14270 目测太难看不懂。。。 待更新">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2019-01-26T13:26:29.111Z">
+<meta property="og:updated_time" content="2020-05-21T16:45:42.306Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="笔记-深入拆解Java虚拟机-18即时编译器的中间表达形式">
-<meta name="twitter:description" content="目测太难看不懂。。。 待更新 https://time.geekbang.org/column/article/14270">
+<meta name="twitter:title" content="「深入拆解 Java 虚拟机」18 即时编译器的中间表达形式">
+<meta name="twitter:description" content="原文：https://time.geekbang.org/column/article/14270 目测太难看不懂。。。 待更新">
 
 
 
@@ -132,7 +132,7 @@
 
 
 
-  <title>笔记-深入拆解Java虚拟机-18即时编译器的中间表达形式 | Ennis Wu</title>
+  <title>「深入拆解 Java 虚拟机」18 即时编译器的中间表达形式 | Ennis Wu</title>
   
 
 
@@ -338,6 +338,18 @@
 
  </div>
     </header>
+    <script>
+      let images = [
+         'header0.jpg',
+         'header1.jpg',
+         'header2.png'
+      ];
+      let image = images[Math.floor(Math.random() * images.length)];
+      window.document.getElementById('header').style.cssText 
+      = 'background: url(/images/avatar/' 
+      + image
+      + '); no-repeat; background-size: auto 100%;';
+    </script>
 
     <main id="main" class="main">
       <div class="main-inner">
@@ -376,7 +388,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">笔记-深入拆解Java虚拟机-18即时编译器的中间表达形式</h1>
+          <h1 class="post-title" itemprop="name headline">「深入拆解 Java 虚拟机」18 即时编译器的中间表达形式</h1>
         
 
         <div class="post-meta">
@@ -411,8 +423,8 @@
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Java虚拟机/" itemprop="url" rel="index">
-                    <span itemprop="name">Java虚拟机</span>
+                  <a href="/categories/《深入拆解-Java-虚拟机》/" itemprop="url" rel="index">
+                    <span itemprop="name">《深入拆解 Java 虚拟机》</span>
                   </a>
                 </span>
 
@@ -448,9 +460,9 @@
       
 
       
-        <p>目测太难看不懂。。。</p>
+        <p>原文：<a href="https://time.geekbang.org/column/article/14270" target="_blank" rel="noopener">https://time.geekbang.org/column/article/14270</a></p>
+<p>目测太难看不懂。。。</p>
 <p>待更新</p>
-<p><a href="https://time.geekbang.org/column/article/14270" target="_blank" rel="noopener">https://time.geekbang.org/column/article/14270</a></p>
 
       
     </div>
@@ -497,6 +509,10 @@
       
         <div class="post-tags">
           
+            <a href="/tags/看不懂/" rel="tag"># 看不懂</a>
+          
+            <a href="/tags/未完成/" rel="tag"># 未完成</a>
+          
             <a href="/tags/JVM/" rel="tag"># JVM</a>
           
         </div>
@@ -510,8 +526,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2018/11/07/Android的视图优化方法/" rel="next" title="Android的视图优化方法">
-                <i class="fa fa-chevron-left"></i> Android的视图优化方法
+              <a href="/2018/11/07/Android的视图优化方法/" rel="next" title="「笔记」Android 的视图优化方法">
+                <i class="fa fa-chevron-left"></i> 「笔记」Android 的视图优化方法
               </a>
             
           </div>
@@ -520,8 +536,8 @@
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2018/11/08/笔记-深入拆解Java虚拟机-19Java字节码（基础篇）/" rel="prev" title="笔记-深入拆解Java虚拟机-19Java字节码（基础篇）">
-                笔记-深入拆解Java虚拟机-19Java字节码（基础篇） <i class="fa fa-chevron-right"></i>
+              <a href="/2018/11/08/笔记-深入拆解Java虚拟机-19Java字节码（基础篇）/" rel="prev" title="「深入拆解 Java 虚拟机」19 Java 字节码（基础篇）">
+                「深入拆解 Java 虚拟机」19 Java 字节码（基础篇） <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
@@ -594,7 +610,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">59</span>
+                  <span class="site-state-item-count">76</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -605,7 +621,7 @@
               
               <div class="site-state-item site-state-categories">
                 <a href="/categories/index.html">
-                  <span class="site-state-item-count">14</span>
+                  <span class="site-state-item-count">10</span>
                   <span class="site-state-item-name">分类</span>
                 </a>
               </div>
@@ -616,7 +632,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">26</span>
+                  <span class="site-state-item-count">37</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>
@@ -676,7 +692,7 @@
 
     <footer id="footer" class="footer">
       <div class="footer-inner">
-        <div class="copyright">&copy; 2018 &mdash; <span itemprop="copyrightYear">2019</span>
+        <div class="copyright">&copy; 2018 &mdash; <span itemprop="copyrightYear">2020</span>
   <span class="with-love">
     <i class="fa fa-user"></i>
   </span>

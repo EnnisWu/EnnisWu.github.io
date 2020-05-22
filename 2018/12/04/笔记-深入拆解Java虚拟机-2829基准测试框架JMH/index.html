@@ -85,18 +85,18 @@
 
 
 
-<meta name="description" content="通过 System.nanoTime 或者 System.currentTimeMillis 来测量程序所花费的时间过于理性化，忽略了 Java 虚拟机、操作系统，硬件系统所带来的影响。 性能测试的坑Java 虚拟机的影响 Java 虚拟机堆空间的自适配 即时编译 循环展开 等  操作系统和硬件系统的影响 电源管理策略 CPU 缓存 分支预测器 超线程技术 等  JMH（Java Microben">
+<meta name="description" content="原文 https://time.geekbang.org/column/article/40275  https://time.geekbang.org/column/article/40281   通过 System.nanoTime 或者 System.currentTimeMillis 来测量程序所花费的时间过于理性化，忽略了 Java 虚拟机、操作系统，硬件系统所带来的影响。 性能测试的坑">
 <meta name="keywords" content="JVM">
 <meta property="og:type" content="article">
-<meta property="og:title" content="笔记-深入拆解Java虚拟机-2829基准测试框架JMH">
+<meta property="og:title" content="「深入拆解 Java 虚拟机」28 29 基准测试框架 JMH">
 <meta property="og:url" content="http://blog.ennis.info/2018/12/04/笔记-深入拆解Java虚拟机-2829基准测试框架JMH/index.html">
 <meta property="og:site_name" content="Ennis Wu">
-<meta property="og:description" content="通过 System.nanoTime 或者 System.currentTimeMillis 来测量程序所花费的时间过于理性化，忽略了 Java 虚拟机、操作系统，硬件系统所带来的影响。 性能测试的坑Java 虚拟机的影响 Java 虚拟机堆空间的自适配 即时编译 循环展开 等  操作系统和硬件系统的影响 电源管理策略 CPU 缓存 分支预测器 超线程技术 等  JMH（Java Microben">
+<meta property="og:description" content="原文 https://time.geekbang.org/column/article/40275  https://time.geekbang.org/column/article/40281   通过 System.nanoTime 或者 System.currentTimeMillis 来测量程序所花费的时间过于理性化，忽略了 Java 虚拟机、操作系统，硬件系统所带来的影响。 性能测试的坑">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2019-01-26T13:26:29.148Z">
+<meta property="og:updated_time" content="2020-05-21T16:47:49.875Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="笔记-深入拆解Java虚拟机-2829基准测试框架JMH">
-<meta name="twitter:description" content="通过 System.nanoTime 或者 System.currentTimeMillis 来测量程序所花费的时间过于理性化，忽略了 Java 虚拟机、操作系统，硬件系统所带来的影响。 性能测试的坑Java 虚拟机的影响 Java 虚拟机堆空间的自适配 即时编译 循环展开 等  操作系统和硬件系统的影响 电源管理策略 CPU 缓存 分支预测器 超线程技术 等  JMH（Java Microben">
+<meta name="twitter:title" content="「深入拆解 Java 虚拟机」28 29 基准测试框架 JMH">
+<meta name="twitter:description" content="原文 https://time.geekbang.org/column/article/40275  https://time.geekbang.org/column/article/40281   通过 System.nanoTime 或者 System.currentTimeMillis 来测量程序所花费的时间过于理性化，忽略了 Java 虚拟机、操作系统，硬件系统所带来的影响。 性能测试的坑">
 
 
 
@@ -132,7 +132,7 @@
 
 
 
-  <title>笔记-深入拆解Java虚拟机-2829基准测试框架JMH | Ennis Wu</title>
+  <title>「深入拆解 Java 虚拟机」28 29 基准测试框架 JMH | Ennis Wu</title>
   
 
 
@@ -338,6 +338,18 @@
 
  </div>
     </header>
+    <script>
+      let images = [
+         'header0.jpg',
+         'header1.jpg',
+         'header2.png'
+      ];
+      let image = images[Math.floor(Math.random() * images.length)];
+      window.document.getElementById('header').style.cssText 
+      = 'background: url(/images/avatar/' 
+      + image
+      + '); no-repeat; background-size: auto 100%;';
+    </script>
 
     <main id="main" class="main">
       <div class="main-inner">
@@ -376,7 +388,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">笔记-深入拆解Java虚拟机-2829基准测试框架JMH</h1>
+          <h1 class="post-title" itemprop="name headline">「深入拆解 Java 虚拟机」28 29 基准测试框架 JMH</h1>
         
 
         <div class="post-meta">
@@ -411,8 +423,8 @@
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Java虚拟机/" itemprop="url" rel="index">
-                    <span itemprop="name">Java虚拟机</span>
+                  <a href="/categories/《深入拆解-Java-虚拟机》/" itemprop="url" rel="index">
+                    <span itemprop="name">《深入拆解 Java 虚拟机》</span>
                   </a>
                 </span>
 
@@ -448,31 +460,46 @@
       
 
       
-        <p>通过 <code>System.nanoTime</code> 或者 <code>System.currentTimeMillis</code> 来测量程序所花费的时间过于理性化，忽略了 Java 虚拟机、操作系统，硬件系统所带来的影响。</p>
+        <h1 id="原文"><a href="#原文" class="headerlink" title="原文"></a>原文</h1><ul>
+<li><p><a href="https://time.geekbang.org/column/article/40275" target="_blank" rel="noopener">https://time.geekbang.org/column/article/40275</a></p>
+</li>
+<li><p><a href="https://time.geekbang.org/column/article/40281" target="_blank" rel="noopener">https://time.geekbang.org/column/article/40281</a></p>
+</li>
+</ul>
+<p>通过 <code>System.nanoTime</code> 或者 <code>System.currentTimeMillis</code> 来测量程序所花费的时间过于理性化，忽略了 Java 虚拟机、操作系统，硬件系统所带来的影响。</p>
 <h1 id="性能测试的坑"><a href="#性能测试的坑" class="headerlink" title="性能测试的坑"></a>性能测试的坑</h1><h2 id="Java-虚拟机的影响"><a href="#Java-虚拟机的影响" class="headerlink" title="Java 虚拟机的影响"></a>Java 虚拟机的影响</h2><ul>
-<li>Java 虚拟机堆空间的自适配</li>
-<li>即时编译</li>
-<li>循环展开</li>
-<li>等</li>
+<li><p>Java 虚拟机堆空间的自适配</p>
+</li>
+<li><p>即时编译</p>
+</li>
+<li><p>循环展开</p>
+</li>
+<li><p>等</p>
+</li>
 </ul>
 <h2 id="操作系统和硬件系统的影响"><a href="#操作系统和硬件系统的影响" class="headerlink" title="操作系统和硬件系统的影响"></a>操作系统和硬件系统的影响</h2><ul>
-<li>电源管理策略</li>
-<li>CPU 缓存</li>
-<li>分支预测器</li>
-<li>超线程技术</li>
-<li>等</li>
+<li><p>电源管理策略</p>
+</li>
+<li><p>CPU 缓存</p>
+</li>
+<li><p>分支预测器</p>
+</li>
+<li><p>超线程技术</p>
+</li>
+<li><p>等</p>
+</li>
 </ul>
 <h1 id="JMH（Java-Microbenchmark-Harness）"><a href="#JMH（Java-Microbenchmark-Harness）" class="headerlink" title="JMH（Java Microbenchmark Harness）"></a>JMH（Java Microbenchmark Harness）</h1><blockquote>
 <p> OpenJDK 中的开源项目。是一个面向 Java 语言或者其他 Java 虚拟机语言的性能基准测试框架。</p>
 </blockquote>
 <ul>
-<li>JMH 内置许多功能来控制即时编译器的优化。</li>
-<li>其他影响性能评测的因素也提供了不少策略降低影响，甚至彻底解决。</li>
+<li><p>JMH 内置许多功能来控制即时编译器的优化。</p>
+</li>
+<li><p>其他影响性能评测的因素也提供了不少策略降低影响，甚至彻底解决。</p>
+</li>
 </ul>
-<h1 id="如何使用-JMH"><a href="#如何使用-JMH" class="headerlink" title="如何使用 JMH"></a>如何使用 JMH</h1><p><a href="http://www.baidu.com" target="_blank" rel="noopener">www.baidu.com</a><br><a href="http://www.google.com" target="_blank" rel="noopener">www.google.com</a></p>
-<h1 id="引用"><a href="#引用" class="headerlink" title="引用"></a>引用</h1><blockquote>
-<p><a href="https://time.geekbang.org/column/article/40275" target="_blank" rel="noopener">https://time.geekbang.org/column/article/40275</a><br><a href="https://time.geekbang.org/column/article/40281" target="_blank" rel="noopener">https://time.geekbang.org/column/article/40281</a></p>
-</blockquote>
+<h1 id="如何使用-JMH"><a href="#如何使用-JMH" class="headerlink" title="如何使用 JMH"></a>如何使用 JMH</h1><p><a href="http://www.baidu.com" target="_blank" rel="noopener">www.baidu.com</a></p>
+<p><a href="http://www.google.com" target="_blank" rel="noopener">www.google.com</a></p>
 
       
     </div>
@@ -532,8 +559,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2018/12/03/笔记-深入拆解Java虚拟机-26向量化/" rel="next" title="笔记-深入拆解Java虚拟机-26向量化">
-                <i class="fa fa-chevron-left"></i> 笔记-深入拆解Java虚拟机-26向量化
+              <a href="/2018/12/03/笔记-深入拆解Java虚拟机-26向量化/" rel="next" title="「深入拆解 Java 虚拟机」26 向量化">
+                <i class="fa fa-chevron-left"></i> 「深入拆解 Java 虚拟机」26 向量化
               </a>
             
           </div>
@@ -542,8 +569,8 @@
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2018/12/05/笔记-深入拆解Java虚拟机-32JNI的运行机制/" rel="prev" title="笔记-深入拆解Java虚拟机-32JNI的运行机制">
-                笔记-深入拆解Java虚拟机-32JNI的运行机制 <i class="fa fa-chevron-right"></i>
+              <a href="/2018/12/05/笔记-深入拆解Java虚拟机-32JNI的运行机制/" rel="prev" title="「深入拆解 Java 虚拟机」32 JNI 的运行机制">
+                「深入拆解 Java 虚拟机」32 JNI 的运行机制 <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
@@ -625,7 +652,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">59</span>
+                  <span class="site-state-item-count">76</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -636,7 +663,7 @@
               
               <div class="site-state-item site-state-categories">
                 <a href="/categories/index.html">
-                  <span class="site-state-item-count">14</span>
+                  <span class="site-state-item-count">10</span>
                   <span class="site-state-item-name">分类</span>
                 </a>
               </div>
@@ -647,7 +674,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">26</span>
+                  <span class="site-state-item-count">37</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>
@@ -703,7 +730,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#性能测试的坑"><span class="nav-number">1.</span> <span class="nav-text">性能测试的坑</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Java-虚拟机的影响"><span class="nav-number">1.1.</span> <span class="nav-text">Java 虚拟机的影响</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#操作系统和硬件系统的影响"><span class="nav-number">1.2.</span> <span class="nav-text">操作系统和硬件系统的影响</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#JMH（Java-Microbenchmark-Harness）"><span class="nav-number">2.</span> <span class="nav-text">JMH（Java Microbenchmark Harness）</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#如何使用-JMH"><span class="nav-number">3.</span> <span class="nav-text">如何使用 JMH</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#引用"><span class="nav-number">4.</span> <span class="nav-text">引用</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#原文"><span class="nav-number">1.</span> <span class="nav-text">原文</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#性能测试的坑"><span class="nav-number">2.</span> <span class="nav-text">性能测试的坑</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Java-虚拟机的影响"><span class="nav-number">2.1.</span> <span class="nav-text">Java 虚拟机的影响</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#操作系统和硬件系统的影响"><span class="nav-number">2.2.</span> <span class="nav-text">操作系统和硬件系统的影响</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#JMH（Java-Microbenchmark-Harness）"><span class="nav-number">3.</span> <span class="nav-text">JMH（Java Microbenchmark Harness）</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#如何使用-JMH"><span class="nav-number">4.</span> <span class="nav-text">如何使用 JMH</span></a></li></ol></div>
             
 
           </div>
@@ -723,7 +750,7 @@
 
     <footer id="footer" class="footer">
       <div class="footer-inner">
-        <div class="copyright">&copy; 2018 &mdash; <span itemprop="copyrightYear">2019</span>
+        <div class="copyright">&copy; 2018 &mdash; <span itemprop="copyrightYear">2020</span>
   <span class="with-love">
     <i class="fa fa-user"></i>
   </span>

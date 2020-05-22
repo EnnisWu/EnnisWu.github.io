@@ -85,18 +85,18 @@
 
 
 
-<meta name="description" content="Java 新建对象的方式 new 语句 反射 Object.clone方法 反序列化 Unsafe.allocateInstance方法  压缩指针对象头（object header） 每个 Java 对象都有。 由标记字段、类型指针构成。 标记字段：存储 Java 虚拟机有关该对象的运行数据（如哈希码、GC 信息、锁信息）。 类型指针：指向该对象的类。 64 位Java虚拟机中，对象头占 16">
+<meta name="description" content="原文：https://time.geekbang.org/column/article/13081 Java 新建对象的方式 new 语句  反射  Object.clone 方法  反序列化  Unsafe.allocateInstance 方法   压缩指针对象头（object header） 每个 Java 对象都有。  由标记字段、类型指针构成。  标记字段：存储 Java 虚拟机有关该对">
 <meta name="keywords" content="JVM">
 <meta property="og:type" content="article">
-<meta property="og:title" content="笔记-深入拆解Java虚拟机-10Java对象的内存分布">
+<meta property="og:title" content="「深入拆解 Java 虚拟机」10 Java 对象的内存分布">
 <meta property="og:url" content="http://blog.ennis.info/2018/08/29/笔记-深入拆解Java虚拟机-10Java对象的内存分布/index.html">
 <meta property="og:site_name" content="Ennis Wu">
-<meta property="og:description" content="Java 新建对象的方式 new 语句 反射 Object.clone方法 反序列化 Unsafe.allocateInstance方法  压缩指针对象头（object header） 每个 Java 对象都有。 由标记字段、类型指针构成。 标记字段：存储 Java 虚拟机有关该对象的运行数据（如哈希码、GC 信息、锁信息）。 类型指针：指向该对象的类。 64 位Java虚拟机中，对象头占 16">
+<meta property="og:description" content="原文：https://time.geekbang.org/column/article/13081 Java 新建对象的方式 new 语句  反射  Object.clone 方法  反序列化  Unsafe.allocateInstance 方法   压缩指针对象头（object header） 每个 Java 对象都有。  由标记字段、类型指针构成。  标记字段：存储 Java 虚拟机有关该对">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2019-01-26T13:26:29.081Z">
+<meta property="og:updated_time" content="2020-05-21T16:43:46.138Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="笔记-深入拆解Java虚拟机-10Java对象的内存分布">
-<meta name="twitter:description" content="Java 新建对象的方式 new 语句 反射 Object.clone方法 反序列化 Unsafe.allocateInstance方法  压缩指针对象头（object header） 每个 Java 对象都有。 由标记字段、类型指针构成。 标记字段：存储 Java 虚拟机有关该对象的运行数据（如哈希码、GC 信息、锁信息）。 类型指针：指向该对象的类。 64 位Java虚拟机中，对象头占 16">
+<meta name="twitter:title" content="「深入拆解 Java 虚拟机」10 Java 对象的内存分布">
+<meta name="twitter:description" content="原文：https://time.geekbang.org/column/article/13081 Java 新建对象的方式 new 语句  反射  Object.clone 方法  反序列化  Unsafe.allocateInstance 方法   压缩指针对象头（object header） 每个 Java 对象都有。  由标记字段、类型指针构成。  标记字段：存储 Java 虚拟机有关该对">
 
 
 
@@ -132,7 +132,7 @@
 
 
 
-  <title>笔记-深入拆解Java虚拟机-10Java对象的内存分布 | Ennis Wu</title>
+  <title>「深入拆解 Java 虚拟机」10 Java 对象的内存分布 | Ennis Wu</title>
   
 
 
@@ -338,6 +338,18 @@
 
  </div>
     </header>
+    <script>
+      let images = [
+         'header0.jpg',
+         'header1.jpg',
+         'header2.png'
+      ];
+      let image = images[Math.floor(Math.random() * images.length)];
+      window.document.getElementById('header').style.cssText 
+      = 'background: url(/images/avatar/' 
+      + image
+      + '); no-repeat; background-size: auto 100%;';
+    </script>
 
     <main id="main" class="main">
       <div class="main-inner">
@@ -376,7 +388,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">笔记-深入拆解Java虚拟机-10Java对象的内存分布</h1>
+          <h1 class="post-title" itemprop="name headline">「深入拆解 Java 虚拟机」10 Java 对象的内存分布</h1>
         
 
         <div class="post-meta">
@@ -411,8 +423,8 @@
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Java虚拟机/" itemprop="url" rel="index">
-                    <span itemprop="name">Java虚拟机</span>
+                  <a href="/categories/《深入拆解-Java-虚拟机》/" itemprop="url" rel="index">
+                    <span itemprop="name">《深入拆解 Java 虚拟机》</span>
                   </a>
                 </span>
 
@@ -448,40 +460,58 @@
       
 
       
-        <h1 id="Java-新建对象的方式"><a href="#Java-新建对象的方式" class="headerlink" title="Java 新建对象的方式"></a>Java 新建对象的方式</h1><ul>
-<li>new 语句</li>
-<li>反射</li>
-<li>Object.clone方法</li>
-<li>反序列化</li>
-<li>Unsafe.allocateInstance方法</li>
+        <p>原文：<a href="https://time.geekbang.org/column/article/13081" target="_blank" rel="noopener">https://time.geekbang.org/column/article/13081</a></p>
+<h1 id="Java-新建对象的方式"><a href="#Java-新建对象的方式" class="headerlink" title="Java 新建对象的方式"></a>Java 新建对象的方式</h1><ul>
+<li><p>new 语句</p>
+</li>
+<li><p>反射</p>
+</li>
+<li><p>Object.clone 方法</p>
+</li>
+<li><p>反序列化</p>
+</li>
+<li><p>Unsafe.allocateInstance 方法</p>
+</li>
 </ul>
 <h1 id="压缩指针"><a href="#压缩指针" class="headerlink" title="压缩指针"></a>压缩指针</h1><h2 id="对象头（object-header）"><a href="#对象头（object-header）" class="headerlink" title="对象头（object header）"></a>对象头（object header）</h2><ul>
-<li>每个 Java 对象都有。</li>
-<li>由<strong>标记字段、类型指针</strong>构成。</li>
-<li>标记字段：存储 Java 虚拟机有关该对象的运行数据（如哈希码、GC 信息、锁信息）。</li>
-<li>类型指针：指向该对象的类。</li>
-<li>64 位Java虚拟机中，对象头占 16 个字节。</li>
+<li><p>每个 Java 对象都有。</p>
+</li>
+<li><p>由<strong>标记字段、类型指针</strong>构成。</p>
+</li>
+<li><p>标记字段：存储 Java 虚拟机有关该对象的运行数据（如哈希码、GC 信息、锁信息）。</p>
+</li>
+<li><p>类型指针：指向该对象的类。</p>
+</li>
+<li><p>64 位 Java 虚拟机中，对象头占 16 个字节。</p>
+</li>
 </ul>
 <h2 id="压缩指针-1"><a href="#压缩指针-1" class="headerlink" title="压缩指针"></a>压缩指针</h2><ul>
-<li>开启压缩指针：-XX:+UseCompressedOops（默认开启）。</li>
-<li><strong>将堆中原本 64 位的 Java 对象指针压缩成 32 位。</strong></li>
-<li>类型指针也被压缩成 32 位，<strong>对象头的大小从 16 字节降至 12 字节。</strong></li>
-<li>还可以作用于<strong>引用类型的字段</strong>，<strong>引用类型数组</strong>。</li>
+<li><p>开启压缩指针：-XX:+UseCompressedOops（默认开启）。</p>
+</li>
+<li><p><strong>将堆中原本 64 位的 Java 对象指针压缩成 32 位。</strong></p>
+</li>
+<li><p>类型指针也被压缩成 32 位，<strong>对象头的大小从 16 字节降至 12 字节。</strong></p>
+</li>
+<li><p>还可以作用于<strong>引用类型的字段</strong>，<strong>引用类型数组</strong>。</p>
+</li>
 </ul>
 <h1 id="内存对齐"><a href="#内存对齐" class="headerlink" title="内存对齐"></a>内存对齐</h1><ul>
-<li>虚拟机选项 -XX:ObjectAlignmentInBytes，默认值为 8。</li>
-<li>默认情况，堆中对象（包括字段之间）起始地址要对齐至 8 的倍数。</li>
-<li>浪费掉的空间称之为对象间的填充（padding）。</li>
-<li>32 位压缩指针可以寻址到 2 的 35 次方个字节（32GB 地址空间，超过 32GB 会关闭压缩指针）。</li>
-<li>压缩指针解引用：左移 3 位，再加上一个固定偏移量。</li>
-<li>字段内存对齐的一个原因：<strong>让字段只出现在同一 CPU 的缓存行中</strong>。<strong>不懂</strong></li>
+<li><p>虚拟机选项 -XX:ObjectAlignmentInBytes，默认值为 8。</p>
+</li>
+<li><p>默认情况，堆中对象（包括字段之间）起始地址要对齐至 8 的倍数。</p>
+</li>
+<li><p>浪费掉的空间称之为对象间的填充（padding）。</p>
+</li>
+<li><p>32 位压缩指针可以寻址到 2 的 35 次方个字节（32GB 地址空间，超过 32GB 会关闭压缩指针）。</p>
+</li>
+<li><p>压缩指针解引用：左移 3 位，再加上一个固定偏移量。</p>
+</li>
+<li><p>字段内存对齐的一个原因：<strong>让字段只出现在同一 CPU 的缓存行中</strong>。<strong>不懂</strong></p>
+</li>
 </ul>
 <h1 id="字段重排列"><a href="#字段重排列" class="headerlink" title="字段重排列"></a>字段重排列</h1><ul>
 <li>Java 虚拟机重新分配字段的顺序，达到内存对齐</li>
 </ul>
-<h1 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h1><blockquote>
-<p><a href="https://time.geekbang.org/column/article/13081" target="_blank" rel="noopener">https://time.geekbang.org/column/article/13081</a></p>
-</blockquote>
 
       
     </div>
@@ -541,8 +571,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2018/08/10/笔记-深入拆解Java虚拟机-0809JVM是怎么实现invokedynamic的？/" rel="next" title="笔记-深入拆解Java虚拟机-0809JVM是怎么实现invokedynamic的？">
-                <i class="fa fa-chevron-left"></i> 笔记-深入拆解Java虚拟机-0809JVM是怎么实现invokedynamic的？
+              <a href="/2018/08/10/笔记-深入拆解Java虚拟机-0809JVM是怎么实现invokedynamic的？/" rel="next" title="「深入拆解 Java 虚拟机」08 09 JVM 是怎么实现 invokedynamic 的？">
+                <i class="fa fa-chevron-left"></i> 「深入拆解 Java 虚拟机」08 09 JVM 是怎么实现 invokedynamic 的？
               </a>
             
           </div>
@@ -551,8 +581,8 @@
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2018/08/29/笔记-深入拆解Java虚拟机-1112垃圾回收/" rel="prev" title="笔记-深入拆解Java虚拟机-1112垃圾回收">
-                笔记-深入拆解Java虚拟机-1112垃圾回收 <i class="fa fa-chevron-right"></i>
+              <a href="/2018/08/29/笔记-深入拆解Java虚拟机-1112垃圾回收/" rel="prev" title="「深入拆解 Java 虚拟机」11 12 垃圾回收">
+                「深入拆解 Java 虚拟机」11 12 垃圾回收 <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
@@ -634,7 +664,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">59</span>
+                  <span class="site-state-item-count">76</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -645,7 +675,7 @@
               
               <div class="site-state-item site-state-categories">
                 <a href="/categories/index.html">
-                  <span class="site-state-item-count">14</span>
+                  <span class="site-state-item-count">10</span>
                   <span class="site-state-item-name">分类</span>
                 </a>
               </div>
@@ -656,7 +686,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">26</span>
+                  <span class="site-state-item-count">37</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>
@@ -712,7 +742,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Java-新建对象的方式"><span class="nav-number">1.</span> <span class="nav-text">Java 新建对象的方式</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#压缩指针"><span class="nav-number">2.</span> <span class="nav-text">压缩指针</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#对象头（object-header）"><span class="nav-number">2.1.</span> <span class="nav-text">对象头（object header）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#压缩指针-1"><span class="nav-number">2.2.</span> <span class="nav-text">压缩指针</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#内存对齐"><span class="nav-number">3.</span> <span class="nav-text">内存对齐</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#字段重排列"><span class="nav-number">4.</span> <span class="nav-text">字段重排列</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#参考"><span class="nav-number">5.</span> <span class="nav-text">参考</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Java-新建对象的方式"><span class="nav-number">1.</span> <span class="nav-text">Java 新建对象的方式</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#压缩指针"><span class="nav-number">2.</span> <span class="nav-text">压缩指针</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#对象头（object-header）"><span class="nav-number">2.1.</span> <span class="nav-text">对象头（object header）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#压缩指针-1"><span class="nav-number">2.2.</span> <span class="nav-text">压缩指针</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#内存对齐"><span class="nav-number">3.</span> <span class="nav-text">内存对齐</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#字段重排列"><span class="nav-number">4.</span> <span class="nav-text">字段重排列</span></a></li></ol></div>
             
 
           </div>
@@ -732,7 +762,7 @@
 
     <footer id="footer" class="footer">
       <div class="footer-inner">
-        <div class="copyright">&copy; 2018 &mdash; <span itemprop="copyrightYear">2019</span>
+        <div class="copyright">&copy; 2018 &mdash; <span itemprop="copyrightYear">2020</span>
   <span class="with-love">
     <i class="fa fa-user"></i>
   </span>

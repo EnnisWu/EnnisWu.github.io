@@ -85,18 +85,18 @@
 
 
 
-<meta name="description" content="完整性 Git 以校验和的方式检测数据完整性。 Git 中的 commit id 是校验和。  文件状态和工作区域 工作区域： 工作目录：写代码的区域。 暂存区：代码 add 后 commit 前所在的区域。 本地仓库：代码 commit 后所在的区域。   文件状态： 已修改：工作目录已修改，代码未 add。 已暂存：代码已 add，未 commit。 已提交：代码已 commit。    用户">
+<meta name="description" content="完整性 Git 以校验和的方式检测数据完整性。  Git 中的 commit id 是校验和。   文件状态和工作区域 工作区域：  工作目录：写代码的区域。  暂存区：代码 add 后 commit 前所在的区域。  本地仓库：代码 commit 后所在的区域。    文件状态：  已修改：工作目录已修改，代码未 add。  已暂存：代码已 add，未 commit。  已提交：代码已 comm">
 <meta name="keywords" content="Git">
 <meta property="og:type" content="article">
-<meta property="og:title" content="一些简单的Git命令">
+<meta property="og:title" content="「笔记」一些简单的 Git 命令">
 <meta property="og:url" content="http://blog.ennis.info/2018/10/21/一些简单的Git命令/index.html">
 <meta property="og:site_name" content="Ennis Wu">
-<meta property="og:description" content="完整性 Git 以校验和的方式检测数据完整性。 Git 中的 commit id 是校验和。  文件状态和工作区域 工作区域： 工作目录：写代码的区域。 暂存区：代码 add 后 commit 前所在的区域。 本地仓库：代码 commit 后所在的区域。   文件状态： 已修改：工作目录已修改，代码未 add。 已暂存：代码已 add，未 commit。 已提交：代码已 commit。    用户">
+<meta property="og:description" content="完整性 Git 以校验和的方式检测数据完整性。  Git 中的 commit id 是校验和。   文件状态和工作区域 工作区域：  工作目录：写代码的区域。  暂存区：代码 add 后 commit 前所在的区域。  本地仓库：代码 commit 后所在的区域。    文件状态：  已修改：工作目录已修改，代码未 add。  已暂存：代码已 add，未 commit。  已提交：代码已 comm">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2019-01-26T13:26:29.031Z">
+<meta property="og:updated_time" content="2020-05-18T16:51:33.508Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="一些简单的Git命令">
-<meta name="twitter:description" content="完整性 Git 以校验和的方式检测数据完整性。 Git 中的 commit id 是校验和。  文件状态和工作区域 工作区域： 工作目录：写代码的区域。 暂存区：代码 add 后 commit 前所在的区域。 本地仓库：代码 commit 后所在的区域。   文件状态： 已修改：工作目录已修改，代码未 add。 已暂存：代码已 add，未 commit。 已提交：代码已 commit。    用户">
+<meta name="twitter:title" content="「笔记」一些简单的 Git 命令">
+<meta name="twitter:description" content="完整性 Git 以校验和的方式检测数据完整性。  Git 中的 commit id 是校验和。   文件状态和工作区域 工作区域：  工作目录：写代码的区域。  暂存区：代码 add 后 commit 前所在的区域。  本地仓库：代码 commit 后所在的区域。    文件状态：  已修改：工作目录已修改，代码未 add。  已暂存：代码已 add，未 commit。  已提交：代码已 comm">
 
 
 
@@ -132,7 +132,7 @@
 
 
 
-  <title>一些简单的Git命令 | Ennis Wu</title>
+  <title>「笔记」一些简单的 Git 命令 | Ennis Wu</title>
   
 
 
@@ -338,6 +338,18 @@
 
  </div>
     </header>
+    <script>
+      let images = [
+         'header0.jpg',
+         'header1.jpg',
+         'header2.png'
+      ];
+      let image = images[Math.floor(Math.random() * images.length)];
+      window.document.getElementById('header').style.cssText 
+      = 'background: url(/images/avatar/' 
+      + image
+      + '); no-repeat; background-size: auto 100%;';
+    </script>
 
     <main id="main" class="main">
       <div class="main-inner">
@@ -376,7 +388,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">一些简单的Git命令</h1>
+          <h1 class="post-title" itemprop="name headline">「笔记」一些简单的 Git 命令</h1>
         
 
         <div class="post-meta">
@@ -449,99 +461,116 @@
 
       
         <h1 id="完整性"><a href="#完整性" class="headerlink" title="完整性"></a>完整性</h1><ul>
-<li>Git 以校验和的方式检测数据完整性。</li>
-<li>Git 中的 commit id 是校验和。</li>
+<li><p>Git 以校验和的方式检测数据完整性。</p>
+</li>
+<li><p>Git 中的 commit id 是校验和。</p>
+</li>
 </ul>
 <h1 id="文件状态和工作区域"><a href="#文件状态和工作区域" class="headerlink" title="文件状态和工作区域"></a>文件状态和工作区域</h1><ul>
-<li>工作区域：<ol>
-<li>工作目录：写代码的区域。</li>
-<li>暂存区：代码 add 后 commit 前所在的区域。</li>
-<li>本地仓库：代码 commit 后所在的区域。</li>
+<li><p>工作区域：</p>
+<ol>
+<li><p>工作目录：写代码的区域。</p>
+</li>
+<li><p>暂存区：代码 add 后 commit 前所在的区域。</p>
+</li>
+<li><p>本地仓库：代码 commit 后所在的区域。</p>
+</li>
 </ol>
 </li>
-<li>文件状态：<ol>
-<li>已修改：工作目录已修改，代码未 add。</li>
-<li>已暂存：代码已 add，未 commit。</li>
-<li>已提交：代码已 commit。</li>
+<li><p>文件状态：</p>
+<ol>
+<li><p>已修改：工作目录已修改，代码未 add。</p>
+</li>
+<li><p>已暂存：代码已 add，未 commit。</p>
+</li>
+<li><p>已提交：代码已 commit。</p>
+</li>
 </ol>
 </li>
 </ul>
 <h1 id="用户身份"><a href="#用户身份" class="headerlink" title="用户身份"></a>用户身份</h1><ul>
-<li><p>配置个人信息</p>
+<li>配置个人信息</li>
+</ul>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ git config --global user.name &quot;Your Name&quot;</span><br><span class="line">$ git config --global user.email &quot;example@email.com&quot;</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>查看个人信息</p>
+<ul>
+<li>查看个人信息</li>
+</ul>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ git config --list</span><br></pre></td></tr></table></figure>
-</li>
-</ul>
 <h1 id="创建本地仓库"><a href="#创建本地仓库" class="headerlink" title="创建本地仓库"></a>创建本地仓库</h1><ul>
-<li><p>初始化本地仓库</p>
+<li>初始化本地仓库</li>
+</ul>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ git init</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>从远程仓库克隆</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ git clone ssh/https地址</span><br></pre></td></tr></table></figure>
-</li>
+<ul>
+<li>从远程仓库克隆</li>
 </ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ git clone ssh/https 地址</span><br></pre></td></tr></table></figure>
 <h1 id="本地操作"><a href="#本地操作" class="headerlink" title="本地操作"></a>本地操作</h1><ul>
-<li><p>添加文件到暂存区</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ git add readme.txt</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>添加所有文件到暂存区</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ git add .</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>提交暂存区文件到本地仓库</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ git commit -m &quot;say something&quot;</span><br></pre></td></tr></table></figure>
-</li>
+<li>添加文件到暂存区</li>
 </ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ git add readme.txt</span><br></pre></td></tr></table></figure>
+<ul>
+<li>添加所有文件到暂存区</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ git add .</span><br></pre></td></tr></table></figure>
+<ul>
+<li>提交暂存区文件到本地仓库</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ git commit -m &quot;say something&quot;</span><br></pre></td></tr></table></figure>
 <p>加 -m 表示直接用后面的字符串作为说明，否则跳转编辑器</p>
 <ul>
-<li><p>查看本地仓库提交历史</p>
+<li>查看本地仓库提交历史</li>
+</ul>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ git log</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>查看文件状态</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ git status</span><br></pre></td></tr></table></figure>
 <ul>
-<li>Changes to be committed：已暂存、可提交文件</li>
-<li>Untracked files：未暂存文件</li>
+<li>查看文件状态</li>
 </ul>
-</li>
-<li><p>查看未暂存文件变更细节</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ git diff</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>查看已暂存文件变更细节</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ git diff --staged</span><br></pre></td></tr></table></figure>
-</li>
-</ul>
-<h1 id="版本回退"><a href="#版本回退" class="headerlink" title="版本回退"></a>版本回退</h1><ul>
-<li><p>回到上一个版本（硬回退）</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ git reset --hard HEAD^</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>回到上一个版本（软回退）</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ git reset --soft HEAD^</span><br></pre></td></tr></table></figure>
-</li>
-</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ git status</span><br></pre></td></tr></table></figure>
 <ol>
-<li>hard 移除仓库中的 commit，暂存区和工作区回到之前的状态。</li>
-<li>soft 移除仓库中的 commit，暂存区和工作区不变。</li>
+<li><p>Changes to be committed：已暂存、可提交文件</p>
+</li>
+<li><p>Untracked files：未暂存文件</p>
+</li>
 </ol>
 <ul>
-<li>查询版本提交记录<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ git reflog</span><br></pre></td></tr></table></figure>
-</li>
+<li>查看未暂存文件变更细节</li>
 </ul>
-<p>①commit id ②执行的命令 ③描述</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ git diff</span><br></pre></td></tr></table></figure>
 <ul>
-<li>回退到指定版本<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ git reset --hard 提交Id</span><br></pre></td></tr></table></figure>
-</li>
+<li>查看已暂存文件变更细节</li>
 </ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ git diff --staged</span><br></pre></td></tr></table></figure>
+<h1 id="版本回退"><a href="#版本回退" class="headerlink" title="版本回退"></a>版本回退</h1><ul>
+<li>回到上一个版本（硬回退）</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ git reset --hard HEAD^</span><br></pre></td></tr></table></figure>
+<ul>
+<li>回到上一个版本（软回退）</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ git reset --soft HEAD^</span><br></pre></td></tr></table></figure>
+<ol>
+<li><p>hard 移除仓库中的 commit，暂存区和工作区回到之前的状态。</p>
+</li>
+<li><p>soft 移除仓库中的 commit，暂存区和工作区不变。</p>
+</li>
+</ol>
+<ul>
+<li>查询版本提交记录</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ git reflog</span><br></pre></td></tr></table></figure>
+<p>① commit id ② 执行的命令 ③ 描述</p>
+<ul>
+<li>回退到指定版本</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ git reset --hard 提交Id</span><br></pre></td></tr></table></figure>
 <p>commit id 可以不填全部，git 自动查找。</p>
 <h1 id="撤销修改"><a href="#撤销修改" class="headerlink" title="撤销修改"></a>撤销修改</h1><ul>
-<li><p>撤销未添加到暂存区的修改</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ git checkout --文件</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>撤销已添加到暂存区的修改</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ git reset HEAD 文件</span><br></pre></td></tr></table></figure>
-</li>
+<li>撤销未添加到暂存区的修改</li>
 </ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ git checkout --文件</span><br></pre></td></tr></table></figure>
+<ul>
+<li>撤销已添加到暂存区的修改</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ git reset HEAD 文件</span><br></pre></td></tr></table></figure>
 <h1 id="删除相关操作"><a href="#删除相关操作" class="headerlink" title="删除相关操作"></a>删除相关操作</h1><ul>
 <li><p>删除文件</p>
 <ol>
@@ -556,69 +585,80 @@
 </ol>
 </li>
 <li><p>恢复文件</p>
+</li>
+</ul>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ git checkout --文件</span><br></pre></td></tr></table></figure>
-<ul>
-<li>可以恢复未添加到暂存区的修改了的文件</li>
-<li>可以恢复自删除的文件</li>
+<pre><code>- 可以恢复未添加到暂存区的修改了的文件
+- 可以恢复自删除的文件
+</code></pre><h1 id="远程仓库"><a href="#远程仓库" class="headerlink" title="远程仓库"></a>远程仓库</h1><ul>
+<li>关联远程仓库</li>
 </ul>
-</li>
-</ul>
-<h1 id="远程仓库"><a href="#远程仓库" class="headerlink" title="远程仓库"></a>远程仓库</h1><ul>
-<li><p>关联远程仓库</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ git remote add 自定义远程仓库名 ssh/https地址</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>第一次推送本地仓库到远程仓库</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ git push -u 远程仓库名 远程仓库分支名</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>非第一次推送本地仓库到远程仓库</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ git push 远程仓库名 远程仓库分支</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>从远程仓库拉取数据到本地</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ git fetch 远程仓库名</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>将从远程仓库拉取的数据和本地仓库合并</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ git merge 本地分支名</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>从远程仓库拉取数据并合并</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ git pull 远程仓库名 远程分支名</span><br></pre></td></tr></table></figure>
-</li>
+<ul>
+<li>第一次推送本地仓库到远程仓库</li>
 </ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ git push -u 远程仓库名 远程仓库分支名</span><br></pre></td></tr></table></figure>
+<ul>
+<li>非第一次推送本地仓库到远程仓库</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ git push 远程仓库名 远程仓库分支</span><br></pre></td></tr></table></figure>
+<ul>
+<li>从远程仓库拉取数据到本地</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ git fetch 远程仓库名</span><br></pre></td></tr></table></figure>
+<ul>
+<li>将从远程仓库拉取的数据和本地仓库合并</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ git merge 本地分支名</span><br></pre></td></tr></table></figure>
+<ul>
+<li>从远程仓库拉取数据并合并</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ git pull 远程仓库名 远程分支名</span><br></pre></td></tr></table></figure>
 <ol>
-<li>fetch 只拉取远程仓库数据，不更新本地仓库状态。</li>
-<li>pull 拉取远程仓库数据并更新本地仓库状态到远程仓库最新状态。</li>
-<li>pull = fetch + merge</li>
+<li><p>fetch 只拉取远程仓库数据，不更新本地仓库状态。</p>
+</li>
+<li><p>pull 拉取远程仓库数据并更新本地仓库状态到远程仓库最新状态。</p>
+</li>
+<li><p>pull = fetch + merge</p>
+</li>
 </ol>
 <h1 id="分支"><a href="#分支" class="headerlink" title="分支"></a>分支</h1><ul>
-<li><p>创建分支</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ git branch 分支名</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>切换分支</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ git checkout 分支名</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>创建并切换分支</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ git checkout -b 分支名</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>查看分支</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ git branch</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>合并分支</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ git branch 分支名</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>删除分支</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ git branch -d 分支名</span><br></pre></td></tr></table></figure>
-</li>
+<li>创建分支</li>
 </ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ git branch 分支名</span><br></pre></td></tr></table></figure>
+<ul>
+<li>切换分支</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ git checkout 分支名</span><br></pre></td></tr></table></figure>
+<ul>
+<li>创建并切换分支</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ git checkout -b 分支名</span><br></pre></td></tr></table></figure>
+<ul>
+<li>查看分支</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ git branch</span><br></pre></td></tr></table></figure>
+<ul>
+<li>合并分支</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ git branch 分支名</span><br></pre></td></tr></table></figure>
+<ul>
+<li>删除分支</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ git branch -d 分支名</span><br></pre></td></tr></table></figure>
 <h1 id="解决冲突"><a href="#解决冲突" class="headerlink" title="解决冲突"></a>解决冲突</h1><ul>
 <li>解决冲突后不能提交某个文件，只能提交全部文件</li>
 </ul>
 <h1 id="变基（写的不完整，无参考价值）"><a href="#变基（写的不完整，无参考价值）" class="headerlink" title="变基（写的不完整，无参考价值）"></a>变基（写的不完整，无参考价值）</h1><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ git rebase 分支名</span><br></pre></td></tr></table></figure>
 <ul>
-<li>rebase 失败先解决冲突再执行<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ git rebase --continue</span><br></pre></td></tr></table></figure>
-</li>
+<li>rebase 失败先解决冲突再执行</li>
 </ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ git rebase --continue</span><br></pre></td></tr></table></figure>
 <ol>
-<li>变基抛弃原有提交，创建新的对应提交。</li>
-<li>变基的提交历史是一条直线。</li>
+<li><p>变基抛弃原有提交，创建新的对应提交。</p>
+</li>
+<li><p>变基的提交历史是一条直线。</p>
+</li>
 </ol>
 
       
@@ -679,8 +719,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2018/10/20/笔记-深入拆解Java虚拟机-15Java语法糖与Java编译器/" rel="next" title="笔记-深入拆解Java虚拟机-15Java语法糖与Java编译器">
-                <i class="fa fa-chevron-left"></i> 笔记-深入拆解Java虚拟机-15Java语法糖与Java编译器
+              <a href="/2018/10/20/笔记-深入拆解Java虚拟机-15Java语法糖与Java编译器/" rel="next" title="「深入拆解 Java 虚拟机」15 Java 语法糖与 Java 编译器">
+                <i class="fa fa-chevron-left"></i> 「深入拆解 Java 虚拟机」15 Java 语法糖与 Java 编译器
               </a>
             
           </div>
@@ -689,8 +729,8 @@
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2018/11/06/笔记-深入拆解Java虚拟机-1617即时编译/" rel="prev" title="笔记-深入拆解Java虚拟机-1617即时编译">
-                笔记-深入拆解Java虚拟机-1617即时编译 <i class="fa fa-chevron-right"></i>
+              <a href="/2018/11/06/笔记-深入拆解Java虚拟机-1617即时编译/" rel="prev" title="「深入拆解 Java 虚拟机」16 17 即时编译">
+                「深入拆解 Java 虚拟机」16 17 即时编译 <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
@@ -772,7 +812,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">59</span>
+                  <span class="site-state-item-count">76</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -783,7 +823,7 @@
               
               <div class="site-state-item site-state-categories">
                 <a href="/categories/index.html">
-                  <span class="site-state-item-count">14</span>
+                  <span class="site-state-item-count">10</span>
                   <span class="site-state-item-name">分类</span>
                 </a>
               </div>
@@ -794,7 +834,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">26</span>
+                  <span class="site-state-item-count">37</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>
@@ -870,7 +910,7 @@
 
     <footer id="footer" class="footer">
       <div class="footer-inner">
-        <div class="copyright">&copy; 2018 &mdash; <span itemprop="copyrightYear">2019</span>
+        <div class="copyright">&copy; 2018 &mdash; <span itemprop="copyrightYear">2020</span>
   <span class="with-love">
     <i class="fa fa-user"></i>
   </span>

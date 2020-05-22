@@ -85,18 +85,18 @@
 
 
 
-<meta name="description" content="GraalVM GraalVM 是一个高性能的、支持多种编程语言的执行环境。它既可以在传统的 OpenJDK 上运行，也可以通过 AOT（Ahead-Of-Time）编译成可执行文件单独运行，甚至可以集成至数据库中运行。   除此之外，它还移除了编程语言之间的边界，并且支持通过即时编译技术，将混杂了不同的编程语言的代码编译到同一段二进制码之中，从而实现不同语言之间的无缝切换。  Graal 编译器">
+<meta name="description" content="原文：https://time.geekbang.org/column/article/41245 GraalVM GraalVM 是一个高性能的、支持多种编程语言的执行环境。它既可以在传统的 OpenJDK 上运行，也可以通过 AOT（Ahead-Of-Time）编译成可执行文件单独运行，甚至可以集成至数据库中运行。   除此之外，它还移除了编程语言之间的边界，并且支持通过即时编译技术，将混杂了">
 <meta name="keywords" content="JVM">
 <meta property="og:type" content="article">
-<meta property="og:title" content="笔记-深入拆解Java虚拟机-34Graal：用Java编译Java">
+<meta property="og:title" content="「深入拆解 Java 虚拟机」34 Graal：用 Java 编译 Java">
 <meta property="og:url" content="http://blog.ennis.info/2018/12/15/笔记-深入拆解Java虚拟机-34Graal：用Java编译Java/index.html">
 <meta property="og:site_name" content="Ennis Wu">
-<meta property="og:description" content="GraalVM GraalVM 是一个高性能的、支持多种编程语言的执行环境。它既可以在传统的 OpenJDK 上运行，也可以通过 AOT（Ahead-Of-Time）编译成可执行文件单独运行，甚至可以集成至数据库中运行。   除此之外，它还移除了编程语言之间的边界，并且支持通过即时编译技术，将混杂了不同的编程语言的代码编译到同一段二进制码之中，从而实现不同语言之间的无缝切换。  Graal 编译器">
+<meta property="og:description" content="原文：https://time.geekbang.org/column/article/41245 GraalVM GraalVM 是一个高性能的、支持多种编程语言的执行环境。它既可以在传统的 OpenJDK 上运行，也可以通过 AOT（Ahead-Of-Time）编译成可执行文件单独运行，甚至可以集成至数据库中运行。   除此之外，它还移除了编程语言之间的边界，并且支持通过即时编译技术，将混杂了">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2019-01-26T13:26:29.178Z">
+<meta property="og:updated_time" content="2020-05-21T16:48:53.193Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="笔记-深入拆解Java虚拟机-34Graal：用Java编译Java">
-<meta name="twitter:description" content="GraalVM GraalVM 是一个高性能的、支持多种编程语言的执行环境。它既可以在传统的 OpenJDK 上运行，也可以通过 AOT（Ahead-Of-Time）编译成可执行文件单独运行，甚至可以集成至数据库中运行。   除此之外，它还移除了编程语言之间的边界，并且支持通过即时编译技术，将混杂了不同的编程语言的代码编译到同一段二进制码之中，从而实现不同语言之间的无缝切换。  Graal 编译器">
+<meta name="twitter:title" content="「深入拆解 Java 虚拟机」34 Graal：用 Java 编译 Java">
+<meta name="twitter:description" content="原文：https://time.geekbang.org/column/article/41245 GraalVM GraalVM 是一个高性能的、支持多种编程语言的执行环境。它既可以在传统的 OpenJDK 上运行，也可以通过 AOT（Ahead-Of-Time）编译成可执行文件单独运行，甚至可以集成至数据库中运行。   除此之外，它还移除了编程语言之间的边界，并且支持通过即时编译技术，将混杂了">
 
 
 
@@ -132,7 +132,7 @@
 
 
 
-  <title>笔记-深入拆解Java虚拟机-34Graal：用Java编译Java | Ennis Wu</title>
+  <title>「深入拆解 Java 虚拟机」34 Graal：用 Java 编译 Java | Ennis Wu</title>
   
 
 
@@ -338,6 +338,18 @@
 
  </div>
     </header>
+    <script>
+      let images = [
+         'header0.jpg',
+         'header1.jpg',
+         'header2.png'
+      ];
+      let image = images[Math.floor(Math.random() * images.length)];
+      window.document.getElementById('header').style.cssText 
+      = 'background: url(/images/avatar/' 
+      + image
+      + '); no-repeat; background-size: auto 100%;';
+    </script>
 
     <main id="main" class="main">
       <div class="main-inner">
@@ -376,7 +388,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">笔记-深入拆解Java虚拟机-34Graal：用Java编译Java</h1>
+          <h1 class="post-title" itemprop="name headline">「深入拆解 Java 虚拟机」34 Graal：用 Java 编译 Java</h1>
         
 
         <div class="post-meta">
@@ -411,8 +423,8 @@
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Java虚拟机/" itemprop="url" rel="index">
-                    <span itemprop="name">Java虚拟机</span>
+                  <a href="/categories/《深入拆解-Java-虚拟机》/" itemprop="url" rel="index">
+                    <span itemprop="name">《深入拆解 Java 虚拟机》</span>
                   </a>
                 </span>
 
@@ -448,7 +460,8 @@
       
 
       
-        <h1 id="GraalVM"><a href="#GraalVM" class="headerlink" title="GraalVM"></a>GraalVM</h1><blockquote>
+        <p>原文：<a href="https://time.geekbang.org/column/article/41245" target="_blank" rel="noopener">https://time.geekbang.org/column/article/41245</a></p>
+<h1 id="GraalVM"><a href="#GraalVM" class="headerlink" title="GraalVM"></a>GraalVM</h1><blockquote>
 <p>GraalVM 是一个高性能的、支持多种编程语言的执行环境。它既可以在传统的 OpenJDK 上运行，也可以通过 AOT（Ahead-Of-Time）编译成可执行文件单独运行，甚至可以集成至数据库中运行。</p>
 </blockquote>
 <blockquote>
@@ -458,38 +471,61 @@
 <p>用 Java 写就的即时编译器，它从 Java 9u 开始便被集成自 JDK 中，作为实验性质的即时编译器。</p>
 </blockquote>
 <ul>
-<li>启用时将替换掉 HotSpot 中的 C2 编译器。</li>
-<li>响应原本 C2 负责的编译请求。</li>
+<li><p>启用时将替换掉 HotSpot 中的 C2 编译器。</p>
+</li>
+<li><p>响应原本 C2 负责的编译请求。</p>
+</li>
 </ul>
 <h1 id="Graal-和-Java-虚拟机的交互"><a href="#Graal-和-Java-虚拟机的交互" class="headerlink" title="Graal 和 Java 虚拟机的交互"></a>Graal 和 Java 虚拟机的交互</h1><p>即时编译器与 JVM 的交互可以分为三个方面：</p>
 <ol>
-<li>响应编译请求。</li>
-<li>获取编译所需的元数据（如类、方法、字段）和反映程序执行状态的 profile。</li>
-<li>将生成的二进制码部署至代码缓存（code cache）里。</li>
+<li><p>响应编译请求。</p>
+</li>
+<li><p>获取编译所需的元数据（如类、方法、字段）和反映程序执行状态的 profile。</p>
+</li>
+<li><p>将生成的二进制码部署至代码缓存（code cache）里。</p>
+</li>
 </ol>
 <ul>
-<li>传统情况，<strong>即时编译器是与 JVM 紧耦合</strong>。</li>
-<li>更改即时编译器需要重新编译整个 JVM。</li>
-<li>引入 <a href="http://openjdk.java.net/jeps/243" target="_blank" rel="noopener">JVM 编译器接口</a>（JVM Compiler Interface，JVMCI）解耦合 JVM 和 Graal。</li>
-<li><strong>Java 程序可以直接调用 Graal</strong>，编译并部署指定方法（因为JVMCI）。</li>
-<li>Graal 的单元测试和 Truffle 语言实现框架基于上述技术。</li>
+<li><p>传统情况，<strong>即时编译器是与 JVM 紧耦合</strong>。</p>
+</li>
+<li><p>更改即时编译器需要重新编译整个 JVM。</p>
+</li>
+<li><p>引入 <a href="http://openjdk.java.net/jeps/243" target="_blank" rel="noopener">JVM 编译器接口</a>（JVM Compiler Interface，JVMCI）解耦合 JVM 和 Graal。</p>
+</li>
+<li><p><strong>Java 程序可以直接调用 Graal</strong>，编译并部署指定方法（因为 JVMCI）。</p>
+</li>
+<li><p>Graal 的单元测试和 Truffle 语言实现框架基于上述技术。</p>
+</li>
 </ul>
 <h1 id="Graal-和-C2-的区别"><a href="#Graal-和-C2-的区别" class="headerlink" title="Graal 和 C2 的区别"></a>Graal 和 C2 的区别</h1><ul>
-<li>Graal 由 <strong>Java 编写</strong>，C2 由 C++ 编写。</li>
-<li>Graal <strong>更加模块化，更容易开发与维护</strong>。</li>
-<li>Graal 中被证实有效的部分逃逸分析（partial escape analysis）未被移植到 C2 中。</li>
-<li>Graal 的<strong>内联算法对新语法、新语言更加友好</strong>。</li>
+<li><p>Graal 由 <strong>Java 编写</strong>，C2 由 C++ 编写。</p>
+</li>
+<li><p>Graal <strong>更加模块化，更容易开发与维护</strong>。</p>
+</li>
+<li><p>Graal 中被证实有效的部分逃逸分析（partial escape analysis）未被移植到 C2 中。</p>
+</li>
+<li><p>Graal 的<strong>内联算法对新语法、新语言更加友好</strong>。</p>
+</li>
 </ul>
 <h1 id="Graal-的实现"><a href="#Graal-的实现" class="headerlink" title="Graal 的实现"></a>Graal 的实现</h1><ul>
-<li>编译过程分为前端和后端。</li>
-<li><strong>前端</strong>实现<strong>平台无关</strong>的优化（如方法内联），和小部分平台相关的优化。</li>
-<li><strong>后端</strong>实现大部分<strong>平台相关</strong>优化（如寄存器分配），和<strong>生成机器码</strong>。</li>
-<li>前端的 IR 称为 High-level IR（HIR）（如Sea-of-Nodes IR），后端的 IR 称为 Low-level IR（LIR）。</li>
-<li>前端由一个个单独的优化阶段（optimization phase）构成。</li>
-<li>前端编译阶段除了少数几个关键的之外，其余均可以通过配置选项开启或关闭。</li>
-<li><strong>Graal 比 C2 更加激进</strong>，设计上<strong>十分青睐基于假设的优化手段</strong>。</li>
-<li>Graal 支持自定义假设，和直接与去优化节点相关联。</li>
-<li>Graal 实现高性能的 intrinsic 方法相对简单。</li>
+<li><p>编译过程分为前端和后端。</p>
+</li>
+<li><p><strong>前端</strong>实现<strong>平台无关</strong>的优化（如方法内联），和小部分平台相关的优化。</p>
+</li>
+<li><p><strong>后端</strong>实现大部分<strong>平台相关</strong>优化（如寄存器分配），和<strong>生成机器码</strong>。</p>
+</li>
+<li><p>前端的 IR 称为 High-level IR（HIR）（如Sea-of-Nodes IR），后端的 IR 称为 Low-level IR（LIR）。</p>
+</li>
+<li><p>前端由一个个单独的优化阶段（optimization phase）构成。</p>
+</li>
+<li><p>前端编译阶段除了少数几个关键的之外，其余均可以通过配置选项开启或关闭。</p>
+</li>
+<li><p><strong>Graal 比 C2 更加激进</strong>，设计上<strong>十分青睐基于假设的优化手段</strong>。</p>
+</li>
+<li><p>Graal 支持自定义假设，和直接与去优化节点相关联。</p>
+</li>
+<li><p>Graal 实现高性能的 intrinsic 方法相对简单。</p>
+</li>
 </ul>
 <h1 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h1><p>Q：GraalVM 和 JVM 是什么关系？</p>
 <p>A：可以将 GraalVM 看成泛指带 Graal 编译器的虚拟机。</p>
@@ -499,9 +535,6 @@
 <hr>
 <p>Q：<strong>Graal 自身的及时编译是调用 Graal 自身吗？如果这么做会不会出现无穷递归？</strong></p>
 <p>A：默认情况下，<strong>由 C1 编译Graal。调用 Graal 编译 Graal 并不会造成无穷递归。</strong>因为 JVM 里有解释执行器，能够执行 Graal 代码。</p>
-<h1 id="引用"><a href="#引用" class="headerlink" title="引用"></a>引用</h1><blockquote>
-<p><a href="https://time.geekbang.org/column/article/41245" target="_blank" rel="noopener">https://time.geekbang.org/column/article/41245</a></p>
-</blockquote>
 
       
     </div>
@@ -561,8 +594,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2018/12/13/笔记-深入拆解Java虚拟机-3031Java虚拟机的监控及诊断工具/" rel="next" title="笔记-深入拆解Java虚拟机-3031Java虚拟机的监控及诊断工具">
-                <i class="fa fa-chevron-left"></i> 笔记-深入拆解Java虚拟机-3031Java虚拟机的监控及诊断工具
+              <a href="/2018/12/13/笔记-深入拆解Java虚拟机-3031Java虚拟机的监控及诊断工具/" rel="next" title="「深入拆解 Java 虚拟机」30 31 Java 虚拟机的监控及诊断工具">
+                <i class="fa fa-chevron-left"></i> 「深入拆解 Java 虚拟机」30 31 Java 虚拟机的监控及诊断工具
               </a>
             
           </div>
@@ -571,8 +604,8 @@
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2018/12/16/笔记-深入拆解Java虚拟机-35Truffle：语言实现框架/" rel="prev" title="笔记-深入拆解Java虚拟机-35Truffle：语言实现框架">
-                笔记-深入拆解Java虚拟机-35Truffle：语言实现框架 <i class="fa fa-chevron-right"></i>
+              <a href="/2018/12/16/笔记-深入拆解Java虚拟机-35Truffle：语言实现框架/" rel="prev" title="「深入拆解 Java 虚拟机」35 Truffle：语言实现框架">
+                「深入拆解 Java 虚拟机」35 Truffle：语言实现框架 <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
@@ -654,7 +687,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">59</span>
+                  <span class="site-state-item-count">76</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -665,7 +698,7 @@
               
               <div class="site-state-item site-state-categories">
                 <a href="/categories/index.html">
-                  <span class="site-state-item-count">14</span>
+                  <span class="site-state-item-count">10</span>
                   <span class="site-state-item-name">分类</span>
                 </a>
               </div>
@@ -676,7 +709,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">26</span>
+                  <span class="site-state-item-count">37</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>
@@ -732,7 +765,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#GraalVM"><span class="nav-number">1.</span> <span class="nav-text">GraalVM</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Graal-编译器"><span class="nav-number">2.</span> <span class="nav-text">Graal 编译器</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Graal-和-Java-虚拟机的交互"><span class="nav-number">3.</span> <span class="nav-text">Graal 和 Java 虚拟机的交互</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Graal-和-C2-的区别"><span class="nav-number">4.</span> <span class="nav-text">Graal 和 C2 的区别</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Graal-的实现"><span class="nav-number">5.</span> <span class="nav-text">Graal 的实现</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#问题"><span class="nav-number">6.</span> <span class="nav-text">问题</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#引用"><span class="nav-number">7.</span> <span class="nav-text">引用</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#GraalVM"><span class="nav-number">1.</span> <span class="nav-text">GraalVM</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Graal-编译器"><span class="nav-number">2.</span> <span class="nav-text">Graal 编译器</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Graal-和-Java-虚拟机的交互"><span class="nav-number">3.</span> <span class="nav-text">Graal 和 Java 虚拟机的交互</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Graal-和-C2-的区别"><span class="nav-number">4.</span> <span class="nav-text">Graal 和 C2 的区别</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Graal-的实现"><span class="nav-number">5.</span> <span class="nav-text">Graal 的实现</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#问题"><span class="nav-number">6.</span> <span class="nav-text">问题</span></a></li></ol></div>
             
 
           </div>
@@ -752,7 +785,7 @@
 
     <footer id="footer" class="footer">
       <div class="footer-inner">
-        <div class="copyright">&copy; 2018 &mdash; <span itemprop="copyrightYear">2019</span>
+        <div class="copyright">&copy; 2018 &mdash; <span itemprop="copyrightYear">2020</span>
   <span class="with-love">
     <i class="fa fa-user"></i>
   </span>

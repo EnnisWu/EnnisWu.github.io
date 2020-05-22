@@ -85,19 +85,19 @@
 
 
 
-<meta name="description" content="在 Smalltalk 中，所有的值都是对象。因此，许多人认为它是一门纯粹的面向对象语言。 Java 则不同，它引进了八个基本类型，来支持数值计算。Java 这么做的原因主要是工程上的考虑，因为使用基本类型能够在执行效率以及内存使用两方面提升软件性能。 Java虚拟机的 boolean类型123456789public class Foo &amp;#123;	public static void mai">
+<meta name="description" content="原文：https://time.geekbang.org/column/article/11503 在 Smalltalk 中，所有的值都是对象。因此，许多人认为它是一门纯粹的面向对象语言。 Java 则不同，它引进了八个基本类型，来支持数值计算。Java 这么做的原因主要是工程上的考虑，因为使用基本类型能够在执行效率以及内存使用两方面提升软件性能。 Java虚拟机的 boolean类型12345">
 <meta name="keywords" content="JVM">
 <meta property="og:type" content="article">
-<meta property="og:title" content="笔记-深入拆解Java虚拟机-02Java的基本类型">
+<meta property="og:title" content="「深入拆解 Java 虚拟机」02 Java 的基本类型">
 <meta property="og:url" content="http://blog.ennis.info/2018/07/28/笔记-深入拆解Java虚拟机-02Java的基本类型/index.html">
 <meta property="og:site_name" content="Ennis Wu">
-<meta property="og:description" content="在 Smalltalk 中，所有的值都是对象。因此，许多人认为它是一门纯粹的面向对象语言。 Java 则不同，它引进了八个基本类型，来支持数值计算。Java 这么做的原因主要是工程上的考虑，因为使用基本类型能够在执行效率以及内存使用两方面提升软件性能。 Java虚拟机的 boolean类型123456789public class Foo &amp;#123;	public static void mai">
+<meta property="og:description" content="原文：https://time.geekbang.org/column/article/11503 在 Smalltalk 中，所有的值都是对象。因此，许多人认为它是一门纯粹的面向对象语言。 Java 则不同，它引进了八个基本类型，来支持数值计算。Java 这么做的原因主要是工程上的考虑，因为使用基本类型能够在执行效率以及内存使用两方面提升软件性能。 Java虚拟机的 boolean类型12345">
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="http://blog.ennis.info/images/posts/JVM/02/primitive_types.png">
-<meta property="og:updated_time" content="2019-01-26T13:26:29.042Z">
+<meta property="og:updated_time" content="2020-05-21T16:41:32.197Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="笔记-深入拆解Java虚拟机-02Java的基本类型">
-<meta name="twitter:description" content="在 Smalltalk 中，所有的值都是对象。因此，许多人认为它是一门纯粹的面向对象语言。 Java 则不同，它引进了八个基本类型，来支持数值计算。Java 这么做的原因主要是工程上的考虑，因为使用基本类型能够在执行效率以及内存使用两方面提升软件性能。 Java虚拟机的 boolean类型123456789public class Foo &amp;#123;	public static void mai">
+<meta name="twitter:title" content="「深入拆解 Java 虚拟机」02 Java 的基本类型">
+<meta name="twitter:description" content="原文：https://time.geekbang.org/column/article/11503 在 Smalltalk 中，所有的值都是对象。因此，许多人认为它是一门纯粹的面向对象语言。 Java 则不同，它引进了八个基本类型，来支持数值计算。Java 这么做的原因主要是工程上的考虑，因为使用基本类型能够在执行效率以及内存使用两方面提升软件性能。 Java虚拟机的 boolean类型12345">
 <meta name="twitter:image" content="http://blog.ennis.info/images/posts/JVM/02/primitive_types.png">
 
 
@@ -134,7 +134,7 @@
 
 
 
-  <title>笔记-深入拆解Java虚拟机-02Java的基本类型 | Ennis Wu</title>
+  <title>「深入拆解 Java 虚拟机」02 Java 的基本类型 | Ennis Wu</title>
   
 
 
@@ -340,6 +340,18 @@
 
  </div>
     </header>
+    <script>
+      let images = [
+         'header0.jpg',
+         'header1.jpg',
+         'header2.png'
+      ];
+      let image = images[Math.floor(Math.random() * images.length)];
+      window.document.getElementById('header').style.cssText 
+      = 'background: url(/images/avatar/' 
+      + image
+      + '); no-repeat; background-size: auto 100%;';
+    </script>
 
     <main id="main" class="main">
       <div class="main-inner">
@@ -378,7 +390,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">笔记-深入拆解Java虚拟机-02Java的基本类型</h1>
+          <h1 class="post-title" itemprop="name headline">「深入拆解 Java 虚拟机」02 Java 的基本类型</h1>
         
 
         <div class="post-meta">
@@ -413,8 +425,8 @@
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Java虚拟机/" itemprop="url" rel="index">
-                    <span itemprop="name">Java虚拟机</span>
+                  <a href="/categories/《深入拆解-Java-虚拟机》/" itemprop="url" rel="index">
+                    <span itemprop="name">《深入拆解 Java 虚拟机》</span>
                   </a>
                 </span>
 
@@ -450,56 +462,57 @@
       
 
       
-        <p>在 Smalltalk 中，所有的值都是对象。因此，许多人认为它是一门纯粹的面向对象语言。</p>
+        <p>原文：<a href="https://time.geekbang.org/column/article/11503" target="_blank" rel="noopener">https://time.geekbang.org/column/article/11503</a></p>
+<p>在 Smalltalk 中，所有的值都是对象。因此，许多人认为它是一门纯粹的面向对象语言。</p>
 <p>Java 则不同，它引进了<strong>八个基本类型</strong>，来支持数值计算。Java 这么做的原因主要是工程上的考虑，因为使用<strong>基本类型能够在执行效率以及内存使用两方面提升软件性能</strong>。</p>
 <h1 id="Java虚拟机的-boolean类型"><a href="#Java虚拟机的-boolean类型" class="headerlink" title="Java虚拟机的 boolean类型"></a>Java虚拟机的 boolean类型</h1><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Foo</span> </span>&#123;</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">		<span class="keyword">boolean</span> 吃过饭没 = <span class="number">2</span>; <span class="comment">// 直接编译的话 javac 会报错</span></span><br><span class="line">		<span class="keyword">if</span> (吃过饭没) </span><br><span class="line">			System.out.println(<span class="string">" 吃了 "</span>);</span><br><span class="line">		<span class="keyword">if</span> (<span class="keyword">true</span> == 吃过饭没) </span><br><span class="line">			System.out.println(<span class="string">" 真吃了 "</span>);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>Java语言规范中，boolean类型的值只有两种，用“true”和“false”表示。</p>
-<p><strong>Java虚拟机规范中，boolean类型被映射成int类型，“true”映射为整数1，“false”映射为整数0。</strong></p>
+<p>Java 语言规范中，boolean 类型的值只有两种，用 true 和 false 表示。</p>
+<p><strong>Java虚拟机规范中，boolean 类型被映射成 int 类型，true 映射为整数1，false 映射为整数 0。</strong></p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"># Foo.main 编译后的字节码</span><br><span class="line"> 0: iconst_2       // 我们用 AsmTools 更改了这一指令</span><br><span class="line"> 1: istore_1</span><br><span class="line"> 2: iload_1</span><br><span class="line"> 3: ifeq 14        // 第一个 if 语句，即操作数栈上数值为 0 时跳转</span><br><span class="line"> 6: getstatic java.lang.System.out</span><br><span class="line"> 9: ldc &quot; 吃了 &quot;</span><br><span class="line">11: invokevirtual java.io.PrintStream.println</span><br><span class="line">14: iload_1</span><br><span class="line">15: iconst_1</span><br><span class="line">16: if_icmpne 27   // 第二个 if 语句，即操作数栈上两个数值不相同时跳转</span><br><span class="line">19: getstatic java.lang.System.out</span><br><span class="line">22: ldc &quot; 真吃了 &quot;</span><br><span class="line">24: invokevirtual java.io.PrintStream.println</span><br><span class="line">27: return</span><br></pre></td></tr></table></figure>
 <p>在前面的例子中，第一个 if 语句会被编译成条件跳转字节码 ifeq，翻译成人话就是说，如果局部变量“吃过饭没”的值为 0，那么跳过打印“吃了”的语句。  </p>
 <p>而第二个 if 语句则会被编译成条件跳转字节码 if_icmpne，也就是说，如果局部变量的值和整数 1 不相等，那么跳过打印“真吃了”的语句。  </p>
 <h1 id="Java的基本类型"><a href="#Java的基本类型" class="headerlink" title="Java的基本类型"></a>Java的基本类型</h1><p><img src="/images/posts/JVM/02/primitive_types.png" alt="primitive_types"></p>
-<h2 id="默认值"><a href="#默认值" class="headerlink" title="默认值"></a>默认值</h2><p><strong>在内存中，默认值都是0。</strong></p>
+<h2 id="默认值"><a href="#默认值" class="headerlink" title="默认值"></a>默认值</h2><p><strong>在内存中，默认值都是 0。</strong></p>
 <h2 id="取值范围"><a href="#取值范围" class="headerlink" title="取值范围"></a>取值范围</h2><ul>
-<li>boolean和char是唯二的无符号类型。</li>
-<li>boolean类型的取值范围是0或1。</li>
-<li>char类型的取值范围是[0, 65535]。</li>
+<li>boolean 和 char 是唯二的无符号类型。</li>
+<li>boolean 类型的取值范围是 0 或 1。</li>
+<li>char 类型的取值范围是 [0, 65535]。</li>
 </ul>
-<p>boolean, byte, char, short的<strong>局部变量储存可以超过取值范围</strong>。</p>
-<p><strong>正常使用Java编译器的情况下，生成的字节码会遵守Java虚拟机规范对编译器的约束。</strong></p>
-<h2 id="浮点数"><a href="#浮点数" class="headerlink" title="浮点数"></a>浮点数</h2><p>浮点数类型采用IEEE 754 浮点数格式。</p>
-<p>以float为例，<strong>浮点类型通常有两个0，+0.0F 和 -0.0F</strong>。</p>
-<p>在Java里，前者为0，后者符号位为1，其他位为0。</p>
-<p>虽然内存数值不同，但 +0.0F == -0.0F 会返回true。</p>
+<p>boolean, byte, char, short 的<strong>局部变量储存可以超过取值范围</strong>。</p>
+<p><strong>正常使用 Java 编译器的情况下，生成的字节码会遵守 Java 虚拟机规范对编译器的约束。</strong></p>
+<h2 id="浮点数"><a href="#浮点数" class="headerlink" title="浮点数"></a>浮点数</h2><p>浮点数类型采用 IEEE 754 浮点数格式。</p>
+<p>以 float 为例，<strong>浮点类型通常有两个 0，+0.0F 和 -0.0F</strong>。</p>
+<p>在 Java 里，前者为 0，后者符号位为 1，其他位为 0。</p>
+<p>虽然内存数值不同，但 +0.0F == -0.0F 会返回 true。</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">float</span> a = +<span class="number">0.0f</span>;</span><br><span class="line"><span class="keyword">float</span> b = -<span class="number">0.0f</span>;</span><br><span class="line"><span class="keyword">float</span> c = Float.intBitsToFloat(<span class="number">0x80000000</span>);</span><br></pre></td></tr></table></figure>
-<p><strong>在内存中，正无穷等于0x7F800000，负无穷等于0xFF800000。</strong></p>
-<p><strong>[0x7F800001, 0x7FFFFFFF] 和 [0xFF800001, 0xFFFFFFFF] 对应NaN （Not-a-Number）。</strong></p>
-<p>一般我们计算得出的NaN（+0.0F/+0.0F），在内存中为0x7FC00000。</p>
-<p>这个数值称为标准的NaN，其他的称为不标准的NaN。</p>
-<p><strong>NaN有一个特性：“!=” 始终返回true，其他比较结果都回返回false。</strong></p>
-<h1 id="Java基本类型的大小"><a href="#Java基本类型的大小" class="headerlink" title="Java基本类型的大小"></a>Java基本类型的大小</h1><p>Java虚拟机没调用一个Java方法，便会创建一个栈帧，这里<strong>只讨论供解释器使用的解释栈帧（interpreted frame）</strong>。</p>
+<p><strong>在内存中，正无穷等于 0x7F800000，负无穷等于 0xFF800000。</strong></p>
+<p><strong>[0x7F800001, 0x7FFFFFFF] 和 [0xFF800001, 0xFFFFFFFF] 对应 NaN （Not-a-Number）。</strong></p>
+<p>一般我们计算得出的NaN（+0.0F/+0.0F），在内存中为 0x7FC00000。</p>
+<p>这个数值称为标准的 NaN，其他的称为不标准的 NaN。</p>
+<p><strong>NaN 有一个特性：“!=” 始终返回 true，其他比较结果都回返回 false。</strong></p>
+<h1 id="Java-基本类型的大小"><a href="#Java-基本类型的大小" class="headerlink" title="Java 基本类型的大小"></a>Java 基本类型的大小</h1><p>Java 虚拟机每调用一个 Java 方法，便会创建一个栈帧，这里<strong>只讨论供解释器使用的解释栈帧（interpreted frame）</strong>。</p>
 <h2 id="解释栈帧"><a href="#解释栈帧" class="headerlink" title="解释栈帧"></a>解释栈帧</h2><p>这种栈帧有两个主要组成部分：广义的局部变量区，字节码的操作栈。</p>
-<p>广义局部变量包含：普遍意义的局部变量，this指针，方法参数。</p>
-<h2 id="局部变量"><a href="#局部变量" class="headerlink" title="局部变量"></a>局部变量</h2><p>在Java虚拟机规范中，<strong>局部变量区等价于一个数组</strong>。除了long、double的值用两个数组单元存储，其他基本类型以及引用类型的值均占用一个数组单元。</p>
-<p><strong>boolean、byte、char、short在栈上占用的空间和int、引用类型一样。</strong>32位HotSpot中占用4字节，64位HotSport中，占用8字节。这种情况<strong>仅存在于局部变量，不会出现在存储于堆中的字段或数组元素</strong>。</p>
-<h2 id="存储"><a href="#存储" class="headerlink" title="存储"></a>存储</h2><p><strong>将int类型的值存到其他类型的字段或数组时，相当于做了一次隐式的掩码操作。</strong></p>
-<p>把0xFFFFFFFF(-1)储存到一个声明为char类型的字段里时，高两位字节被截取掉，存入“\uFFFF”。</p>
-<p>HotSpot在<strong>存储boolean时显示进行掩码操作</strong>，只取最后一位的值存入boolean字段或数组中。</p>
-<p>HotSpot中boolean字段占用一字节，boolean数组直接用byte数组实现。</p>
-<h2 id="加载"><a href="#加载" class="headerlink" title="加载"></a>加载</h2><p>Java虚拟机的算数运算几乎全部依赖于操作数栈，堆中的boolean、byte、char和short加载到操作数栈上，当成int类型运算。</p>
-<p>对于boolean、char这两个无符号类型，加载伴随零扩展。</p>
-<p>对于byte、short加载伴随符号扩展。</p>
-<h1 id="将boolean类型的值存入字段中时，Java-虚拟机所做的掩码操作"><a href="#将boolean类型的值存入字段中时，Java-虚拟机所做的掩码操作" class="headerlink" title="将boolean类型的值存入字段中时，Java 虚拟机所做的掩码操作"></a>将boolean类型的值存入字段中时，Java 虚拟机所做的掩码操作</h1><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Foo</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">static</span> <span class="keyword">boolean</span> boolValue;</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">		boolValue = <span class="keyword">true</span>; <span class="comment">// 将这个 true 替换为 2 或者 3，再看看打印结果</span></span><br><span class="line">		<span class="keyword">if</span> (boolValue) </span><br><span class="line">			System.out.println(<span class="string">"Hello, Java!"</span>);</span><br><span class="line">		<span class="keyword">if</span> (boolValue == <span class="keyword">true</span>) </span><br><span class="line">			System.out.println(<span class="string">"Hello, JVM!"</span>);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p><strong>当替换为2的时候无输出</strong><br><strong>当替换为3的时候打印HelloJava及HelloJVM</strong><br>因为将boolean 保存在静态域中,指定了其类型为’Z’,当修改为2时取低位最后一位为0,当修改为3时取低位最后一位为1<br>则说明boolean的掩码处理是取低位的最后一位</p>
+<p>广义局部变量包含：普遍意义的局部变量，this 指针，方法参数。</p>
+<h2 id="局部变量"><a href="#局部变量" class="headerlink" title="局部变量"></a>局部变量</h2><p>在 Java 虚拟机规范中，<strong>局部变量区等价于一个数组</strong>。除了 long、double 的值用两个数组单元存储，其他基本类型以及引用类型的值均占用一个数组单元。</p>
+<p><strong>boolean、byte、char、short 在栈上占用的空间和 int、引用类型一样。</strong>32 位 HotSpot 中占用 4 字节，64 位 HotSport中，占用 8 字节。这种情况<strong>仅存在于局部变量，不会出现在存储于堆中的字段或数组元素</strong>。</p>
+<h2 id="存储"><a href="#存储" class="headerlink" title="存储"></a>存储</h2><p><strong>将 int 类型的值存到其他类型的字段或数组时，相当于做了一次隐式的掩码操作。</strong></p>
+<p>把 0xFFFFFFFF(-1)储存到一个声明为 char 类型的字段里时，高两位字节被截取掉，存入“\uFFFF”。</p>
+<p>HotSpot 在<strong>存储 boolean 时显示进行掩码操作</strong>，只取最后一位的值存入 boolean 字段或数组中。</p>
+<p>HotSpot 中 boolean 字段占用一字节，boolean 数组直接用 byte 数组实现。</p>
+<h2 id="加载"><a href="#加载" class="headerlink" title="加载"></a>加载</h2><p>Java 虚拟机的算数运算几乎全部依赖于操作数栈，堆中的 boolean、byte、char 和 short 加载到操作数栈上，当成 int 类型运算。</p>
+<p>对于 boolean、char 这两个无符号类型，加载伴随零扩展。</p>
+<p>对于 byte、short 加载伴随符号扩展。</p>
+<h1 id="将-boolean-类型的值存入字段中时，Java-虚拟机所做的掩码操作"><a href="#将-boolean-类型的值存入字段中时，Java-虚拟机所做的掩码操作" class="headerlink" title="将 boolean 类型的值存入字段中时，Java 虚拟机所做的掩码操作"></a>将 boolean 类型的值存入字段中时，Java 虚拟机所做的掩码操作</h1><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Foo</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">static</span> <span class="keyword">boolean</span> boolValue;</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">		boolValue = <span class="keyword">true</span>; <span class="comment">// 将这个 true 替换为 2 或者 3，再看看打印结果</span></span><br><span class="line">		<span class="keyword">if</span> (boolValue) </span><br><span class="line">			System.out.println(<span class="string">"Hello, Java!"</span>);</span><br><span class="line">		<span class="keyword">if</span> (boolValue == <span class="keyword">true</span>) </span><br><span class="line">			System.out.println(<span class="string">"Hello, JVM!"</span>);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><strong>当替换为 2 的时候无输出</strong></p>
+<p><strong>当替换为 3 的时候打印 HelloJava 及 HelloJVM</strong></p>
+<p>因为将 boolean 保存在静态域中,指定了其类型为 ‘Z’,当修改为 2 时取低位最后一位为 0,当修改为3时取低位最后一位为 1</p>
+<p>则说明 boolean 的掩码处理是取低位的最后一位</p>
 <h1 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h1><p>Q：“也就是说，boolean、byte、char、short 这四种类型，在栈上占用的空间和 int 是一样的，和引用类型也是一样的。因此，在 32 位的 HotSpot 中，这些类型在栈上将占用 4 个字节；而在 64 位的 HotSpot 中，他们将占 8 个字节。”</p>
-<p>但是我记得boolean在内存中占1字节，char占2字节，这里是什么个意思？</p>
+<p>但是我记得 boolean 在内存中占 1 字节，char 占 2 字节，这里是什么个意思？</p>
 <p>A：你说的是在堆里的情况。在解释器栈上是不一样的。至于原因吗，主要是<strong>变长数组不好控制</strong>，所以就选择浪费一些空间，以便访问时直接通过下标来计算地址。</p>
 <hr>
 <p>Q：使用基本类型能够在执行效率以及内存使用两方面提升软件性能。具体是什么原理呢？</p>
 <p>A：<strong>占的空间更小，不需要类型转换</strong>。</p>
-<h1 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h1><blockquote>
-<p><a href="https://time.geekbang.org/column/article/11503" target="_blank" rel="noopener">https://time.geekbang.org/column/article/11503</a></p>
-</blockquote>
 
       
     </div>
@@ -559,8 +572,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2018/07/27/笔记-深入拆解Java虚拟机-01Java代码是怎么运行的？/" rel="next" title="笔记-深入拆解Java虚拟机-01Java代码是怎么运行的？">
-                <i class="fa fa-chevron-left"></i> 笔记-深入拆解Java虚拟机-01Java代码是怎么运行的？
+              <a href="/2018/07/27/笔记-深入拆解Java虚拟机-01Java代码是怎么运行的？/" rel="next" title="「深入拆解 Java 虚拟机」01 Java 代码是怎么运行的？">
+                <i class="fa fa-chevron-left"></i> 「深入拆解 Java 虚拟机」01 Java 代码是怎么运行的？
               </a>
             
           </div>
@@ -569,8 +582,8 @@
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2018/07/29/笔记-深入拆解Java虚拟机-03Java虚拟机是如何加载Java类的？/" rel="prev" title="笔记-深入拆解Java虚拟机-03Java虚拟机是如何加载Java类的？">
-                笔记-深入拆解Java虚拟机-03Java虚拟机是如何加载Java类的？ <i class="fa fa-chevron-right"></i>
+              <a href="/2018/07/29/笔记-深入拆解Java虚拟机-03Java虚拟机是如何加载Java类的？/" rel="prev" title="「深入拆解 Java 虚拟机」03 Java 虚拟机是如何加载 Java 类的？">
+                「深入拆解 Java 虚拟机」03 Java 虚拟机是如何加载 Java 类的？ <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
@@ -652,7 +665,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">59</span>
+                  <span class="site-state-item-count">76</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -663,7 +676,7 @@
               
               <div class="site-state-item site-state-categories">
                 <a href="/categories/index.html">
-                  <span class="site-state-item-count">14</span>
+                  <span class="site-state-item-count">10</span>
                   <span class="site-state-item-name">分类</span>
                 </a>
               </div>
@@ -674,7 +687,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">26</span>
+                  <span class="site-state-item-count">37</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>
@@ -730,7 +743,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Java虚拟机的-boolean类型"><span class="nav-number">1.</span> <span class="nav-text">Java虚拟机的 boolean类型</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Java的基本类型"><span class="nav-number">2.</span> <span class="nav-text">Java的基本类型</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#默认值"><span class="nav-number">2.1.</span> <span class="nav-text">默认值</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#取值范围"><span class="nav-number">2.2.</span> <span class="nav-text">取值范围</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#浮点数"><span class="nav-number">2.3.</span> <span class="nav-text">浮点数</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Java基本类型的大小"><span class="nav-number">3.</span> <span class="nav-text">Java基本类型的大小</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#解释栈帧"><span class="nav-number">3.1.</span> <span class="nav-text">解释栈帧</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#局部变量"><span class="nav-number">3.2.</span> <span class="nav-text">局部变量</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#存储"><span class="nav-number">3.3.</span> <span class="nav-text">存储</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#加载"><span class="nav-number">3.4.</span> <span class="nav-text">加载</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#将boolean类型的值存入字段中时，Java-虚拟机所做的掩码操作"><span class="nav-number">4.</span> <span class="nav-text">将boolean类型的值存入字段中时，Java 虚拟机所做的掩码操作</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#问题"><span class="nav-number">5.</span> <span class="nav-text">问题</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#参考"><span class="nav-number">6.</span> <span class="nav-text">参考</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Java虚拟机的-boolean类型"><span class="nav-number">1.</span> <span class="nav-text">Java虚拟机的 boolean类型</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Java的基本类型"><span class="nav-number">2.</span> <span class="nav-text">Java的基本类型</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#默认值"><span class="nav-number">2.1.</span> <span class="nav-text">默认值</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#取值范围"><span class="nav-number">2.2.</span> <span class="nav-text">取值范围</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#浮点数"><span class="nav-number">2.3.</span> <span class="nav-text">浮点数</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Java-基本类型的大小"><span class="nav-number">3.</span> <span class="nav-text">Java 基本类型的大小</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#解释栈帧"><span class="nav-number">3.1.</span> <span class="nav-text">解释栈帧</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#局部变量"><span class="nav-number">3.2.</span> <span class="nav-text">局部变量</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#存储"><span class="nav-number">3.3.</span> <span class="nav-text">存储</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#加载"><span class="nav-number">3.4.</span> <span class="nav-text">加载</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#将-boolean-类型的值存入字段中时，Java-虚拟机所做的掩码操作"><span class="nav-number">4.</span> <span class="nav-text">将 boolean 类型的值存入字段中时，Java 虚拟机所做的掩码操作</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#问题"><span class="nav-number">5.</span> <span class="nav-text">问题</span></a></li></ol></div>
             
 
           </div>
@@ -750,7 +763,7 @@
 
     <footer id="footer" class="footer">
       <div class="footer-inner">
-        <div class="copyright">&copy; 2018 &mdash; <span itemprop="copyrightYear">2019</span>
+        <div class="copyright">&copy; 2018 &mdash; <span itemprop="copyrightYear">2020</span>
   <span class="with-love">
     <i class="fa fa-user"></i>
   </span>

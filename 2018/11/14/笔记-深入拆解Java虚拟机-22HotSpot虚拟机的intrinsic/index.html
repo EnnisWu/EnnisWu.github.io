@@ -85,18 +85,18 @@
 
 
 
-<meta name="description" content="HotSpot 虚拟机中，所有被标注 @HotSpotIntrinsicCandidate 注解的方法都是 HotSpot intrinsic。 这些方法的调用，会被 HotSpot 虚拟机替换成高效的指令序列。原本的方法实现则会被忽略掉。 如果 Java 核心类库的开发者更改了原本的实现，虚拟机中的高效实现也需要进行相应的修改。 其他虚拟机不一定维护了这些 intrinsic 的高效实现。 这">
+<meta name="description" content="原文：https://time.geekbang.org/column/article/18046  HotSpot 虚拟机中，所有被标注 @HotSpotIntrinsicCandidate 注解的方法都是 HotSpot intrinsic。  这些方法的调用，会被 HotSpot 虚拟机替换成高效的指令序列。原本的方法实现则会被忽略掉。  如果 Java 核心类库的开发者更改了原本的实现，虚">
 <meta name="keywords" content="JVM">
 <meta property="og:type" content="article">
-<meta property="og:title" content="笔记-深入拆解Java虚拟机-22HotSpot虚拟机的intrinsic">
+<meta property="og:title" content="「深入拆解 Java 虚拟机」22 HotSpot 虚拟机的 intrinsic">
 <meta property="og:url" content="http://blog.ennis.info/2018/11/14/笔记-深入拆解Java虚拟机-22HotSpot虚拟机的intrinsic/index.html">
 <meta property="og:site_name" content="Ennis Wu">
-<meta property="og:description" content="HotSpot 虚拟机中，所有被标注 @HotSpotIntrinsicCandidate 注解的方法都是 HotSpot intrinsic。 这些方法的调用，会被 HotSpot 虚拟机替换成高效的指令序列。原本的方法实现则会被忽略掉。 如果 Java 核心类库的开发者更改了原本的实现，虚拟机中的高效实现也需要进行相应的修改。 其他虚拟机不一定维护了这些 intrinsic 的高效实现。 这">
+<meta property="og:description" content="原文：https://time.geekbang.org/column/article/18046  HotSpot 虚拟机中，所有被标注 @HotSpotIntrinsicCandidate 注解的方法都是 HotSpot intrinsic。  这些方法的调用，会被 HotSpot 虚拟机替换成高效的指令序列。原本的方法实现则会被忽略掉。  如果 Java 核心类库的开发者更改了原本的实现，虚">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2019-01-26T13:26:29.120Z">
+<meta property="og:updated_time" content="2020-05-21T16:46:42.202Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="笔记-深入拆解Java虚拟机-22HotSpot虚拟机的intrinsic">
-<meta name="twitter:description" content="HotSpot 虚拟机中，所有被标注 @HotSpotIntrinsicCandidate 注解的方法都是 HotSpot intrinsic。 这些方法的调用，会被 HotSpot 虚拟机替换成高效的指令序列。原本的方法实现则会被忽略掉。 如果 Java 核心类库的开发者更改了原本的实现，虚拟机中的高效实现也需要进行相应的修改。 其他虚拟机不一定维护了这些 intrinsic 的高效实现。 这">
+<meta name="twitter:title" content="「深入拆解 Java 虚拟机」22 HotSpot 虚拟机的 intrinsic">
+<meta name="twitter:description" content="原文：https://time.geekbang.org/column/article/18046  HotSpot 虚拟机中，所有被标注 @HotSpotIntrinsicCandidate 注解的方法都是 HotSpot intrinsic。  这些方法的调用，会被 HotSpot 虚拟机替换成高效的指令序列。原本的方法实现则会被忽略掉。  如果 Java 核心类库的开发者更改了原本的实现，虚">
 
 
 
@@ -132,7 +132,7 @@
 
 
 
-  <title>笔记-深入拆解Java虚拟机-22HotSpot虚拟机的intrinsic | Ennis Wu</title>
+  <title>「深入拆解 Java 虚拟机」22 HotSpot 虚拟机的 intrinsic | Ennis Wu</title>
   
 
 
@@ -338,6 +338,18 @@
 
  </div>
     </header>
+    <script>
+      let images = [
+         'header0.jpg',
+         'header1.jpg',
+         'header2.png'
+      ];
+      let image = images[Math.floor(Math.random() * images.length)];
+      window.document.getElementById('header').style.cssText 
+      = 'background: url(/images/avatar/' 
+      + image
+      + '); no-repeat; background-size: auto 100%;';
+    </script>
 
     <main id="main" class="main">
       <div class="main-inner">
@@ -376,7 +388,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">笔记-深入拆解Java虚拟机-22HotSpot虚拟机的intrinsic</h1>
+          <h1 class="post-title" itemprop="name headline">「深入拆解 Java 虚拟机」22 HotSpot 虚拟机的 intrinsic</h1>
         
 
         <div class="post-meta">
@@ -411,8 +423,8 @@
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Java虚拟机/" itemprop="url" rel="index">
-                    <span itemprop="name">Java虚拟机</span>
+                  <a href="/categories/《深入拆解-Java-虚拟机》/" itemprop="url" rel="index">
+                    <span itemprop="name">《深入拆解 Java 虚拟机》</span>
                   </a>
                 </span>
 
@@ -448,37 +460,54 @@
       
 
       
-        <ul>
-<li>HotSpot 虚拟机中，所有被标注 @HotSpotIntrinsicCandidate 注解的方法都是 HotSpot intrinsic。</li>
-<li>这些方法的调用，会被 HotSpot 虚拟机<strong>替换成高效的指令序列</strong>。<strong>原本的方法实现</strong>则会被<strong>忽略</strong>掉。</li>
-<li>如果 Java 核心类库的开发者更改了原本的实现，虚拟机中的高效实现也需要进行相应的修改。</li>
-<li><strong>其他虚拟机不一定维护</strong>了这些 intrinsic 的高效实现。</li>
-<li>这些高效实现通常<strong>依赖于具体的 CPU 指令</strong>，而这些 CPU 指令不好在 Java 源程序中表达。</li>
-<li>如果换了一个体系架构，可能没有对应的 CPU 指令，无法进行 intrinsic 优化。</li>
+        <p>原文：<a href="https://time.geekbang.org/column/article/18046" target="_blank" rel="noopener">https://time.geekbang.org/column/article/18046</a></p>
+<ul>
+<li><p>HotSpot 虚拟机中，所有被标注 @HotSpotIntrinsicCandidate 注解的方法都是 HotSpot intrinsic。</p>
+</li>
+<li><p>这些方法的调用，会被 HotSpot 虚拟机<strong>替换成高效的指令序列</strong>。<strong>原本的方法实现</strong>则会被<strong>忽略</strong>掉。</p>
+</li>
+<li><p>如果 Java 核心类库的开发者更改了原本的实现，虚拟机中的高效实现也需要进行相应的修改。</p>
+</li>
+<li><p><strong>其他虚拟机不一定维护</strong>了这些 intrinsic 的高效实现。</p>
+</li>
+<li><p>这些高效实现通常<strong>依赖于具体的 CPU 指令</strong>，而这些 CPU 指令不好在 Java 源程序中表达。</p>
+</li>
+<li><p>如果换了一个体系架构，可能没有对应的 CPU 指令，无法进行 intrinsic 优化。</p>
+</li>
 </ul>
 <!-- # intrinsic 与 CPU 指令 -->
 <!-- 看看即可 -->
 <h1 id="intrinsic-与方法内联"><a href="#intrinsic-与方法内联" class="headerlink" title="intrinsic 与方法内联"></a>intrinsic 与方法内联</h1><h2 id="独立的桩程序"><a href="#独立的桩程序" class="headerlink" title="独立的桩程序"></a>独立的桩程序</h2><ul>
-<li>可以被解释执行器利用，直接替换对原方法的调用。</li>
-<li>可以被即时编译器所利用，把代表对原方法的调用的 IR 节点，替换为对这些桩程序的调用的 IR 节点。</li>
-<li>这种形式实现的比较少，主要包括 Math 类的一些方法。</li>
+<li><p>可以被解释执行器利用，直接替换对原方法的调用。</p>
+</li>
+<li><p>可以被即时编译器所利用，把代表对原方法的调用的 IR 节点，替换为对这些桩程序的调用的 IR 节点。</p>
+</li>
+<li><p>这种形式实现的比较少，主要包括 Math 类的一些方法。</p>
+</li>
 </ul>
 <h2 id="特殊的编译器-IR-节点"><a href="#特殊的编译器-IR-节点" class="headerlink" title="特殊的编译器 IR 节点"></a>特殊的编译器 IR 节点</h2><ul>
-<li>只能被即时编译器所用。</li>
-<li>将对原方法的调用的 IR 节点，替换成特殊的 IR 节点，并参与接下来的优化过程。</li>
-<li>替换过程是在方法内联时进行。</li>
-<li>native 方法被标记为 intrinsic 也能够 “ 内联 “ 进来，并插入特殊的 IR 节点。</li>
-<li>即时编译器的后端根据这些特殊的 IR 节点，生成指定的 CPU 指令。<br>-native 方法经过 intrinsic 优化之后，JNI 开销直接消失不见，最终的结果十分高效。</li>
+<li><p>只能被即时编译器所用。</p>
+</li>
+<li><p>将对原方法的调用的 IR 节点，替换成特殊的 IR 节点，并参与接下来的优化过程。</p>
+</li>
+<li><p>替换过程是在方法内联时进行。</p>
+</li>
+<li><p>native 方法被标记为 intrinsic 也能够 “ 内联 “ 进来，并插入特殊的 IR 节点。</p>
+</li>
+<li><p>即时编译器的后端根据这些特殊的 IR 节点，生成指定的 CPU 指令。</p>
+</li>
+</ul>
+<p>-native 方法经过 intrinsic 优化之后，JNI 开销直接消失不见，最终的结果十分高效。</p>
+<ul>
 <li>大部分实现通过这种形式。</li>
 </ul>
 <h1 id="已有-intrinsic-简介"><a href="#已有-intrinsic-简介" class="headerlink" title="已有 intrinsic 简介"></a>已有 intrinsic 简介</h1><ul>
-<li>最新版本的 HotSpot 虚拟机定义了三百多个 intrinsic（Java 10.0.2）。</li>
-<li>有三成以上是Unsafe类的方法。</li>
+<li><p>最新版本的 HotSpot 虚拟机定义了三百多个 intrinsic（Java 10.0.2）。</p>
+</li>
+<li><p>有三成以上是 Unsafe 类的方法。</p>
+</li>
 </ul>
 <!-- 其他看看即可 -->
-<h1 id="引用"><a href="#引用" class="headerlink" title="引用"></a>引用</h1><blockquote>
-<p><a href="https://time.geekbang.org/column/article/18046" target="_blank" rel="noopener">https://time.geekbang.org/column/article/18046</a></p>
-</blockquote>
 
       
     </div>
@@ -538,8 +567,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2018/11/14/转-Android学习路线指南/" rel="next" title="转-Android学习路线指南">
-                <i class="fa fa-chevron-left"></i> 转-Android学习路线指南
+              <a href="/2018/11/14/转-Android学习路线指南/" rel="next" title="「转载」Android 学习路线指南">
+                <i class="fa fa-chevron-left"></i> 「转载」Android 学习路线指南
               </a>
             
           </div>
@@ -548,8 +577,8 @@
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2018/11/15/笔记-深入拆解Java虚拟机-23逃逸分析/" rel="prev" title="笔记-深入拆解Java虚拟机-23逃逸分析">
-                笔记-深入拆解Java虚拟机-23逃逸分析 <i class="fa fa-chevron-right"></i>
+              <a href="/2018/11/15/笔记-深入拆解Java虚拟机-23逃逸分析/" rel="prev" title="「深入拆解 Java 虚拟机」23 逃逸分析">
+                「深入拆解 Java 虚拟机」23 逃逸分析 <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
@@ -631,7 +660,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">59</span>
+                  <span class="site-state-item-count">76</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -642,7 +671,7 @@
               
               <div class="site-state-item site-state-categories">
                 <a href="/categories/index.html">
-                  <span class="site-state-item-count">14</span>
+                  <span class="site-state-item-count">10</span>
                   <span class="site-state-item-name">分类</span>
                 </a>
               </div>
@@ -653,7 +682,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">26</span>
+                  <span class="site-state-item-count">37</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>
@@ -709,7 +738,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#intrinsic-与方法内联"><span class="nav-number">1.</span> <span class="nav-text">intrinsic 与方法内联</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#独立的桩程序"><span class="nav-number">1.1.</span> <span class="nav-text">独立的桩程序</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#特殊的编译器-IR-节点"><span class="nav-number">1.2.</span> <span class="nav-text">特殊的编译器 IR 节点</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#已有-intrinsic-简介"><span class="nav-number">2.</span> <span class="nav-text">已有 intrinsic 简介</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#引用"><span class="nav-number">3.</span> <span class="nav-text">引用</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#intrinsic-与方法内联"><span class="nav-number">1.</span> <span class="nav-text">intrinsic 与方法内联</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#独立的桩程序"><span class="nav-number">1.1.</span> <span class="nav-text">独立的桩程序</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#特殊的编译器-IR-节点"><span class="nav-number">1.2.</span> <span class="nav-text">特殊的编译器 IR 节点</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#已有-intrinsic-简介"><span class="nav-number">2.</span> <span class="nav-text">已有 intrinsic 简介</span></a></li></ol></div>
             
 
           </div>
@@ -729,7 +758,7 @@
 
     <footer id="footer" class="footer">
       <div class="footer-inner">
-        <div class="copyright">&copy; 2018 &mdash; <span itemprop="copyrightYear">2019</span>
+        <div class="copyright">&copy; 2018 &mdash; <span itemprop="copyrightYear">2020</span>
   <span class="with-love">
     <i class="fa fa-user"></i>
   </span>

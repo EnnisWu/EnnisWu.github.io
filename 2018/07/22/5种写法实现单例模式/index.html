@@ -85,18 +85,18 @@
 
 
 
-<meta name="description" content="饿汉式12345678910public class Singleton &amp;#123;      private static Singleton instance = new Singleton();        private Singleton ()&amp;#123;    &amp;#125;        public static Singleton getInstance() &amp;#123;">
+<meta name="description" content="原文： 在java中写出完美的单例模式  设计模式（二）单例模式的七种写法   饿汉式12345678910public class Singleton &amp;#123;      private static Singleton instance = new Singleton();        private Singleton ()&amp;#123;    &amp;#125;        public">
 <meta name="keywords" content="Java,设计模式">
 <meta property="og:type" content="article">
-<meta property="og:title" content="5种写法实现单例模式">
+<meta property="og:title" content="「笔记」5 种写法实现单例模式">
 <meta property="og:url" content="http://blog.ennis.info/2018/07/22/5种写法实现单例模式/index.html">
 <meta property="og:site_name" content="Ennis Wu">
-<meta property="og:description" content="饿汉式12345678910public class Singleton &amp;#123;      private static Singleton instance = new Singleton();        private Singleton ()&amp;#123;    &amp;#125;        public static Singleton getInstance() &amp;#123;">
+<meta property="og:description" content="原文： 在java中写出完美的单例模式  设计模式（二）单例模式的七种写法   饿汉式12345678910public class Singleton &amp;#123;      private static Singleton instance = new Singleton();        private Singleton ()&amp;#123;    &amp;#125;        public">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2019-01-26T13:26:28.935Z">
+<meta property="og:updated_time" content="2020-05-18T16:23:22.351Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="5种写法实现单例模式">
-<meta name="twitter:description" content="饿汉式12345678910public class Singleton &amp;#123;      private static Singleton instance = new Singleton();        private Singleton ()&amp;#123;    &amp;#125;        public static Singleton getInstance() &amp;#123;">
+<meta name="twitter:title" content="「笔记」5 种写法实现单例模式">
+<meta name="twitter:description" content="原文： 在java中写出完美的单例模式  设计模式（二）单例模式的七种写法   饿汉式12345678910public class Singleton &amp;#123;      private static Singleton instance = new Singleton();        private Singleton ()&amp;#123;    &amp;#125;        public">
 
 
 
@@ -132,7 +132,7 @@
 
 
 
-  <title>5种写法实现单例模式 | Ennis Wu</title>
+  <title>「笔记」5 种写法实现单例模式 | Ennis Wu</title>
   
 
 
@@ -338,6 +338,18 @@
 
  </div>
     </header>
+    <script>
+      let images = [
+         'header0.jpg',
+         'header1.jpg',
+         'header2.png'
+      ];
+      let image = images[Math.floor(Math.random() * images.length)];
+      window.document.getElementById('header').style.cssText 
+      = 'background: url(/images/avatar/' 
+      + image
+      + '); no-repeat; background-size: auto 100%;';
+    </script>
 
     <main id="main" class="main">
       <div class="main-inner">
@@ -376,7 +388,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">5种写法实现单例模式</h1>
+          <h1 class="post-title" itemprop="name headline">「笔记」5 种写法实现单例模式</h1>
         
 
         <div class="post-meta">
@@ -448,67 +460,86 @@
       
 
       
-        <h1 id="饿汉式"><a href="#饿汉式" class="headerlink" title="饿汉式"></a>饿汉式</h1><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Singleton</span> </span>&#123;  </span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> Singleton instance = <span class="keyword">new</span> Singleton();</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="title">Singleton</span> <span class="params">()</span></span>&#123;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> Singleton <span class="title">getInstance</span><span class="params">()</span> </span>&#123;  </span><br><span class="line">        <span class="keyword">return</span> instance;  </span><br><span class="line">    &#125;  </span><br><span class="line"> &#125;</span><br></pre></td></tr></table></figure>
+        <h1 id="原文："><a href="#原文：" class="headerlink" title="原文："></a>原文：</h1><ul>
+<li><p><a href="https://www.cnblogs.com/dongyu666/p/6971783.html" target="_blank" rel="noopener">在java中写出完美的单例模式</a></p>
+</li>
+<li><p><a href="https://blog.csdn.net/itachi85/article/details/50510124" target="_blank" rel="noopener">设计模式（二）单例模式的七种写法</a></p>
+</li>
+</ul>
+<h1 id="饿汉式"><a href="#饿汉式" class="headerlink" title="饿汉式"></a>饿汉式</h1><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Singleton</span> </span>&#123;  </span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> Singleton instance = <span class="keyword">new</span> Singleton();</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="title">Singleton</span> <span class="params">()</span></span>&#123;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> Singleton <span class="title">getInstance</span><span class="params">()</span> </span>&#123;  </span><br><span class="line">        <span class="keyword">return</span> instance;  </span><br><span class="line">    &#125;  </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>饿汉式在类加载时初始化。</p>
 <p>优点：</p>
 <ul>
-<li>简单。</li>
-<li>天生线程安全。</li>
+<li><p>简单。</p>
+</li>
+<li><p>天生线程安全。</p>
+</li>
 </ul>
 <p>缺点：</p>
 <ul>
-<li>初始化时机不能由开发者控制，初始化太早造成资源的浪费。</li>
-<li>初始化依赖于其他数据，难以控制其他数据是否准备好。</li>
+<li><p>初始化时机不能由开发者控制，初始化太早造成资源的浪费。</p>
+</li>
+<li><p>初始化依赖于其他数据，难以控制其他数据是否准备好。</p>
+</li>
 </ul>
 <h1 id="懒汉式"><a href="#懒汉式" class="headerlink" title="懒汉式"></a>懒汉式</h1><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Singleton</span> </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">volatile</span> Singleton instance;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="title">Singleton</span><span class="params">()</span> </span>&#123;&#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> Singleton <span class="title">getInstance</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (instance == <span class="keyword">null</span>) &#123;</span><br><span class="line">            <span class="keyword">synchronized</span> (Singleton.class) &#123;</span><br><span class="line">                <span class="keyword">if</span> (instance == <span class="keyword">null</span>) &#123;</span><br><span class="line">                    instance = <span class="keyword">new</span> Singleton();</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> instance;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>EventBus使用的方式。</p>
+<p>EventBus 使用的方式。</p>
 <p>优点：</p>
 <ul>
 <li>第一次使用时加载，避免了资源浪费。</li>
 </ul>
 <p>缺点：</p>
 <ul>
-<li>复杂。</li>
-<li>即使是双重检查有时也会失效（可能性极低）。</li>
+<li><p>复杂。</p>
+</li>
+<li><p>即使是双重检查有时也会失效（可能性极低）。</p>
+</li>
 </ul>
 <h1 id="静态内部类模式"><a href="#静态内部类模式" class="headerlink" title="静态内部类模式"></a>静态内部类模式</h1><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Singleton</span> </span>&#123; </span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="title">Singleton</span><span class="params">()</span></span>&#123;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> Singleton <span class="title">getInstance</span><span class="params">()</span></span>&#123;  </span><br><span class="line">        <span class="keyword">return</span> SingletonHolder.sInstance;  </span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="class"><span class="keyword">class</span> <span class="title">SingletonHolder</span> </span>&#123;  </span><br><span class="line">        <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> Singleton sInstance = <span class="keyword">new</span> Singleton();  </span><br><span class="line">    &#125;  </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>《Effective Java》第一版中推荐的写法。<br>内部类加载时初始化，内部类在第一次被调用时类加载。</p>
+<p>《Effective Java》第一版中推荐的写法。</p>
+<p>内部类加载时初始化，内部类在第一次被调用时类加载。</p>
 <p>优点：</p>
 <ul>
-<li>简单。</li>
-<li>巧妙的利用内部类实现线程安全。</li>
+<li><p>简单。</p>
+</li>
+<li><p>巧妙的利用内部类实现线程安全。</p>
+</li>
 </ul>
 <h1 id="枚举模式"><a href="#枚举模式" class="headerlink" title="枚举模式"></a>枚举模式</h1><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">enum</span> Singleton &#123;  </span><br><span class="line">     INSTANCE;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>《Effective Java》第二版中推荐的写法。</p>
 <p>优点：</p>
 <ul>
-<li>极简。</li>
-<li>线程安全。</li>
-<li><strong>绝对完美单例，可以抵御反序列化、反射。</strong></li>
+<li><p>极简。</p>
+</li>
+<li><p>线程安全。</p>
+</li>
+<li><p><strong>绝对完美单例，可以抵御反序列化、反射。</strong></p>
+</li>
 </ul>
 <p>缺点：</p>
 <ul>
-<li>降低可读性。</li>
-<li>无法被继承，降低扩展性。</li>
+<li><p>降低可读性。</p>
+</li>
+<li><p>无法被继承，降低扩展性。</p>
+</li>
 </ul>
 <h1 id="容器模式"><a href="#容器模式" class="headerlink" title="容器模式"></a>容器模式</h1><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">SingletonManager</span> </span>&#123; </span><br><span class="line">　　<span class="keyword">private</span> <span class="keyword">static</span> Map&lt;String, Object&gt; objMap = <span class="keyword">new</span> HashMap&lt;String,Object&gt;();</span><br><span class="line">　　</span><br><span class="line">　　<span class="function"><span class="keyword">private</span> <span class="title">SingletonManager</span><span class="params">()</span> </span>&#123; </span><br><span class="line">　　&#125;</span><br><span class="line">　　</span><br><span class="line">　　<span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">registerService</span><span class="params">(String key, Object instance)</span> </span>&#123;</span><br><span class="line">　　　　<span class="keyword">if</span> (!objMap.containsKey(key) ) &#123;</span><br><span class="line">　　　　　　objMap.put(key, instance) ;</span><br><span class="line">　　　　&#125;</span><br><span class="line">　　&#125;</span><br><span class="line">　　</span><br><span class="line">　　<span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="title">ObjectgetService</span><span class="params">(String key)</span> </span>&#123;</span><br><span class="line">　　　　<span class="keyword">return</span> objMap.get(key) ;</span><br><span class="line">　　&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>使用单例管理器统一管理所有单例，可以使用统一接口实现操作，这里只是写了简单的实现，没有优化获取操作，没有优化线程。</p>
 <p>优点：</p>
 <ul>
-<li>方便统一管理。</li>
-<li>降低耦合。</li>
+<li><p>方便统一管理。</p>
+</li>
+<li><p>降低耦合。</p>
+</li>
 </ul>
 <p>缺点：</p>
 <ul>
-<li>不能及时找到获取途径，增加开发者的学习成本。</li>
-<li>未得到广泛认可。</li>
+<li><p>不能及时找到获取途径，增加开发者的学习成本。</p>
+</li>
+<li><p>未得到广泛认可。</p>
+</li>
 </ul>
-<h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><p>本文一共提供了5种单例模式的实现，最推荐使用静态内部类的方式。饿汉式虽然简单但是容易造成资源浪费，懒汉式过于复杂，即便是双重检查版本也有可能DCL失效，枚举虽然是完美单例但是扩展性低，容器模式需要大量代码优化线程安全和获取操作并且增加了开发者的学习成本。</p>
-<p>参考资料：</p>
-<ul>
-<li><a href="https://www.cnblogs.com/dongyu666/p/6971783.html" target="_blank" rel="noopener">https://www.cnblogs.com/dongyu666/p/6971783.html</a></li>
-<li><a href="https://blog.csdn.net/itachi85/article/details/50510124" target="_blank" rel="noopener">https://blog.csdn.net/itachi85/article/details/50510124</a></li>
-</ul>
+<h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><p>本文一共提供了 5 种单例模式的实现，最推荐使用静态内部类的方式。饿汉式虽然简单但是容易造成资源浪费，懒汉式过于复杂，即便是双重检查版本也有可能 DCL 失效，枚举虽然是完美单例但是扩展性低，容器模式需要大量代码优化线程安全和获取操作并且增加了开发者的学习成本。</p>
 
       
     </div>
@@ -570,8 +601,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2018/07/20/转-Java反射完全解析/" rel="next" title="[转]Java反射完全解析">
-                <i class="fa fa-chevron-left"></i> [转]Java反射完全解析
+              <a href="/2018/07/20/转-Java反射完全解析/" rel="next" title="「转载」Java 反射完全解析">
+                <i class="fa fa-chevron-left"></i> 「转载」Java 反射完全解析
               </a>
             
           </div>
@@ -580,8 +611,8 @@
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2018/07/23/Android架构——Clean/" rel="prev" title="Android架构——Clean">
-                Android架构——Clean <i class="fa fa-chevron-right"></i>
+              <a href="/2018/07/23/Android架构——Clean/" rel="prev" title="「笔记」Android 架构——Clean">
+                「笔记」Android 架构——Clean <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
@@ -663,7 +694,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">59</span>
+                  <span class="site-state-item-count">76</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -674,7 +705,7 @@
               
               <div class="site-state-item site-state-categories">
                 <a href="/categories/index.html">
-                  <span class="site-state-item-count">14</span>
+                  <span class="site-state-item-count">10</span>
                   <span class="site-state-item-name">分类</span>
                 </a>
               </div>
@@ -685,7 +716,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">26</span>
+                  <span class="site-state-item-count">37</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>
@@ -741,7 +772,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#饿汉式"><span class="nav-number">1.</span> <span class="nav-text">饿汉式</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#懒汉式"><span class="nav-number">2.</span> <span class="nav-text">懒汉式</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#静态内部类模式"><span class="nav-number">3.</span> <span class="nav-text">静态内部类模式</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#枚举模式"><span class="nav-number">4.</span> <span class="nav-text">枚举模式</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#容器模式"><span class="nav-number">5.</span> <span class="nav-text">容器模式</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#总结"><span class="nav-number">6.</span> <span class="nav-text">总结</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#原文："><span class="nav-number">1.</span> <span class="nav-text">原文：</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#饿汉式"><span class="nav-number">2.</span> <span class="nav-text">饿汉式</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#懒汉式"><span class="nav-number">3.</span> <span class="nav-text">懒汉式</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#静态内部类模式"><span class="nav-number">4.</span> <span class="nav-text">静态内部类模式</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#枚举模式"><span class="nav-number">5.</span> <span class="nav-text">枚举模式</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#容器模式"><span class="nav-number">6.</span> <span class="nav-text">容器模式</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#总结"><span class="nav-number">7.</span> <span class="nav-text">总结</span></a></li></ol></div>
             
 
           </div>
@@ -761,7 +792,7 @@
 
     <footer id="footer" class="footer">
       <div class="footer-inner">
-        <div class="copyright">&copy; 2018 &mdash; <span itemprop="copyrightYear">2019</span>
+        <div class="copyright">&copy; 2018 &mdash; <span itemprop="copyrightYear">2020</span>
   <span class="with-love">
     <i class="fa fa-user"></i>
   </span>

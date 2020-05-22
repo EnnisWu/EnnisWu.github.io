@@ -72,7 +72,7 @@
 
 
 
-  <meta name="keywords" content="Android,View,面试," />
+  <meta name="keywords" content="Android,View," />
 
 
 
@@ -85,18 +85,18 @@
 
 
 
-<meta name="description" content="转自：http://blog.csdn.net/guolin_blog/article/details/16330267 每个 View 的绘制都会经过 measure（测量）、layout（布局）、draw（绘图）3 个流程。 系统的绘制流程从 ViewRootImpl.performTraversals 开始。 测量 测量从 ViewRootImpl.performTraversals 开始。">
-<meta name="keywords" content="Android,View,面试">
+<meta name="description" content="原文：Android视图绘制流程完全解析，带你一步步深入了解View(二) 每个 View 的绘制都会经过 measure（测量）、layout（布局）、draw（绘图）3 个流程。 系统的绘制流程从 ViewRootImpl.performTraversals 开始。 测量 测量从 ViewRootImpl.performTraversals 开始。  measure 方法接收两个参数，widt">
+<meta name="keywords" content="Android,View">
 <meta property="og:type" content="article">
-<meta property="og:title" content="View绘制流程">
+<meta property="og:title" content="「笔记」View 绘制流程">
 <meta property="og:url" content="http://blog.ennis.info/2019/02/14/View绘制流程/index.html">
 <meta property="og:site_name" content="Ennis Wu">
-<meta property="og:description" content="转自：http://blog.csdn.net/guolin_blog/article/details/16330267 每个 View 的绘制都会经过 measure（测量）、layout（布局）、draw（绘图）3 个流程。 系统的绘制流程从 ViewRootImpl.performTraversals 开始。 测量 测量从 ViewRootImpl.performTraversals 开始。">
+<meta property="og:description" content="原文：Android视图绘制流程完全解析，带你一步步深入了解View(二) 每个 View 的绘制都会经过 measure（测量）、layout（布局）、draw（绘图）3 个流程。 系统的绘制流程从 ViewRootImpl.performTraversals 开始。 测量 测量从 ViewRootImpl.performTraversals 开始。  measure 方法接收两个参数，widt">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2019-03-30T07:31:13.320Z">
+<meta property="og:updated_time" content="2020-05-18T17:16:31.662Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="View绘制流程">
-<meta name="twitter:description" content="转自：http://blog.csdn.net/guolin_blog/article/details/16330267 每个 View 的绘制都会经过 measure（测量）、layout（布局）、draw（绘图）3 个流程。 系统的绘制流程从 ViewRootImpl.performTraversals 开始。 测量 测量从 ViewRootImpl.performTraversals 开始。">
+<meta name="twitter:title" content="「笔记」View 绘制流程">
+<meta name="twitter:description" content="原文：Android视图绘制流程完全解析，带你一步步深入了解View(二) 每个 View 的绘制都会经过 measure（测量）、layout（布局）、draw（绘图）3 个流程。 系统的绘制流程从 ViewRootImpl.performTraversals 开始。 测量 测量从 ViewRootImpl.performTraversals 开始。  measure 方法接收两个参数，widt">
 
 
 
@@ -132,7 +132,7 @@
 
 
 
-  <title>View绘制流程 | Ennis Wu</title>
+  <title>「笔记」View 绘制流程 | Ennis Wu</title>
   
 
 
@@ -338,6 +338,18 @@
 
  </div>
     </header>
+    <script>
+      let images = [
+         'header0.jpg',
+         'header1.jpg',
+         'header2.png'
+      ];
+      let image = images[Math.floor(Math.random() * images.length)];
+      window.document.getElementById('header').style.cssText 
+      = 'background: url(/images/avatar/' 
+      + image
+      + '); no-repeat; background-size: auto 100%;';
+    </script>
 
     <main id="main" class="main">
       <div class="main-inner">
@@ -376,7 +388,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">View绘制流程</h1>
+          <h1 class="post-title" itemprop="name headline">「笔记」View 绘制流程</h1>
         
 
         <div class="post-meta">
@@ -448,19 +460,25 @@
       
 
       
-        <p>转自：<a href="http://blog.csdn.net/guolin_blog/article/details/16330267" target="_blank" rel="noopener">http://blog.csdn.net/guolin_blog/article/details/16330267</a></p>
+        <p>原文：<a href="http://blog.csdn.net/guolin_blog/article/details/16330267" target="_blank" rel="noopener">Android视图绘制流程完全解析，带你一步步深入了解View(二)</a></p>
 <p>每个 View 的绘制都会经过 measure（测量）、layout（布局）、draw（绘图）3 个流程。</p>
 <p>系统的绘制流程从 ViewRootImpl.performTraversals 开始。</p>
 <h1 id="测量"><a href="#测量" class="headerlink" title="测量"></a>测量</h1><ul>
-<li>测量从 ViewRootImpl.performTraversals 开始。</li>
-<li>measure 方法接收两个参数，widthMeasureSpec 和 heightMeasureSpec。</li>
-<li><strong>measure 方法用 final 修饰，不允许子类重写。</strong></li>
-<li><strong>measure 可能被多次调用。</strong></li>
-<li>真正测量 View 大小的是 onMeasure 方法，会在 measure 方法中调用。</li>
-<li><strong>若要改变默认的测量流程需要重写 onMeasure 方法。</strong></li>
+<li><p>测量从 ViewRootImpl.performTraversals 开始。</p>
+</li>
+<li><p>measure 方法接收两个参数，widthMeasureSpec 和 heightMeasureSpec。</p>
+</li>
+<li><p><strong>measure 方法用 final 修饰，不允许子类重写。</strong></p>
+</li>
+<li><p><strong>measure 可能被多次调用。</strong></p>
+</li>
+<li><p>真正测量 View 大小的是 onMeasure 方法，会在 measure 方法中调用。</p>
+</li>
+<li><p><strong>若要改变默认的测量流程需要重写 onMeasure 方法。</strong></p>
+</li>
 </ul>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">onMeasure</span><span class="params">(<span class="keyword">int</span> widthMeasureSpec, <span class="keyword">int</span> heightMeasureSpec)</span> </span>&#123;</span><br><span class="line">    setMeasuredDimension(getDefaultSize(getSuggestedMinimumWidth(), widthMeasureSpec),</span><br><span class="line">            getDefaultSize(getSuggestedMinimumHeight(), heightMeasureSpec));</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>onMearsure 默认通过调用 getDefaultSize 方法获取大小，然后调用 setMeasuredDimension 设定测量的大小。</p>
+<p>onMeasure 默认通过调用 getDefaultSize 方法获取大小，然后调用 setMeasuredDimension 设定测量的大小。</p>
 <ul>
 <li><strong>调用 setMeasuredDimension 方法后可以通过 getMeasuredWidth 和 getMeasuredHeight 获取 View 测量出的宽高。</strong></li>
 </ul>
@@ -474,10 +492,14 @@
 </ul>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">measureChild</span><span class="params">(View child, <span class="keyword">int</span> parentWidthMeasureSpec,</span></span></span><br><span class="line"><span class="function"><span class="params">        <span class="keyword">int</span> parentHeightMeasureSpec)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">final</span> LayoutParams lp = child.getLayoutParams();</span><br><span class="line"></span><br><span class="line">    <span class="keyword">final</span> <span class="keyword">int</span> childWidthMeasureSpec = getChildMeasureSpec(parentWidthMeasureSpec,</span><br><span class="line">            mPaddingLeft + mPaddingRight, lp.width);</span><br><span class="line">    <span class="keyword">final</span> <span class="keyword">int</span> childHeightMeasureSpec = getChildMeasureSpec(parentHeightMeasureSpec,</span><br><span class="line">            mPaddingTop + mPaddingBottom, lp.height);</span><br><span class="line"></span><br><span class="line">    child.measure(childWidthMeasureSpec, childHeightMeasureSpec);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <h2 id="MeasureSpec"><a href="#MeasureSpec" class="headerlink" title="MeasureSpec"></a>MeasureSpec</h2><ul>
-<li>值由 specSize 和 specMode 共同组成。</li>
-<li>specSize 记录大小，specMode 记录规格。</li>
-<li>通过 MeasureSpec.makeMeasureSpec 方法组装 MeasureSpec。</li>
-<li>通过 MeasureSpec.getMode 方法和 MeasureSpec.getSize 方法拆分。</li>
+<li><p>值由 specSize 和 specMode 共同组成。</p>
+</li>
+<li><p>specSize 记录大小，specMode 记录规格。</p>
+</li>
+<li><p>通过 MeasureSpec.makeMeasureSpec 方法组装 MeasureSpec。</p>
+</li>
+<li><p>通过 MeasureSpec.getMode 方法和 MeasureSpec.getSize 方法拆分。</p>
+</li>
 </ul>
 <blockquote>
 <p>specMode 的三种类型  </p>
@@ -488,46 +510,68 @@
 </ol>
 </blockquote>
 <ul>
-<li>父 View 经过计算得出 widthMeasureSpec 和 heightMeasureSpec 后传给子 View。</li>
-<li>根 View 通过 ViewRootImpl.getRootMeasureSpec 方法获得 widthMeasureSpec 和 heightMeasureSpec。</li>
+<li><p>父 View 经过计算得出 widthMeasureSpec 和 heightMeasureSpec 后传给子 View。</p>
+</li>
+<li><p>根 View 通过 ViewRootImpl.getRootMeasureSpec 方法获得 widthMeasureSpec 和 heightMeasureSpec。</p>
+</li>
 </ul>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//截取自 ViewRootImpl.performTraversals 方法</span></span><br><span class="line"><span class="keyword">int</span> childWidthMeasureSpec = getRootMeasureSpec(mWidth, lp.width);</span><br><span class="line"><span class="keyword">int</span> childHeightMeasureSpec = getRootMeasureSpec(mHeight, lp.height);</span><br></pre></td></tr></table></figure>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">int</span> <span class="title">getRootMeasureSpec</span><span class="params">(<span class="keyword">int</span> windowSize, <span class="keyword">int</span> rootDimension)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">int</span> measureSpec;</span><br><span class="line">    <span class="keyword">switch</span> (rootDimension) &#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">case</span> ViewGroup.LayoutParams.MATCH_PARENT:</span><br><span class="line">        <span class="comment">// Window can't resize. Force root view to be windowSize.</span></span><br><span class="line">        measureSpec = MeasureSpec.makeMeasureSpec(windowSize, MeasureSpec.EXACTLY);</span><br><span class="line">        <span class="keyword">break</span>;</span><br><span class="line">    <span class="keyword">case</span> ViewGroup.LayoutParams.WRAP_CONTENT:</span><br><span class="line">        <span class="comment">// Window can resize. Set max size for root view.</span></span><br><span class="line">        measureSpec = MeasureSpec.makeMeasureSpec(windowSize, MeasureSpec.AT_MOST);</span><br><span class="line">        <span class="keyword">break</span>;</span><br><span class="line">    <span class="keyword">default</span>:</span><br><span class="line">        <span class="comment">// Window wants to be an exact size. Force root view to be that size.</span></span><br><span class="line">        measureSpec = MeasureSpec.makeMeasureSpec(rootDimension, MeasureSpec.EXACTLY);</span><br><span class="line">        <span class="keyword">break</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> measureSpec;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <ul>
-<li>rootDimension 参数等于 MATCH_PARENT 时，MeasureSpec 的 specMode 等于 EXACTLY。</li>
-<li>rootDimension 参数等于 WRAP_CONTENT 时，MeasureSpec 的 specMode 等于 AT_MOST。</li>
-<li>rootDimension 参数等于 MATCH_PARENT 或 WRAP_CONTENT 时，specSize 都等于 windowSize，也就是根视图总是会充满全屏。</li>
+<li><p>rootDimension 参数等于 MATCH_PARENT 时，MeasureSpec 的 specMode 等于 EXACTLY。</p>
+</li>
+<li><p>rootDimension 参数等于 WRAP_CONTENT 时，MeasureSpec 的 specMode 等于 AT_MOST。</p>
+</li>
+<li><p>rootDimension 参数等于 MATCH_PARENT 或 WRAP_CONTENT 时，specSize 都等于 windowSize，也就是根视图总是会充满全屏。</p>
+</li>
 </ul>
 <h1 id="布局"><a href="#布局" class="headerlink" title="布局"></a>布局</h1><ul>
-<li>ViewRoot.performTraversals 方法在测量结束开始布局。</li>
-<li>layout 方法接收 4 个参数，表示左、上、右、下 4 个位置的坐标。</li>
-<li>layout 方法会判断 View 大小是否发生变化，确定是否需要重绘。</li>
-<li><strong>layout 可能被多次调用。</strong></li>
+<li><p>ViewRoot.performTraversals 方法在测量结束开始布局。</p>
+</li>
+<li><p>layout 方法接收 4 个参数，表示左、上、右、下 4 个位置的坐标。</p>
+</li>
+<li><p>layout 方法会判断 View 大小是否发生变化，确定是否需要重绘。</p>
+</li>
+<li><p><strong>layout 可能被多次调用。</strong></p>
+</li>
 </ul>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">boolean</span> changed = isLayoutModeOptical(mParent) ?</span><br><span class="line">                setOpticalFrame(l, t, r, b) : setFrame(l, t, r, b);</span><br></pre></td></tr></table></figure>
 <ul>
-<li>真正实现布局的是 onLayout 方法。</li>
-<li><strong>View.onLayout 是空方法，ViewGroup.onLayout 是抽象方法。</strong></li>
-<li><strong>onLayout 方法结束后可以通过 getWidth 和 getHeight 方法获取 View 的宽高。</strong></li>
+<li><p>真正实现布局的是 onLayout 方法。</p>
+</li>
+<li><p><strong>View.onLayout 是空方法，ViewGroup.onLayout 是抽象方法。</strong></p>
+</li>
+<li><p><strong>onLayout 方法结束后可以通过 getWidth 和 getHeight 方法获取 View 的宽高。</strong></p>
+</li>
 </ul>
 <h2 id="getWidth-getHeight-与-getMeasureWidth-getMeasureHeight"><a href="#getWidth-getHeight-与-getMeasureWidth-getMeasureHeight" class="headerlink" title="getWidth / getHeight 与 getMeasureWidth / getMeasureHeight"></a>getWidth / getHeight 与 getMeasureWidth / getMeasureHeight</h2><ul>
-<li>getMeasureWidth / getMeasureHeight 的值通过 setMeasuredDimension 方法设置。</li>
-<li>getWidth / getHeight 的值通过坐标相减计算得出。</li>
+<li><p>getMeasureWidth / getMeasureHeight 的值通过 setMeasuredDimension 方法设置。</p>
+</li>
+<li><p>getWidth / getHeight 的值通过坐标相减计算得出。</p>
+</li>
 </ul>
 <h1 id="绘图"><a href="#绘图" class="headerlink" title="绘图"></a>绘图</h1><ul>
-<li>ViewRoot.performTraversals 方法在布局结束开始绘图。</li>
-<li>draw 方法接收一个 Canvas 对象的参数。</li>
+<li><p>ViewRoot.performTraversals 方法在布局结束开始绘图。</p>
+</li>
+<li><p>draw 方法接收一个 Canvas 对象的参数。</p>
+</li>
 </ul>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">draw</span><span class="params">(Canvas canvas)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">final</span> <span class="keyword">int</span> privateFlags = mPrivateFlags;</span><br><span class="line">        <span class="keyword">final</span> <span class="keyword">boolean</span> dirtyOpaque = (privateFlags &amp; PFLAG_DIRTY_MASK) == PFLAG_DIRTY_OPAQUE &amp;&amp;</span><br><span class="line">                (mAttachInfo == <span class="keyword">null</span> || !mAttachInfo.mIgnoreDirtyState);</span><br><span class="line">        mPrivateFlags = (privateFlags &amp; ~PFLAG_DIRTY_MASK) | PFLAG_DRAWN;</span><br><span class="line"></span><br><span class="line">        <span class="comment">/*</span></span><br><span class="line"><span class="comment">         * Draw traversal performs several drawing steps which must be executed</span></span><br><span class="line"><span class="comment">         * in the appropriate order:</span></span><br><span class="line"><span class="comment">         *</span></span><br><span class="line"><span class="comment">         *      1. Draw the background</span></span><br><span class="line"><span class="comment">         *      2. If necessary, save the canvas' layers to prepare for fading</span></span><br><span class="line"><span class="comment">         *      3. Draw view's content</span></span><br><span class="line"><span class="comment">         *      4. Draw children</span></span><br><span class="line"><span class="comment">         *      5. If necessary, draw the fading edges and restore layers</span></span><br><span class="line"><span class="comment">         *      6. Draw decorations (scrollbars for instance)</span></span><br><span class="line"><span class="comment">         */</span></span><br><span class="line"></span><br><span class="line">        <span class="comment">// Step 1, draw the background, if needed</span></span><br><span class="line">        <span class="keyword">int</span> saveCount;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> (!dirtyOpaque) &#123;</span><br><span class="line">            drawBackground(canvas);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="comment">// skip step 2 &amp; 5 if possible (common case)</span></span><br><span class="line">        <span class="keyword">final</span> <span class="keyword">int</span> viewFlags = mViewFlags;</span><br><span class="line">        <span class="keyword">boolean</span> horizontalEdges = (viewFlags &amp; FADING_EDGE_HORIZONTAL) != <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">boolean</span> verticalEdges = (viewFlags &amp; FADING_EDGE_VERTICAL) != <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">if</span> (!verticalEdges &amp;&amp; !horizontalEdges) &#123;</span><br><span class="line">            <span class="comment">// Step 3, draw the content</span></span><br><span class="line">            <span class="keyword">if</span> (!dirtyOpaque) onDraw(canvas);</span><br><span class="line"></span><br><span class="line">            <span class="comment">// Step 4, draw the children</span></span><br><span class="line">            dispatchDraw(canvas);</span><br><span class="line"></span><br><span class="line">            drawAutofilledHighlight(canvas);</span><br><span class="line"></span><br><span class="line">            <span class="comment">// Overlay is part of the content and draws beneath Foreground</span></span><br><span class="line">            <span class="keyword">if</span> (mOverlay != <span class="keyword">null</span> &amp;&amp; !mOverlay.isEmpty()) &#123;</span><br><span class="line">                mOverlay.getOverlayView().dispatchDraw(canvas);</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">            <span class="comment">// Step 6, draw decorations (foreground, scrollbars)</span></span><br><span class="line">            onDrawForeground(canvas);</span><br><span class="line"></span><br><span class="line">            <span class="comment">// Step 7, draw the default focus highlight</span></span><br><span class="line">            drawDefaultFocusHighlight(canvas);</span><br><span class="line"></span><br><span class="line">            <span class="keyword">if</span> (debugDraw()) &#123;</span><br><span class="line">                debugDrawFocus(canvas);</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">            <span class="comment">// we're done...</span></span><br><span class="line">            <span class="keyword">return</span>;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="comment">/*</span></span><br><span class="line"><span class="comment">         * Here we do the full fledged routine...</span></span><br><span class="line"><span class="comment">         * (this is an uncommon case where speed matters less,</span></span><br><span class="line"><span class="comment">         * this is why we repeat some of the tests that have been</span></span><br><span class="line"><span class="comment">         * done above)</span></span><br><span class="line"><span class="comment">         */</span></span><br><span class="line">        <span class="comment">//完整流程省略</span></span><br></pre></td></tr></table></figure>
 <ul>
 <li><p><strong>绘制流程共有 6 个步骤，其中第 2 步和第 5 步可跳过。</strong></p>
 <ol>
-<li>绘制背景。</li>
-<li>如有必要，保存图层以准备褪色。</li>
-<li>绘制 View 的内容。</li>
-<li>绘制子 View。</li>
-<li>如有必要，绘制淡化边缘和恢复图层。</li>
-<li>绘制装饰。（如滚动条）</li>
+<li><p>绘制背景。</p>
+</li>
+<li><p>如有必要，保存图层以准备褪色。</p>
+</li>
+<li><p>绘制 View 的内容。</p>
+</li>
+<li><p>绘制子 View。</p>
+</li>
+<li><p>如有必要，绘制淡化边缘和恢复图层。</p>
+</li>
+<li><p>绘制装饰。（如滚动条）</p>
+</li>
 </ol>
 </li>
 <li><p><strong>绘制内容在 onDraw 方法，对应第 3 步。</strong></p>
@@ -583,8 +627,6 @@
           
             <a href="/tags/View/" rel="tag"># View</a>
           
-            <a href="/tags/面试/" rel="tag"># 面试</a>
-          
         </div>
       
 
@@ -596,8 +638,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2018/12/19/笔记-深入拆解Java虚拟机-36SubstrateVM：AOT编译框架/" rel="next" title="笔记-深入拆解Java虚拟机-36SubstrateVM：AOT编译框架">
-                <i class="fa fa-chevron-left"></i> 笔记-深入拆解Java虚拟机-36SubstrateVM：AOT编译框架
+              <a href="/2018/12/19/笔记-深入拆解Java虚拟机-36SubstrateVM：AOT编译框架/" rel="next" title="「深入拆解 Java 虚拟机」36 SubstrateVM：AOT 编译框架">
+                <i class="fa fa-chevron-left"></i> 「深入拆解 Java 虚拟机」36 SubstrateVM：AOT 编译框架
               </a>
             
           </div>
@@ -606,8 +648,8 @@
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2019/02/15/Java内部类中private的探讨/" rel="prev" title="Java内部类中private的探讨">
-                Java内部类中private的探讨 <i class="fa fa-chevron-right"></i>
+              <a href="/2019/02/15/Java内部类中private的探讨/" rel="prev" title="「原创」Java 内部类中 private 的探讨">
+                「原创」Java 内部类中 private 的探讨 <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
@@ -689,7 +731,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">59</span>
+                  <span class="site-state-item-count">76</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -700,7 +742,7 @@
               
               <div class="site-state-item site-state-categories">
                 <a href="/categories/index.html">
-                  <span class="site-state-item-count">14</span>
+                  <span class="site-state-item-count">10</span>
                   <span class="site-state-item-name">分类</span>
                 </a>
               </div>
@@ -711,7 +753,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">26</span>
+                  <span class="site-state-item-count">37</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>
@@ -787,7 +829,7 @@
 
     <footer id="footer" class="footer">
       <div class="footer-inner">
-        <div class="copyright">&copy; 2018 &mdash; <span itemprop="copyrightYear">2019</span>
+        <div class="copyright">&copy; 2018 &mdash; <span itemprop="copyrightYear">2020</span>
   <span class="with-love">
     <i class="fa fa-user"></i>
   </span>

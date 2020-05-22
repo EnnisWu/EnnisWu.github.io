@@ -72,7 +72,7 @@
 
 
 
-  <meta name="keywords" content="Android,AndroidUI," />
+  <meta name="keywords" content="Android," />
 
 
 
@@ -85,20 +85,20 @@
 
 
 
-<meta name="description" content="源码版本 SDK 28 Android 中控件都是线程不安全的，Google 规范只能在主线程中更新 UI，在子线程中发送网络请求。假如在子线程中更新 UI，会抛出异常 12android.view.ViewRootImpl$CalledFromWrongThreadException: Only the original thread that created a view hierarchy">
-<meta name="keywords" content="Android,AndroidUI">
+<meta name="description" content="原文 https://www.zhihu.com/question/24764972  https://ivanljt.github.io/blog/2017/08/16/Android%20%E4%B8%AD%E5%AD%90%E7%BA%BF%E7%A8%8B%E7%9C%9F%E7%9A%84%E4%B8%8D%E8%83%BD%E6%9B%B4%E6%96%B0UI%E5%90%97/">
+<meta name="keywords" content="Android">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Android在子线程中更新UI">
+<meta property="og:title" content="「笔记」Android 在子线程中更新 UI">
 <meta property="og:url" content="http://blog.ennis.info/2019/02/17/Android在子线程中更新UI/index.html">
 <meta property="og:site_name" content="Ennis Wu">
-<meta property="og:description" content="源码版本 SDK 28 Android 中控件都是线程不安全的，Google 规范只能在主线程中更新 UI，在子线程中发送网络请求。假如在子线程中更新 UI，会抛出异常 12android.view.ViewRootImpl$CalledFromWrongThreadException: Only the original thread that created a view hierarchy">
+<meta property="og:description" content="原文 https://www.zhihu.com/question/24764972  https://ivanljt.github.io/blog/2017/08/16/Android%20%E4%B8%AD%E5%AD%90%E7%BA%BF%E7%A8%8B%E7%9C%9F%E7%9A%84%E4%B8%8D%E8%83%BD%E6%9B%B4%E6%96%B0UI%E5%90%97/">
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="http://blog.ennis.info/images/posts/android/UI/子线程/logcat1.png">
 <meta property="og:image" content="http://blog.ennis.info/images/posts/android/UI/子线程/logcat2.png">
-<meta property="og:updated_time" content="2019-03-24T07:37:35.489Z">
+<meta property="og:updated_time" content="2020-05-18T17:26:05.625Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Android在子线程中更新UI">
-<meta name="twitter:description" content="源码版本 SDK 28 Android 中控件都是线程不安全的，Google 规范只能在主线程中更新 UI，在子线程中发送网络请求。假如在子线程中更新 UI，会抛出异常 12android.view.ViewRootImpl$CalledFromWrongThreadException: Only the original thread that created a view hierarchy">
+<meta name="twitter:title" content="「笔记」Android 在子线程中更新 UI">
+<meta name="twitter:description" content="原文 https://www.zhihu.com/question/24764972  https://ivanljt.github.io/blog/2017/08/16/Android%20%E4%B8%AD%E5%AD%90%E7%BA%BF%E7%A8%8B%E7%9C%9F%E7%9A%84%E4%B8%8D%E8%83%BD%E6%9B%B4%E6%96%B0UI%E5%90%97/">
 <meta name="twitter:image" content="http://blog.ennis.info/images/posts/android/UI/子线程/logcat1.png">
 
 
@@ -135,7 +135,7 @@
 
 
 
-  <title>Android在子线程中更新UI | Ennis Wu</title>
+  <title>「笔记」Android 在子线程中更新 UI | Ennis Wu</title>
   
 
 
@@ -341,6 +341,18 @@
 
  </div>
     </header>
+    <script>
+      let images = [
+         'header0.jpg',
+         'header1.jpg',
+         'header2.png'
+      ];
+      let image = images[Math.floor(Math.random() * images.length)];
+      window.document.getElementById('header').style.cssText 
+      = 'background: url(/images/avatar/' 
+      + image
+      + '); no-repeat; background-size: auto 100%;';
+    </script>
 
     <main id="main" class="main">
       <div class="main-inner">
@@ -379,7 +391,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">Android在子线程中更新UI</h1>
+          <h1 class="post-title" itemprop="name headline">「笔记」Android 在子线程中更新 UI</h1>
         
 
         <div class="post-meta">
@@ -451,7 +463,13 @@
       
 
       
-        <p>源码版本 SDK 28</p>
+        <h1 id="原文"><a href="#原文" class="headerlink" title="原文"></a>原文</h1><ul>
+<li><p><a href="https://www.zhihu.com/question/24764972" target="_blank" rel="noopener">https://www.zhihu.com/question/24764972</a></p>
+</li>
+<li><p><a href="https://ivanljt.github.io/blog/2017/08/16/Android%20%E4%B8%AD%E5%AD%90%E7%BA%BF%E7%A8%8B%E7%9C%9F%E7%9A%84%E4%B8%8D%E8%83%BD%E6%9B%B4%E6%96%B0UI%E5%90%97/" target="_blank" rel="noopener">https://ivanljt.github.io/blog/2017/08/16/Android%20%E4%B8%AD%E5%AD%90%E7%BA%BF%E7%A8%8B%E7%9C%9F%E7%9A%84%E4%B8%8D%E8%83%BD%E6%9B%B4%E6%96%B0UI%E5%90%97/</a></p>
+</li>
+</ul>
+<p>源码版本 SDK 28</p>
 <p>Android 中控件都是线程不安全的，Google <strong>规范</strong>只能在主线程中更新 UI，在子线程中发送网络请求。假如在子线程中更新 UI，会抛出异常</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">android.view.ViewRootImpl$CalledFromWrongThreadException: Only the original thread that created a view hierarchy can touch its views.</span><br><span class="line">        at android.view.ViewRootImpl.checkThread(ViewRootImpl.java:7753)</span><br></pre></td></tr></table></figure>
 <p>但如果运行下面这段代码，你会发现程序完美运行，没有任何问题，为什么这时却又可以在子线程更新 UI 了呢？</p>
@@ -484,9 +502,7 @@
 <li><p><strong>创建子线程的 Looper</strong></p>
 </li>
 </ol>
-<h1 id="实际项目请在主线程中更新-UI！！！"><a href="#实际项目请在主线程中更新-UI！！！" class="headerlink" title="实际项目请在主线程中更新 UI！！！"></a><strong>实际项目请在主线程中更新 UI！！！</strong></h1><h1 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h1><p><a href="https://www.zhihu.com/question/24764972" target="_blank" rel="noopener">https://www.zhihu.com/question/24764972</a></p>
-<p><a href="https://ivanljt.github.io/blog/2017/08/16/Android%20%E4%B8%AD%E5%AD%90%E7%BA%BF%E7%A8%8B%E7%9C%9F%E7%9A%84%E4%B8%8D%E8%83%BD%E6%9B%B4%E6%96%B0UI%E5%90%97/" target="_blank" rel="noopener">https://ivanljt.github.io/blog/2017/08/16/Android%20%E4%B8%AD%E5%AD%90%E7%BA%BF%E7%A8%8B%E7%9C%9F%E7%9A%84%E4%B8%8D%E8%83%BD%E6%9B%B4%E6%96%B0UI%E5%90%97/</a></p>
-
+<h1 id="实际项目请在主线程中更新-UI！！！"><a href="#实际项目请在主线程中更新-UI！！！" class="headerlink" title="实际项目请在主线程中更新 UI！！！"></a><strong>实际项目请在主线程中更新 UI！！！</strong></h1>
       
     </div>
     
@@ -534,8 +550,6 @@
           
             <a href="/tags/Android/" rel="tag"># Android</a>
           
-            <a href="/tags/AndroidUI/" rel="tag"># AndroidUI</a>
-          
         </div>
       
 
@@ -547,8 +561,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2019/02/16/HashSet为什么要使用Object对象填充value而不是null/" rel="next" title="HashSet为什么要使用Object对象填充value而不是null">
-                <i class="fa fa-chevron-left"></i> HashSet为什么要使用Object对象填充value而不是null
+              <a href="/2019/02/16/HashSet为什么要使用Object对象填充value而不是null/" rel="next" title="「原创」HashSet 为什么要使用 Object 对象填充 value 而不是 null">
+                <i class="fa fa-chevron-left"></i> 「原创」HashSet 为什么要使用 Object 对象填充 value 而不是 null
               </a>
             
           </div>
@@ -557,8 +571,8 @@
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2019/02/18/Java并发之synchronized/" rel="prev" title="Java并发之synchronized">
-                Java并发之synchronized <i class="fa fa-chevron-right"></i>
+              <a href="/2019/02/18/Java并发之synchronized/" rel="prev" title="「笔记」synchronized 的相关问题">
+                「笔记」synchronized 的相关问题 <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
@@ -640,7 +654,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">59</span>
+                  <span class="site-state-item-count">76</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -651,7 +665,7 @@
               
               <div class="site-state-item site-state-categories">
                 <a href="/categories/index.html">
-                  <span class="site-state-item-count">14</span>
+                  <span class="site-state-item-count">10</span>
                   <span class="site-state-item-name">分类</span>
                 </a>
               </div>
@@ -662,7 +676,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">26</span>
+                  <span class="site-state-item-count">37</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>
@@ -718,7 +732,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#为什么在-onCreate-中在子线程可以更新-UI"><span class="nav-number">1.</span> <span class="nav-text">为什么在 onCreate 中在子线程可以更新 UI</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#ViewRootImpl-checkThread"><span class="nav-number">1.1.</span> <span class="nav-text">ViewRootImpl.checkThread</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#View-invalidateInternal"><span class="nav-number">1.2.</span> <span class="nav-text">View.invalidateInternal</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#mAttachInfo-什么时候被赋值？"><span class="nav-number">2.</span> <span class="nav-text">mAttachInfo 什么时候被赋值？</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#在子线程中更新-UI"><span class="nav-number">3.</span> <span class="nav-text">在子线程中更新 UI</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#实际项目请在主线程中更新-UI！！！"><span class="nav-number">4.</span> <span class="nav-text">实际项目请在主线程中更新 UI！！！</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#参考"><span class="nav-number">5.</span> <span class="nav-text">参考</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#原文"><span class="nav-number">1.</span> <span class="nav-text">原文</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#为什么在-onCreate-中在子线程可以更新-UI"><span class="nav-number">2.</span> <span class="nav-text">为什么在 onCreate 中在子线程可以更新 UI</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#ViewRootImpl-checkThread"><span class="nav-number">2.1.</span> <span class="nav-text">ViewRootImpl.checkThread</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#View-invalidateInternal"><span class="nav-number">2.2.</span> <span class="nav-text">View.invalidateInternal</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#mAttachInfo-什么时候被赋值？"><span class="nav-number">3.</span> <span class="nav-text">mAttachInfo 什么时候被赋值？</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#在子线程中更新-UI"><span class="nav-number">4.</span> <span class="nav-text">在子线程中更新 UI</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#实际项目请在主线程中更新-UI！！！"><span class="nav-number">5.</span> <span class="nav-text">实际项目请在主线程中更新 UI！！！</span></a></li></ol></div>
             
 
           </div>
@@ -738,7 +752,7 @@
 
     <footer id="footer" class="footer">
       <div class="footer-inner">
-        <div class="copyright">&copy; 2018 &mdash; <span itemprop="copyrightYear">2019</span>
+        <div class="copyright">&copy; 2018 &mdash; <span itemprop="copyrightYear">2020</span>
   <span class="with-love">
     <i class="fa fa-user"></i>
   </span>

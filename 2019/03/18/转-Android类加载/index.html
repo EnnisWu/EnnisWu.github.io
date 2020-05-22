@@ -72,7 +72,7 @@
 
 
 
-  <meta name="keywords" content="Android," />
+  <meta name="keywords" content="Android,类加载," />
 
 
 
@@ -85,21 +85,21 @@
 
 
 
-<meta name="description" content="转自：https://juejin.im/post/5c31c3ebf265da614e2c3b68 JVM 类加载机制JVM 将描述类的数据从 Class 文件加载到内存，并对数据进行校验、转换解析和初始化，最终形成可以被虚拟机直接使用的 Java 类型。 类的生命周期 类从被加载到虚拟机内存中开始，到卸载出内存为止。  整个生命周期包括 7 个阶段：加载（Loading）、验证（Verific">
-<meta name="keywords" content="Android">
+<meta name="description" content="转自：Android Classloader机制 JVM 类加载机制JVM 将描述类的数据从 Class 文件加载到内存，并对数据进行校验、转换解析和初始化，最终形成可以被虚拟机直接使用的 Java 类型。 类的生命周期 类从被加载到虚拟机内存中开始，到卸载出内存为止。  整个生命周期包括 7 个阶段：加载（Loading）、验证（Verification）、准备（Preparation）、解析（">
+<meta name="keywords" content="Android,类加载">
 <meta property="og:type" content="article">
-<meta property="og:title" content="转-Android类加载">
+<meta property="og:title" content="「转载」Android 类加载">
 <meta property="og:url" content="http://blog.ennis.info/2019/03/18/转-Android类加载/index.html">
 <meta property="og:site_name" content="Ennis Wu">
-<meta property="og:description" content="转自：https://juejin.im/post/5c31c3ebf265da614e2c3b68 JVM 类加载机制JVM 将描述类的数据从 Class 文件加载到内存，并对数据进行校验、转换解析和初始化，最终形成可以被虚拟机直接使用的 Java 类型。 类的生命周期 类从被加载到虚拟机内存中开始，到卸载出内存为止。  整个生命周期包括 7 个阶段：加载（Loading）、验证（Verific">
+<meta property="og:description" content="转自：Android Classloader机制 JVM 类加载机制JVM 将描述类的数据从 Class 文件加载到内存，并对数据进行校验、转换解析和初始化，最终形成可以被虚拟机直接使用的 Java 类型。 类的生命周期 类从被加载到虚拟机内存中开始，到卸载出内存为止。  整个生命周期包括 7 个阶段：加载（Loading）、验证（Verification）、准备（Preparation）、解析（">
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="http://blog.ennis.info/images/posts/android/类加载/class_lifecycle.jpg">
 <meta property="og:image" content="http://blog.ennis.info/images/posts/android/类加载/jvm_classloader.jpg">
 <meta property="og:image" content="http://blog.ennis.info/images/posts/android/类加载/android_classloader.jpg">
-<meta property="og:updated_time" content="2019-03-18T12:49:48.997Z">
+<meta property="og:updated_time" content="2020-05-18T17:40:43.738Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="转-Android类加载">
-<meta name="twitter:description" content="转自：https://juejin.im/post/5c31c3ebf265da614e2c3b68 JVM 类加载机制JVM 将描述类的数据从 Class 文件加载到内存，并对数据进行校验、转换解析和初始化，最终形成可以被虚拟机直接使用的 Java 类型。 类的生命周期 类从被加载到虚拟机内存中开始，到卸载出内存为止。  整个生命周期包括 7 个阶段：加载（Loading）、验证（Verific">
+<meta name="twitter:title" content="「转载」Android 类加载">
+<meta name="twitter:description" content="转自：Android Classloader机制 JVM 类加载机制JVM 将描述类的数据从 Class 文件加载到内存，并对数据进行校验、转换解析和初始化，最终形成可以被虚拟机直接使用的 Java 类型。 类的生命周期 类从被加载到虚拟机内存中开始，到卸载出内存为止。  整个生命周期包括 7 个阶段：加载（Loading）、验证（Verification）、准备（Preparation）、解析（">
 <meta name="twitter:image" content="http://blog.ennis.info/images/posts/android/类加载/class_lifecycle.jpg">
 
 
@@ -136,7 +136,7 @@
 
 
 
-  <title>转-Android类加载 | Ennis Wu</title>
+  <title>「转载」Android 类加载 | Ennis Wu</title>
   
 
 
@@ -342,6 +342,18 @@
 
  </div>
     </header>
+    <script>
+      let images = [
+         'header0.jpg',
+         'header1.jpg',
+         'header2.png'
+      ];
+      let image = images[Math.floor(Math.random() * images.length)];
+      window.document.getElementById('header').style.cssText 
+      = 'background: url(/images/avatar/' 
+      + image
+      + '); no-repeat; background-size: auto 100%;';
+    </script>
 
     <main id="main" class="main">
       <div class="main-inner">
@@ -380,7 +392,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">转-Android类加载</h1>
+          <h1 class="post-title" itemprop="name headline">「转载」Android 类加载</h1>
         
 
         <div class="post-meta">
@@ -452,7 +464,7 @@
       
 
       
-        <p>转自：<a href="https://juejin.im/post/5c31c3ebf265da614e2c3b68" target="_blank" rel="noopener">https://juejin.im/post/5c31c3ebf265da614e2c3b68</a></p>
+        <p>转自：<a href="https://juejin.im/post/5c31c3ebf265da614e2c3b68" target="_blank" rel="noopener">Android Classloader机制</a></p>
 <h1 id="JVM-类加载机制"><a href="#JVM-类加载机制" class="headerlink" title="JVM 类加载机制"></a>JVM 类加载机制</h1><p>JVM 将描述类的数据从 Class 文件加载到内存，并对数据进行校验、转换解析和初始化，最终形成可以被虚拟机直接使用的 Java 类型。</p>
 <h2 id="类的生命周期"><a href="#类的生命周期" class="headerlink" title="类的生命周期"></a>类的生命周期</h2><blockquote>
 <p>类从被加载到虚拟机内存中开始，到卸载出内存为止。</p>
@@ -541,7 +553,7 @@
 </li>
 </ul>
 <h3 id="JDK-9-双亲委派模型的更改"><a href="#JDK-9-双亲委派模型的更改" class="headerlink" title="JDK 9 双亲委派模型的更改"></a>JDK 9 双亲委派模型的更改</h3><ul>
-<li><p>Java9 引入了模块系统，并且略微更改了上述的类加载器。</p>
+<li><p>Java 9 引入了模块系统，并且略微更改了上述的类加载器。</p>
 </li>
 <li><p>扩展类加载器被改名为平台类加载器（platform class loader）。</p>
 </li>
@@ -633,6 +645,8 @@
           
             <a href="/tags/Android/" rel="tag"># Android</a>
           
+            <a href="/tags/类加载/" rel="tag"># 类加载</a>
+          
         </div>
       
 
@@ -644,8 +658,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2019/02/18/Java并发之synchronized/" rel="next" title="Java并发之synchronized">
-                <i class="fa fa-chevron-left"></i> Java并发之synchronized
+              <a href="/2019/02/18/Java并发之synchronized/" rel="next" title="「笔记」synchronized 的相关问题">
+                <i class="fa fa-chevron-left"></i> 「笔记」synchronized 的相关问题
               </a>
             
           </div>
@@ -654,8 +668,8 @@
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2019/05/03/LayoutInflater中inflate方法各参数作用（二）/" rel="prev" title="LayoutInflater中inflate方法各参数作用（二）">
-                LayoutInflater中inflate方法各参数作用（二） <i class="fa fa-chevron-right"></i>
+              <a href="/2019/05/03/LayoutInflater中inflate方法各参数作用（二）/" rel="prev" title="「笔记」LayoutInflater 中 inflate 方法各参数作用（二）">
+                「笔记」LayoutInflater 中 inflate 方法各参数作用（二） <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
@@ -737,7 +751,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">59</span>
+                  <span class="site-state-item-count">76</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -748,7 +762,7 @@
               
               <div class="site-state-item site-state-categories">
                 <a href="/categories/index.html">
-                  <span class="site-state-item-count">14</span>
+                  <span class="site-state-item-count">10</span>
                   <span class="site-state-item-name">分类</span>
                 </a>
               </div>
@@ -759,7 +773,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">26</span>
+                  <span class="site-state-item-count">37</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>
@@ -835,7 +849,7 @@
 
     <footer id="footer" class="footer">
       <div class="footer-inner">
-        <div class="copyright">&copy; 2018 &mdash; <span itemprop="copyrightYear">2019</span>
+        <div class="copyright">&copy; 2018 &mdash; <span itemprop="copyrightYear">2020</span>
   <span class="with-love">
     <i class="fa fa-user"></i>
   </span>

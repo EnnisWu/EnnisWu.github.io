@@ -85,18 +85,18 @@
 
 
 
-<meta name="description" content="在setSupportActionBar(toolbar)之后调用toolbar.setTitle()，在onCreate()中调用无效，在onStart()中调用无效。 解决方案：  在onResume()中调用有效。 getSupportActionBar.setTitle()有效">
+<meta name="description" content="在 setSupportActionBar(toolbar) 之后调用 toolbar.setTitle()   在 onCreate() 中调用无效  在 onStart() 中调用无效   解决方案：  在 onResume() 中调用有效。  getSupportActionBar.setTitle() 有效">
 <meta name="keywords" content="Android,Toolbar">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Toolbar的setTitle问题">
+<meta property="og:title" content="「笔记」Toolbar 的 setTitle 问题">
 <meta property="og:url" content="http://blog.ennis.info/2018/04/09/Toolbar的setTitle问题/index.html">
 <meta property="og:site_name" content="Ennis Wu">
-<meta property="og:description" content="在setSupportActionBar(toolbar)之后调用toolbar.setTitle()，在onCreate()中调用无效，在onStart()中调用无效。 解决方案：  在onResume()中调用有效。 getSupportActionBar.setTitle()有效">
+<meta property="og:description" content="在 setSupportActionBar(toolbar) 之后调用 toolbar.setTitle()   在 onCreate() 中调用无效  在 onStart() 中调用无效   解决方案：  在 onResume() 中调用有效。  getSupportActionBar.setTitle() 有效">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2019-01-26T13:26:28.987Z">
+<meta property="og:updated_time" content="2020-05-17T16:32:20.719Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Toolbar的setTitle问题">
-<meta name="twitter:description" content="在setSupportActionBar(toolbar)之后调用toolbar.setTitle()，在onCreate()中调用无效，在onStart()中调用无效。 解决方案：  在onResume()中调用有效。 getSupportActionBar.setTitle()有效">
+<meta name="twitter:title" content="「笔记」Toolbar 的 setTitle 问题">
+<meta name="twitter:description" content="在 setSupportActionBar(toolbar) 之后调用 toolbar.setTitle()   在 onCreate() 中调用无效  在 onStart() 中调用无效   解决方案：  在 onResume() 中调用有效。  getSupportActionBar.setTitle() 有效">
 
 
 
@@ -132,7 +132,7 @@
 
 
 
-  <title>Toolbar的setTitle问题 | Ennis Wu</title>
+  <title>「笔记」Toolbar 的 setTitle 问题 | Ennis Wu</title>
   
 
 
@@ -338,6 +338,18 @@
 
  </div>
     </header>
+    <script>
+      let images = [
+         'header0.jpg',
+         'header1.jpg',
+         'header2.png'
+      ];
+      let image = images[Math.floor(Math.random() * images.length)];
+      window.document.getElementById('header').style.cssText 
+      = 'background: url(/images/avatar/' 
+      + image
+      + '); no-repeat; background-size: auto 100%;';
+    </script>
 
     <main id="main" class="main">
       <div class="main-inner">
@@ -376,7 +388,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">Toolbar的setTitle问题</h1>
+          <h1 class="post-title" itemprop="name headline">「笔记」Toolbar 的 setTitle 问题</h1>
         
 
         <div class="post-meta">
@@ -411,8 +423,8 @@
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Android视图/" itemprop="url" rel="index">
-                    <span itemprop="name">Android视图</span>
+                  <a href="/categories/Android/" itemprop="url" rel="index">
+                    <span itemprop="name">Android</span>
                   </a>
                 </span>
 
@@ -448,11 +460,20 @@
       
 
       
-        <p>在setSupportActionBar(toolbar)之后调用toolbar.setTitle()，<br>在onCreate()中调用无效，<br>在onStart()中调用无效。</p>
+        <ul>
+<li><p>在 <code>setSupportActionBar(toolbar)</code> 之后调用 <code>toolbar.setTitle()</code> </p>
+</li>
+<li><p>在 <code>onCreate()</code> 中调用无效</p>
+</li>
+<li><p>在 <code>onStart()</code> 中调用无效</p>
+</li>
+</ul>
 <p>解决方案：</p>
 <ol>
-<li>在onResume()中调用有效。</li>
-<li>getSupportActionBar.setTitle()有效</li>
+<li><p>在 <code>onResume()</code> 中调用有效。</p>
+</li>
+<li><p><code>getSupportActionBar.setTitle()</code> 有效</p>
+</li>
 </ol>
 
       
@@ -515,8 +536,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2018/02/22/转-Android生成验证码/" rel="next" title="[转]Android生成验证码">
-                <i class="fa fa-chevron-left"></i> [转]Android生成验证码
+              <a href="/2018/02/22/转-Android生成验证码/" rel="next" title="「转载」Android 生成验证码">
+                <i class="fa fa-chevron-left"></i> 「转载」Android 生成验证码
               </a>
             
           </div>
@@ -525,8 +546,8 @@
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2018/05/31/《TCPIP详解卷1》002阅读笔记/" rel="prev" title="《TCPIP详解卷1》002阅读笔记">
-                《TCPIP详解卷1》002阅读笔记 <i class="fa fa-chevron-right"></i>
+              <a href="/2018/05/31/《TCPIP详解卷1》002阅读笔记/" rel="prev" title="「TCP/IP详解 卷1」002 阅读笔记">
+                「TCP/IP详解 卷1」002 阅读笔记 <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
@@ -599,7 +620,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">59</span>
+                  <span class="site-state-item-count">76</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -610,7 +631,7 @@
               
               <div class="site-state-item site-state-categories">
                 <a href="/categories/index.html">
-                  <span class="site-state-item-count">14</span>
+                  <span class="site-state-item-count">10</span>
                   <span class="site-state-item-name">分类</span>
                 </a>
               </div>
@@ -621,7 +642,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">26</span>
+                  <span class="site-state-item-count">37</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>
@@ -681,7 +702,7 @@
 
     <footer id="footer" class="footer">
       <div class="footer-inner">
-        <div class="copyright">&copy; 2018 &mdash; <span itemprop="copyrightYear">2019</span>
+        <div class="copyright">&copy; 2018 &mdash; <span itemprop="copyrightYear">2020</span>
   <span class="with-love">
     <i class="fa fa-user"></i>
   </span>

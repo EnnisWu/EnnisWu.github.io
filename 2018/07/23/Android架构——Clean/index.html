@@ -72,7 +72,7 @@
 
 
 
-  <meta name="keywords" content="Android,架构,Clean," />
+  <meta name="keywords" content="Android,架构,Clean,未完成," />
 
 
 
@@ -85,22 +85,22 @@
 
 
 
-<meta name="description" content="Clean架构的主要特点： 框架独立 容易测试 UI独立 数据库独立 不依赖任何中介  Clean的主要思想是外层依赖内层，内层完全不依赖外层（或者说内层不知道外层的存在，可以独立开发，复用性强）。 Clean架构解析  Enterprise Business Rules：业务对象 Application Business Rules：用于处理我们的业务对象，业务逻辑所在，也称为Interacto">
-<meta name="keywords" content="Android,架构,Clean">
+<meta name="description" content="原文 https://8thlight.com/blog/uncle-bob/2012/08/13/the-clean-architecture.html  https://www.jianshu.com/p/c6a1a5c9a49b  https://blog.csdn.net/YANGDAHUAN/article/details/80388849  https://www.jianshu.co">
+<meta name="keywords" content="Android,架构,Clean,未完成">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Android架构——Clean">
+<meta property="og:title" content="「笔记」Android 架构——Clean">
 <meta property="og:url" content="http://blog.ennis.info/2018/07/23/Android架构——Clean/index.html">
 <meta property="og:site_name" content="Ennis Wu">
-<meta property="og:description" content="Clean架构的主要特点： 框架独立 容易测试 UI独立 数据库独立 不依赖任何中介  Clean的主要思想是外层依赖内层，内层完全不依赖外层（或者说内层不知道外层的存在，可以独立开发，复用性强）。 Clean架构解析  Enterprise Business Rules：业务对象 Application Business Rules：用于处理我们的业务对象，业务逻辑所在，也称为Interacto">
+<meta property="og:description" content="原文 https://8thlight.com/blog/uncle-bob/2012/08/13/the-clean-architecture.html  https://www.jianshu.com/p/c6a1a5c9a49b  https://blog.csdn.net/YANGDAHUAN/article/details/80388849  https://www.jianshu.co">
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="http://blog.ennis.info/images/posts/android/architecture/clean/CleanArchitecture-c.jpg">
 <meta property="og:image" content="http://blog.ennis.info/images/posts/android/architecture/clean/CleanSimple.jpg">
 <meta property="og:image" content="http://blog.ennis.info/images/posts/android/architecture/clean/mvp-clean.png">
 <meta property="og:image" content="http://blog.ennis.info/images/posts/android/architecture/clean/mvpcleanproject.png">
-<meta property="og:updated_time" content="2019-01-26T13:26:28.936Z">
+<meta property="og:updated_time" content="2020-05-18T16:23:35.466Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Android架构——Clean">
-<meta name="twitter:description" content="Clean架构的主要特点： 框架独立 容易测试 UI独立 数据库独立 不依赖任何中介  Clean的主要思想是外层依赖内层，内层完全不依赖外层（或者说内层不知道外层的存在，可以独立开发，复用性强）。 Clean架构解析  Enterprise Business Rules：业务对象 Application Business Rules：用于处理我们的业务对象，业务逻辑所在，也称为Interacto">
+<meta name="twitter:title" content="「笔记」Android 架构——Clean">
+<meta name="twitter:description" content="原文 https://8thlight.com/blog/uncle-bob/2012/08/13/the-clean-architecture.html  https://www.jianshu.com/p/c6a1a5c9a49b  https://blog.csdn.net/YANGDAHUAN/article/details/80388849  https://www.jianshu.co">
 <meta name="twitter:image" content="http://blog.ennis.info/images/posts/android/architecture/clean/CleanArchitecture-c.jpg">
 
 
@@ -137,7 +137,7 @@
 
 
 
-  <title>Android架构——Clean | Ennis Wu</title>
+  <title>「笔记」Android 架构——Clean | Ennis Wu</title>
   
 
 
@@ -343,6 +343,18 @@
 
  </div>
     </header>
+    <script>
+      let images = [
+         'header0.jpg',
+         'header1.jpg',
+         'header2.png'
+      ];
+      let image = images[Math.floor(Math.random() * images.length)];
+      window.document.getElementById('header').style.cssText 
+      = 'background: url(/images/avatar/' 
+      + image
+      + '); no-repeat; background-size: auto 100%;';
+    </script>
 
     <main id="main" class="main">
       <div class="main-inner">
@@ -381,7 +393,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">Android架构——Clean</h1>
+          <h1 class="post-title" itemprop="name headline">「笔记」Android 架构——Clean</h1>
         
 
         <div class="post-meta">
@@ -416,8 +428,8 @@
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Android架构/" itemprop="url" rel="index">
-                    <span itemprop="name">Android架构</span>
+                  <a href="/categories/Android/" itemprop="url" rel="index">
+                    <span itemprop="name">Android</span>
                   </a>
                 </span>
 
@@ -453,70 +465,102 @@
       
 
       
-        <h1 id="Clean架构的主要特点："><a href="#Clean架构的主要特点：" class="headerlink" title="Clean架构的主要特点："></a>Clean架构的主要特点：</h1><ul>
-<li>框架独立</li>
-<li>容易测试</li>
-<li>UI独立</li>
-<li>数据库独立</li>
-<li>不依赖任何中介</li>
+        <h1 id="原文"><a href="#原文" class="headerlink" title="原文"></a>原文</h1><ul>
+<li><p><a href="https://8thlight.com/blog/uncle-bob/2012/08/13/the-clean-architecture.html" target="_blank" rel="noopener">https://8thlight.com/blog/uncle-bob/2012/08/13/the-clean-architecture.html</a></p>
+</li>
+<li><p><a href="https://www.jianshu.com/p/c6a1a5c9a49b" target="_blank" rel="noopener">https://www.jianshu.com/p/c6a1a5c9a49b</a></p>
+</li>
+<li><p><a href="https://blog.csdn.net/YANGDAHUAN/article/details/80388849" target="_blank" rel="noopener">https://blog.csdn.net/YANGDAHUAN/article/details/80388849</a></p>
+</li>
+<li><p><a href="https://www.jianshu.com/p/552c3a1c5fe5" target="_blank" rel="noopener">https://www.jianshu.com/p/552c3a1c5fe5</a></p>
+</li>
+<li><p><a href="https://www.jianshu.com/p/e0258ce7d392" target="_blank" rel="noopener">https://www.jianshu.com/p/e0258ce7d392</a></p>
+</li>
 </ul>
-<p>Clean的主要思想是外层依赖内层，<strong>内层完全不依赖外层</strong>（或者说内层不知道外层的存在，可以独立开发，复用性强）。</p>
-<h1 id="Clean架构解析"><a href="#Clean架构解析" class="headerlink" title="Clean架构解析"></a>Clean架构解析</h1><p><img src="/images/posts/android/architecture/clean/CleanArchitecture-c.jpg" alt="CleanArchitecture"></p>
-<ul>
-<li>Enterprise Business Rules：业务对象</li>
-<li>Application Business Rules：用于处理我们的业务对象，业务逻辑所在，也称为Interactor</li>
-<li>Interface Adapters： 接口转换，拿到我们需要的数据，主持者层（Presenters）和控制层（Controllers）就在这一层</li>
-<li>Frameworks and Drivers: 这里是所有具体的实现了：比如：UI，工具类，基础框架等等。</li>
+<h1 id="Clean-架构的主要特点："><a href="#Clean-架构的主要特点：" class="headerlink" title="Clean 架构的主要特点："></a>Clean 架构的主要特点：</h1><ul>
+<li><p>框架独立</p>
+</li>
+<li><p>容易测试</p>
+</li>
+<li><p>UI 独立</p>
+</li>
+<li><p>数据库独立</p>
+</li>
+<li><p>不依赖任何中介</p>
+</li>
 </ul>
-<p>Clean框架不一定只有4层，这里以4层为例。<br>上面可能比较抽象，下面是简单的说法：</p>
+<p>Clean 的主要思想是外层依赖内层，<strong>内层完全不依赖外层</strong>（或者说内层不知道外层的存在，可以独立开发，复用性强）。</p>
+<h1 id="Clean-架构解析"><a href="#Clean-架构解析" class="headerlink" title="Clean 架构解析"></a>Clean 架构解析</h1><p><img src="/images/posts/android/architecture/clean/CleanArchitecture-c.jpg" alt="CleanArchitecture"></p>
 <ul>
-<li>第一层：实体类</li>
-<li>第二层：也叫UseCase层，实现具体业务逻辑。</li>
-<li>第三层：如果是MVP这一层为Presenter，MVC这一层为Controller。</li>
-<li>第四层：具体实现。</li>
+<li><p>Enterprise Business Rules：业务对象</p>
+</li>
+<li><p>Application Business Rules：用于处理我们的业务对象，业务逻辑所在，也称为 Interactor</p>
+</li>
+<li><p>Interface Adapters： 接口转换，拿到我们需要的数据，主持者层（Presenters）和控制层（Controllers）就在这一层</p>
+</li>
+<li><p>Frameworks and Drivers: 这里是所有具体的实现了：比如：UI，工具类，基础框架等等。</p>
+</li>
+</ul>
+<p>Clean 框架不一定只有 4 层，这里以 4 层为例。</p>
+<p>上面可能比较抽象，下面是简单的说法：</p>
+<ul>
+<li><p>第一层：实体类</p>
+</li>
+<li><p>第二层：也叫 UseCase 层，实现具体业务逻辑。</p>
+</li>
+<li><p>第三层：如果是 MVP 这一层为 Presenter，MVC 这一层为Controller。</p>
+</li>
+<li><p>第四层：具体实现。</p>
+</li>
 </ul>
 <p><img src="/images/posts/android/architecture/clean/CleanSimple.jpg" alt="CleanSimple"></p>
 <ol>
-<li><strong>内层均为纯Java代码</strong>，只需要jvm便可以运行。</li>
-<li>内层代码不仅可以在Android平台，还可以在别的Java平台复用。</li>
-<li>各层单独测试，各层之间通过接口通信，且独立，方便单元测试。</li>
-<li><strong>层与层之间完全隔离</strong>，最主要的体现就是<strong>各层有自己的数据结构</strong>，不同层之间相互转换，完全没有依赖关系。</li>
-<li>通过依赖注入的方式导致灵活修改逻辑、实现，这点与MVP的思想相似，Clean与MVP和Dagger结合使用是天然合适的。</li>
+<li><p><strong>内层均为纯 Java 代码</strong>，只需要 jvm 便可以运行。</p>
+</li>
+<li><p>内层代码不仅可以在 Android 平台，还可以在别的 Java 平台复用。</p>
+</li>
+<li><p>各层单独测试，各层之间通过接口通信，且独立，方便单元测试。</p>
+</li>
+<li><p><strong>层与层之间完全隔离</strong>，最主要的体现就是<strong>各层有自己的数据结构</strong>，不同层之间相互转换，完全没有依赖关系。</p>
+</li>
+<li><p>通过依赖注入的方式导致灵活修改逻辑、实现，这点与 MVP 的思想相似，Clean 与 MVP 和 Dagger 结合使用是天然合适的。</p>
+</li>
 </ol>
-<p>以mvp-clean为例，与纯mvp最主要的区别就是Presenter层剥离出UserCase层，一是方便测试，二是方便代码复用，减少Presenter层的代码冗余。</p>
+<p>以 mvp-clean 为例，与纯 mvp 最主要的区别就是 Presenter 层剥离出 UserCase 层，一是方便测试，二是方便代码复用，减少 Presenter 层的代码冗余。</p>
 <h1 id="Google-Demo-——-todo-mvp-clean-解析"><a href="#Google-Demo-——-todo-mvp-clean-解析" class="headerlink" title="Google Demo —— todo-mvp-clean 解析"></a>Google Demo —— todo-mvp-clean 解析</h1><blockquote>
-<p>demo地址：<a href="https://github.com/googlesamples/android-architecture/tree/todo-mvp-clean/" target="_blank" rel="noopener">https://github.com/googlesamples/android-architecture/tree/todo-mvp-clean/</a><br>mvp-clean基于mvp，加了 domain layer 介于 presentation 和 repositories。同时也将整个app 分为三个层次处理。</p>
+<p>demo 地址：<a href="https://github.com/googlesamples/android-architecture/tree/todo-mvp-clean/" target="_blank" rel="noopener">https://github.com/googlesamples/android-architecture/tree/todo-mvp-clean/</a><br>mvp-clean 基于 mvp，加了 domain layer 介于 presentation 和 repositories。同时也将整个 app 分为三个层次处理。</p>
 </blockquote>
-<h2 id="mvp-clean层次图"><a href="#mvp-clean层次图" class="headerlink" title="mvp-clean层次图"></a>mvp-clean层次图</h2><p><img src="/images/posts/android/architecture/clean/mvp-clean.png" alt="mvp-clean"></p>
+<h2 id="mvp-clean-层次图"><a href="#mvp-clean-层次图" class="headerlink" title="mvp-clean 层次图"></a>mvp-clean 层次图</h2><p><img src="/images/posts/android/architecture/clean/mvp-clean.png" alt="mvp-clean"></p>
 <ul>
-<li>Presentation层 : MVP 设计准则。</li>
-<li>Domain层 : 处理所有的业务逻辑，注意是所有的业务逻辑。对应use case（interactors）。</li>
-<li>Data层 : 获取数据，以及数据的存储，分为本地和远程。</li>
+<li><p>Presentation 层 : MVP 设计准则。</p>
+</li>
+<li><p>Domain 层 : 处理所有的业务逻辑，注意是所有的业务逻辑。对应 use case（interactors）。</p>
+</li>
+<li><p>Data 层 : 获取数据，以及数据的存储，分为本地和远程。</p>
+</li>
 </ul>
-<h2 id="基本概念（摘自mvp-clean-GitHub主页部分原文翻译）"><a href="#基本概念（摘自mvp-clean-GitHub主页部分原文翻译）" class="headerlink" title="基本概念（摘自mvp-clean GitHub主页部分原文翻译）"></a>基本概念（摘自mvp-clean GitHub主页部分原文翻译）</h2><ul>
-<li>mvp-clean 和 基本的mvp 最大的区别就是在domain层和UseCase 的使用上。从 presenter 层分离出domain 层好处是可以减少代码的冗余。</li>
-<li><strong>UseCase 的好处是在domain的代码层上可以复用。</strong>CompleteTask在TaskDetailPresenter和TasksPresenter做到了很好的复用。</li>
-<li>domain layer 是完全解耦与Android 层和第三方依赖的。是一个纯java层的处理。</li>
-<li><strong>UseCase 从主线程剥离出来</strong>，对于Android app是个好的操作。这种操作是尽可能的减少占用UI 线程。我们决定使用 command pattern 将use case 在线程池里执行操作。同样的我们可以用RxJava 或者 Promises实现同样的功能。</li>
-<li>我们使用异步的repositories 。 但是现在没有必要这么做了。因为UseCase 已经从主线程里剥离出来了。这是尽量保持 samples 和原来的是一致的。</li>
+<h2 id="基本概念（摘自-mvp-clean-GitHub-主页部分原文翻译）"><a href="#基本概念（摘自-mvp-clean-GitHub-主页部分原文翻译）" class="headerlink" title="基本概念（摘自 mvp-clean GitHub 主页部分原文翻译）"></a>基本概念（摘自 mvp-clean GitHub 主页部分原文翻译）</h2><ul>
+<li><p>mvp-clean 和 基本的 mvp 最大的区别就是在 domain 层和 UseCase 的使用上。从 presenter 层分离出 domain 层好处是可以减少代码的冗余。</p>
+</li>
+<li><p><strong>UseCase 的好处是在 domain 的代码层上可以复用。</strong>CompleteTask 在 TaskDetailPresenter 和 TasksPresenter 做到了很好的复用。</p>
+</li>
+<li><p>domain layer 是完全解耦与 Android 层和第三方依赖的。是一个纯 java 层的处理。</p>
+</li>
+<li><p><strong>UseCase 从主线程剥离出来</strong>，对于 Android app 是个好的操作。这种操作是尽可能的减少占用 UI 线程。我们决定使用 command pattern 将 use case 在线程池里执行操作。同样的我们可以用 RxJava 或者 Promises 实现同样的功能。</p>
+</li>
+<li><p>我们使用异步的 repositories 。 但是现在没有必要这么做了。因为 UseCase 已经从主线程里剥离出来了。这是尽量保持 samples 和原来的是一致的。</p>
+</li>
 </ul>
 <h2 id="项目主要关系图"><a href="#项目主要关系图" class="headerlink" title="项目主要关系图"></a>项目主要关系图</h2><p><img src="/images/posts/android/architecture/clean/mvpcleanproject.png" alt="mvpcleanproject"></p>
 <h2 id="具体用例流程"><a href="#具体用例流程" class="headerlink" title="具体用例流程"></a>具体用例流程</h2><p>未完待续。。。</p>
-<h1 id="思考"><a href="#思考" class="headerlink" title="思考"></a>思考</h1><p>纯MVP架构会使项目变得复杂，Clean架构则会更复杂，大项目可以使项目的结构清晰，内层复用性强，便于测试。<br>小项目则会使项目过于复杂，反而使项目结构显得不清晰，就像MVVM不适合小型项目一样。MVP作为万金油可以说适合大部分项目，我个人的思考是小型项目使用MVP架构，但在MVP的基础上加入部分Clean的思想。</p>
+<h1 id="思考"><a href="#思考" class="headerlink" title="思考"></a>思考</h1><p>纯 MVP 架构会使项目变得复杂，Clean 架构则会更复杂，大项目可以使项目的结构清晰，内层复用性强，便于测试。</p>
+<p>小项目则会使项目过于复杂，反而使项目结构显得不清晰，就像 MVVM 不适合小型项目一样。MVP 作为万金油可以说适合大部分项目，我个人的思考是小型项目使用 MVP 架构，但在 MVP 的基础上加入部分 Clean 的思想。</p>
 <ol>
-<li>从Presenter层分离出UseCase层，方便代码复用</li>
-<li>各层独立，这里有一点需要注意，Clean中各层有各层的数据结构，在实际项目中各层可能写出类似的实体类，这里可以考虑只写一个通用实体类的作为最内层，虽然违背了Clean各层完全独立的思想，但是可以减少部分冗余，这一点根据自己项目来缺点。</li>
+<li><p>从 Presenter 层分离出 UseCase 层，方便代码复用</p>
+</li>
+<li><p>各层独立，这里有一点需要注意，Clean 中各层有各层的数据结构，在实际项目中各层可能写出类似的实体类，这里可以考虑只写一个通用实体类的作为最内层，虽然违背了 Clean 各层完全独立的思想，但是可以减少部分冗余，这一点根据自己项目来缺点。</p>
+</li>
 </ol>
-<blockquote>
-<p>参考资料</p>
-<ul>
-<li><a href="https://8thlight.com/blog/uncle-bob/2012/08/13/the-clean-architecture.html" target="_blank" rel="noopener">https://8thlight.com/blog/uncle-bob/2012/08/13/the-clean-architecture.html</a></li>
-<li><a href="https://www.jianshu.com/p/c6a1a5c9a49b" target="_blank" rel="noopener">https://www.jianshu.com/p/c6a1a5c9a49b</a></li>
-<li><a href="https://blog.csdn.net/YANGDAHUAN/article/details/80388849" target="_blank" rel="noopener">https://blog.csdn.net/YANGDAHUAN/article/details/80388849</a></li>
-<li><a href="https://www.jianshu.com/p/552c3a1c5fe5" target="_blank" rel="noopener">https://www.jianshu.com/p/552c3a1c5fe5</a></li>
-<li><a href="https://www.jianshu.com/p/e0258ce7d392" target="_blank" rel="noopener">https://www.jianshu.com/p/e0258ce7d392</a></li>
-</ul>
-</blockquote>
 
       
     </div>
@@ -569,6 +613,8 @@
           
             <a href="/tags/Clean/" rel="tag"># Clean</a>
           
+            <a href="/tags/未完成/" rel="tag"># 未完成</a>
+          
         </div>
       
 
@@ -580,8 +626,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2018/07/22/5种写法实现单例模式/" rel="next" title="5种写法实现单例模式">
-                <i class="fa fa-chevron-left"></i> 5种写法实现单例模式
+              <a href="/2018/07/22/5种写法实现单例模式/" rel="next" title="「笔记」5 种写法实现单例模式">
+                <i class="fa fa-chevron-left"></i> 「笔记」5 种写法实现单例模式
               </a>
             
           </div>
@@ -590,8 +636,8 @@
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2018/07/23/Android的性能优化方法/" rel="prev" title="Android的性能优化方法">
-                Android的性能优化方法 <i class="fa fa-chevron-right"></i>
+              <a href="/2018/07/23/Android的性能优化方法/" rel="prev" title="「笔记」Android 的性能优化方法">
+                「笔记」Android 的性能优化方法 <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
@@ -673,7 +719,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">59</span>
+                  <span class="site-state-item-count">76</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -684,7 +730,7 @@
               
               <div class="site-state-item site-state-categories">
                 <a href="/categories/index.html">
-                  <span class="site-state-item-count">14</span>
+                  <span class="site-state-item-count">10</span>
                   <span class="site-state-item-name">分类</span>
                 </a>
               </div>
@@ -695,7 +741,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">26</span>
+                  <span class="site-state-item-count">37</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>
@@ -751,7 +797,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Clean架构的主要特点："><span class="nav-number">1.</span> <span class="nav-text">Clean架构的主要特点：</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Clean架构解析"><span class="nav-number">2.</span> <span class="nav-text">Clean架构解析</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Google-Demo-——-todo-mvp-clean-解析"><span class="nav-number">3.</span> <span class="nav-text">Google Demo —— todo-mvp-clean 解析</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#mvp-clean层次图"><span class="nav-number">3.1.</span> <span class="nav-text">mvp-clean层次图</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#基本概念（摘自mvp-clean-GitHub主页部分原文翻译）"><span class="nav-number">3.2.</span> <span class="nav-text">基本概念（摘自mvp-clean GitHub主页部分原文翻译）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#项目主要关系图"><span class="nav-number">3.3.</span> <span class="nav-text">项目主要关系图</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#具体用例流程"><span class="nav-number">3.4.</span> <span class="nav-text">具体用例流程</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#思考"><span class="nav-number">4.</span> <span class="nav-text">思考</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#原文"><span class="nav-number">1.</span> <span class="nav-text">原文</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Clean-架构的主要特点："><span class="nav-number">2.</span> <span class="nav-text">Clean 架构的主要特点：</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Clean-架构解析"><span class="nav-number">3.</span> <span class="nav-text">Clean 架构解析</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Google-Demo-——-todo-mvp-clean-解析"><span class="nav-number">4.</span> <span class="nav-text">Google Demo —— todo-mvp-clean 解析</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#mvp-clean-层次图"><span class="nav-number">4.1.</span> <span class="nav-text">mvp-clean 层次图</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#基本概念（摘自-mvp-clean-GitHub-主页部分原文翻译）"><span class="nav-number">4.2.</span> <span class="nav-text">基本概念（摘自 mvp-clean GitHub 主页部分原文翻译）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#项目主要关系图"><span class="nav-number">4.3.</span> <span class="nav-text">项目主要关系图</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#具体用例流程"><span class="nav-number">4.4.</span> <span class="nav-text">具体用例流程</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#思考"><span class="nav-number">5.</span> <span class="nav-text">思考</span></a></li></ol></div>
             
 
           </div>
@@ -771,7 +817,7 @@
 
     <footer id="footer" class="footer">
       <div class="footer-inner">
-        <div class="copyright">&copy; 2018 &mdash; <span itemprop="copyrightYear">2019</span>
+        <div class="copyright">&copy; 2018 &mdash; <span itemprop="copyrightYear">2020</span>
   <span class="with-love">
     <i class="fa fa-user"></i>
   </span>

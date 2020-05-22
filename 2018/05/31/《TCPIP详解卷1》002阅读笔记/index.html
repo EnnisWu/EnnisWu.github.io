@@ -72,7 +72,7 @@
 
 
 
-  <meta name="keywords" content="计算机网络,TCP/IP," />
+  <meta name="keywords" content="计算机网络,TCP,IP,看不懂," />
 
 
 
@@ -85,18 +85,18 @@
 
 
 
-<meta name="description" content="名词解释 LLC：逻辑链路控制（Logic Link Control） SNAPL：自网络访问协议（SubNetwork Access Protocol） IEEE：电子电气工程师协会 CRC：循环冗余校验（Cyclic Redundancy Check ） pad字节：padding byte，填充字节 RS-232：异步传输标准接口 BSD：Berkeley Software Distribu">
-<meta name="keywords" content="计算机网络,TCP&#x2F;IP">
+<meta name="description" content="名词解释 LLC：逻辑链路控制（Logic Link Control）  SNAPL：自网络访问协议（SubNetwork Access Protocol）  IEEE：电子电气工程师协会  CRC：循环冗余校验（Cyclic Redundancy Check ）  pad字节：padding byte，填充字节  RS-232：异步传输标准接口  BSD：Berkeley Software Di">
+<meta name="keywords" content="计算机网络,TCP,IP,看不懂">
 <meta property="og:type" content="article">
-<meta property="og:title" content="《TCPIP详解卷1》002阅读笔记">
+<meta property="og:title" content="「TCP&#x2F;IP详解 卷1」002 阅读笔记">
 <meta property="og:url" content="http://blog.ennis.info/2018/05/31/《TCPIP详解卷1》002阅读笔记/index.html">
 <meta property="og:site_name" content="Ennis Wu">
-<meta property="og:description" content="名词解释 LLC：逻辑链路控制（Logic Link Control） SNAPL：自网络访问协议（SubNetwork Access Protocol） IEEE：电子电气工程师协会 CRC：循环冗余校验（Cyclic Redundancy Check ） pad字节：padding byte，填充字节 RS-232：异步传输标准接口 BSD：Berkeley Software Distribu">
+<meta property="og:description" content="名词解释 LLC：逻辑链路控制（Logic Link Control）  SNAPL：自网络访问协议（SubNetwork Access Protocol）  IEEE：电子电气工程师协会  CRC：循环冗余校验（Cyclic Redundancy Check ）  pad字节：padding byte，填充字节  RS-232：异步传输标准接口  BSD：Berkeley Software Di">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2019-01-26T13:26:28.995Z">
+<meta property="og:updated_time" content="2020-05-18T18:06:50.651Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="《TCPIP详解卷1》002阅读笔记">
-<meta name="twitter:description" content="名词解释 LLC：逻辑链路控制（Logic Link Control） SNAPL：自网络访问协议（SubNetwork Access Protocol） IEEE：电子电气工程师协会 CRC：循环冗余校验（Cyclic Redundancy Check ） pad字节：padding byte，填充字节 RS-232：异步传输标准接口 BSD：Berkeley Software Distribu">
+<meta name="twitter:title" content="「TCP&#x2F;IP详解 卷1」002 阅读笔记">
+<meta name="twitter:description" content="名词解释 LLC：逻辑链路控制（Logic Link Control）  SNAPL：自网络访问协议（SubNetwork Access Protocol）  IEEE：电子电气工程师协会  CRC：循环冗余校验（Cyclic Redundancy Check ）  pad字节：padding byte，填充字节  RS-232：异步传输标准接口  BSD：Berkeley Software Di">
 
 
 
@@ -132,7 +132,7 @@
 
 
 
-  <title>《TCPIP详解卷1》002阅读笔记 | Ennis Wu</title>
+  <title>「TCP/IP详解 卷1」002 阅读笔记 | Ennis Wu</title>
   
 
 
@@ -338,6 +338,18 @@
 
  </div>
     </header>
+    <script>
+      let images = [
+         'header0.jpg',
+         'header1.jpg',
+         'header2.png'
+      ];
+      let image = images[Math.floor(Math.random() * images.length)];
+      window.document.getElementById('header').style.cssText 
+      = 'background: url(/images/avatar/' 
+      + image
+      + '); no-repeat; background-size: auto 100%;';
+    </script>
 
     <main id="main" class="main">
       <div class="main-inner">
@@ -376,7 +388,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">《TCPIP详解卷1》002阅读笔记</h1>
+          <h1 class="post-title" itemprop="name headline">「TCP/IP详解 卷1」002 阅读笔记</h1>
         
 
         <div class="post-meta">
@@ -411,8 +423,8 @@
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/TCP-IP/" itemprop="url" rel="index">
-                    <span itemprop="name">TCP/IP</span>
+                  <a href="/categories/《TCP-IP详解-卷1》/" itemprop="url" rel="index">
+                    <span itemprop="name">《TCP/IP详解 卷1》</span>
                   </a>
                 </span>
 
@@ -448,21 +460,31 @@
       
 
       
-        <h4 id="名词解释"><a href="#名词解释" class="headerlink" title="名词解释"></a>名词解释</h4><ul>
-<li>LLC：逻辑链路控制（Logic Link Control）</li>
-<li>SNAPL：自网络访问协议（SubNetwork Access Protocol）</li>
-<li>IEEE：电子电气工程师协会</li>
-<li>CRC：循环冗余校验（Cyclic Redundancy Check ）</li>
-<li>pad字节：padding byte，填充字节</li>
-<li>RS-232：异步传输标准接口</li>
-<li>BSD：Berkeley Software Distribution，Unix的衍生系统<br><br></li>
+        <h1 id="名词解释"><a href="#名词解释" class="headerlink" title="名词解释"></a>名词解释</h1><ul>
+<li><p>LLC：逻辑链路控制（Logic Link Control）</p>
+</li>
+<li><p>SNAPL：自网络访问协议（SubNetwork Access Protocol）</p>
+</li>
+<li><p>IEEE：电子电气工程师协会</p>
+</li>
+<li><p>CRC：循环冗余校验（Cyclic Redundancy Check ）</p>
+</li>
+<li><p>pad字节：padding byte，填充字节</p>
+</li>
+<li><p>RS-232：异步传输标准接口</p>
+</li>
+<li><p>BSD：Berkeley Software Distribution，Unix 的衍生系统</p>
+</li>
 </ul>
-<h4 id="链路层主要三个目的"><a href="#链路层主要三个目的" class="headerlink" title="链路层主要三个目的"></a>链路层主要三个目的</h4><ol>
-<li>为IP模块发送接受IP数据报。</li>
-<li>为ARP模块发送ARP请求和接受ARP应答。</li>
-<li>为RARP发送RARP请求和接受RARP应答。<br><br></li>
+<h1 id="链路层主要三个目的"><a href="#链路层主要三个目的" class="headerlink" title="链路层主要三个目的"></a>链路层主要三个目的</h1><ol>
+<li><p>为 IP 模块发送接受 IP 数据报。</p>
+</li>
+<li><p>为 ARP 模块发送 ARP 请求和接受 ARP 应答。</p>
+</li>
+<li><p>为 RARP 发送 RARP 请求和接受 RARP 应答。</p>
+</li>
 </ol>
-<h4 id="以太网与IEEE-802封装对比"><a href="#以太网与IEEE-802封装对比" class="headerlink" title="以太网与IEEE 802封装对比"></a>以太网与IEEE 802封装对比</h4><table>
+<h1 id="以太网与-IEEE-802-封装对比"><a href="#以太网与-IEEE-802-封装对比" class="headerlink" title="以太网与 IEEE 802 封装对比"></a>以太网与 IEEE 802 封装对比</h1><table>
 <thead>
 <tr>
 <th></th>
@@ -474,14 +496,14 @@
 <tbody>
 <tr>
 <td>数据报封装</td>
-<td>RFC 894中定义</td>
-<td>RFC 1042中定义</td>
+<td>RFC 894 中定义</td>
+<td>RFC 1042 中定义</td>
 <td></td>
 </tr>
 <tr>
 <td>长度字段</td>
 <td></td>
-<td>后续数据的长度字段（不包括CRC）</td>
+<td>后续数据的长度字段（不包括 CRC）</td>
 <td></td>
 </tr>
 <tr>
@@ -492,84 +514,146 @@
 </tr>
 <tr>
 <td>最小长度</td>
-<td>46字节</td>
-<td>38字节</td>
-<td>不足空间填充pad字节</td>
+<td>46 字节</td>
+<td>38 字节</td>
+<td>不足空间填充 pad 字节</td>
 </tr>
 </tbody>
 </table>
-<p>有效类型值都不相同，可以对两种帧格式进行区分。<br>以太网：类型字段后是数据。<br>IEEE 802：长度字段后是802.2LLC、802.2SNAP。<br>CRC字段（FCS/帧校验序列）：后续字节差错的循环冗余码校验。<br><br></p>
-<h4 id="尾部封装"><a href="#尾部封装" class="headerlink" title="尾部封装"></a>尾部封装</h4><ul>
-<li>在RFC 89C被描述。</li>
-<li>通过调整IP数据报中字段次序提高性能。</li>
-<li>将IP首部和TCP首部移到尾部CRC之前。</li>
-<li>==<strong>当把数据复制到内核是，可以绑数据帧中的数据部分映射到一个硬件页面，节省到内存的复制过程。</strong>看不懂？？？==</li>
-<li><strong>尾部封装已遭到反对。</strong><br><br></li>
-</ul>
-<h4 id="SLIP：串行线路IP"><a href="#SLIP：串行线路IP" class="headerlink" title="SLIP：串行线路IP"></a>SLIP：串行线路IP</h4><ul>
-<li>串行线路上对IP数据报封装的简单形式。</li>
-<li>适用于RS-232串行端口、高速调制解调器接入网络。</li>
-<li>以END(0XC0)的特殊字符结束。</li>
-<li>如果有线路噪声，开始也传一个END(0XC0)字符。</li>
-<li>IP报文中END用0XDB和0XDC取代（称为ESC字符）。</li>
-<li>IP报文中ESC用0XDB和0XDD取代。</li>
-<li>缺陷：</li>
-<li><ol>
-<li>每一端必须知道对方的IP地址。</li>
-</ol>
+<p>有效类型值都不相同，可以对两种帧格式进行区分。</p>
+<p>以太网：类型字段后是数据。</p>
+<p>IEEE 802：长度字段后是 802.2LLC、802.2SNAP。</p>
+<p>CRC 字段（FCS/帧校验序列）：后续字节差错的循环冗余码校验。</p>
+<h1 id="尾部封装"><a href="#尾部封装" class="headerlink" title="尾部封装"></a>尾部封装</h1><ul>
+<li><p>在 RFC 89C 被描述。</p>
 </li>
-<li><ol start="2">
-<li>没有类型字段，不能和其他协议同时使用。</li>
-</ol>
+<li><p>通过调整 IP 数据报中字段次序提高性能。</p>
 </li>
-<li><ol start="3">
-<li>没有校验和。<br><br></li>
-</ol>
+<li><p>将 IP 首部和 TCP 首部移到尾部 CRC 之前。</p>
+</li>
+<li><p>==<strong>当把数据复制到内核是，可以绑数据帧中的数据部分映射到一个硬件页面，节省到内存的复制过程。</strong>看不懂？？？==</p>
+</li>
+<li><p><strong>尾部封装已遭到反对。</strong></p>
 </li>
 </ul>
-<h4 id="压缩的SLIP（CSLIP）"><a href="#压缩的SLIP（CSLIP）" class="headerlink" title="压缩的SLIP（CSLIP）"></a>压缩的SLIP（CSLIP）</h4><ul>
-<li>在RFC 1144中被描述。</li>
-<li>为了在SLIP上传输1个字节总共需要40字节，CSLIP能把它们压缩到3或5个字节。</li>
-<li>每一端维持多达16个TCP连接。</li>
-<li>知道每个连接的首部哪些字段一般不会发生变化。</li>
-<li>被压缩的首部大大缩短了交互响应时间。<br><br></li>
-</ul>
-<h4 id="PPP点对点协议"><a href="#PPP点对点协议" class="headerlink" title="PPP点对点协议"></a>PPP点对点协议</h4><p><strong>修改了SLIP协议中的所有缺陷，最终应该取代SLIP。</strong><br><br></p>
-<h6 id="PPP包括三个部分："><a href="#PPP包括三个部分：" class="headerlink" title="PPP包括三个部分："></a>PPP包括三个部分：</h6><ol>
-<li>在串行链路上封装IP数据报的方法。</li>
-<li>建立、配置及测试数据链路的链路控制协议。</li>
-<li>针对不同网络层协议的网络控制协议体系。<br><br><h6 id="数据报帧的格式："><a href="#数据报帧的格式：" class="headerlink" title="数据报帧的格式："></a>数据报帧的格式：</h6></li>
-</ol>
-<ul>
-<li>以0X7E开始和结束。</li>
-<li>地址字节值始终为0XFF。</li>
-<li>协议字段（类似以太网类型字段）：<br>| 协议字段的值 | 标识信息字段的类型 |<br>| ———- | —————-|<br>| 0X0021 | IP数据报 |<br>| 0XC021 | 链路控制数据 |<br>| 0X8021 | 网络控制数据 |<br>信息字段出现0X7E时需要转义。<br><br><br>利用链路控制协议，大多数可以省略标识符和地址字段。<br>使用IP网络控制协议，大多数可以采用Van Jacobson报文首部压缩方法。不懂？？？<br><br><br>对比SLIP具有的优点</li>
-</ul>
+<h1 id="SLIP：串行线路-IP"><a href="#SLIP：串行线路-IP" class="headerlink" title="SLIP：串行线路 IP"></a>SLIP：串行线路 IP</h1><ul>
+<li><p>串行线路上对 IP 数据报封装的简单形式。</p>
+</li>
+<li><p>适用于 RS-232 串行端口、高速调制解调器接入网络。</p>
+</li>
+<li><p>以 END(0XC0) 的特殊字符结束。</p>
+</li>
+<li><p>如果有线路噪声，开始也传一个 END(0XC0) 字符。</p>
+</li>
+<li><p>IP 报文中 END 用 0XDB 和 0XDC 取代（称为 ESC 字符）。</p>
+</li>
+<li><p>IP 报文中 ESC 用 0XDB 和 0XDD 取代。</p>
+</li>
+<li><p>缺陷：</p>
 <ol>
-<li>PPP支持在单根串行线路上运行多种协议。</li>
-<li>每一帧都有循环冗余校验。</li>
-<li>通信双方可以进行IP地址的动态协商。</li>
-<li>与CSLIP类似，对TCP和IP报文首部压缩。</li>
-<li>链路控制协议可以对多个数据链路选项进行设置。<br><br></li>
+<li><p>每一端必须知道对方的IP地址。</p>
+</li>
+<li><p>没有类型字段，不能和其他协议同时使用。</p>
+</li>
+<li><p>没有校验和。</p>
+</li>
 </ol>
-<h4 id="环回接口（localhost）"><a href="#环回接口（localhost）" class="headerlink" title="环回接口（localhost）"></a>环回接口（localhost）</h4><ul>
-<li>大多数系统把IP地址127.0.0.1分配给这个接口。</li>
-<li>一个传给环回接口的IP数据报不能在任何网络上出现。<br><br></li>
+</li>
 </ul>
-<h4 id="最大传输单元MTU"><a href="#最大传输单元MTU" class="headerlink" title="最大传输单元MTU"></a>最大传输单元MTU</h4><ul>
-<li>如果IP层有一个长度大于链路层的MTU的数据报要传，需要进行分片。</li>
-<li>MTU不是物理特性，它是一个逻辑限制。</li>
-<li>目的：为交互使用提供足够快的响应时间。<br><br></li>
+<h1 id="压缩的-SLIP（CSLIP）"><a href="#压缩的-SLIP（CSLIP）" class="headerlink" title="压缩的 SLIP（CSLIP）"></a>压缩的 SLIP（CSLIP）</h1><ul>
+<li><p>在 RFC 1144 中被描述。</p>
+</li>
+<li><p>为了在 SLIP 上传输 1 个字节总共需要 40 字节，CSLIP 能把它们压缩到 3 或 5 个字节。</p>
+</li>
+<li><p>每一端维持多达 16 个 TCP 连接。</p>
+</li>
+<li><p>知道每个连接的首部哪些字段一般不会发生变化。</p>
+</li>
+<li><p>被压缩的首部大大缩短了交互响应时间。</p>
+</li>
 </ul>
-<h4 id="路径MTU"><a href="#路径MTU" class="headerlink" title="路径MTU"></a>路径MTU</h4><p>==<strong>两台主机路径中的最小MTU被称作路径MTU（不一定是个常数）。</strong>看不懂这句话==<br><br></p>
-<h4 id="串行线路吞吐量计算"><a href="#串行线路吞吐量计算" class="headerlink" title="串行线路吞吐量计算"></a>串行线路吞吐量计算</h4><blockquote>
-<p>如果线路速率是9600b/s，而一个字节有8bit，加上一个起始比特和一个停止比特，那么线路的速率就是960B/s（字节/秒）。</p>
+<h1 id="PPP-点对点协议"><a href="#PPP-点对点协议" class="headerlink" title="PPP 点对点协议"></a>PPP 点对点协议</h1><p><strong>修改了 SLIP 协议中的所有缺陷，最终应该取代 SLIP。</strong></p>
+<h2 id="PPP-包括三个部分："><a href="#PPP-包括三个部分：" class="headerlink" title="PPP 包括三个部分："></a>PPP 包括三个部分：</h2><ol>
+<li><p>在串行链路上封装 IP 数据报的方法。</p>
+</li>
+<li><p>建立、配置及测试数据链路的链路控制协议。</p>
+</li>
+<li><p>针对不同网络层协议的网络控制协议体系。</p>
+</li>
+</ol>
+<h2 id="数据报帧的格式："><a href="#数据报帧的格式：" class="headerlink" title="数据报帧的格式："></a>数据报帧的格式：</h2><ul>
+<li><p>以 0X7E 开始和结束。</p>
+</li>
+<li><p>地址字节值始终为 0XFF。</p>
+</li>
+<li><p>协议字段（类似以太网类型字段）：</p>
+</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>协议字段的值</th>
+<th>标识信息字段的类型</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0X0021</td>
+<td>IP数据报</td>
+</tr>
+<tr>
+<td>0XC021</td>
+<td>链路控制数据</td>
+</tr>
+<tr>
+<td>0X8021</td>
+<td>网络控制数据</td>
+</tr>
+</tbody>
+</table>
+<p>信息字段出现 0X7E 时需要转义。</p>
+<p>利用链路控制协议，大多数可以省略标识符和地址字段。</p>
+<p>使用 IP 网络控制协议，大多数可以采用 Van Jacobson 报文首部压缩方法。不懂？？？</p>
+<p>对比 SLIP 具有的优点</p>
+<ol>
+<li><p>PPP 支持在单根串行线路上运行多种协议。</p>
+</li>
+<li><p>每一帧都有循环冗余校验。</p>
+</li>
+<li><p>通信双方可以进行 IP 地址的动态协商。</p>
+</li>
+<li><p>与 CSLIP 类似，对 TCP 和 IP 报文首部压缩。</p>
+</li>
+<li><p>链路控制协议可以对多个数据链路选项进行设置。</p>
+</li>
+</ol>
+<h1 id="环回接口（localhost）"><a href="#环回接口（localhost）" class="headerlink" title="环回接口（localhost）"></a>环回接口（localhost）</h1><ul>
+<li><p>大多数系统把 IP 地址 127.0.0.1 分配给这个接口。</p>
+</li>
+<li><p>一个传给环回接口的 IP 数据报不能在任何网络上出现。</p>
+</li>
+</ul>
+<h1 id="最大传输单元-MTU"><a href="#最大传输单元-MTU" class="headerlink" title="最大传输单元 MTU"></a>最大传输单元 MTU</h1><ul>
+<li><p>如果 IP 层有一个长度大于链路层的 MTU 的数据报要传，需要进行分片。</p>
+</li>
+<li><p>MTU 不是物理特性，它是一个逻辑限制。</p>
+</li>
+<li><p>目的：为交互使用提供足够快的响应时间。</p>
+</li>
+</ul>
+<h1 id="路径-MTU"><a href="#路径-MTU" class="headerlink" title="路径 MTU"></a>路径 MTU</h1><p>==<strong>两台主机路径中的最小 MTU 被称作路径 MTU（不一定是个常数）。</strong>看不懂这句话==</p>
+<h1 id="串行线路吞吐量计算"><a href="#串行线路吞吐量计算" class="headerlink" title="串行线路吞吐量计算"></a>串行线路吞吐量计算</h1><blockquote>
+<p>如果线路速率是 9600b/s，而一个字节有 8bit，加上一个起始比特和一个停止比特，那么线路的速率就是 960B/s（字节/秒）。</p>
 </blockquote>
 <ul>
-<li>这句话是指每个bit加一个起始一个停止，所有9600 / (8 + 2) = 960 B/s。</li>
-<li>如果把SLIP的MTU降到256以下，将降低传输大块数据的最大吞吐量。</li>
-<li>平均等待时间的计算（传输大数据帧所需时间的一半）只适用于SLIP或PPP链路。<br>==为什么要等一半的时间？？==<br><br></li>
+<li><p>这句话是指每个 bit 加一个起始一个停止，所有 9600 / (8 + 2) = 960 B/s。</p>
+</li>
+<li><p>如果把 SLIP 的 MTU 降到 256 以下，将降低传输大块数据的最大吞吐量。</p>
+</li>
+<li><p>平均等待时间的计算（传输大数据帧所需时间的一半）只适用于 SLIP 或 PPP 链路。</p>
+</li>
 </ul>
+<p>==为什么要等一半的时间？？==</p>
 
       
     </div>
@@ -618,7 +702,11 @@
           
             <a href="/tags/计算机网络/" rel="tag"># 计算机网络</a>
           
-            <a href="/tags/TCP-IP/" rel="tag"># TCP/IP</a>
+            <a href="/tags/TCP/" rel="tag"># TCP</a>
+          
+            <a href="/tags/IP/" rel="tag"># IP</a>
+          
+            <a href="/tags/看不懂/" rel="tag"># 看不懂</a>
           
         </div>
       
@@ -631,8 +719,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2018/04/09/Toolbar的setTitle问题/" rel="next" title="Toolbar的setTitle问题">
-                <i class="fa fa-chevron-left"></i> Toolbar的setTitle问题
+              <a href="/2018/04/09/Toolbar的setTitle问题/" rel="next" title="「笔记」Toolbar 的 setTitle 问题">
+                <i class="fa fa-chevron-left"></i> 「笔记」Toolbar 的 setTitle 问题
               </a>
             
           </div>
@@ -641,8 +729,8 @@
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2018/06/02/《TCPIP详解卷1》003阅读笔记/" rel="prev" title="《TCP/IP详解卷1》003阅读笔记">
-                《TCP/IP详解卷1》003阅读笔记 <i class="fa fa-chevron-right"></i>
+              <a href="/2018/06/02/《TCPIP详解卷1》003阅读笔记/" rel="prev" title="「TCP/IP详解 卷1」003 阅读笔记">
+                「TCP/IP详解 卷1」003 阅读笔记 <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
@@ -724,7 +812,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">59</span>
+                  <span class="site-state-item-count">76</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -735,7 +823,7 @@
               
               <div class="site-state-item site-state-categories">
                 <a href="/categories/index.html">
-                  <span class="site-state-item-count">14</span>
+                  <span class="site-state-item-count">10</span>
                   <span class="site-state-item-name">分类</span>
                 </a>
               </div>
@@ -746,7 +834,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">26</span>
+                  <span class="site-state-item-count">37</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>
@@ -802,7 +890,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#名词解释"><span class="nav-number">1.</span> <span class="nav-text">名词解释</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#链路层主要三个目的"><span class="nav-number">2.</span> <span class="nav-text">链路层主要三个目的</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#以太网与IEEE-802封装对比"><span class="nav-number">3.</span> <span class="nav-text">以太网与IEEE 802封装对比</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#尾部封装"><span class="nav-number">4.</span> <span class="nav-text">尾部封装</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#SLIP：串行线路IP"><span class="nav-number">5.</span> <span class="nav-text">SLIP：串行线路IP</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#压缩的SLIP（CSLIP）"><span class="nav-number">6.</span> <span class="nav-text">压缩的SLIP（CSLIP）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#PPP点对点协议"><span class="nav-number">7.</span> <span class="nav-text">PPP点对点协议</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#PPP包括三个部分："><span class="nav-number">7.0.1.</span> <span class="nav-text">PPP包括三个部分：</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#数据报帧的格式："><span class="nav-number">7.0.2.</span> <span class="nav-text">数据报帧的格式：</span></a></li></ol></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#环回接口（localhost）"><span class="nav-number">8.</span> <span class="nav-text">环回接口（localhost）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#最大传输单元MTU"><span class="nav-number">9.</span> <span class="nav-text">最大传输单元MTU</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#路径MTU"><span class="nav-number">10.</span> <span class="nav-text">路径MTU</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#串行线路吞吐量计算"><span class="nav-number">11.</span> <span class="nav-text">串行线路吞吐量计算</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#名词解释"><span class="nav-number">1.</span> <span class="nav-text">名词解释</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#链路层主要三个目的"><span class="nav-number">2.</span> <span class="nav-text">链路层主要三个目的</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#以太网与-IEEE-802-封装对比"><span class="nav-number">3.</span> <span class="nav-text">以太网与 IEEE 802 封装对比</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#尾部封装"><span class="nav-number">4.</span> <span class="nav-text">尾部封装</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#SLIP：串行线路-IP"><span class="nav-number">5.</span> <span class="nav-text">SLIP：串行线路 IP</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#压缩的-SLIP（CSLIP）"><span class="nav-number">6.</span> <span class="nav-text">压缩的 SLIP（CSLIP）</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#PPP-点对点协议"><span class="nav-number">7.</span> <span class="nav-text">PPP 点对点协议</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#PPP-包括三个部分："><span class="nav-number">7.1.</span> <span class="nav-text">PPP 包括三个部分：</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#数据报帧的格式："><span class="nav-number">7.2.</span> <span class="nav-text">数据报帧的格式：</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#环回接口（localhost）"><span class="nav-number">8.</span> <span class="nav-text">环回接口（localhost）</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#最大传输单元-MTU"><span class="nav-number">9.</span> <span class="nav-text">最大传输单元 MTU</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#路径-MTU"><span class="nav-number">10.</span> <span class="nav-text">路径 MTU</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#串行线路吞吐量计算"><span class="nav-number">11.</span> <span class="nav-text">串行线路吞吐量计算</span></a></li></ol></div>
             
 
           </div>
@@ -822,7 +910,7 @@
 
     <footer id="footer" class="footer">
       <div class="footer-inner">
-        <div class="copyright">&copy; 2018 &mdash; <span itemprop="copyrightYear">2019</span>
+        <div class="copyright">&copy; 2018 &mdash; <span itemprop="copyrightYear">2020</span>
   <span class="with-love">
     <i class="fa fa-user"></i>
   </span>

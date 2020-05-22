@@ -72,7 +72,7 @@
 
 
 
-  <meta name="keywords" content="Java,Java基础,面试,Java集合," />
+  <meta name="keywords" content="Java,Java集合," />
 
 
 
@@ -86,16 +86,16 @@
 
 
 <meta name="description" content="我们知道 HashSet 内部使用 HashMap 实现，HashSet 的元素存储在 HashMap 的 key 中（唯一），value 使用了一个 Object 对象填充。为什么 HashSet 不使用 null 去填充 value 呢？ 以下所有原代码基于 JDK 1.10 1234private transient HashMap&amp;lt;E,Object&amp;gt; map; // Dummy">
-<meta name="keywords" content="Java,Java基础,面试,Java集合">
+<meta name="keywords" content="Java,Java集合">
 <meta property="og:type" content="article">
-<meta property="og:title" content="HashSet为什么要使用Object对象填充value而不是null">
+<meta property="og:title" content="「原创」HashSet 为什么要使用 Object 对象填充 value 而不是 null">
 <meta property="og:url" content="http://blog.ennis.info/2019/02/16/HashSet为什么要使用Object对象填充value而不是null/index.html">
 <meta property="og:site_name" content="Ennis Wu">
 <meta property="og:description" content="我们知道 HashSet 内部使用 HashMap 实现，HashSet 的元素存储在 HashMap 的 key 中（唯一），value 使用了一个 Object 对象填充。为什么 HashSet 不使用 null 去填充 value 呢？ 以下所有原代码基于 JDK 1.10 1234private transient HashMap&amp;lt;E,Object&amp;gt; map; // Dummy">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2019-03-16T06:36:43.034Z">
+<meta property="og:updated_time" content="2020-05-18T17:23:59.432Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="HashSet为什么要使用Object对象填充value而不是null">
+<meta name="twitter:title" content="「原创」HashSet 为什么要使用 Object 对象填充 value 而不是 null">
 <meta name="twitter:description" content="我们知道 HashSet 内部使用 HashMap 实现，HashSet 的元素存储在 HashMap 的 key 中（唯一），value 使用了一个 Object 对象填充。为什么 HashSet 不使用 null 去填充 value 呢？ 以下所有原代码基于 JDK 1.10 1234private transient HashMap&amp;lt;E,Object&amp;gt; map; // Dummy">
 
 
@@ -132,7 +132,7 @@
 
 
 
-  <title>HashSet为什么要使用Object对象填充value而不是null | Ennis Wu</title>
+  <title>「原创」HashSet 为什么要使用 Object 对象填充 value 而不是 null | Ennis Wu</title>
   
 
 
@@ -338,6 +338,18 @@
 
  </div>
     </header>
+    <script>
+      let images = [
+         'header0.jpg',
+         'header1.jpg',
+         'header2.png'
+      ];
+      let image = images[Math.floor(Math.random() * images.length)];
+      window.document.getElementById('header').style.cssText 
+      = 'background: url(/images/avatar/' 
+      + image
+      + '); no-repeat; background-size: auto 100%;';
+    </script>
 
     <main id="main" class="main">
       <div class="main-inner">
@@ -376,7 +388,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">HashSet为什么要使用Object对象填充value而不是null</h1>
+          <h1 class="post-title" itemprop="name headline">「原创」HashSet 为什么要使用 Object 对象填充 value 而不是 null</h1>
         
 
         <div class="post-meta">
@@ -411,8 +423,8 @@
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Java集合/" itemprop="url" rel="index">
-                    <span itemprop="name">Java集合</span>
+                  <a href="/categories/Java/" itemprop="url" rel="index">
+                    <span itemprop="name">Java</span>
                   </a>
                 </span>
 
@@ -523,10 +535,6 @@
           
             <a href="/tags/Java/" rel="tag"># Java</a>
           
-            <a href="/tags/Java基础/" rel="tag"># Java基础</a>
-          
-            <a href="/tags/面试/" rel="tag"># 面试</a>
-          
             <a href="/tags/Java集合/" rel="tag"># Java集合</a>
           
         </div>
@@ -540,8 +548,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2019/02/16/HashMap的相关问题/" rel="next" title="HashMap的相关问题">
-                <i class="fa fa-chevron-left"></i> HashMap的相关问题
+              <a href="/2019/02/16/HashMap的相关问题/" rel="next" title="「笔记」HashMap 的相关问题">
+                <i class="fa fa-chevron-left"></i> 「笔记」HashMap 的相关问题
               </a>
             
           </div>
@@ -550,8 +558,8 @@
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2019/02/17/Android在子线程中更新UI/" rel="prev" title="Android在子线程中更新UI">
-                Android在子线程中更新UI <i class="fa fa-chevron-right"></i>
+              <a href="/2019/02/17/Android在子线程中更新UI/" rel="prev" title="「笔记」Android 在子线程中更新 UI">
+                「笔记」Android 在子线程中更新 UI <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
@@ -633,7 +641,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">59</span>
+                  <span class="site-state-item-count">76</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -644,7 +652,7 @@
               
               <div class="site-state-item site-state-categories">
                 <a href="/categories/index.html">
-                  <span class="site-state-item-count">14</span>
+                  <span class="site-state-item-count">10</span>
                   <span class="site-state-item-name">分类</span>
                 </a>
               </div>
@@ -655,7 +663,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">26</span>
+                  <span class="site-state-item-count">37</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>
@@ -731,7 +739,7 @@
 
     <footer id="footer" class="footer">
       <div class="footer-inner">
-        <div class="copyright">&copy; 2018 &mdash; <span itemprop="copyrightYear">2019</span>
+        <div class="copyright">&copy; 2018 &mdash; <span itemprop="copyrightYear">2020</span>
   <span class="with-love">
     <i class="fa fa-user"></i>
   </span>

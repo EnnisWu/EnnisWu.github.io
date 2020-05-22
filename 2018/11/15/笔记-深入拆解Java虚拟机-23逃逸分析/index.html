@@ -72,7 +72,7 @@
 
 
 
-  <meta name="keywords" content="JVM," />
+  <meta name="keywords" content="看不懂,JVM," />
 
 
 
@@ -85,18 +85,18 @@
 
 
 
-<meta name="description" content="逃逸分析 一种确定指针动态范围的静态分析，它可以分析在程序的哪些地方可以访问到指针。   在 JVM 的即时编译语境下，逃逸分析将判断新建的对象是否逃逸。  判断对象是否逃逸的依据 对象是否被存入堆中（静态字段或者堆中对象的实例字段）。 对象是否被传入未知代码中（对象是否作为方法调用的调用者或者参数）。  方法中未被内联的方法调用当成未知代码。 可以认为方法调用的调用者以及参数是逃逸的。   通常">
-<meta name="keywords" content="JVM">
+<meta name="description" content="原文：https://time.geekbang.org/column/article/18048 逃逸分析 一种确定指针动态范围的静态分析，它可以分析在程序的哪些地方可以访问到指针。   在 JVM 的即时编译语境下，逃逸分析将判断新建的对象是否逃逸。  判断对象是否逃逸的依据 对象是否被存入堆中（静态字段或者堆中对象的实例字段）。  对象是否被传入未知代码中（对象是否作为方法调用的调用者或者参">
+<meta name="keywords" content="看不懂,JVM">
 <meta property="og:type" content="article">
-<meta property="og:title" content="笔记-深入拆解Java虚拟机-23逃逸分析">
+<meta property="og:title" content="「深入拆解 Java 虚拟机」23 逃逸分析">
 <meta property="og:url" content="http://blog.ennis.info/2018/11/15/笔记-深入拆解Java虚拟机-23逃逸分析/index.html">
 <meta property="og:site_name" content="Ennis Wu">
-<meta property="og:description" content="逃逸分析 一种确定指针动态范围的静态分析，它可以分析在程序的哪些地方可以访问到指针。   在 JVM 的即时编译语境下，逃逸分析将判断新建的对象是否逃逸。  判断对象是否逃逸的依据 对象是否被存入堆中（静态字段或者堆中对象的实例字段）。 对象是否被传入未知代码中（对象是否作为方法调用的调用者或者参数）。  方法中未被内联的方法调用当成未知代码。 可以认为方法调用的调用者以及参数是逃逸的。   通常">
+<meta property="og:description" content="原文：https://time.geekbang.org/column/article/18048 逃逸分析 一种确定指针动态范围的静态分析，它可以分析在程序的哪些地方可以访问到指针。   在 JVM 的即时编译语境下，逃逸分析将判断新建的对象是否逃逸。  判断对象是否逃逸的依据 对象是否被存入堆中（静态字段或者堆中对象的实例字段）。  对象是否被传入未知代码中（对象是否作为方法调用的调用者或者参">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2019-01-26T13:26:29.126Z">
+<meta property="og:updated_time" content="2020-05-21T16:46:56.478Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="笔记-深入拆解Java虚拟机-23逃逸分析">
-<meta name="twitter:description" content="逃逸分析 一种确定指针动态范围的静态分析，它可以分析在程序的哪些地方可以访问到指针。   在 JVM 的即时编译语境下，逃逸分析将判断新建的对象是否逃逸。  判断对象是否逃逸的依据 对象是否被存入堆中（静态字段或者堆中对象的实例字段）。 对象是否被传入未知代码中（对象是否作为方法调用的调用者或者参数）。  方法中未被内联的方法调用当成未知代码。 可以认为方法调用的调用者以及参数是逃逸的。   通常">
+<meta name="twitter:title" content="「深入拆解 Java 虚拟机」23 逃逸分析">
+<meta name="twitter:description" content="原文：https://time.geekbang.org/column/article/18048 逃逸分析 一种确定指针动态范围的静态分析，它可以分析在程序的哪些地方可以访问到指针。   在 JVM 的即时编译语境下，逃逸分析将判断新建的对象是否逃逸。  判断对象是否逃逸的依据 对象是否被存入堆中（静态字段或者堆中对象的实例字段）。  对象是否被传入未知代码中（对象是否作为方法调用的调用者或者参">
 
 
 
@@ -132,7 +132,7 @@
 
 
 
-  <title>笔记-深入拆解Java虚拟机-23逃逸分析 | Ennis Wu</title>
+  <title>「深入拆解 Java 虚拟机」23 逃逸分析 | Ennis Wu</title>
   
 
 
@@ -338,6 +338,18 @@
 
  </div>
     </header>
+    <script>
+      let images = [
+         'header0.jpg',
+         'header1.jpg',
+         'header2.png'
+      ];
+      let image = images[Math.floor(Math.random() * images.length)];
+      window.document.getElementById('header').style.cssText 
+      = 'background: url(/images/avatar/' 
+      + image
+      + '); no-repeat; background-size: auto 100%;';
+    </script>
 
     <main id="main" class="main">
       <div class="main-inner">
@@ -376,7 +388,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">笔记-深入拆解Java虚拟机-23逃逸分析</h1>
+          <h1 class="post-title" itemprop="name headline">「深入拆解 Java 虚拟机」23 逃逸分析</h1>
         
 
         <div class="post-meta">
@@ -411,8 +423,8 @@
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Java虚拟机/" itemprop="url" rel="index">
-                    <span itemprop="name">Java虚拟机</span>
+                  <a href="/categories/《深入拆解-Java-虚拟机》/" itemprop="url" rel="index">
+                    <span itemprop="name">《深入拆解 Java 虚拟机》</span>
                   </a>
                 </span>
 
@@ -448,18 +460,22 @@
       
 
       
-        <h1 id="逃逸分析"><a href="#逃逸分析" class="headerlink" title="逃逸分析"></a>逃逸分析</h1><blockquote>
+        <p>原文：<a href="https://time.geekbang.org/column/article/18048" target="_blank" rel="noopener">https://time.geekbang.org/column/article/18048</a></p>
+<h1 id="逃逸分析"><a href="#逃逸分析" class="headerlink" title="逃逸分析"></a>逃逸分析</h1><blockquote>
 <p>一种确定<strong>指针动态范围</strong>的<strong>静态分析</strong>，它可以分析在程序的哪些地方可以访问到指针。</p>
 </blockquote>
 <ul>
 <li>在 JVM 的<strong>即时编译</strong>语境下，逃逸分析将<strong>判断新建的对象是否逃逸</strong>。</li>
 </ul>
 <h2 id="判断对象是否逃逸的依据"><a href="#判断对象是否逃逸的依据" class="headerlink" title="判断对象是否逃逸的依据"></a>判断对象是否逃逸的依据</h2><ul>
-<li>对象是否被<strong>存入堆</strong>中（静态字段或者堆中对象的实例字段）。</li>
+<li><p>对象是否被<strong>存入堆</strong>中（静态字段或者堆中对象的实例字段）。</p>
+</li>
 <li><p>对象是否被<strong>传入未知代码</strong>中（对象是否作为方法调用的调用者或者参数）。</p>
 <ul>
-<li>方法中未被内联的方法调用当成未知代码。</li>
-<li>可以认为<strong>方法调用的调用者以及参数是逃逸的</strong>。</li>
+<li><p>方法中未被内联的方法调用当成未知代码。</p>
+</li>
+<li><p>可以认为<strong>方法调用的调用者以及参数是逃逸的</strong>。</p>
+</li>
 </ul>
 </li>
 <li><p>通常<strong>逃逸分析</strong>放在<strong>方法内联之后</strong>。</p>
@@ -468,41 +484,59 @@
 <h1 id="基于逃逸分析的优化"><a href="#基于逃逸分析的优化" class="headerlink" title="基于逃逸分析的优化"></a>基于逃逸分析的优化</h1><h2 id="锁消除"><a href="#锁消除" class="headerlink" title="锁消除"></a>锁消除</h2><ul>
 <li><p>如果能证明<strong>锁对象不逃逸</strong>，对该锁对象的<strong>加锁、解锁</strong>操作<strong>没有意义</strong>。</p>
 <ul>
-<li>因为其他线程不能获得该所对象，即时编译器可以消除加锁、解锁操作。</li>
-<li>传统编译器仅需证明锁对象不逃逸出线程，便可以进行锁消除。</li>
-<li>由于即时编译的限制，条件被强化为证明锁<strong>对象不逃逸</strong>出当前编译的<strong>方法</strong>。</li>
+<li><p>因为其他线程不能获得该所对象，即时编译器可以消除加锁、解锁操作。</p>
+</li>
+<li><p>传统编译器仅需证明锁对象不逃逸出线程，便可以进行锁消除。</p>
+</li>
+<li><p>由于即时编译的限制，条件被强化为证明锁<strong>对象不逃逸</strong>出当前编译的<strong>方法</strong>。</p>
+</li>
 </ul>
 </li>
 <li><p>基于逃逸分析的锁消除实际上不多见。</p>
 </li>
 </ul>
 <h2 id="栈上分配（HotSpot-虚拟机未采用）"><a href="#栈上分配（HotSpot-虚拟机未采用）" class="headerlink" title="栈上分配（HotSpot 虚拟机未采用）"></a>栈上分配（HotSpot 虚拟机未采用）</h2><ul>
-<li>如果逃逸分析能证明某些<strong>新建的对象不逃逸</strong>，可以将其<strong>分配至栈上</strong>。</li>
-<li>new 语句所在的方法退出时，<strong>弹出</strong>当前方法的<strong>栈桢自动回收内存空间</strong>。</li>
-<li>无须借助垃圾回收器处理。</li>
-<li>实现需要<strong>更改大量</strong>假设“对象只能堆分配”的<strong>代码</strong>。</li>
+<li><p>如果逃逸分析能证明某些<strong>新建的对象不逃逸</strong>，可以将其<strong>分配至栈上</strong>。</p>
+</li>
+<li><p>new 语句所在的方法退出时，<strong>弹出</strong>当前方法的<strong>栈桢自动回收内存空间</strong>。</p>
+</li>
+<li><p>无须借助垃圾回收器处理。</p>
+</li>
+<li><p>实现需要<strong>更改大量</strong>假设“对象只能堆分配”的<strong>代码</strong>。</p>
+</li>
 </ul>
 <h2 id="标量替换"><a href="#标量替换" class="headerlink" title="标量替换"></a>标量替换</h2><blockquote>
-<p>标量：就是仅能存储一个值的变量，如局部变量。<br>聚合量：可能同时存储多个值，如 Java 对象。</p>
+<p>标量：就是仅能存储一个值的变量，如局部变量。 </p>
+</blockquote>
+<blockquote>
+<p>聚合量：可能同时存储多个值，如 Java 对象。</p>
 </blockquote>
 <ul>
-<li>可以看成将原本<strong>对对象的字段的访问，替换为一个个局部变量的访问</strong>。</li>
-<li>对象没有被实际分配，和栈上分配一样。</li>
-<li>可以减轻垃圾回收的压力。</li>
-<li>与栈上分配相比，<strong>对字段的内存连续性不做要求</strong>。</li>
-<li>字段甚至可以<strong>直接在寄存器中维护</strong>，无须浪费任何内存空间。</li>
+<li><p>可以看成将原本<strong>对对象的字段的访问，替换为一个个局部变量的访问</strong>。</p>
+</li>
+<li><p>对象没有被实际分配，和栈上分配一样。</p>
+</li>
+<li><p>可以减轻垃圾回收的压力。</p>
+</li>
+<li><p>与栈上分配相比，<strong>对字段的内存连续性不做要求</strong>。</p>
+</li>
+<li><p>字段甚至可以<strong>直接在寄存器中维护</strong>，无须浪费任何内存空间。</p>
+</li>
 </ul>
 <h1 id="部分逃逸分析（partial-escape-analysis）"><a href="#部分逃逸分析（partial-escape-analysis）" class="headerlink" title="部分逃逸分析（partial escape analysis）"></a>部分逃逸分析（partial escape analysis）</h1><ul>
-<li>C2 的逃逸分析与控制流无关。</li>
-<li>Graal 引入一个<strong>与控制流有关</strong>的逃逸分析，即部分逃逸分析。</li>
-<li>部分逃逸分析能够<strong>优化更多的情况，编译时间更长</strong>。</li>
-<li><strong>解决</strong>所新建的实例仅在<strong>部分程序路径中逃逸</strong>的情况。</li>
-<li>根据控制流信息，判断出新建对象仅在部分分支中逃逸，<strong>将对象的新建操作推延至对象逃逸的分支中</strong>。</li>
-<li>使得原本因对象逃逸而无法避免的新建对象操作，不再出现在只执行 if-else 分支的程序路径之中。（不懂）</li>
+<li><p>C2 的逃逸分析与控制流无关。</p>
+</li>
+<li><p>Graal 引入一个<strong>与控制流有关</strong>的逃逸分析，即部分逃逸分析。</p>
+</li>
+<li><p>部分逃逸分析能够<strong>优化更多的情况，编译时间更长</strong>。</p>
+</li>
+<li><p><strong>解决</strong>所新建的实例仅在<strong>部分程序路径中逃逸</strong>的情况。</p>
+</li>
+<li><p>根据控制流信息，判断出新建对象仅在部分分支中逃逸，<strong>将对象的新建操作推延至对象逃逸的分支中</strong>。</p>
+</li>
+<li><p>使得原本因对象逃逸而无法避免的新建对象操作，不再出现在只执行 if-else 分支的程序路径之中。（不懂）</p>
+</li>
 </ul>
-<h1 id="引用"><a href="#引用" class="headerlink" title="引用"></a>引用</h1><blockquote>
-<p><a href="https://time.geekbang.org/column/article/18048" target="_blank" rel="noopener">https://time.geekbang.org/column/article/18048</a></p>
-</blockquote>
 
       
     </div>
@@ -549,6 +583,8 @@
       
         <div class="post-tags">
           
+            <a href="/tags/看不懂/" rel="tag"># 看不懂</a>
+          
             <a href="/tags/JVM/" rel="tag"># JVM</a>
           
         </div>
@@ -562,8 +598,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2018/11/14/笔记-深入拆解Java虚拟机-22HotSpot虚拟机的intrinsic/" rel="next" title="笔记-深入拆解Java虚拟机-22HotSpot虚拟机的intrinsic">
-                <i class="fa fa-chevron-left"></i> 笔记-深入拆解Java虚拟机-22HotSpot虚拟机的intrinsic
+              <a href="/2018/11/14/笔记-深入拆解Java虚拟机-22HotSpot虚拟机的intrinsic/" rel="next" title="「深入拆解 Java 虚拟机」22 HotSpot 虚拟机的 intrinsic">
+                <i class="fa fa-chevron-left"></i> 「深入拆解 Java 虚拟机」22 HotSpot 虚拟机的 intrinsic
               </a>
             
           </div>
@@ -572,8 +608,8 @@
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2018/11/22/笔记-深入拆解Java虚拟机-24字段访问相关优化/" rel="prev" title="笔记-深入拆解Java虚拟机-24字段访问相关优化">
-                笔记-深入拆解Java虚拟机-24字段访问相关优化 <i class="fa fa-chevron-right"></i>
+              <a href="/2018/11/22/笔记-深入拆解Java虚拟机-24字段访问相关优化/" rel="prev" title="「深入拆解 Java 虚拟机」24 字段访问相关优化">
+                「深入拆解 Java 虚拟机」24 字段访问相关优化 <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
@@ -655,7 +691,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">59</span>
+                  <span class="site-state-item-count">76</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -666,7 +702,7 @@
               
               <div class="site-state-item site-state-categories">
                 <a href="/categories/index.html">
-                  <span class="site-state-item-count">14</span>
+                  <span class="site-state-item-count">10</span>
                   <span class="site-state-item-name">分类</span>
                 </a>
               </div>
@@ -677,7 +713,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">26</span>
+                  <span class="site-state-item-count">37</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>
@@ -733,7 +769,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#逃逸分析"><span class="nav-number">1.</span> <span class="nav-text">逃逸分析</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#判断对象是否逃逸的依据"><span class="nav-number">1.1.</span> <span class="nav-text">判断对象是否逃逸的依据</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#基于逃逸分析的优化"><span class="nav-number">2.</span> <span class="nav-text">基于逃逸分析的优化</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#锁消除"><span class="nav-number">2.1.</span> <span class="nav-text">锁消除</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#栈上分配（HotSpot-虚拟机未采用）"><span class="nav-number">2.2.</span> <span class="nav-text">栈上分配（HotSpot 虚拟机未采用）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#标量替换"><span class="nav-number">2.3.</span> <span class="nav-text">标量替换</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#部分逃逸分析（partial-escape-analysis）"><span class="nav-number">3.</span> <span class="nav-text">部分逃逸分析（partial escape analysis）</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#引用"><span class="nav-number">4.</span> <span class="nav-text">引用</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#逃逸分析"><span class="nav-number">1.</span> <span class="nav-text">逃逸分析</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#判断对象是否逃逸的依据"><span class="nav-number">1.1.</span> <span class="nav-text">判断对象是否逃逸的依据</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#基于逃逸分析的优化"><span class="nav-number">2.</span> <span class="nav-text">基于逃逸分析的优化</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#锁消除"><span class="nav-number">2.1.</span> <span class="nav-text">锁消除</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#栈上分配（HotSpot-虚拟机未采用）"><span class="nav-number">2.2.</span> <span class="nav-text">栈上分配（HotSpot 虚拟机未采用）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#标量替换"><span class="nav-number">2.3.</span> <span class="nav-text">标量替换</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#部分逃逸分析（partial-escape-analysis）"><span class="nav-number">3.</span> <span class="nav-text">部分逃逸分析（partial escape analysis）</span></a></li></ol></div>
             
 
           </div>
@@ -753,7 +789,7 @@
 
     <footer id="footer" class="footer">
       <div class="footer-inner">
-        <div class="copyright">&copy; 2018 &mdash; <span itemprop="copyrightYear">2019</span>
+        <div class="copyright">&copy; 2018 &mdash; <span itemprop="copyrightYear">2020</span>
   <span class="with-love">
     <i class="fa fa-user"></i>
   </span>

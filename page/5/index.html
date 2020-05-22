@@ -337,6 +337,18 @@
 
  </div>
     </header>
+    <script>
+      let images = [
+         'header0.jpg',
+         'header1.jpg',
+         'header2.png'
+      ];
+      let image = images[Math.floor(Math.random() * images.length)];
+      window.document.getElementById('header').style.cssText 
+      = 'background: url(/images/avatar/' 
+      + image
+      + '); no-repeat; background-size: auto 100%;';
+    </script>
 
     <main id="main" class="main">
       <div class="main-inner">
@@ -358,7 +370,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://blog.ennis.info/2018/08/01/如何修改ActionBar的字体颜色？/">
+    <link itemprop="mainEntityOfPage" href="http://blog.ennis.info/2018/11/08/笔记-深入拆解Java虚拟机-19Java字节码（基础篇）/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Ennis L.M. Wu">
@@ -377,7 +389,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2018/08/01/如何修改ActionBar的字体颜色？/" itemprop="url">如何修改ActionBar的字体颜色？</a></h1>
+                <a class="post-title-link" href="/2018/11/08/笔记-深入拆解Java虚拟机-19Java字节码（基础篇）/" itemprop="url">「深入拆解 Java 虚拟机」19 Java 字节码（基础篇）</a></h1>
         
 
         <div class="post-meta">
@@ -389,8 +401,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-08-01T18:22:46+08:00">
-                2018-08-01
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-11-08T14:42:50+08:00">
+                2018-11-08
               </time>
             
 
@@ -412,8 +424,8 @@
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Android视图/" itemprop="url" rel="index">
-                    <span itemprop="name">Android视图</span>
+                  <a href="/categories/《深入拆解-Java-虚拟机》/" itemprop="url" rel="index">
+                    <span itemprop="name">《深入拆解 Java 虚拟机》</span>
                   </a>
                 </span>
 
@@ -451,1147 +463,170 @@
       
         
           
-            <figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">style</span> <span class="attr">name</span>=<span class="string">"AppTheme"</span> <span class="attr">parent</span>=<span class="string">"@style/Theme.AppCompat.Light.DarkActionBar"</span>&gt;</span><span class="undefined"></span></span><br><span class="line"><span class="xml">	<span class="tag">&lt;<span class="name">item</span> <span class="attr">name</span>=<span class="string">"actionBarStyle"</span>&gt;</span>@style/ActionBarStyle<span class="tag">&lt;/<span class="name">item</span>&gt;</span></span></span><br><span class="line"><span class="undefined"></span><span class="tag">&lt;/<span class="name">style</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="name">style</span> <span class="attr">name</span>=<span class="string">"ActionBarStyle"</span> <span class="attr">parent</span>=<span class="string">"@style/Widget.AppCompat.ActionBar.Solid"</span>&gt;</span><span class="undefined"></span></span><br><span class="line"><span class="xml">	<span class="tag">&lt;<span class="name">item</span> <span class="attr">name</span>=<span class="string">"titleTextStyle"</span>&gt;</span>@style/TitleTextStyle<span class="tag">&lt;/<span class="name">item</span>&gt;</span></span></span><br><span class="line"><span class="undefined"></span><span class="tag">&lt;/<span class="name">style</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="name">style</span> <span class="attr">name</span>=<span class="string">"TitleTextStyle"</span> <span class="attr">parent</span>=<span class="string">"@style/TextAppearance.AppCompat.Widget.ActionBar.Title"</span>&gt;</span><span class="undefined"></span></span><br><span class="line"><span class="xml">	<span class="tag">&lt;<span class="name">item</span> <span class="attr">name</span>=<span class="string">"android:textColor"</span>&gt;</span>#000000<span class="tag">&lt;/<span class="name">item</span>&gt;</span></span></span><br><span class="line"><span class="xml">	<span class="comment">&lt;!-- 这里设置ActionBar字体颜色 --&gt;</span></span></span><br><span class="line"><span class="undefined"></span><span class="tag">&lt;/<span class="name">style</span>&gt;</span></span><br></pre></td></tr></table></figure>
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://blog.ennis.info/2018/08/01/笔记-深入拆解Java虚拟机-06JVM是如何处理异常的？/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Ennis L.M. Wu">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar/portrait.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Ennis Wu">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/08/01/笔记-深入拆解Java虚拟机-06JVM是如何处理异常的？/" itemprop="url">笔记-深入拆解Java虚拟机-06JVM是如何处理异常的？</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-08-01T14:41:48+08:00">
-                2018-08-01
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Java虚拟机/" itemprop="url" rel="index">
-                    <span itemprop="name">Java虚拟机</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h1 id="异常的基本概念"><a href="#异常的基本概念" class="headerlink" title="异常的基本概念"></a>异常的基本概念</h1><p><img src="/images/posts/JVM/06/throwable.png" alt="throwable"></p>
-<ul>
-<li><p>Error：涵盖程序不应捕获的异常（JVM抛出）。<br>程序出发Error时，执行状态已经无法恢复，需要终止线程甚至终止虚拟机。</p>
+            <p>原文：<a href="https://time.geekbang.org/column/article/14794" target="_blank" rel="noopener">https://time.geekbang.org/column/article/14794</a></p>
+<h1 id="操作数栈"><a href="#操作数栈" class="headerlink" title="操作数栈"></a>操作数栈</h1><ul>
+<li><p><strong>解释执行</strong>过程中，为 Java 方法分配栈桢时，JVM <strong>需要开辟一块额外的空间作为操作数栈</strong>，存放计算的操作数和返回结果。</p>
 </li>
-<li><p>Exception：涵盖程序可能需要捕获且处理的异常。</p>
+<li><p>执行每一条指令之前，JVM <strong>要求该指令的操作数已被压入操作数栈中</strong>。</p>
 </li>
-<li>RuntimeException：表示“程序虽然无法继续执行，但是还能抢救一下”的情况。</li>
-<li><strong>RuntimeException和Error非检查异常（unchecked exception）。其他异常属于检查异常（checked exception）。</strong></li>
-<li>检查异常需要程序显式地捕获，或者在方法声明中用throws关键字再次抛出。</li>
-</ul>
-<h2 id="常实例的构造十分昂贵。"><a href="#常实例的构造十分昂贵。" class="headerlink" title="常实例的构造十分昂贵。"></a>常实例的构造十分昂贵。</h2><p>在构造异常实例时，Java虚拟机需要<strong>生成该异常的栈轨迹</strong>（stack trace）。</p>
-<ul>
-<li>逐一访问当前线程的Java栈帧。</li>
-<li>记录下各种调试信息（方法名，方法所在类名，文件名，代码中第几行）。</li>
-<li>Java虚拟机会<strong>忽略异常构造器和填充栈帧的Java方法</strong>（Throwable.fillInStackTrace），直接从新建异常位置开始算起。</li>
-<li>Java虚拟机会<strong>忽略标记为不可见的Java方法栈帧</strong>。</li>
-</ul>
-<h3 id="是否可以缓存异常实例，在需要用到的时候直接抛出？"><a href="#是否可以缓存异常实例，在需要用到的时候直接抛出？" class="headerlink" title="是否可以缓存异常实例，在需要用到的时候直接抛出？"></a>是否可以缓存异常实例，在需要用到的时候直接抛出？</h3><ul>
-<li>从语法角度上，是允许的。</li>
-<li><strong>对应的栈轨迹并非throw语句的位置，而是新建异常的位置。</strong></li>
-</ul>
-<h1 id="Java虚拟机是如何捕获异常的？"><a href="#Java虚拟机是如何捕获异常的？" class="headerlink" title="Java虚拟机是如何捕获异常的？"></a>Java虚拟机是如何捕获异常的？</h1><p>编译生成的字节码中，<strong>每个方法都附带一个异常表</strong>。</p>
-<p>异常表中每一个条目代表一个异常处理器。</p>
-<p>异常处理器的组成：</p>
-<ul>
-<li>from指针</li>
-<li>to指针</li>
-<li>target指针</li>
-<li>所捕获的异常类型</li>
-</ul>
-<p>注：指针的值是字节码索引（bytecode index，bci），用来定位字节码。</p>
-<p><strong>from指针和to指针：标示异常处理器所监控的范围（如try代码块范围）。</strong></p>
-<p><strong>target指针：指向异常处理器的起始位置（如catch代码块起始位置）。</strong></p>
-<h2 id="触发异常的处理流程"><a href="#触发异常的处理流程" class="headerlink" title="触发异常的处理流程"></a>触发异常的处理流程</h2><ol>
-<li>Java虚拟机<strong>从上至下遍历异常表</strong>中的所有条目。</li>
-<li><strong>触发异常</strong>的字节码的索引值<strong>在某个异常表条目的监控范围内</strong>，Java虚拟机判断所抛出的异常和该条目想要捕获的异常<strong>是否匹配</strong>。</li>
-<li>如果<strong>匹配</strong>，Java 虚拟机将控制流<strong>转移至该条目target指针指向</strong>的字节码。</li>
-<li>如果<strong>遍历完所有</strong>异常表条目，仍<strong>未匹配</strong>到异常处理器，<strong>弹出当前方法对应的Java栈帧，在调用者（caller）中重复上述操作</strong>。</li>
-<li>finally代码块的编译，当前版本Java编译器，是<strong>复制finally代码块的内容，分别放在try-catch代码块所有正常执行路径和异常执行路径的出口中</strong>。</li>
-</ol>
-<p><img src="/images/posts/JVM/06/trigger_exception.png" alt="trigger_exception"></p>
-<p>针对异常执行路径，Java编译器会生成一个或多个异常表条目，监控整个try-catch代码块，并且捕获所有种类的异常（在 javap 中以 any 指代）。</p>
-<p>这些异常表条目的 target 指针将指向另一份复制的finally代码块。</p>
-<p>在这个finally代码块的最后，Java编译器会重新抛出所捕获的异常。</p>
-<p><strong>如果catch代码块捕获了异常，并且触发了另一个异常，那么finally捕获并且重抛后者，忽略前者。</strong></p>
-<h1 id="Java7的Suppressed异常以及语法糖"><a href="#Java7的Suppressed异常以及语法糖" class="headerlink" title="Java7的Suppressed异常以及语法糖"></a>Java7的Suppressed异常以及语法糖</h1><h2 id="Suppressed异常"><a href="#Suppressed异常" class="headerlink" title="Suppressed异常"></a>Suppressed异常</h2><p>允许将一个异常附于另一个异常之上。</p>
-<p><strong>抛出的异常可以附带多个异常信息。</strong></p>
-<p>finally代码块缺少指向所捕获异常的引用，这个新特性使用起来非常繁琐。</p>
-<h2 id="try-with-resources"><a href="#try-with-resources" class="headerlink" title="try-with-resources"></a>try-with-resources</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">try</span> (  ); <span class="comment">// try-with-resources</span></span><br></pre></td></tr></table></figure>
-<p>在字节码层面自动使用Suppressed异常。</p>
-<p><strong>自动关闭资源</strong>（实现AutoCloseable接口）。</p>
-<h2 id="同一catch代码块捕获多种异常"><a href="#同一catch代码块捕获多种异常" class="headerlink" title="同一catch代码块捕获多种异常"></a>同一catch代码块捕获多种异常</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">try</span> &#123;</span><br><span class="line">  </span><br><span class="line">&#125; <span class="keyword">catch</span> (SomeException | OtherException e) &#123;</span><br><span class="line">  </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h1 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h1><blockquote>
-<p><a href="https://time.geekbang.org/column/article/12134" target="_blank" rel="noopener">https://time.geekbang.org/column/article/12134</a></p>
-</blockquote>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://blog.ennis.info/2018/08/01/转-传输层和应用层的协议和作用/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Ennis L.M. Wu">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar/portrait.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Ennis Wu">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/08/01/转-传输层和应用层的协议和作用/" itemprop="url">[转]传输层和应用层的协议和作用</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-08-01T00:03:07+08:00">
-                2018-08-01
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/TCP-IP/" itemprop="url" rel="index">
-                    <span itemprop="name">TCP/IP</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <blockquote>
-<p>转载请注明出处：<a href="https://blog.csdn.net/DarkAngel1228/article/details/78581019" target="_blank" rel="noopener">https://blog.csdn.net/DarkAngel1228/article/details/78581019</a></p>
-</blockquote>
-<h1 id="TCP-IP传输层概述"><a href="#TCP-IP传输层概述" class="headerlink" title="TCP/IP传输层概述"></a>TCP/IP传输层概述</h1><p>TCP/IP是指一整套数据通信协议，传输层完成端到端的连接和传输。</p>
-<h2 id="TCP-IP传输层包含的两个协议"><a href="#TCP-IP传输层包含的两个协议" class="headerlink" title="TCP/IP传输层包含的两个协议"></a>TCP/IP传输层包含的两个协议</h2><ul>
-<li><p>传输控制协议<br>Transmission Control Protocol —— TCP</p>
-</li>
-<li><p>用户数据报协议<br>User Dategram Protocol —— UDP</p>
+<li><p>在执行指令时，JVM 会将该指令<strong>所需的操作数弹出</strong>，并且将指令的<strong>结果重新压入栈</strong>中。</p>
 </li>
 </ul>
-<h2 id="常用的TCP端口及应用"><a href="#常用的TCP端口及应用" class="headerlink" title="常用的TCP端口及应用"></a>常用的TCP端口及应用</h2><p>TCP在网络中使用的范围很广，下面将列出一些常用的端口号及其功能.以便进一步对TCP进行检测和管理。</p>
-<table>
-<thead>
-<tr>
-<th>端口</th>
-<th>协议</th>
-<th>说明</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>80</td>
-<td>http</td>
-<td>web服务器所开放的进程端口,用于客户端http访问</td>
-</tr>
-<tr>
-<td>21</td>
-<td>FTP</td>
-<td>FTP服务器所开放的控制端口,用于上传下载</td>
-</tr>
-<tr>
-<td>23</td>
-<td>Telnet</td>
-<td>用于远程登录,通过连接目的计算机的这一端口,得到验证后可以远程控制管理目标计算机</td>
-</tr>
-<tr>
-<td>25</td>
-<td>SMTP</td>
-<td>SMTP服务器开放的端口,用于发送邮件</td>
-</tr>
-<tr>
-<td>53</td>
-<td>DNS</td>
-<td>DNS服务器开放的端口,当用户输入网站的名称后,由DNS负责将它解析成IP地址,这个过程中用到的端口号就是53</td>
-</tr>
-</tbody>
-</table>
-<h2 id="常用的UDP端口及应用"><a href="#常用的UDP端口及应用" class="headerlink" title="常用的UDP端口及应用"></a>常用的UDP端口及应用</h2><table>
-<thead>
-<tr>
-<th>端口</th>
-<th>协议</th>
-<th>说明</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>7</td>
-<td>Echo</td>
-<td>将收到的数据包回送到发送器</td>
-</tr>
-<tr>
-<td>53</td>
-<td>Nameserver</td>
-<td>域名服务</td>
-</tr>
-<tr>
-<td>69</td>
-<td>TFTP</td>
-<td>简单文件传输协议</td>
-</tr>
-<tr>
-<td>111</td>
-<td>RPC</td>
-<td>远程过程调用</td>
-</tr>
-<tr>
-<td>123</td>
-<td>NTP</td>
-<td>网络时间协议</td>
-</tr>
-</tbody>
-</table>
-<h1 id="常用的应用层协议"><a href="#常用的应用层协议" class="headerlink" title="常用的应用层协议"></a>常用的应用层协议</h1><table>
-<thead>
-<tr>
-<th>缩写</th>
-<th>全文</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>http</td>
-<td>超文本传送协议</td>
-</tr>
-<tr>
-<td>https</td>
-<td>基于安全套接字层的http协议</td>
-</tr>
-<tr>
-<td>ftp</td>
-<td>文件传输协议</td>
-</tr>
-<tr>
-<td>dns</td>
-<td>域名系统</td>
-</tr>
-<tr>
-<td>smtp</td>
-<td>邮件传输协议</td>
-</tr>
-<tr>
-<td>pop3</td>
-<td>邮局协议</td>
-</tr>
-<tr>
-<td>ssh</td>
-<td>安全外壳协议</td>
-</tr>
-</tbody>
-</table>
-<h2 id="HTTP"><a href="#HTTP" class="headerlink" title="HTTP"></a>HTTP</h2><p>用于传输Internet浏览器使用的普通文本,超文本,音频和视频等数据<br>端口号：TCP的80</p>
-<h2 id="HTTPS"><a href="#HTTPS" class="headerlink" title="HTTPS"></a>HTTPS</h2><p>基于HTTP开发,提供加密,可以确保消息的私有性和完整性<br>端口号：443</p>
-<h2 id="FTP"><a href="#FTP" class="headerlink" title="FTP"></a>FTP</h2><p>用于传输文件<br>端口号：TCP的21和20</p>
-<h2 id="DNS"><a href="#DNS" class="headerlink" title="DNS"></a>DNS</h2><p>用来完成域名和IP地址之间的映射<br>端口号：TCP或UDP的53</p>
-<p><img src="/images/posts/传输层和应用层的协议和作用/DNS.png" alt="DNS"></p>
-<h2 id="SMTP"><a href="#SMTP" class="headerlink" title="SMTP"></a>SMTP</h2><p>用于发送和接收邮件<br>端口号：25</p>
-<h2 id="POP3"><a href="#POP3" class="headerlink" title="POP3"></a>POP3</h2><p>用于客户端接收邮件<br>端口号：110</p>
-<h2 id="SSH"><a href="#SSH" class="headerlink" title="SSH"></a>SSH</h2><p>建立在应用层和传输层基础上的安全协议，ssh是目前较可靠，专为远程登录会话和其他网络服务提供安全性的协议，利用ssh协议可以有效防止远程管理过程中的信息泄漏问题。</p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://blog.ennis.info/2018/07/30/笔记-深入拆解Java虚拟机-0405JVM是如何执行方法调用的？/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Ennis L.M. Wu">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar/portrait.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Ennis Wu">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/07/30/笔记-深入拆解Java虚拟机-0405JVM是如何执行方法调用的？/" itemprop="url">笔记-深入拆解Java虚拟机-0405JVM是如何执行方法调用的？</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-07-30T15:41:36+08:00">
-                2018-07-30
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Java虚拟机/" itemprop="url" rel="index">
-                    <span itemprop="name">Java虚拟机</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h1 id="重载和重写"><a href="#重载和重写" class="headerlink" title="重载和重写"></a>重载和重写</h1><p>在Java程序里，同一个类中出现多个名字相同，并且参数类型相同的方法，无法通过编译。这个限制可以通过字节码工具绕开。在编译完成之后，可以再向class文件中添加方法名和参数类型相同，而返回类型不同的方法。</p>
-<h2 id="重载的方法在编译过程中即可完成识别"><a href="#重载的方法在编译过程中即可完成识别" class="headerlink" title="重载的方法在编译过程中即可完成识别"></a>重载的方法在编译过程中即可完成识别</h2><p>Java编译器<strong>根据所传入参数的声明类型（注意与实际类型区分）来选取重载方法</strong>：</p>
-<ol>
-<li>在<strong>不考虑对基本类型自动装拆箱</strong>（auto-boxing，auto-unboxing）和<strong>可变长参数</strong>的情况下选取重载方法。</li>
-<li>在<strong>允许自动装拆箱</strong>，但<strong>不允许可变长参数</strong>的情况下选取重载方法。</li>
-<li>在<strong>允许自动装拆箱和可变长参数</strong>的情况下选取重载方法。</li>
-</ol>
-<p>如果Java编译器在同一阶段<strong>多种适配方法</strong>，会在其中<strong>选择一个最贴切的</strong>方法。</p>
-<p><strong>决定贴切程度</strong>的关键之一是形式参数类型的<strong>继承关系</strong>。</p>
-<h2 id="重载可以作用于这个类所继承而来的方法"><a href="#重载可以作用于这个类所继承而来的方法" class="headerlink" title="重载可以作用于这个类所继承而来的方法"></a>重载可以作用于这个类所继承而来的方法</h2><p>如果<strong>子类定义了与父类中非私有方法同名的方法</strong>，而且这两个方法的<strong>参数类型不同</strong>，那么在子类中，这两个方法同样<strong>构成了重载</strong>。</p>
-<p>如果<strong>子类定义了与父类中非私有方法同名的方法</strong>，而且这两个<strong>方法的参数类型相同</strong>：</p>
-<ul>
-<li>如果这两个方法<strong>都是静态的</strong>，那么子类中的方法<strong>隐藏</strong>了父类中的方法。</li>
-<li>如果这两个方法<strong>都不是静态的，且都不是私有的</strong>，那么子类的方法<strong>重写</strong>了父类中的方法（重写可以扩大访问权限，但不能缩小）。</li>
-</ul>
-<p>注：如果子类定义了与父类中私有方法同名的方法，这两个方法之间没有任何关系。</p>
-<h1 id="JVM的静态绑定和动态绑定"><a href="#JVM的静态绑定和动态绑定" class="headerlink" title="JVM的静态绑定和动态绑定"></a>JVM的静态绑定和动态绑定</h1><p><strong>Java虚拟机识别方法的关键：类名、方法名和方法描述符（method descriptor）。</strong></p>
-<p>方法描述符 = 方法的参数类型+返回类型所构成</p>
-<p>在同一个类中，</p>
-<ul>
-<li><p>出现多个名字相同且描述符也相同的方法<br>Java虚拟机在类的验证阶段报错。</p>
+<h2 id="直接作用在操作数栈上的指令"><a href="#直接作用在操作数栈上的指令" class="headerlink" title="直接作用在操作数栈上的指令"></a>直接作用在操作数栈上的指令</h2><h3 id="dup-指令"><a href="#dup-指令" class="headerlink" title="dup 指令"></a>dup 指令</h3><ul>
+<li><p>复制栈顶元素。</p>
 </li>
-<li><p><strong>不限制名字与参数类型相同但返回类型不同的方法出现。</strong></p>
+<li><p>常用于复制 new 指令所生成的未经初始化的引用。</p>
 </li>
 </ul>
-<p>Java虚拟机判定方法重写：</p>
-<ul>
-<li>子类定义了与父类中<strong>非私有、非静态方法</strong>同名的方法。</li>
-<li><strong>方法名和方法描述符都相同</strong>。</li>
-</ul>
-<p>Java语言中重写而Java虚拟机中非重写的情况：</p>
-<ul>
-<li>编译器通过生成<strong>桥接方法</strong>来实现Java中的重写语义。</li>
-</ul>
-<p>重载方法的区分在编译阶段已经完成，可以认为Java虚拟机不存在重载概念。</p>
-<p>Java编译器会将<strong>所有对非私有实例方法的调用</strong>编译为需要<strong>动态绑定</strong>的类型。</p>
-<p>Java虚拟机中的静态绑定：在解析时便能够直接识别目标方法。</p>
-<p>Java虚拟机中的动态绑定：需要在运行过程中根据调用者的动态类型来识别目标方法。</p>
-<p>Java字节码中与调用相关的指令共有五种：</p>
-<ul>
-<li>invokestatic：用于调用静态方法。</li>
-<li>invokespecial：用于调用私有实例方法、构造器，使用super调用父类的实例方法或构造器，和所实现接口的默认方法。</li>
-<li>invokevirtual：用于调用非私有实例方法。</li>
-<li>invokeinterface：用于调用接口方法。</li>
-<li>invokedynamic：用于调用动态方法。</li>
-</ul>
-<p>invokestatic和invokespecial：Java虚拟机能够<strong>直接识别</strong>具体的目标方法（静态绑定）。</p>
-<p>invokevirtual和invokeinterface：在绝大部分情况下，虚拟机需要<strong>在执行过程中根据调用者的动态类型，来确定</strong>具体的目标方法（动态绑定）。</p>
-<p>例外：如果虚拟机能够确定目标方法有且仅有一个（如目标方法被标记为final），可以不通过动态类型，直接确定目标方法（虚拟机可以静态绑定该方法）。</p>
-<h1 id="调用指令的符号引用"><a href="#调用指令的符号引用" class="headerlink" title="调用指令的符号引用"></a>调用指令的符号引用</h1><p>符号引用存储在 class 文件的常量池之中。</p>
-<p>符号引用分为：接口符号引用和非接口符号引用。</p>
-<h2 id="非接口符号引用"><a href="#非接口符号引用" class="headerlink" title="非接口符号引用"></a>非接口符号引用</h2><p>该符号引用所指向的类为C，Java虚拟机查找步骤：</p>
-<ol>
-<li>在C中查找符合名字及描述符的方法。</li>
-<li>在C的父类中继续搜索，直至 Object 类。</li>
-<li>在C所直接实现或间接实现的接口中搜索。<br>这一步搜索得到的目标方法必须是非私有、非静态的。<br>如果目标方法在间接实现的接口中，则需满足C与该接口之间没有其他符合条件的目标方法。如果有多个符合条件的目标方法，则任意返回其中一个。（假如C实现了I，I继承I1，I1继承I2，那么C和I2之间就隔着I和I1）</li>
-</ol>
-<p>经过上述的解析步骤之后，符号引用会被解析成实际引用。</p>
-<p><strong>静态绑定的方法调用：实际引用是一个指向方法的指针。</strong></p>
-<p><strong>动态绑定的方法调用，实际引用是一个方法表的索引。</strong></p>
-<h2 id="接口符号引用"><a href="#接口符号引用" class="headerlink" title="接口符号引用"></a>接口符号引用</h2><p>该符号引用所指向的接口为I，Java虚拟机查找步骤：</p>
-<ol>
-<li>在I中查找符合名字及描述符的方法。</li>
-<li>在Object类中的公有实例方法中搜索。</li>
-<li>在I的父接口中搜索。<br>这一步的搜索结果的要求与非接口符号引用步骤3的要求一致。</li>
-</ol>
-<h1 id="虚方法调用"><a href="#虚方法调用" class="headerlink" title="虚方法调用"></a>虚方法调用</h1><p>Java里：</p>
-<ul>
-<li>所有非私有实例方法调用被编译成invokevirtual指令</li>
-<li>所有接口方法调用都被编译成invokeinterface指令。</li>
-</ul>
-<h2 id="Java虚拟机实现动态绑定的策略"><a href="#Java虚拟机实现动态绑定的策略" class="headerlink" title="Java虚拟机实现动态绑定的策略"></a>Java虚拟机实现动态绑定的策略</h2><p>为每个类生成一张方法表，用以快速定位目标方法（空间换取时间）。</p>
-<h1 id="方法表"><a href="#方法表" class="headerlink" title="方法表"></a>方法表</h1><blockquote>
-<p>类加载的准备阶段除了为静态字段分配内存之外，还会构造与该类相关联的方法表。</p>
-</blockquote>
-<p>下面以虚方法表为例（virtual method table，vtable），接口方法（interface method table，itable）表原理类似，但稍复杂。</p>
-<p>方法表<strong>本质：数组</strong>（元素指向一个当前类及其祖先类中非私有的实例方法）。</p>
-<p>方法可能是具体的、可执行的方法，也可能是没有相应字节码的抽象方法。</p>
-<p>方法表<strong>满足两个特质</strong>：</p>
-<ul>
-<li>子类方法表中<strong>包含父类方法表中的所有方法</strong>。</li>
-<li>子类方法在方法表中的索引值，<strong>与它所重写的父类方法的索引值相同</strong>。</li>
-</ul>
-<p>动态绑定：</p>
-<ul>
-<li>Java 虚拟机将获取调用者的实际类型。</li>
-<li>在该实际类型的虚方法表中根据索引值获得目标方法。</li>
-</ul>
-<h2 id="是否可以认为虚方法调用对性能没有太大影响？"><a href="#是否可以认为虚方法调用对性能没有太大影响？" class="headerlink" title="是否可以认为虚方法调用对性能没有太大影响？"></a>是否可以认为虚方法调用对性能没有太大影响？</h2><p><strong>不能，上述优化实际上仅存在最坏情况中。</strong></p>
-<p><strong>即时编译有两种性能更好的优化手段：</strong></p>
-<ul>
-<li>内联缓存（inlining cache）</li>
-<li>方法内联（method inlining）</li>
-</ul>
-<h1 id="内联缓存"><a href="#内联缓存" class="headerlink" title="内联缓存"></a>内联缓存</h1><blockquote>
-<p>缓存虚方法调用中调用者的动态类型，以及该类型所对应的目标方法。</p>
-</blockquote>
-<p>单态（monomorphic）指的是仅有一种状态的情况。<br>多态（polymorphic）指的是有限数量种状态的情况。二态（bimorphic）是多态的其中一种。<br>超多态（megamorphic）指的是更多种状态的情况。通常用一个具体数值来区分多态和超多态。</p>
-<p>对于内联缓存:</p>
-<ul>
-<li>单态内联缓存</li>
-<li>多态内联缓存</li>
-<li>超多态内联缓存</li>
-</ul>
-<p>在实践中，大部分的虚方法调用均是单态的。</p>
-<p><strong>为了节省内存空间，Java 虚拟机只采用单态内联缓存。</strong></p>
-<p><strong>内联缓存没有命中</strong>的情况下，Java 虚拟机需要<strong>重新使用方法表进行动态绑定</strong>，有两种选择：</p>
-<ul>
-<li><strong>替换</strong>单态内联缓存中的纪录。</li>
-<li><strong>劣化为超多态状态</strong>（Java 虚拟机的具体实现方式）。<br>直接访问方法表，<strong>牺牲了优化的机会，节省了写缓存的额外开销</strong>。</li>
-</ul>
-<h2 id="内联缓存并没有内联目标方法。"><a href="#内联缓存并没有内联目标方法。" class="headerlink" title="内联缓存并没有内联目标方法。"></a>内联缓存并没有内联目标方法。</h2><ul>
-<li>任何方法调用除非被内联，否则都会有固定开销。</li>
-<li>开销来源于保存程序在该方法中的执行位置，以及新建、压入和弹出新方法所使用的栈帧。</li>
-</ul>
-<h1 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h1><p>Q：public final 或 public static final 的方法，是不是在虚拟机中解析为静态绑定的。</p>
-<p>A：静态方法都是静态绑定。调用的目标方法是public final的话，HotSpot虚拟机也会静态绑定。但这属于优化，其它虚拟机不一定这么做。</p>
-<h1 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h1><blockquote>
-<p><a href="https://time.geekbang.org/column/article/11539" target="_blank" rel="noopener">https://time.geekbang.org/column/article/11539</a><br><a href="https://time.geekbang.org/column/article/12098" target="_blank" rel="noopener">https://time.geekbang.org/column/article/12098</a></p>
-</blockquote>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://blog.ennis.info/2018/07/29/笔记-深入拆解Java虚拟机-03Java虚拟机是如何加载Java类的？/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Ennis L.M. Wu">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar/portrait.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Ennis Wu">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/07/29/笔记-深入拆解Java虚拟机-03Java虚拟机是如何加载Java类的？/" itemprop="url">笔记-深入拆解Java虚拟机-03Java虚拟机是如何加载Java类的？</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-07-29T15:02:28+08:00">
-                2018-07-29
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Java虚拟机/" itemprop="url" rel="index">
-                    <span itemprop="name">Java虚拟机</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>Java语言的类型：基本类型（primitive types）和引用类型（reference types<br>）。</p>
-<ul>
-<li>基本类型由Java虚拟机预先定义好。</li>
-<li>引用类型：类、接口、数组类和泛型参数。</li>
-<li>泛型参数会在编译过程中被擦除，Java虚拟机上实际只有三种。</li>
-<li>数组类是由Java虚拟机直接生成，其他两种有对应的字节流。</li>
-</ul>
-<p>字节流形式：</p>
-<ul>
-<li>class文件。</li>
-<li>程序内部直接生成。</li>
-<li>从网络中获取。</li>
-</ul>
-<p>字节流加载到Java虚拟机中，成为类或接口。</p>
-<h1 id="加载"><a href="#加载" class="headerlink" title="加载"></a>加载</h1><blockquote>
-<p>查找字节流，并且据此创建类的过程。</p>
-</blockquote>
-<ul>
-<li>对于数组类，它没有对应的字节流，由Java虚拟机直接生成。</li>
-<li>对于其他类，Java虚拟机需要借助类加载器完成查找字节流的过程。</li>
-</ul>
-<h2 id="java9之前"><a href="#java9之前" class="headerlink" title="java9之前"></a>java9之前</h2><h3 id="启动类加载器（boot-class-loader）"><a href="#启动类加载器（boot-class-loader）" class="headerlink" title="启动类加载器（boot class loader）"></a>启动类加载器（boot class loader）</h3><p><strong>启动类加载器由C++实现</strong>，没有对应的Java对象，Java中只能用null来指代。</p>
-<p><strong>启动类加载器加载最为基础、最为重要的类。</strong>如：存放在jre的lib目录加jar包中的类（以及由虚拟机参数-Xbootclasspath指定的类）</p>
-<p><strong>其他类加载器都是java.lang.ClassLoader的子类。</strong>类加载器需要先由另一个类加载器加载至Java虚拟机中，才能执行类加载。</p>
-<h3 id="扩展类加载器（extension-class-loader）"><a href="#扩展类加载器（extension-class-loader）" class="headerlink" title="扩展类加载器（extension class loader）"></a>扩展类加载器（extension class loader）</h3><p>父类加载器：启动类加载器。</p>
-<p><strong>加载相对次要、但又通用的类。</strong>如：存放在jre的 lib/ext 目录下 jar 包中的类（以及由系统变量 java.ext.dirs 指定的类）。</p>
-<h3 id="应用类加载器（application-class-loader）"><a href="#应用类加载器（application-class-loader）" class="headerlink" title="应用类加载器（application class loader）"></a>应用类加载器（application class loader）</h3><p>父类加载器：扩展类加载器。</p>
-<p><strong>加载应用程序路径下的类。</strong>（这里的应用程序路径，便是指虚拟机参数 -cp/-classpath、系统变量 java.class.path 或环境变量 CLASSPATH 所指定的路径。）默认情况下，应用程序中包含的类便是由应用类加载器加载的。</p>
-<h2 id="java9之后"><a href="#java9之后" class="headerlink" title="java9之后"></a>java9之后</h2><p>Java9引入了模块系统，并且略微更改了上述的类加载器。</p>
-<p>扩展类加载器被改名为平台类加载器（platform class loader）。</p>
-<p>Java SE中除了少数几个关键模块，比如说 java.base 是由启动类加载器加载之外，其他的模块均由平台类加载器所加载。</p>
-<h2 id="双亲委派模型"><a href="#双亲委派模型" class="headerlink" title="双亲委派模型"></a>双亲委派模型</h2><p><strong>没当一个类加载器接收到加载请求时，它会先将请求转发给父类加载器。在父类加载器没有找到所请求的类情况下，该类加载器才会尝试去加载。</strong></p>
-<p><strong>注：父类加载器不是继承关系！！！</strong></p>
-<h2 id="其他"><a href="#其他" class="headerlink" title="其他"></a>其他</h2><ul>
-<li><p><strong>可以加入自定义的类加载器</strong>，来实现特殊的加载方式。<br>如：可以对 class 文件进行加密，加载时再利用自定义的类加载器对其解密。</p>
+<h3 id="pop-指令"><a href="#pop-指令" class="headerlink" title="pop 指令"></a>pop 指令</h3><ul>
+<li><p>舍弃栈顶元素。</p>
 </li>
-<li><p>类加载器还提供了命名空间的作用。</p>
+<li><p>常用于舍弃调用指令的返回结果。</p>
 </li>
-<li>在 Java 虚拟机中，<strong>类的唯一性是由类加载器实例以及类的全名一同确定的</strong>。<br>即便是同一串字节流，经由不同的类加载器加载，也会得到两个不同的类。</li>
 </ul>
-<h1 id="链接"><a href="#链接" class="headerlink" title="链接"></a>链接</h1><blockquote>
-<p>将创建成的类合并至Java虚拟机中，使之能够只够执行的过程。它可分为验证、准备以及解析三个阶段。</p>
-</blockquote>
-<h2 id="验证"><a href="#验证" class="headerlink" title="验证"></a>验证</h2><blockquote>
-<p>确保被加载类能够满足Java虚拟机的约束条件。</p>
-</blockquote>
-<p>通常而言，Java编译器生成的类文件必然满足Java虚拟机的约束条件。</p>
-<h2 id="准备"><a href="#准备" class="headerlink" title="准备"></a>准备</h2><blockquote>
-<p>为被加载类的静态字段分配内存。</p>
-</blockquote>
-<p>部分Java虚拟机会在此阶段构造其他跟类层次相关的数据结构，比如用来实现虚方法的动态绑定的方法表。</p>
-<h2 id="解析（非必需）"><a href="#解析（非必需）" class="headerlink" title="解析（非必需）"></a>解析（非必需）</h2><p>在class文件被加载至Java虚拟机之前，这个类无法知道其他类（甚至自己）的方法、字段所对应的具体地址。引用时，Java编译器会生成一个符号引用。在运行阶段，这个符号引用一般都能无歧义地定位到具体目标上。</p>
-<p><strong>将这些符号引用解析成为实际引用。</strong></p>
-<p>如果符号引用指向一个未被加载的类，或者未被加载类的字段或方法，那么解析将触发这个类的加载（但未必触发这个类的链接以及初始化。）</p>
-<p><strong>Java 虚拟机规范并没有要求在链接过程中完成解析。</strong>它仅规定了：如果某些字节码使用了符号引用，那么在执行这些字节码之前，需要完成对这些符号引用的解析。</p>
-<h1 id="初始化"><a href="#初始化" class="headerlink" title="初始化"></a>初始化</h1><p>如果直接赋值的静态字段：</p>
+<h3 id="dup2-指令和-pop2-指令"><a href="#dup2-指令和-pop2-指令" class="headerlink" title="dup2 指令和 pop2 指令"></a>dup2 指令和 pop2 指令</h3><ul>
+<li><p>long 类型或 double 类型的值占据两个栈单元。</p>
+</li>
+<li><p>dup 指令和 pop 指令只能处理非 long 或非 double 类型的值。</p>
+</li>
+<li><p>dup2 指令复制栈顶两个单元。</p>
+</li>
+<li><p>pop2 指令弹出栈顶两个单元。</p>
+</li>
+</ul>
+<h3 id="swap-指令"><a href="#swap-指令" class="headerlink" title="swap 指令"></a>swap 指令</h3><ul>
+<li>交换栈顶两个元素的值。</li>
+</ul>
+<h2 id="直接将常量加载在操作数栈上的指令"><a href="#直接将常量加载在操作数栈上的指令" class="headerlink" title="直接将常量加载在操作数栈上的指令"></a>直接将常量加载在操作数栈上的指令</h2><ul>
+<li><p>常量类型包括</p>
 <ul>
-<li>被 final 所修饰</li>
-<li>类型是基本类型或字符串时</li>
+<li><p>int 类型</p>
+</li>
+<li><p>long 类型</p>
+</li>
+<li><p>float 类型</p>
+</li>
+<li><p>double 类型</p>
+</li>
+<li><p>String 类型</p>
+</li>
+<li><p>Class 类型</p>
+</li>
 </ul>
-<p>该字段便会被 Java 编译器标记成<strong>常量值（ConstantValue），初始化直接由 Java 虚拟机完成</strong>。</p>
-<p><strong>除此之外的直接赋值操作，所有静态代码块中的代码，会被 Java 编译器置于同一方法中，并把它命名为&lt;clinit>。</strong></p>
-<p>&lt;clinit>方法仅被执行一次。</p>
-<p><strong>JVM 规范枚举了下述多种触发类初始化的情况：</strong></p>
-<ol>
-<li>当虚拟机启动时，初始化用户指定的主类。</li>
-<li>当遇到用以新建目标类实例的 new 指令时，初始化 new 指令的目标类。</li>
-<li>当遇到调用静态方法的指令时，初始化该静态方法所在的类。</li>
-<li>当遇到访问静态字段的指令时，初始化该静态字段所在的类。</li>
-<li>子类的初始化会触发父类的初始化。</li>
-<li>如果一个接口定义了 default 方法，那么直接实现或者间接实现该接口的类的初始化，会触发该接口的初始化。</li>
-<li>使用反射 API 对某个类进行反射调用时，初始化这个类。</li>
-<li>当初次调用 MethodHandle 实例时，初始化该 MethodHandle 指向的方法所在的类。</li>
-</ol>
-<h1 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h1><p>Q：<strong>加载阶段都加载哪些类呢，那么多类，全部加载吗？</strong></p>
-<p>A：<strong>加载阶段是针对单个类的</strong>，一般用到的类才会被加载。大部分情况下，不同类的加载阶段是不同的。</p>
+</li>
+<li><p>正常情况下，<strong>操作数栈的压入弹出是一条条指令完成</strong>。</p>
+</li>
+<li><p><strong>例外：抛异常</strong>时会清除操作数栈上的所有内容，然后将异常实例压入操作数栈。</p>
+</li>
+</ul>
+<p><img src="/images/posts/JVM/19/instructions_const.jpg" alt="instructions_const" title="常数加载指令表"></p>
+<h3 id="int-类型为例"><a href="#int-类型为例" class="headerlink" title="int 类型为例"></a>int 类型为例</h3><ul>
+<li><p>可以通过 iconst 指令加载 -1 至 5 之间的 int 值。</p>
+</li>
+<li><p>可以通过 bipush、sipush 加载一个字节、两个字节所能代表的 int 值。</p>
+</li>
+<li><p>可以通过 ldc 加载常量池中的常量值（如 ldc #18 将加载常量池中的第 18 项）。</p>
+</li>
+</ul>
+<h1 id="局部变量区"><a href="#局部变量区" class="headerlink" title="局部变量区"></a>局部变量区</h1><ul>
+<li><p>方法栈帧的重要组成部分。</p>
+</li>
+<li><p>可以<strong>缓存计算的结果</strong>。</p>
+</li>
+<li><p>JVM 将其<strong>当成一个数组</strong>，依次存放 this 指针（仅非静态方法），所传入的参数，字节码中的局部变量。</p>
+</li>
+<li><p>long 类型和 double 类型的值占据两个单元，其余类型占据一个单元。</p>
+</li>
+<li><p><strong>生命周期没有重合的局部变量可以编排至同一单元。</strong></p>
+</li>
+<li><p>存储在局部变量区的值，<strong>需要加载至操作数栈中，才能进行计算</strong>。</p>
+</li>
+<li><p>计算得到的<strong>结果再存储至局部变量区</strong>中。</p>
+</li>
+</ul>
+<p><img src="/images/posts/JVM/19/instructions_local_variable.jpg" alt="instructons_local_variable" title="局部变量区访问指令表"></p>
+<ul>
+<li>局部变量数组的<strong>加载、存储指令</strong>需要<strong>指明</strong>所加载单元的<strong>下标</strong>。</li>
+</ul>
+<h2 id="iinc-M-N-指令"><a href="#iinc-M-N-指令" class="headerlink" title="iinc M N 指令"></a>iinc M N 指令</h2><ul>
+<li><p>Java 字节码<strong>唯一能够作用于局部变量的指令</strong>。</p>
+</li>
+<li><p>M 为非负整数，N 为整数。</p>
+</li>
+<li><p>将局部变量数组的第 M 个单元中的 int 值增加 N。</p>
+</li>
+<li><p>常用于<strong>更新 for 循环的自增量</strong>。</p>
+</li>
+</ul>
+<h1 id="Java-字节码简介"><a href="#Java-字节码简介" class="headerlink" title="Java 字节码简介"></a>Java 字节码简介</h1><h2 id="Java-相关指令"><a href="#Java-相关指令" class="headerlink" title="Java 相关指令"></a>Java 相关指令</h2><ul>
+<li><p>new：后跟目标类，生成该类的未初始化的对象。</p>
+</li>
+<li><p>instanceof：后跟目标类，判断栈顶元素是否为目标类 / 接口的实例（是则压入 1，否则压入 0）。</p>
+</li>
+<li><p>checkcast：后跟目标类，判断栈顶元素是否为目标类 / 接口的实例（如果不是便抛出异常）。</p>
+</li>
+<li><p>athrow：将栈顶异常抛出。</p>
+</li>
+<li><p>monitorenter：为栈顶对象加锁。</p>
+</li>
+<li><p>monitorexit：为栈顶对象解锁。</p>
+</li>
+</ul>
+<h2 id="字段访问指令"><a href="#字段访问指令" class="headerlink" title="字段访问指令"></a>字段访问指令</h2><ul>
+<li><p>静态字段访问指令：getstatic、putstatic。</p>
+</li>
+<li><p>实例字段访问指令：getfield、putfield。</p>
+</li>
+<li><p>这四条指令均附带用以定位目标字段的信息。</p>
+</li>
+<li><p>这四条指令所消耗的操作数栈元素皆不同。</p>
+</li>
+</ul>
+<h2 id="方法调用指令"><a href="#方法调用指令" class="headerlink" title="方法调用指令"></a>方法调用指令</h2><ul>
+<li><p>包括 invokestatic，invokespecial，invokevirtual，invokeinterface 和 invokedynamic。</p>
+</li>
+<li><p>除 invokedynamic 外，其他的方法调用指令所消耗的操作数栈元素由调用类型和目标方法描述符确定。</p>
+</li>
+</ul>
+<h2 id="数组相关指令"><a href="#数组相关指令" class="headerlink" title="数组相关指令"></a>数组相关指令</h2><ul>
+<li><p>newarray：新建基本类型数组。</p>
+</li>
+<li><p>anewarray：新建引用类型数组。</p>
+</li>
+<li><p>mutianewarray：新建多维数组。</p>
+</li>
+<li><p>arraylength：求数组长度。</p>
+</li>
+<li><p>数组加载指令。</p>
+</li>
+<li><p>数组存储指令。</p>
+</li>
+</ul>
+<p><img src="/images/posts/JVM/19/instructions_array.jpg" alt="instructions_array" title="数组访问指令表"></p>
+<h2 id="控制流指令"><a href="#控制流指令" class="headerlink" title="控制流指令"></a>控制流指令</h2><ul>
+<li><p>goto：无条件跳转指令。</p>
+</li>
+<li><p>tableswitch：条件跳转指令（针对密集的 cases）。</p>
+</li>
+<li><p>lookupswtich：条件跳转指令（针对稀疏的 cases）。</p>
+</li>
+<li><p>被废弃的 jsr，ret 指令。</p>
+</li>
+<li><p>返回指令。</p>
+</li>
+</ul>
+<p><img src="/images/posts/JVM/19/instructions_return.jpg" alt="instructons_return" title="返回指令表"></p>
+<ul>
+<li>除返回指令外，其他的控制流指令均附带一个或者多个字节码偏移量，代表需要跳转到的位置。</li>
+</ul>
+<h1 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h1><p>Q：JVM 为什么使用<strong>基于栈的计算模型</strong>？</p>
+<p>A：<strong>实现起来容易</strong>一些，但并<strong>不高效</strong>，因为没有使用底层体系架构的寄存器。在 JVM 中，只有解释器完整地模拟出该计算模型。即时编译器在解析字节码时会使用一个虚拟的栈计算模型，但是在接下来的编译优化，以及生成的机器码就不用了。</p>
 <hr>
-<p>Q：有一个零值(0/null)初始化，针对于类的静态成员变量，如果是final修饰的静态成员变量，也就是常量，是初始化为代码中指定的值比如10。非final修饰的静态成员变量，在clinit执行过程中赋值为代码中指定的值，是这样的吗？</p>
-<p>A：<strong>被final修饰的静态成员变量，如果不是基本类型或者字符串，也会放在clinit 来做。</strong></p>
-<h1 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h1><blockquote>
-<p><a href="https://time.geekbang.org/column/article/11523" target="_blank" rel="noopener">https://time.geekbang.org/column/article/11523</a></p>
-</blockquote>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://blog.ennis.info/2018/07/28/笔记-深入拆解Java虚拟机-02Java的基本类型/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Ennis L.M. Wu">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar/portrait.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Ennis Wu">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/07/28/笔记-深入拆解Java虚拟机-02Java的基本类型/" itemprop="url">笔记-深入拆解Java虚拟机-02Java的基本类型</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-07-28T14:46:02+08:00">
-                2018-07-28
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Java虚拟机/" itemprop="url" rel="index">
-                    <span itemprop="name">Java虚拟机</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>在 Smalltalk 中，所有的值都是对象。因此，许多人认为它是一门纯粹的面向对象语言。</p>
-<p>Java 则不同，它引进了<strong>八个基本类型</strong>，来支持数值计算。Java 这么做的原因主要是工程上的考虑，因为使用<strong>基本类型能够在执行效率以及内存使用两方面提升软件性能</strong>。</p>
-<h1 id="Java虚拟机的-boolean类型"><a href="#Java虚拟机的-boolean类型" class="headerlink" title="Java虚拟机的 boolean类型"></a>Java虚拟机的 boolean类型</h1><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Foo</span> </span>&#123;</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">		<span class="keyword">boolean</span> 吃过饭没 = <span class="number">2</span>; <span class="comment">// 直接编译的话 javac 会报错</span></span><br><span class="line">		<span class="keyword">if</span> (吃过饭没) </span><br><span class="line">			System.out.println(<span class="string">" 吃了 "</span>);</span><br><span class="line">		<span class="keyword">if</span> (<span class="keyword">true</span> == 吃过饭没) </span><br><span class="line">			System.out.println(<span class="string">" 真吃了 "</span>);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>Java语言规范中，boolean类型的值只有两种，用“true”和“false”表示。</p>
-<p><strong>Java虚拟机规范中，boolean类型被映射成int类型，“true”映射为整数1，“false”映射为整数0。</strong></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"># Foo.main 编译后的字节码</span><br><span class="line"> 0: iconst_2       // 我们用 AsmTools 更改了这一指令</span><br><span class="line"> 1: istore_1</span><br><span class="line"> 2: iload_1</span><br><span class="line"> 3: ifeq 14        // 第一个 if 语句，即操作数栈上数值为 0 时跳转</span><br><span class="line"> 6: getstatic java.lang.System.out</span><br><span class="line"> 9: ldc &quot; 吃了 &quot;</span><br><span class="line">11: invokevirtual java.io.PrintStream.println</span><br><span class="line">14: iload_1</span><br><span class="line">15: iconst_1</span><br><span class="line">16: if_icmpne 27   // 第二个 if 语句，即操作数栈上两个数值不相同时跳转</span><br><span class="line">19: getstatic java.lang.System.out</span><br><span class="line">22: ldc &quot; 真吃了 &quot;</span><br><span class="line">24: invokevirtual java.io.PrintStream.println</span><br><span class="line">27: return</span><br></pre></td></tr></table></figure>
-<p>在前面的例子中，第一个 if 语句会被编译成条件跳转字节码 ifeq，翻译成人话就是说，如果局部变量“吃过饭没”的值为 0，那么跳过打印“吃了”的语句。  </p>
-<p>而第二个 if 语句则会被编译成条件跳转字节码 if_icmpne，也就是说，如果局部变量的值和整数 1 不相等，那么跳过打印“真吃了”的语句。  </p>
-<h1 id="Java的基本类型"><a href="#Java的基本类型" class="headerlink" title="Java的基本类型"></a>Java的基本类型</h1><p><img src="/images/posts/JVM/02/primitive_types.png" alt="primitive_types"></p>
-<h2 id="默认值"><a href="#默认值" class="headerlink" title="默认值"></a>默认值</h2><p><strong>在内存中，默认值都是0。</strong></p>
-<h2 id="取值范围"><a href="#取值范围" class="headerlink" title="取值范围"></a>取值范围</h2><ul>
-<li>boolean和char是唯二的无符号类型。</li>
-<li>boolean类型的取值范围是0或1。</li>
-<li>char类型的取值范围是[0, 65535]。</li>
-</ul>
-<p>boolean, byte, char, short的<strong>局部变量储存可以超过取值范围</strong>。</p>
-<p><strong>正常使用Java编译器的情况下，生成的字节码会遵守Java虚拟机规范对编译器的约束。</strong></p>
-<h2 id="浮点数"><a href="#浮点数" class="headerlink" title="浮点数"></a>浮点数</h2><p>浮点数类型采用IEEE 754 浮点数格式。</p>
-<p>以float为例，<strong>浮点类型通常有两个0，+0.0F 和 -0.0F</strong>。</p>
-<p>在Java里，前者为0，后者符号位为1，其他位为0。</p>
-<p>虽然内存数值不同，但 +0.0F == -0.0F 会返回true。</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">float</span> a = +<span class="number">0.0f</span>;</span><br><span class="line"><span class="keyword">float</span> b = -<span class="number">0.0f</span>;</span><br><span class="line"><span class="keyword">float</span> c = Float.intBitsToFloat(<span class="number">0x80000000</span>);</span><br></pre></td></tr></table></figure>
-<p><strong>在内存中，正无穷等于0x7F800000，负无穷等于0xFF800000。</strong></p>
-<p><strong>[0x7F800001, 0x7FFFFFFF] 和 [0xFF800001, 0xFFFFFFFF] 对应NaN （Not-a-Number）。</strong></p>
-<p>一般我们计算得出的NaN（+0.0F/+0.0F），在内存中为0x7FC00000。</p>
-<p>这个数值称为标准的NaN，其他的称为不标准的NaN。</p>
-<p><strong>NaN有一个特性：“!=” 始终返回true，其他比较结果都回返回false。</strong></p>
-<h1 id="Java基本类型的大小"><a href="#Java基本类型的大小" class="headerlink" title="Java基本类型的大小"></a>Java基本类型的大小</h1><p>Java虚拟机没调用一个Java方法，便会创建一个栈帧，这里<strong>只讨论供解释器使用的解释栈帧（interpreted frame）</strong>。</p>
-<h2 id="解释栈帧"><a href="#解释栈帧" class="headerlink" title="解释栈帧"></a>解释栈帧</h2><p>这种栈帧有两个主要组成部分：广义的局部变量区，字节码的操作栈。</p>
-<p>广义局部变量包含：普遍意义的局部变量，this指针，方法参数。</p>
-<h2 id="局部变量"><a href="#局部变量" class="headerlink" title="局部变量"></a>局部变量</h2><p>在Java虚拟机规范中，<strong>局部变量区等价于一个数组</strong>。除了long、double的值用两个数组单元存储，其他基本类型以及引用类型的值均占用一个数组单元。</p>
-<p><strong>boolean、byte、char、short在栈上占用的空间和int、引用类型一样。</strong>32位HotSpot中占用4字节，64位HotSport中，占用8字节。这种情况<strong>仅存在于局部变量，不会出现在存储于堆中的字段或数组元素</strong>。</p>
-<h2 id="存储"><a href="#存储" class="headerlink" title="存储"></a>存储</h2><p><strong>将int类型的值存到其他类型的字段或数组时，相当于做了一次隐式的掩码操作。</strong></p>
-<p>把0xFFFFFFFF(-1)储存到一个声明为char类型的字段里时，高两位字节被截取掉，存入“\uFFFF”。</p>
-<p>HotSpot在<strong>存储boolean时显示进行掩码操作</strong>，只取最后一位的值存入boolean字段或数组中。</p>
-<p>HotSpot中boolean字段占用一字节，boolean数组直接用byte数组实现。</p>
-<h2 id="加载"><a href="#加载" class="headerlink" title="加载"></a>加载</h2><p>Java虚拟机的算数运算几乎全部依赖于操作数栈，堆中的boolean、byte、char和short加载到操作数栈上，当成int类型运算。</p>
-<p>对于boolean、char这两个无符号类型，加载伴随零扩展。</p>
-<p>对于byte、short加载伴随符号扩展。</p>
-<h1 id="将boolean类型的值存入字段中时，Java-虚拟机所做的掩码操作"><a href="#将boolean类型的值存入字段中时，Java-虚拟机所做的掩码操作" class="headerlink" title="将boolean类型的值存入字段中时，Java 虚拟机所做的掩码操作"></a>将boolean类型的值存入字段中时，Java 虚拟机所做的掩码操作</h1><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Foo</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">static</span> <span class="keyword">boolean</span> boolValue;</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">		boolValue = <span class="keyword">true</span>; <span class="comment">// 将这个 true 替换为 2 或者 3，再看看打印结果</span></span><br><span class="line">		<span class="keyword">if</span> (boolValue) </span><br><span class="line">			System.out.println(<span class="string">"Hello, Java!"</span>);</span><br><span class="line">		<span class="keyword">if</span> (boolValue == <span class="keyword">true</span>) </span><br><span class="line">			System.out.println(<span class="string">"Hello, JVM!"</span>);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p><strong>当替换为2的时候无输出</strong><br><strong>当替换为3的时候打印HelloJava及HelloJVM</strong><br>因为将boolean 保存在静态域中,指定了其类型为’Z’,当修改为2时取低位最后一位为0,当修改为3时取低位最后一位为1<br>则说明boolean的掩码处理是取低位的最后一位</p>
-<h1 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h1><p>Q：“也就是说，boolean、byte、char、short 这四种类型，在栈上占用的空间和 int 是一样的，和引用类型也是一样的。因此，在 32 位的 HotSpot 中，这些类型在栈上将占用 4 个字节；而在 64 位的 HotSpot 中，他们将占 8 个字节。”</p>
-<p>但是我记得boolean在内存中占1字节，char占2字节，这里是什么个意思？</p>
-<p>A：你说的是在堆里的情况。在解释器栈上是不一样的。至于原因吗，主要是<strong>变长数组不好控制</strong>，所以就选择浪费一些空间，以便访问时直接通过下标来计算地址。</p>
+<p>Q：为什么局部变量要初始化？</p>
+<p>A：① 如果是虚拟机初始化局部变量，那么它需要掌握每个变量的生命周期，以便初始化共享同一下标的局部变量。实现起来比较费事。② 从代码规范来看，使用未经初始化的局部变量意义不明。</p>
 <hr>
-<p>Q：使用基本类型能够在执行效率以及内存使用两方面提升软件性能。具体是什么原理呢？</p>
-<p>A：<strong>占的空间更小，不需要类型转换</strong>。</p>
-<h1 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h1><blockquote>
-<p><a href="https://time.geekbang.org/column/article/11503" target="_blank" rel="noopener">https://time.geekbang.org/column/article/11503</a></p>
-</blockquote>
+<p>Q：C/C++ 的汇编指令会有大量寄存器的操作，<strong>Java 的指令会用到寄存器吗</strong>？</p>
+<p>A：<strong>Java 字节码不会</strong>，但是<strong>底下的实现（比如解释执行器，即时编译器）是会的</strong>。</p>
 
           
         
@@ -1640,7 +675,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://blog.ennis.info/2018/07/27/笔记-深入拆解Java虚拟机-01Java代码是怎么运行的？/">
+    <link itemprop="mainEntityOfPage" href="http://blog.ennis.info/2018/11/08/笔记-深入拆解Java虚拟机-18即时编译器的中间表达形式/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Ennis L.M. Wu">
@@ -1659,7 +694,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2018/07/27/笔记-深入拆解Java虚拟机-01Java代码是怎么运行的？/" itemprop="url">笔记-深入拆解Java虚拟机-01Java代码是怎么运行的？</a></h1>
+                <a class="post-title-link" href="/2018/11/08/笔记-深入拆解Java虚拟机-18即时编译器的中间表达形式/" itemprop="url">「深入拆解 Java 虚拟机」18 即时编译器的中间表达形式</a></h1>
         
 
         <div class="post-meta">
@@ -1671,8 +706,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-07-27T15:04:15+08:00">
-                2018-07-27
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-11-08T14:41:19+08:00">
+                2018-11-08
               </time>
             
 
@@ -1694,8 +729,8 @@
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Java虚拟机/" itemprop="url" rel="index">
-                    <span itemprop="name">Java虚拟机</span>
+                  <a href="/categories/《深入拆解-Java-虚拟机》/" itemprop="url" rel="index">
+                    <span itemprop="name">《深入拆解 Java 虚拟机》</span>
                   </a>
                 </span>
 
@@ -1733,278 +768,230 @@
       
         
           
-            <h1 id="为什么Java要在虚拟机里运行？"><a href="#为什么Java要在虚拟机里运行？" class="headerlink" title="为什么Java要在虚拟机里运行？"></a>为什么Java要在虚拟机里运行？</h1><ol>
-<li>Java作为一门高级程序语言，<strong>语法复杂，抽象程度高</strong>，直接在硬件上运行这种复杂的程序不现实。</li>
-<li>Java虚拟机既可以硬件实现也可以软件实现，常见平台上都是软件实现，意义：“<strong>一次编写，到处运行</strong>”。</li>
-<li>虚拟机<strong>提供了托管环境</strong>。能代替我们处理一些代码中冗长而且容易出错的部分。如：自动内存管理，垃圾回收，提供如数组越界、动态类型、安全权限等的动态检测。</li>
-</ol>
-<h1 id="Java虚拟机具体怎样运行Java字节码的？"><a href="#Java虚拟机具体怎样运行Java字节码的？" class="headerlink" title="Java虚拟机具体怎样运行Java字节码的？"></a>Java虚拟机具体怎样运行Java字节码的？</h1><p>下面以标准JDK中的HotSpot虚拟机为例。</p>
-<p>Java虚拟机会在<strong>内存中划分出堆（stack）、栈（heap）和方法区（method）</strong></p>
-<p>其中<strong>栈</strong>细分为：</p>
-<ol>
-<li>面向Java方法的<strong>Java方法栈</strong></li>
-<li>面向本地方法的<strong>本地方法栈</strong></li>
-<li>各个线程执行位置的<strong>PC寄存器</strong></li>
-</ol>
-<p>class文件加载后存放于方法区，运行时执行方法区内的代码。</p>
-<p><img src="/images/posts/JVM/01/ram.png" alt="ram"></p>
-<h2 id="堆区"><a href="#堆区" class="headerlink" title="堆区"></a>堆区</h2><ul>
-<li>提供所有<strong>类实例</strong>和<strong>数组对象</strong>存储区域。</li>
-<li>JVM只有一个堆区(heap)被所有<strong>线程共享</strong>，堆中不存放基本类型和对象引用，只存放对象本身。</li>
-</ul>
-<h2 id="栈区"><a href="#栈区" class="headerlink" title="栈区"></a>栈区</h2><ul>
-<li>每个线程包含一个栈区，栈中只保存<strong>基础数据类型</strong>的对象和自定义对象的<strong>引用</strong>(不是对象)，对象都存放在堆区中。</li>
-<li>每个栈中的数据（原始类型和对象引用）都是私有的，<strong>其他栈不能访问</strong>。</li>
-</ul>
-<h2 id="方法区"><a href="#方法区" class="headerlink" title="方法区"></a>方法区</h2><ul>
-<li>又叫静态区，跟堆一样，被所有的<strong>线程共享</strong>。方法区包含<strong>所有的class和static变量</strong>。</li>
-<li>方法区中包含的都是在整个程序中永远唯一的元素，如class，static变量。</li>
-<li>运行时<strong>常量池</strong>都分配在 Java 虚拟机的方法区之中。</li>
-</ul>
-<h2 id="Java方法调用过程"><a href="#Java方法调用过程" class="headerlink" title="Java方法调用过程"></a>Java方法调用过程</h2><ul>
-<li><p>进入一个Java方法，在当前线程的Java方法栈中生成一个栈帧。<br>栈帧的大小提前计算好。<br>存放局部变量和字节码的操作数。<br>不要求栈帧在内存中连续分布。</p>
-</li>
-<li><p>退出方法（正常或异常），弹出当前线程的当前栈帧，并舍弃。</p>
-</li>
-</ul>
-<p>Java字节码无法直接执行，要翻译成机器码。</p>
-<h2 id="HotSpot翻译字节码的两种形式"><a href="#HotSpot翻译字节码的两种形式" class="headerlink" title="HotSpot翻译字节码的两种形式"></a>HotSpot翻译字节码的两种形式</h2><h3 id="解释执行"><a href="#解释执行" class="headerlink" title="解释执行"></a>解释执行</h3><p>逐条将字节码翻译成机器码并执行。<br>无需等待编译。</p>
-<h3 id="即时编译"><a href="#即时编译" class="headerlink" title="即时编译"></a>即时编译</h3><p>Just-In-Time compilation, JIT<br>将方法中包含的所有字节码编译成机器码后再执行。<br>实际运行速度更快。</p>
-<p><img src="/images/posts/JVM/01/execute_code.png" alt="execute_code"></p>
-<p>HotSpot默认采用<strong>混合模式</strong>。先解释执行，热点代码以方法为单位即时编译。</p>
-<h1 id="Java虚拟机的运行效率究竟是怎样的？"><a href="#Java虚拟机的运行效率究竟是怎样的？" class="headerlink" title="Java虚拟机的运行效率究竟是怎样的？"></a>Java虚拟机的运行效率究竟是怎样的？</h1><p><strong>即时编译</strong>建立再程序符合<strong>二八定律</strong>的假设上。</p>
-<p>HotSpot内置了多个即时编译器：C1、C2和Graal。</p>
-<h2 id="Graal"><a href="#Graal" class="headerlink" title="Graal"></a>Graal</h2><p>Java 10正式引入的实验性编译器。</p>
-<h2 id="C1（Client编译器）"><a href="#C1（Client编译器）" class="headerlink" title="C1（Client编译器）"></a>C1（Client编译器）</h2><ul>
-<li>面向客户端GUI程序。</li>
-<li>对启动性能有要求。</li>
-<li>优化手段相对简单。</li>
-<li>编译时间短。</li>
-</ul>
-<h2 id="C2（Server编译器）"><a href="#C2（Server编译器）" class="headerlink" title="C2（Server编译器）"></a>C2（Server编译器）</h2><ul>
-<li>面向服务端程序。</li>
-<li>对峰值性能有要求。</li>
-<li>优化手段相对复杂。</li>
-<li>编译时间较长。</li>
-<li>生成代码执行效率较高。</li>
-</ul>
-<p>Java 7 开始，HotSpot默认采用<strong>分层编译</strong>：</p>
+            <p>原文：<a href="https://time.geekbang.org/column/article/14270" target="_blank" rel="noopener">https://time.geekbang.org/column/article/14270</a></p>
+<p>目测太难看不懂。。。</p>
+<p>待更新</p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://blog.ennis.info/2018/11/07/Android的视图优化方法/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Ennis L.M. Wu">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar/portrait.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Ennis Wu">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/11/07/Android的视图优化方法/" itemprop="url">「笔记」Android 的视图优化方法</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-11-07T21:31:51+08:00">
+                2018-11-07
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Android/" itemprop="url" rel="index">
+                    <span itemprop="name">Android</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h1 id="过度绘制（Overdraw）"><a href="#过度绘制（Overdraw）" class="headerlink" title="过度绘制（Overdraw）"></a>过度绘制（Overdraw）</h1><blockquote>
+<p>过度绘制（Overdraw）指的是屏幕上的某个像素在同一帧的时间内被绘制了多次。</p>
+</blockquote>
+<h2 id="检测过度绘制"><a href="#检测过度绘制" class="headerlink" title="检测过度绘制"></a>检测过度绘制</h2><p>Android 中打开过度绘制检测工具的方式：</p>
 <ul>
-<li>热点方法被C1编译。</li>
-<li>热点方法中的热点进一步被C2编译。</li>
+<li>开发者选项 ➡ 调试GPU过度绘制 ➡ 显示过度绘制区域</li>
 </ul>
-<p>HotSpot的即时编译放在额外的<strong>编译线程</strong>中。<br>HotSpot根据CPU数量设置编译线程数目。<br>1:2的比例配置C1和C2。</p>
-<p>资源充足的情况下，<strong>解释执行和即时编译可同行进行</strong>。</p>
-<h1 id="Java-语言和-Java-虚拟机看待-boolean-类型的方式是否不同？"><a href="#Java-语言和-Java-虚拟机看待-boolean-类型的方式是否不同？" class="headerlink" title="Java 语言和 Java 虚拟机看待 boolean 类型的方式是否不同？"></a>Java 语言和 Java 虚拟机看待 boolean 类型的方式是否不同？</h1><p>$ echo ‘<br>public class Foo {<br> public static void main(String[] args) {<br>  boolean flag = true;<br>  if (flag) System.out.println(“Hello, Java!”);<br>  if (flag == true) System.out.println(“Hello, JVM!”);<br> }<br>}’ &gt; Foo.java<br>$ javac Foo.java<br>$ java Foo<br>$ java -cp /path/to/asmtools.jar org.openjdk.asmtools.jdis.Main Foo.class &gt; Foo.jasm.1<br>$ awk ‘NR==1,/iconst_1/{sub(/iconst_1/, “iconst_2”)} 1’ Foo.jasm.1 &gt; Foo.jasm<br>$ java -cp /path/to/asmtools.jar org.openjdk.asmtools.jasm.Main Foo.jasm<br>$ java Foo</p>
-<p><strong>JVM把boolean当做int来处理</strong><br>flag = iconst_1 = true<br>awk把stackframe中的flag改为iconst_2<br>if（flag）比较时ifeq指令做是否为零判断，常数2仍为true，打印输出<br>if（true == flag）比较时if_cmpne做整数比较，iconst_1是否等于flag，比较失败，不再打印输出</p>
-<h1 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h1><p>Q：对于服务端，很多服务端应用发布频率不会太频繁，但是对运行时的性能和吞吐量要求较高。<strong>为什么不把java代码全部编译成机器码</strong>？如果发布或启动时多花点时间编译，能够带来运行时的持久性能收益。</p>
-<p>A：对于这种发布频率不频繁(也就是长时间运行吧？)的程序，其实选择线下编译和即时编译都一样，因为至多一两个小时后该即时编译的都已经编译完成了。另外，<strong>即时编译器因为有程序的运行时信息，优化效果更好，也就是说峰值性能更好</strong>。</p>
-<p>A：解释执行，执行时才翻译成机器指令，无需保存不占内存。但即时编译类似预编译，<strong>编译之后的指令需要保存在内存中，这种方式吃内存</strong>，按照二八原则这种混合模式最恰当的，热点代码编译之后放入内存避免重复编译，而其他运行次数较少代码则解释执行，避免占用过多内存。</p>
-<hr>
-<p>Q：什么时候使用C1，什么时候使用C2，他是怎么区分热点方法的呢？</p>
-<p>A：JVM会统计每个方法被调用了多少次，超过多少次，那就是热点方法。(还有个循环回边计数器，用来编译热循环的。)<br>默认的分层编译应该是达到两千调C1，达到一万五调C2。</p>
-<h1 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h1><blockquote>
-<p><a href="https://time.geekbang.org/column/article/11289" target="_blank" rel="noopener">https://time.geekbang.org/column/article/11289</a><br><a href="https://blog.csdn.net/zly921112/article/details/61192747" target="_blank" rel="noopener">https://blog.csdn.net/zly921112/article/details/61192747</a></p>
+<p>界面中会出现不同颜色的区域，各颜色代表的意思：</p>
+<p><img src="/images/posts/android/Android的视图优化方法/overdraw.webp" alt="overdraw"></p>
+<h2 id="过度绘制优化"><a href="#过度绘制优化" class="headerlink" title="过度绘制优化"></a>过度绘制优化</h2><h3 id="移除布局中不需要的背景"><a href="#移除布局中不需要的背景" class="headerlink" title="移除布局中不需要的背景"></a>移除布局中不需要的背景</h3><h4 id="移除-Window-默认的-Background"><a href="#移除-Window-默认的-Background" class="headerlink" title="移除 Window 默认的 Background"></a>移除 Window 默认的 Background</h4><p>通常使用的 theme 会包含一个 windowBackground。</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">item</span> <span class="attr">name</span>=<span class="string">"android:windowBackground"</span>&gt;</span>@color/background_material_light<span class="tag">&lt;/<span class="name">item</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>然后又给跟布局添加了一个背景，这会导致整个页面被多绘制一次。</p>
+<p>移掉 windowBackground 即可解决，有两种方法。</p>
+<ul>
+<li>在 theme 中设置</li>
+</ul>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">item</span> <span class="attr">name</span>=<span class="string">"android:windowBackground"</span>&gt;</span>@null<span class="tag">&lt;/<span class="name">item</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<ul>
+<li>在 onCreate() 方法中添加</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">getWindow().setBackgroundDrawable(<span class="keyword">null</span>);</span><br></pre></td></tr></table></figure>
+<h4 id="移除控件中不需要的背景"><a href="#移除控件中不需要的背景" class="headerlink" title="移除控件中不需要的背景"></a>移除控件中不需要的背景</h4><ul>
+<li>父布局和子布局设置了相同的 background，选择其一设置即可。</li>
+</ul>
+<h2 id="减少透明度的使用"><a href="#减少透明度的使用" class="headerlink" title="减少透明度的使用"></a>减少透明度的使用</h2><p>View 设置了 alpha 值至少渲染两次。</p>
+<h1 id="布局优化"><a href="#布局优化" class="headerlink" title="布局优化"></a>布局优化</h1><ul>
+<li><p>LinearLayout 与 RelativeLayout 作用相同时使用 LinearLayout。</p>
+</li>
+<li><p>LinearLayout 需要嵌套时使用 RelativeLayout。</p>
+</li>
+<li><p>使用 ConstraintLayout。</p>
+</li>
+</ul>
+<h2 id="使用-Layout-Inspector-查看-layout-层次结构"><a href="#使用-Layout-Inspector-查看-layout-层次结构" class="headerlink" title="使用 Layout Inspector 查看 layout 层次结构"></a>使用 Layout Inspector 查看 layout 层次结构</h2><blockquote>
+<p>Tools &gt; Android &gt; Layout Inspector</p>
 </blockquote>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://blog.ennis.info/2018/07/23/Android的性能优化方法/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Ennis L.M. Wu">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar/portrait.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Ennis Wu">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/07/23/Android的性能优化方法/" itemprop="url">Android的性能优化方法</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-07-23T16:33:07+08:00">
-                2018-07-23
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Android优化/" itemprop="url" rel="index">
-                    <span itemprop="name">Android优化</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h1 id="布局优化"><a href="#布局优化" class="headerlink" title="布局优化"></a>布局优化</h1><ul>
-<li>LinearLayout与RelativeLayout作用相同时使用LinearLayout。</li>
-<li>LinearLayout需要嵌套时使用RelativeLayout。</li>
-<li>使用ConstraintLayout。</li>
+<h2 id="使用-lint-优化布局的层次结构"><a href="#使用-lint-优化布局的层次结构" class="headerlink" title="使用 lint 优化布局的层次结构"></a>使用 lint 优化布局的层次结构</h2><blockquote>
+<p>Analyze&gt; Inspect Code</p>
+<blockquote>
+<p>Android&gt; Lint&gt; Performance</p>
+</blockquote>
+</blockquote>
+<h2 id="lt-include-标签"><a href="#lt-include-标签" class="headerlink" title="&lt;include> 标签"></a>&lt;include> 标签</h2><ul>
+<li><p>只支持 android:layout_ 开头的属性（android:id 是特例）。</p>
+</li>
+<li><p>&lt;include> 指定了 id 属性，包含的布局文件根元素也指定了 id 属性，以 &lt;include> 指定的为准。</p>
+</li>
 </ul>
-<h2 id="lt-include-标签"><a href="#lt-include-标签" class="headerlink" title="&lt;include>标签"></a>&lt;include>标签</h2><ul>
-<li>只支持android:layout_开头的属性（android:id是特例）。</li>
-<li>&lt;include>指定了id属性，包含的布局文件根元素也指定了id属性，以&lt;include>指定的为准。</li>
-</ul>
-<h2 id="lt-merge-标签"><a href="#lt-merge-标签" class="headerlink" title="&lt;merge>标签"></a>&lt;merge>标签</h2><ul>
-<li>配合&lt;include>标签使用可以减少布局的层级。</li>
+<h2 id="lt-merge-标签"><a href="#lt-merge-标签" class="headerlink" title="&lt;merge> 标签"></a>&lt;merge> 标签</h2><ul>
+<li>配合 &lt;include> 标签使用可以减少布局的层级。</li>
 </ul>
 <h2 id="ViewStub"><a href="#ViewStub" class="headerlink" title="ViewStub"></a>ViewStub</h2><ul>
-<li>继承自View，宽高都是0，本身不参与任何的布局和绘制过程。</li>
-<li>按需加载所需的布局文件（如网络异常时的界面），使用的时候再加载，提高初始化性能。</li>
-<li>不支持&lt;merge>标签。</li>
-<li>使用inflateedId属性指定加载的布局id。</li>
+<li><p>继承自 View，宽高都是 0，本身不参与任何的布局和绘制过程。</p>
+</li>
+<li><p>按需加载所需的布局文件（如网络异常时的界面），使用的时候再加载，提高初始化性能。</p>
+</li>
+<li><p>不支持 &lt;merge> 标签。</p>
+</li>
+<li><p>使用 inflatedId 属性指定加载的布局 id。</p>
+</li>
 </ul>
 <figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">ViewStub</span></span></span><br><span class="line"><span class="tag">	<span class="attr">android:id</span>=<span class="string">"@+id/stub_import"</span></span></span><br><span class="line"><span class="tag">	<span class="attr">android:inflatedId</span>=<span class="string">"@+id/panel_import"</span> /&gt;</span></span><br></pre></td></tr></table></figure>
 <h3 id="怎样加载？"><a href="#怎样加载？" class="headerlink" title="怎样加载？"></a>怎样加载？</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">((ViewStub) findViewById(R.id.stub_import)).setVisibility(View.VISIBLE);</span><br></pre></td></tr></table></figure>
 <p>或</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">View importPanel = ((ViewStub) findViewById(R.id.stub_import)).inflate();</span><br></pre></td></tr></table></figure>
 <ul>
-<li>加载后ViewStub不在属于布局，为null。</li>
+<li>加载后 ViewStub 不在属于布局，为 null。</li>
 </ul>
-<h1 id="绘制优化"><a href="#绘制优化" class="headerlink" title="绘制优化"></a>绘制优化</h1><h2 id="onDraw方法"><a href="#onDraw方法" class="headerlink" title="onDraw方法"></a>onDraw方法</h2><ul>
-<li>不要创建新的布局对象。</li>
-<li>不要做耗时的任务。</li>
+<h1 id="绘制优化"><a href="#绘制优化" class="headerlink" title="绘制优化"></a>绘制优化</h1><h2 id="onDraw-方法"><a href="#onDraw-方法" class="headerlink" title="onDraw 方法"></a>onDraw 方法</h2><ul>
+<li><p>不要创建新的布局对象。</p>
+</li>
+<li><p>不要做耗时的任务。</p>
+</li>
 </ul>
-<h1 id="内存泄漏优化"><a href="#内存泄漏优化" class="headerlink" title="内存泄漏优化"></a>内存泄漏优化</h1><h2 id="静态变量导致的内存泄漏"><a href="#静态变量导致的内存泄漏" class="headerlink" title="静态变量导致的内存泄漏"></a>静态变量导致的内存泄漏</h2><ul>
-<li>静态变量引用Context。</li>
-<li>静态变量引用View（持有Context）。</li>
+<h3 id="减少自定义-View-的过度绘制"><a href="#减少自定义-View-的过度绘制" class="headerlink" title="减少自定义 View 的过度绘制"></a>减少自定义 View 的过度绘制</h3><ul>
+<li>假如有多张图片叠层显示时，可以使用 <code>Canvas</code> 的 <code>clipRect()</code> 等方法将图片裁剪。</li>
 </ul>
-<h2 id="单例模式导致的内存泄漏"><a href="#单例模式导致的内存泄漏" class="headerlink" title="单例模式导致的内存泄漏"></a>单例模式导致的内存泄漏</h2><ul>
-<li>单例模式保存某个监听器（由Context实现）而没有解注册的方法。</li>
-</ul>
-<h2 id="属性动画导致的内存泄漏"><a href="#属性动画导致的内存泄漏" class="headerlink" title="属性动画导致的内存泄漏"></a>属性动画导致的内存泄漏</h2><ul>
-<li>无限循环的属性动画，Activity在onDestroy中需要停止动画（否则动画会一直播放，动画持有View，View持有Activity，Activity不能被释放）。</li>
-</ul>
-<h1 id="响应速度优化"><a href="#响应速度优化" class="headerlink" title="响应速度优化"></a>响应速度优化</h1><ul>
-<li>核心思想：避免在主线程中做耗时操作。</li>
-<li>一个进程发生ANR之后，系统会在/data/anr目录下建一个文件traces.txt。</li>
-</ul>
-<h1 id="ListView优化"><a href="#ListView优化" class="headerlink" title="ListView优化"></a>ListView优化</h1><ul>
-<li>别优化了，直接用RecyclerView，同理GridView。</li>
-</ul>
-<h1 id="Bitmap优化"><a href="#Bitmap优化" class="headerlink" title="Bitmap优化"></a>Bitmap优化</h1><p>未更新</p>
-<h1 id="线程优化"><a href="#线程优化" class="headerlink" title="线程优化"></a>线程优化</h1><ul>
-<li>采用线程池，避免大量的Thread。</li>
-</ul>
-<h1 id="其他"><a href="#其他" class="headerlink" title="其他"></a>其他</h1><ul>
-<li>避免创建过多对象。</li>
-<li>不要过多使用枚举，枚举占用的内存空间比整形大。</li>
-<li>常量使用static final修饰。</li>
-<li>Android特有的数据结构有更好的性能(SparseArray，Pair等)。</li>
-<li>适当使用软引用和弱引用。</li>
-<li>采用内存缓存和磁盘缓存。</li>
-<li>尽量采用静态内部类。</li>
+<h1 id="使用-GPU-呈现模式分析工具"><a href="#使用-GPU-呈现模式分析工具" class="headerlink" title="使用 GPU 呈现模式分析工具"></a>使用 GPU 呈现模式分析工具</h1><p>Android 中打开 GPU 呈现模式分析工具的方式：</p>
+<ul>
+<li>开发者模式 ➡ 监控 ➡ GPU呈现模式</li>
 </ul>
 
           
@@ -2054,7 +1041,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://blog.ennis.info/2018/07/23/Android架构——Clean/">
+    <link itemprop="mainEntityOfPage" href="http://blog.ennis.info/2018/11/06/笔记-深入拆解Java虚拟机-1617即时编译/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Ennis L.M. Wu">
@@ -2073,7 +1060,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2018/07/23/Android架构——Clean/" itemprop="url">Android架构——Clean</a></h1>
+                <a class="post-title-link" href="/2018/11/06/笔记-深入拆解Java虚拟机-1617即时编译/" itemprop="url">「深入拆解 Java 虚拟机」16 17 即时编译</a></h1>
         
 
         <div class="post-meta">
@@ -2085,8 +1072,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-07-23T11:16:49+08:00">
-                2018-07-23
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-11-06T10:03:09+08:00">
+                2018-11-06
               </time>
             
 
@@ -2108,8 +1095,8 @@
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Android架构/" itemprop="url" rel="index">
-                    <span itemprop="name">Android架构</span>
+                  <a href="/categories/《深入拆解-Java-虚拟机》/" itemprop="url" rel="index">
+                    <span itemprop="name">《深入拆解 Java 虚拟机》</span>
                   </a>
                 </span>
 
@@ -2147,70 +1134,1100 @@
       
         
           
-            <h1 id="Clean架构的主要特点："><a href="#Clean架构的主要特点：" class="headerlink" title="Clean架构的主要特点："></a>Clean架构的主要特点：</h1><ul>
-<li>框架独立</li>
-<li>容易测试</li>
-<li>UI独立</li>
-<li>数据库独立</li>
-<li>不依赖任何中介</li>
+            <h1 id="原文"><a href="#原文" class="headerlink" title="原文"></a>原文</h1><ul>
+<li><a href="https://time.geekbang.org/column/article/14061" target="_blank" rel="noopener">https://time.geekbang.org/column/article/14061</a></li>
+<li><a href="https://time.geekbang.org/column/article/14070" target="_blank" rel="noopener">https://time.geekbang.org/column/article/14070</a></li>
 </ul>
-<p>Clean的主要思想是外层依赖内层，<strong>内层完全不依赖外层</strong>（或者说内层不知道外层的存在，可以独立开发，复用性强）。</p>
-<h1 id="Clean架构解析"><a href="#Clean架构解析" class="headerlink" title="Clean架构解析"></a>Clean架构解析</h1><p><img src="/images/posts/android/architecture/clean/CleanArchitecture-c.jpg" alt="CleanArchitecture"></p>
-<ul>
-<li>Enterprise Business Rules：业务对象</li>
-<li>Application Business Rules：用于处理我们的业务对象，业务逻辑所在，也称为Interactor</li>
-<li>Interface Adapters： 接口转换，拿到我们需要的数据，主持者层（Presenters）和控制层（Controllers）就在这一层</li>
-<li>Frameworks and Drivers: 这里是所有具体的实现了：比如：UI，工具类，基础框架等等。</li>
-</ul>
-<p>Clean框架不一定只有4层，这里以4层为例。<br>上面可能比较抽象，下面是简单的说法：</p>
-<ul>
-<li>第一层：实体类</li>
-<li>第二层：也叫UseCase层，实现具体业务逻辑。</li>
-<li>第三层：如果是MVP这一层为Presenter，MVC这一层为Controller。</li>
-<li>第四层：具体实现。</li>
-</ul>
-<p><img src="/images/posts/android/architecture/clean/CleanSimple.jpg" alt="CleanSimple"></p>
-<ol>
-<li><strong>内层均为纯Java代码</strong>，只需要jvm便可以运行。</li>
-<li>内层代码不仅可以在Android平台，还可以在别的Java平台复用。</li>
-<li>各层单独测试，各层之间通过接口通信，且独立，方便单元测试。</li>
-<li><strong>层与层之间完全隔离</strong>，最主要的体现就是<strong>各层有自己的数据结构</strong>，不同层之间相互转换，完全没有依赖关系。</li>
-<li>通过依赖注入的方式导致灵活修改逻辑、实现，这点与MVP的思想相似，Clean与MVP和Dagger结合使用是天然合适的。</li>
+<h1 id="分层编译模式"><a href="#分层编译模式" class="headerlink" title="分层编译模式"></a>分层编译模式</h1><h2 id="HotSpot-包含的即时编译器："><a href="#HotSpot-包含的即时编译器：" class="headerlink" title="HotSpot 包含的即时编译器："></a>HotSpot 包含的即时编译器：</h2><ol>
+<li><p>C1</p>
+</li>
+<li><p>C2</p>
+</li>
+<li><p>Graal（<strong>实验性质</strong>的即时编译器）</p>
+</li>
 </ol>
-<p>以mvp-clean为例，与纯mvp最主要的区别就是Presenter层剥离出UserCase层，一是方便测试，二是方便代码复用，减少Presenter层的代码冗余。</p>
-<h1 id="Google-Demo-——-todo-mvp-clean-解析"><a href="#Google-Demo-——-todo-mvp-clean-解析" class="headerlink" title="Google Demo —— todo-mvp-clean 解析"></a>Google Demo —— todo-mvp-clean 解析</h1><blockquote>
-<p>demo地址：<a href="https://github.com/googlesamples/android-architecture/tree/todo-mvp-clean/" target="_blank" rel="noopener">https://github.com/googlesamples/android-architecture/tree/todo-mvp-clean/</a><br>mvp-clean基于mvp，加了 domain layer 介于 presentation 和 repositories。同时也将整个app 分为三个层次处理。</p>
+<h2 id="Java-7-以前需要根据程序特性选择对应的即使编译器"><a href="#Java-7-以前需要根据程序特性选择对应的即使编译器" class="headerlink" title="Java 7 以前需要根据程序特性选择对应的即使编译器"></a>Java 7 以前需要根据程序特性选择对应的即使编译器</h2><h3 id="C1"><a href="#C1" class="headerlink" title="C1"></a>C1</h3><ul>
+<li><p><strong>执行时间较短</strong>的程序。</p>
+</li>
+<li><p>对<strong>启动性能</strong>有要求的程序。</p>
+</li>
+<li><p>C1 <strong>编译效率较快</strong>。</p>
+</li>
+<li><p>对应参数 -client</p>
+</li>
+</ul>
+<h3 id="C2"><a href="#C2" class="headerlink" title="C2"></a>C2</h3><ul>
+<li><p><strong>执行时间较长</strong>的程序。</p>
+</li>
+<li><p>对<strong>峰值性能</strong>有要求的程序。</p>
+</li>
+<li><p>C2 生成<strong>代码的执行效率较快</strong>。</p>
+</li>
+<li><p>对应参数 -server</p>
+</li>
+</ul>
+<h2 id="Java-7-引入分层编译"><a href="#Java-7-引入分层编译" class="headerlink" title="Java 7 引入分层编译"></a>Java 7 引入分层编译</h2><ul>
+<li><p><strong>综合</strong> C1 的<strong>启动性能</strong>优势和 C2 的<strong>峰值性能</strong>优势。</p>
+</li>
+<li><p>分层编译将 Java 虚拟机的执行状态<strong>分为 5 个层次</strong>。</p>
+<p>  0.解释执行</p>
+<p>  1.执行不带 profiling 的 C1 代码</p>
+<p>  2.执行仅带方法调用次数和循环回边执行次数 profiling 的C1 代码</p>
+<p>  3.执行带所有 profiling 的 C1 代码</p>
+<p>  4.执行 C2 代码</p>
+</li>
+<li><p>C2 代码的执行效率比 C1 代码高 30% 以上。</p>
+</li>
+<li><p>C1 执行效率 1 层 &gt; 2 层 &gt; 3 层。（1 层比 2 层稍高，2 层比 3 层高 30% 以上）。</p>
+</li>
+</ul>
+<h2 id="profile"><a href="#profile" class="headerlink" title="profile"></a>profile</h2><ul>
+<li><p>profiling：在程序执行过程中，收集能够<strong>反映程序执行状态的数据</strong>。</p>
+</li>
+<li><p>这里所收集的数据我们称之为程序的 profile。</p>
+</li>
+<li><p>例如 JDK 附带的 hprof。</p>
+</li>
+<li><p>profiler 大多通过<strong>注入</strong>或 <strong>JVMTI 事件</strong>来实现。</p>
+</li>
+<li><p><strong>第 0 层和第 3 层还会收集用于第 4 层 C2 编译的数据。</strong></p>
+</li>
+</ul>
+<p>如：分支跳转字节码的分支 profile（branch profile）（跳转次数和不跳转次数），非私有实例方法调用指令，强制类型转换 checkcast 指令，类型测试 instanceof 指令，引用类型的数组存储 aastore 指令的 profile（receiver type profile）。</p>
+<ul>
+<li><p>分支 profile 和类型 profile 的收集会给应用程序<strong>带来不少性能开销</strong>。</p>
+</li>
+<li><p>通常情况，<strong>不会在解释执行中收集</strong>分支 profile 和类型 profile。</p>
+</li>
+<li><p><strong>只有触发 C1 编译后</strong>，JVM 认为可能被 C2 编译，才收集这些 profile。</p>
+</li>
+<li><p>比较<strong>极端情况</strong>下，JVM 才会在<strong>解释执行时收集</strong> profile（如等待 C1 编译的方法过多时）。</p>
+</li>
+<li><p>C2 可以根据收集到的数据进行猜测，作出比较<strong>激进的优化</strong>。</p>
+</li>
+</ul>
+<h3 id="基于分支-profile-的优化"><a href="#基于分支-profile-的优化" class="headerlink" title="基于分支 profile 的优化"></a>基于分支 profile 的优化</h3><ul>
+<li><p>根据条件跳转指令的分支 profile，即时编译器可以将<strong>从未执行过的分支剪掉</strong>。</p>
+<ul>
+<li><p><strong>节省编译时间</strong>和部署代码要消耗的<strong>内存空间</strong>。</p>
+</li>
+<li><p>将<strong>精简程序的数据流</strong>，触发更多的优化。</p>
+</li>
+</ul>
+</li>
+<li><p>根据分支 profile，计算每一条程序执行路径的概率，<strong>优化优先处理概率较高的路径</strong>。</p>
+</li>
+</ul>
+<h3 id="基于类型-profile-的优化"><a href="#基于类型-profile-的优化" class="headerlink" title="基于类型 profile 的优化"></a>基于类型 profile 的优化</h3><h4 id="instanceof-测试"><a href="#instanceof-测试" class="headerlink" title="instanceof 测试"></a>instanceof 测试</h4><ul>
+<li><p>目标类型是 final 类型，只比较测试对象的动态类型是否为该类型。</p>
+</li>
+<li><p>目标类型是非 final 类型，依次测试该类，该类的父类、祖先类，该类所直接或者间接实现的接口。</p>
+</li>
+</ul>
+<h4 id="instanceof-以及方法调用的类型-profile"><a href="#instanceof-以及方法调用的类型-profile" class="headerlink" title="instanceof 以及方法调用的类型 profile"></a>instanceof 以及方法调用的类型 profile</h4><ul>
+<li><p><strong>假设对象的动态类型仅为类型 profile 中的那几个。</strong></p>
+</li>
+<li><p><strong>针对分支 profile 优化。</strong></p>
+</li>
+<li><p><strong>对方法调用的条件去虚化内联。</strong></p>
+</li>
+</ul>
+<h3 id="去优化"><a href="#去优化" class="headerlink" title="去优化"></a>去优化</h3><blockquote>
+<p>即从执行即时编译生成的机器码切换回解释执行。</p>
 </blockquote>
-<h2 id="mvp-clean层次图"><a href="#mvp-clean层次图" class="headerlink" title="mvp-clean层次图"></a>mvp-clean层次图</h2><p><img src="/images/posts/android/architecture/clean/mvp-clean.png" alt="mvp-clean"></p>
 <ul>
-<li>Presentation层 : MVP 设计准则。</li>
-<li>Domain层 : 处理所有的业务逻辑，注意是所有的业务逻辑。对应use case（interactors）。</li>
-<li>Data层 : 获取数据，以及数据的存储，分为本地和远程。</li>
+<li><p>当<strong>假设失败</strong>的情况下，JVM 将<strong>去优化</strong>。</p>
+</li>
+<li><p>生成的机器码中，即时编译器在<strong>假设失败的位置上插入一个陷阱</strong>（trap）。</p>
+</li>
+<li><p>陷阱实际上是一条 call 指令，调用至 Java 虚拟机专门负责去优化的方法。</p>
+</li>
+<li><p>与普通的 call 指令的区别：去优化方法会更改栈上的返回地址，并不再返回即时编译器生成的机器码中。</p>
+</li>
+<li><p><strong>去优化过程非常复杂。</strong></p>
+</li>
+<li><p>生成的机器代码和原本的字节码差异非常大。</p>
+</li>
+<li><p>需要将当前机器码的执行状态转换至某一字节码之前的执行状态，并从该字节码开始执行。</p>
+</li>
+<li><p>这便要求即时编译器在编译过程中<strong>记录好这两种执行状态的映射</strong>。</p>
+</li>
 </ul>
-<h2 id="基本概念（摘自mvp-clean-GitHub主页部分原文翻译）"><a href="#基本概念（摘自mvp-clean-GitHub主页部分原文翻译）" class="headerlink" title="基本概念（摘自mvp-clean GitHub主页部分原文翻译）"></a>基本概念（摘自mvp-clean GitHub主页部分原文翻译）</h2><ul>
-<li>mvp-clean 和 基本的mvp 最大的区别就是在domain层和UseCase 的使用上。从 presenter 层分离出domain 层好处是可以减少代码的冗余。</li>
-<li><strong>UseCase 的好处是在domain的代码层上可以复用。</strong>CompleteTask在TaskDetailPresenter和TasksPresenter做到了很好的复用。</li>
-<li>domain layer 是完全解耦与Android 层和第三方依赖的。是一个纯java层的处理。</li>
-<li><strong>UseCase 从主线程剥离出来</strong>，对于Android app是个好的操作。这种操作是尽可能的减少占用UI 线程。我们决定使用 command pattern 将use case 在线程池里执行操作。同样的我们可以用RxJava 或者 Promises实现同样的功能。</li>
-<li>我们使用异步的repositories 。 但是现在没有必要这么做了。因为UseCase 已经从主线程里剥离出来了。这是尽量保持 samples 和原来的是一致的。</li>
+<h4 id="去优化的原因与优化无关"><a href="#去优化的原因与优化无关" class="headerlink" title="去优化的原因与优化无关"></a>去优化的原因与优化无关</h4><blockquote>
+<p>即使重新编译也不会改变生成的机器码。</p>
+</blockquote>
+<ul>
+<li><p>生成的机器码可以在调用去优化方法时传入 Action_None。</p>
+</li>
+<li><p>表示<strong>保留这一份机器码</strong>。</p>
+</li>
+<li><p>在下一次调用该方法时重新进入这一份机器码。</p>
+</li>
 </ul>
-<h2 id="项目主要关系图"><a href="#项目主要关系图" class="headerlink" title="项目主要关系图"></a>项目主要关系图</h2><p><img src="/images/posts/android/architecture/clean/mvpcleanproject.png" alt="mvpcleanproject"></p>
-<h2 id="具体用例流程"><a href="#具体用例流程" class="headerlink" title="具体用例流程"></a>具体用例流程</h2><p>未完待续。。。</p>
-<h1 id="思考"><a href="#思考" class="headerlink" title="思考"></a>思考</h1><p>纯MVP架构会使项目变得复杂，Clean架构则会更复杂，大项目可以使项目的结构清晰，内层复用性强，便于测试。<br>小项目则会使项目过于复杂，反而使项目结构显得不清晰，就像MVVM不适合小型项目一样。MVP作为万金油可以说适合大部分项目，我个人的思考是小型项目使用MVP架构，但在MVP的基础上加入部分Clean的思想。</p>
+<h4 id="去优化的原因与静态分析的结果有关"><a href="#去优化的原因与静态分析的结果有关" class="headerlink" title="去优化的原因与静态分析的结果有关"></a>去优化的原因与静态分析的结果有关</h4><ul>
+<li><p>生成的机器码可以在调用去优化方法时传入 Action_Recompile。</p>
+</li>
+<li><p>表示<strong>不保留这一份机器码</strong>。</p>
+</li>
+<li><p>但是可以<strong>不经过重新 profile，直接重新编译</strong>。</p>
+</li>
+</ul>
+<h4 id="去优化的原因与基于-profile-的激进优化有关"><a href="#去优化的原因与基于-profile-的激进优化有关" class="headerlink" title="去优化的原因与基于 profile 的激进优化有关"></a>去优化的原因与基于 profile 的激进优化有关</h4><ul>
+<li><p>生成的机器码需要在调用去优化方法时传入 Action_Reinterpret。</p>
+</li>
+<li><p>表示<strong>不保留这一份机器码</strong>。</p>
+</li>
+<li><p>而且<strong>需要重新收集程序的 profile</strong>。</p>
+</li>
+</ul>
+<h2 id="编译路径"><a href="#编译路径" class="headerlink" title="编译路径"></a>编译路径</h2><ul>
+<li><p><strong>1 层和 4 层为终止状态。</strong></p>
+</li>
+<li><p>一个方法被终止状态编译后，如果编译后的代码没有失效，JVM 不再发出该方法的编译请求。</p>
+</li>
+</ul>
+<p><img src="/images/posts/JVM/1617/compile_path.png" alt="compile_path"></p>
+<h3 id="通常情况"><a href="#通常情况" class="headerlink" title="通常情况"></a>通常情况</h3><ul>
+<li>热点方法会被第 3 层的 C1 编译，再被第 4 层的 C2 编译。</li>
+</ul>
+<h3 id="琐碎的方法"><a href="#琐碎的方法" class="headerlink" title="琐碎的方法"></a>琐碎的方法</h3><ul>
+<li><p><strong>字节数少</strong>，且第 3 层的 profiling <strong>没有可收集的数据</strong>的方法。</p>
+</li>
+<li><p>JVM 断定该方法对于 <strong>C1 代码和 C2 代码执行效率相同</strong>。</p>
+</li>
+<li><p>在第 3 层编译后，直接用第 1 层的 C1 编译。</p>
+</li>
+</ul>
+<h3 id="C1-忙碌的情况"><a href="#C1-忙碌的情况" class="headerlink" title="C1 忙碌的情况"></a>C1 忙碌的情况</h3><ul>
+<li><p>解释执行过程中进行 profiling。</p>
+</li>
+<li><p>然后直接由第 4 层的 C2 编译。</p>
+</li>
+</ul>
+<h3 id="C2-忙碌的情况"><a href="#C2-忙碌的情况" class="headerlink" title="C2 忙碌的情况"></a>C2 忙碌的情况</h3><ul>
+<li><p>方法先被第 2 层的 C1 编译。</p>
+</li>
+<li><p>再被第 3 层的 C1 编译，减少在第 3 层的执行时间。</p>
+</li>
+</ul>
+<h2 id="Java-8"><a href="#Java-8" class="headerlink" title="Java 8"></a>Java 8</h2><ul>
+<li><p>默认开启分层编译。</p>
+</li>
+<li><p>不管分层编译是否开启，原本的选择即时编译器的参数都无效（-client 和 -server）。</p>
+</li>
+<li><p>关闭分层编译情况下，JVM 采用 C2。</p>
+</li>
+<li><p>只使用 C1：使用参数 -XX:TieredStopAtLevel=1，解释执行后直接由 1 层的 C1 编译。</p>
+</li>
+</ul>
+<h1 id="即时编译的触发"><a href="#即时编译的触发" class="headerlink" title="即时编译的触发"></a>即时编译的触发</h1><ul>
+<li><p>根据方法的<strong>调用次数</strong>和<strong>循环回边的执行次数</strong>来触发。</p>
+</li>
+<li><p>profiling 中包含上述次数。</p>
+</li>
+<li><p><strong>解释执行和 C1 代码中增加循环回边计数器的位置不同</strong>，但不会对程序照成影响。</p>
+</li>
+<li><p>JVM <strong>不对计数器进行同步</strong>，收集的几次为非精确值。</p>
+</li>
+<li><p>即时编译的<strong>触发不需要非常精确的值</strong>。</p>
+</li>
+<li><p>不启用分层编译，超过由参数 -XX:CompileThreshold 指定的阈值时（使用 C1 时，该值为 1500；使用 C2 时，该值为 10000），会触发即时编译。</p>
+</li>
+<li><p>启用分层编译，JVM 不采用由参数 -XX:CompileThreshold 指定的阈值，使用另一套阈值系统。阈值大小<strong>动态调整</strong>。</p>
+</li>
+<li><p>动态调整：比较阈值时，将阈值与某个<strong>系数 s</strong> 相乘。</p>
+</li>
+<li><p>该系数与<strong>当前待编译的方法数目</strong>成<strong>正相关</strong>，与<strong>编译线程的数目</strong>成<strong>负相关</strong>。</p>
+</li>
+<li><p>64 位 JVM中，默认情况下<strong>编译线程的总数目</strong>根据<strong>处理器数量来调整</strong>，（对应参数 -XX:+CICompilerCountPerCPU，默认为 true；当通过参数 -XX:+CICompilerCount=N 强制设定总编译线程数目时，CICompilerCountPerCPU 将被设置为 false）。</p>
+</li>
+<li><p>JVM 将编译线程按照 1:2 的比例分配给 C1 和 C2（至少各为 1 个）。</p>
+</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">对于核及以上的机器，总的编译线程的数目为：</span><br><span class="line">n = log2(N) * log2(log2(N)) * 3 / 2</span><br><span class="line">其中 N 为 CPU 核心数目。</span><br></pre></td></tr></table></figure>
+<p>启用分层编译时的具体触发条件：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">当方法调用次数大于由参数 -XX:TierXInvocationThreshold 指定的阈值乘以系数，或者当方法调用次数大于由参数 -XX:TierXMINInvocationThreshold 指定的阈值乘以系数，并且方法调用次数和循环回边次数之和大于由参数 -XX:TierXCompileThreshold 指定的阈值乘以系数时，便会触发 X 层即时编译。</span><br><span class="line"></span><br><span class="line">触发条件为：</span><br><span class="line">i &gt; TierXInvocationThreshold * s || (i &gt; TierXMinInvocationThreshold * s  &amp;&amp; i + b &gt; TierXCompileThreshold * s)</span><br></pre></td></tr></table></figure>
+<h1 id="OSR-编译"><a href="#OSR-编译" class="headerlink" title="OSR 编译"></a>OSR 编译</h1><ul>
+<li><p>JVM 还存在另一种以<strong>循环为单位</strong>的即时编译（On-Stack-Replacement（OSR）编译）。</p>
+</li>
+<li><p><strong>循环回边计数器用来触发</strong>这种类型的编译的。</p>
+</li>
+<li><p>不启用分层编译情况，触发 OSR 编译的阈值是由参数 -XX:CompileThreshold 指定的阈值的倍数。</p>
+</li>
+</ul>
+<p>计算方法：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">(OnStackReplacePercentage - InterpreterProfilePercentage)/100</span><br><span class="line"></span><br><span class="line">其中 -XX:InterpreterProfilePercentage 的默认值为 33，当使用 C1 时 -XX:OnStackReplacePercentage 为 933，当使用 C2 时为 140。</span><br><span class="line">也就是说，默认情况下，C1 的 OSR 编译的阈值为 13500，而 C2 的为 10700。</span><br></pre></td></tr></table></figure>
+<ul>
+<li>启用分层编译的情况下，触发 OSR 编译的阈值则由参数 -XX:TierXBackEdgeThreshold 指定的阈值乘以系数。</li>
+<li>OSR 编译在<strong>正常的应用程序</strong>中<strong>不多见</strong>。它只在<strong>基准测试</strong>时比较<strong>常见</strong>。</li>
+</ul>
+<h1 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h1><p>Q：<strong>为什么不把所有代码都即时编译一下呢？这样程序的执行效率不是更快吗？</strong></p>
+<p>A：即时编译是以方法为单位的。<strong>动态编译比较耗时</strong>，如果花了大量 CPU 资源编译出来的机器码运行不了几次，就很浪费了。</p>
+<hr>
+<p>Q：为什么要用分层编译呢？<strong>使用最快的编译代码编译器编译的代码不是更好吗？</strong></p>
+<p>A：<strong>机器码越快，需要的编译时间就越长。分层编译是一种折衷的方式</strong>，既能够满足部分不那么热的代码能够在短时间内编译完成，也能满足很热的代码能够拥有最好的优化。</p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://blog.ennis.info/2018/10/21/一些简单的Git命令/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Ennis L.M. Wu">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar/portrait.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Ennis Wu">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/10/21/一些简单的Git命令/" itemprop="url">「笔记」一些简单的 Git 命令</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-10-21T10:21:31+08:00">
+                2018-10-21
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Git/" itemprop="url" rel="index">
+                    <span itemprop="name">Git</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h1 id="完整性"><a href="#完整性" class="headerlink" title="完整性"></a>完整性</h1><ul>
+<li><p>Git 以校验和的方式检测数据完整性。</p>
+</li>
+<li><p>Git 中的 commit id 是校验和。</p>
+</li>
+</ul>
+<h1 id="文件状态和工作区域"><a href="#文件状态和工作区域" class="headerlink" title="文件状态和工作区域"></a>文件状态和工作区域</h1><ul>
+<li><p>工作区域：</p>
 <ol>
-<li>从Presenter层分离出UseCase层，方便代码复用</li>
-<li>各层独立，这里有一点需要注意，Clean中各层有各层的数据结构，在实际项目中各层可能写出类似的实体类，这里可以考虑只写一个通用实体类的作为最内层，虽然违背了Clean各层完全独立的思想，但是可以减少部分冗余，这一点根据自己项目来缺点。</li>
+<li><p>工作目录：写代码的区域。</p>
+</li>
+<li><p>暂存区：代码 add 后 commit 前所在的区域。</p>
+</li>
+<li><p>本地仓库：代码 commit 后所在的区域。</p>
+</li>
 </ol>
+</li>
+<li><p>文件状态：</p>
+<ol>
+<li><p>已修改：工作目录已修改，代码未 add。</p>
+</li>
+<li><p>已暂存：代码已 add，未 commit。</p>
+</li>
+<li><p>已提交：代码已 commit。</p>
+</li>
+</ol>
+</li>
+</ul>
+<h1 id="用户身份"><a href="#用户身份" class="headerlink" title="用户身份"></a>用户身份</h1><ul>
+<li>配置个人信息</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ git config --global user.name &quot;Your Name&quot;</span><br><span class="line">$ git config --global user.email &quot;example@email.com&quot;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>查看个人信息</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ git config --list</span><br></pre></td></tr></table></figure>
+<h1 id="创建本地仓库"><a href="#创建本地仓库" class="headerlink" title="创建本地仓库"></a>创建本地仓库</h1><ul>
+<li>初始化本地仓库</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ git init</span><br></pre></td></tr></table></figure>
+<ul>
+<li>从远程仓库克隆</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ git clone ssh/https 地址</span><br></pre></td></tr></table></figure>
+<h1 id="本地操作"><a href="#本地操作" class="headerlink" title="本地操作"></a>本地操作</h1><ul>
+<li>添加文件到暂存区</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ git add readme.txt</span><br></pre></td></tr></table></figure>
+<ul>
+<li>添加所有文件到暂存区</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ git add .</span><br></pre></td></tr></table></figure>
+<ul>
+<li>提交暂存区文件到本地仓库</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ git commit -m &quot;say something&quot;</span><br></pre></td></tr></table></figure>
+<p>加 -m 表示直接用后面的字符串作为说明，否则跳转编辑器</p>
+<ul>
+<li>查看本地仓库提交历史</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ git log</span><br></pre></td></tr></table></figure>
+<ul>
+<li>查看文件状态</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ git status</span><br></pre></td></tr></table></figure>
+<ol>
+<li><p>Changes to be committed：已暂存、可提交文件</p>
+</li>
+<li><p>Untracked files：未暂存文件</p>
+</li>
+</ol>
+<ul>
+<li>查看未暂存文件变更细节</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ git diff</span><br></pre></td></tr></table></figure>
+<ul>
+<li>查看已暂存文件变更细节</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ git diff --staged</span><br></pre></td></tr></table></figure>
+<h1 id="版本回退"><a href="#版本回退" class="headerlink" title="版本回退"></a>版本回退</h1><ul>
+<li>回到上一个版本（硬回退）</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ git reset --hard HEAD^</span><br></pre></td></tr></table></figure>
+<ul>
+<li>回到上一个版本（软回退）</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ git reset --soft HEAD^</span><br></pre></td></tr></table></figure>
+<ol>
+<li><p>hard 移除仓库中的 commit，暂存区和工作区回到之前的状态。</p>
+</li>
+<li><p>soft 移除仓库中的 commit，暂存区和工作区不变。</p>
+</li>
+</ol>
+<ul>
+<li>查询版本提交记录</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ git reflog</span><br></pre></td></tr></table></figure>
+<p>① commit id ② 执行的命令 ③ 描述</p>
+<ul>
+<li>回退到指定版本</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ git reset --hard 提交Id</span><br></pre></td></tr></table></figure>
+<p>commit id 可以不填全部，git 自动查找。</p>
+<h1 id="撤销修改"><a href="#撤销修改" class="headerlink" title="撤销修改"></a>撤销修改</h1><ul>
+<li>撤销未添加到暂存区的修改</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ git checkout --文件</span><br></pre></td></tr></table></figure>
+<ul>
+<li>撤销已添加到暂存区的修改</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ git reset HEAD 文件</span><br></pre></td></tr></table></figure>
+<h1 id="删除相关操作"><a href="#删除相关操作" class="headerlink" title="删除相关操作"></a>删除相关操作</h1><ul>
+<li><p>删除文件</p>
+<ol>
+<li><p>删除本地文件（文件管理器中删或用 <code>rm</code> 命令）</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ rm 文件</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>确认 git 删除工作区文件</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ git rm 文件</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>提交</p>
+</li>
+</ol>
+</li>
+<li><p>恢复文件</p>
+</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ git checkout --文件</span><br></pre></td></tr></table></figure>
+<pre><code>- 可以恢复未添加到暂存区的修改了的文件
+- 可以恢复自删除的文件
+</code></pre><h1 id="远程仓库"><a href="#远程仓库" class="headerlink" title="远程仓库"></a>远程仓库</h1><ul>
+<li>关联远程仓库</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ git remote add 自定义远程仓库名 ssh/https地址</span><br></pre></td></tr></table></figure>
+<ul>
+<li>第一次推送本地仓库到远程仓库</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ git push -u 远程仓库名 远程仓库分支名</span><br></pre></td></tr></table></figure>
+<ul>
+<li>非第一次推送本地仓库到远程仓库</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ git push 远程仓库名 远程仓库分支</span><br></pre></td></tr></table></figure>
+<ul>
+<li>从远程仓库拉取数据到本地</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ git fetch 远程仓库名</span><br></pre></td></tr></table></figure>
+<ul>
+<li>将从远程仓库拉取的数据和本地仓库合并</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ git merge 本地分支名</span><br></pre></td></tr></table></figure>
+<ul>
+<li>从远程仓库拉取数据并合并</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ git pull 远程仓库名 远程分支名</span><br></pre></td></tr></table></figure>
+<ol>
+<li><p>fetch 只拉取远程仓库数据，不更新本地仓库状态。</p>
+</li>
+<li><p>pull 拉取远程仓库数据并更新本地仓库状态到远程仓库最新状态。</p>
+</li>
+<li><p>pull = fetch + merge</p>
+</li>
+</ol>
+<h1 id="分支"><a href="#分支" class="headerlink" title="分支"></a>分支</h1><ul>
+<li>创建分支</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ git branch 分支名</span><br></pre></td></tr></table></figure>
+<ul>
+<li>切换分支</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ git checkout 分支名</span><br></pre></td></tr></table></figure>
+<ul>
+<li>创建并切换分支</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ git checkout -b 分支名</span><br></pre></td></tr></table></figure>
+<ul>
+<li>查看分支</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ git branch</span><br></pre></td></tr></table></figure>
+<ul>
+<li>合并分支</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ git branch 分支名</span><br></pre></td></tr></table></figure>
+<ul>
+<li>删除分支</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ git branch -d 分支名</span><br></pre></td></tr></table></figure>
+<h1 id="解决冲突"><a href="#解决冲突" class="headerlink" title="解决冲突"></a>解决冲突</h1><ul>
+<li>解决冲突后不能提交某个文件，只能提交全部文件</li>
+</ul>
+<h1 id="变基（写的不完整，无参考价值）"><a href="#变基（写的不完整，无参考价值）" class="headerlink" title="变基（写的不完整，无参考价值）"></a>变基（写的不完整，无参考价值）</h1><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ git rebase 分支名</span><br></pre></td></tr></table></figure>
+<ul>
+<li>rebase 失败先解决冲突再执行</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ git rebase --continue</span><br></pre></td></tr></table></figure>
+<ol>
+<li><p>变基抛弃原有提交，创建新的对应提交。</p>
+</li>
+<li><p>变基的提交历史是一条直线。</p>
+</li>
+</ol>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://blog.ennis.info/2018/10/20/笔记-深入拆解Java虚拟机-15Java语法糖与Java编译器/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Ennis L.M. Wu">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar/portrait.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Ennis Wu">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/10/20/笔记-深入拆解Java虚拟机-15Java语法糖与Java编译器/" itemprop="url">「深入拆解 Java 虚拟机」15 Java 语法糖与 Java 编译器</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-10-20T19:02:34+08:00">
+                2018-10-20
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/《深入拆解-Java-虚拟机》/" itemprop="url" rel="index">
+                    <span itemprop="name">《深入拆解 Java 虚拟机》</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>原文：<a href="https://time.geekbang.org/column/article/13781" target="_blank" rel="noopener">https://time.geekbang.org/column/article/13781</a></p>
+<h1 id="自动装箱（auto-boxing）与自动拆箱（auto-unboxing）"><a href="#自动装箱（auto-boxing）与自动拆箱（auto-unboxing）" class="headerlink" title="自动装箱（auto-boxing）与自动拆箱（auto-unboxing）"></a>自动装箱（auto-boxing）与自动拆箱（auto-unboxing）</h1><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">foo</span><span class="params">()</span> </span>&#123;</span><br><span class="line">	ArrayList&lt;Integer&gt; list = <span class="keyword">new</span> ArrayList&lt;&gt;();</span><br><span class="line">	list.add(<span class="number">0</span>);</span><br><span class="line">	<span class="keyword">int</span> result = list.get(<span class="number">0</span>);</span><br><span class="line">	<span class="keyword">return</span> result;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>上段代码对应的字节码：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">public int foo();</span><br><span class="line">  Code:</span><br><span class="line">     0: new java/util/ArrayList</span><br><span class="line">     3: dup</span><br><span class="line">     4: invokespecial java/util/ArrayList.&quot;&lt;init&gt;&quot;:()V</span><br><span class="line">     7: astore_1</span><br><span class="line">     8: aload_1</span><br><span class="line">     9: iconst_0</span><br><span class="line">    10: invokestatic java/lang/Integer.valueOf:(I)Ljava/lang/Integer;</span><br><span class="line">    13: invokevirtual java/util/ArrayList.add:(Ljava/lang/Object;)Z</span><br><span class="line">    16: pop</span><br><span class="line">    17: aload_1</span><br><span class="line">    18: iconst_0</span><br><span class="line">    19: invokevirtual java/util/ArrayList.get:(I)Ljava/lang/Object;</span><br><span class="line">    22: checkcast java/lang/Integer</span><br><span class="line">    25: invokevirtual java/lang/Integer.intValue:()I</span><br><span class="line">    28: istore_2</span><br><span class="line">    29: iload_2</span><br><span class="line">    30: ireturn</span><br></pre></td></tr></table></figure>
+<ul>
+<li><p>向泛型参数为 Integer 的 ArrayList 添加 int 值，<strong>字节码中调用了 Integer.valueOf 方法</strong>。</p>
+</li>
+<li><p>从泛型参数为 Integer 的 ArrayList 取出元素，程序期待的是 int 值，<strong>字节码中调用了 Integer.intValue 方法</strong>。</p>
+</li>
+</ul>
+<h1 id="泛型与类型擦除"><a href="#泛型与类型擦除" class="headerlink" title="泛型与类型擦除"></a>泛型与类型擦除</h1><ul>
+<li><p>在字节码中，ArrayList 的 add 接受的参数类型是 Object，get 方法的返回类型是 Object。</p>
+</li>
+<li><p>get 方法<strong>强制向下转换类型</strong>。</p>
+</li>
+<li><p><strong>泛型信息</strong>在 JVM 中会<strong>全部擦除</strong>，为了兼容引入泛型之前的代码。</p>
+</li>
+<li><p>为限定继承类的泛型参数擦除为 Object，<strong>限定继承类</strong>的泛型参数<strong>擦除为所限定的类</strong>。</p>
+</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">GenericTest</span>&lt;<span class="title">T</span> <span class="keyword">extends</span> <span class="title">Number</span>&gt; </span>&#123;</span><br><span class="line">	<span class="function">T <span class="title">foo</span><span class="params">(T t)</span> </span>&#123;</span><br><span class="line">		<span class="keyword">return</span> t;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>上段代码字节码</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">T foo(T);</span><br><span class="line">  descriptor: (Ljava/lang/Number;)Ljava/lang/Number;</span><br><span class="line">  flags: (0x0000)</span><br><span class="line">  Code:</span><br><span class="line">    stack=1, locals=2, args_size=2</span><br><span class="line">       0: aload_1</span><br><span class="line">       1: areturn</span><br><span class="line">  Signature: (TT;)TT;</span><br></pre></td></tr></table></figure>
+<ul>
+<li><strong>方法声明和方法签名（Signature）仍存在泛型参数信息</strong>，由 Java 编译器编译其他类时使用。</li>
+</ul>
+<h1 id="桥接方法"><a href="#桥接方法" class="headerlink" title="桥接方法"></a>桥接方法</h1><ul>
+<li><p>桥接方法标识符包括 ACC_BRIDGE 和 ACC_SYNTHETIC（对于 Java 源代码不可见）。</p>
+</li>
+<li><p><strong>不能直接调用桥接方法，但可通过反射调用。</strong></p>
+</li>
+</ul>
+<h2 id="泛型重写生成桥接方法"><a href="#泛型重写生成桥接方法" class="headerlink" title="泛型重写生成桥接方法"></a>泛型重写生成桥接方法</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Merchant</span>&lt;<span class="title">T</span> <span class="keyword">extends</span> <span class="title">Customer</span>&gt; </span>&#123;</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">double</span> <span class="title">actionPrice</span><span class="params">(T customer)</span> </span>&#123;</span><br><span class="line">		<span class="keyword">return</span> <span class="number">0.0</span>d;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">VIPOnlyMerchant</span> <span class="keyword">extends</span> <span class="title">Merchant</span>&lt;<span class="title">VIP</span>&gt; </span>&#123;</span><br><span class="line">	<span class="meta">@Override</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">double</span> <span class="title">actionPrice</span><span class="params">(VIP customer)</span> </span>&#123;</span><br><span class="line">		<span class="keyword">return</span> <span class="number">0.0</span>d;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li><p>actionPrice 方法符合 Java 语言的方法重写。</p>
+</li>
+<li><p>不符合 JVM 方法重写的定义。</p>
+</li>
+</ul>
+<p>父类方法描述符(LCustomer)</p>
+<p>子类方法描述符(LVIP)</p>
+<ul>
+<li>为了<strong>保证编译的字节码能保留重写的语言</strong>，Java 编译器额外<strong>添加了桥接方法</strong>。</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">class VIPOnlyMerchant extends Merchant&lt;VIP&gt;</span><br><span class="line">...</span><br><span class="line">  public double actionPrice(VIP);</span><br><span class="line">    descriptor: (LVIP;)D</span><br><span class="line">    flags: (0x0001) ACC_PUBLIC</span><br><span class="line">    Code:</span><br><span class="line">         0: dconst_0</span><br><span class="line">         1: dreturn</span><br><span class="line"></span><br><span class="line">  public double actionPrice(Customer);</span><br><span class="line">    descriptor: (LCustomer;)D</span><br><span class="line">    flags: (0x1041) ACC_PUBLIC, ACC_BRIDGE, ACC_SYNTHETIC</span><br><span class="line">    Code:</span><br><span class="line">         0: aload_0</span><br><span class="line">         1: aload_1</span><br><span class="line">         2: checkcast class VIP</span><br><span class="line">         5: invokevirtual actionPrice:(LVIP;)D</span><br><span class="line">         8: dreturn</span><br><span class="line"></span><br><span class="line">// 这个桥接方法等同于</span><br><span class="line">public double actionPrice(Customer customer) &#123;</span><br><span class="line">  return actionPrice((VIP) customer);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>桥接方法在字节码层面重写父类方法，并通过强制类型转换调用子类方法。</li>
+</ul>
+<h2 id="子类定义与父类参数相同，返回类型为父类方法返回类型的子类生成桥接方法"><a href="#子类定义与父类参数相同，返回类型为父类方法返回类型的子类生成桥接方法" class="headerlink" title="子类定义与父类参数相同，返回类型为父类方法返回类型的子类生成桥接方法"></a>子类定义与父类参数相同，返回类型为父类方法返回类型的子类生成桥接方法</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">class NaiveMerchant extends Merchant</span><br><span class="line">  public java.lang.Double actionPrice(Customer);</span><br><span class="line">    descriptor: (LCustomer;)Ljava/lang/Double;</span><br><span class="line">    flags: (0x0001) ACC_PUBLIC</span><br><span class="line">    Code:</span><br><span class="line">      stack=2, locals=2, args_size=2</span><br><span class="line">         0: dconst_0</span><br><span class="line">         1: invokestatic Double.valueOf:(D)Ljava/lang/Double;</span><br><span class="line">         4: areturn</span><br><span class="line"></span><br><span class="line">  public java.lang.Number actionPrice(Customer);</span><br><span class="line">    descriptor: (LCustomer;)Ljava/lang/Number;</span><br><span class="line">    flags: (0x1041) ACC_PUBLIC, ACC_BRIDGE, ACC_SYNTHETIC</span><br><span class="line">    Code:</span><br><span class="line">      stack=2, locals=2, args_size=2</span><br><span class="line">         0: aload_0</span><br><span class="line">         1: aload_1</span><br><span class="line">         2: invokevirtual actionPrice:(LCustomer;)Ljava/lang/Double;</span><br><span class="line">         5: areturn</span><br></pre></td></tr></table></figure>
+<ul>
+<li>JVM 允许两个同名、同参数类型、不同返回类型的方法。</li>
+</ul>
+<h1 id="foreach"><a href="#foreach" class="headerlink" title="foreach"></a>foreach</h1><h2 id="数组"><a href="#数组" class="headerlink" title="数组"></a>数组</h2><p>循环从 0 到末尾逐一访问数组元素。</p>
+<h2 id="Iterable-对象"><a href="#Iterable-对象" class="headerlink" title="Iterable 对象"></a>Iterable 对象</h2><p>循环调用 hasNext 和 next 方法 遍历元素。</p>
+<h1 id="字符串-switch"><a href="#字符串-switch" class="headerlink" title="字符串 switch"></a>字符串 switch</h1><ul>
+<li><p>case 比较字符串的哈希值。</p>
+</li>
+<li><p>哈希值相同的字符串用 equals 比较。</p>
+</li>
+</ul>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://blog.ennis.info/2018/10/17/笔记-深入拆解Java虚拟机-14Java虚拟机是怎么实现synchronized的？/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Ennis L.M. Wu">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar/portrait.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Ennis Wu">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/10/17/笔记-深入拆解Java虚拟机-14Java虚拟机是怎么实现synchronized的？/" itemprop="url">「深入拆解 Java 虚拟机」14 Java 虚拟机是怎么实现 synchronized 的？</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-10-17T14:08:55+08:00">
+                2018-10-17
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/《深入拆解-Java-虚拟机》/" itemprop="url" rel="index">
+                    <span itemprop="name">《深入拆解 Java 虚拟机》</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>原文：<a href="https://time.geekbang.org/column/article/13530" target="_blank" rel="noopener">https://time.geekbang.org/column/article/13530</a></p>
+<ul>
+<li><p>声明 synchronized 的代码块，字节码包含 monitorenter 和 monitorexit 指令。</p>
+</li>
+<li><p>这两种指令会<strong>消耗</strong>操作数栈上的<strong>一个引用类型的元素</strong>。</p>
+</li>
+<li><p>这个元素是用来加解锁的锁对象。（synchronized 括号里的引用，实例方法是 this，静态方法是 class 实例）。</p>
+</li>
+<li><p>用 synchronized 标记方法，字节码中方法的访问标记包括 ACC_SYNCHRONIZED。</p>
+</li>
+</ul>
+<h1 id="monitorenter-和-monitorexit"><a href="#monitorenter-和-monitorexit" class="headerlink" title="monitorenter 和 monitorexit"></a>monitorenter 和 monitorexit</h1><h2 id="作用"><a href="#作用" class="headerlink" title="作用"></a>作用</h2><p>可以<strong>抽象</strong>地理解为<strong>每个锁对象</strong>有：</p>
+<ol>
+<li><p>一个锁<strong>计数器</strong></p>
+</li>
+<li><p>一个指向持有该锁的<strong>线程的指针</strong></p>
+</li>
+</ol>
+<h2 id="执行-monitorenter"><a href="#执行-monitorenter" class="headerlink" title="执行 monitorenter"></a>执行 monitorenter</h2><ul>
+<li><p>计数器为 0</p>
+<ul>
+<li><p>说明没有被其他线程所持有。</p>
+</li>
+<li><p>锁对象的持有线程设置为当前线程。</p>
+</li>
+<li><p>计数器加 1。</p>
+</li>
+</ul>
+</li>
+<li><p>计数器不为 0</p>
+<ul>
+<li><p>如果锁对象的持有当前线程，计数器加 1。</p>
+</li>
+<li><p>否则等待，直至锁释放。</p>
+</li>
+</ul>
+</li>
+</ul>
+<h2 id="执行-monitorexit"><a href="#执行-monitorexit" class="headerlink" title="执行 monitorexit"></a>执行 monitorexit</h2><ul>
+<li>锁对象的计数器减 1。</li>
+<li>减为 0 时，锁被释放。</li>
+</ul>
+<h2 id="为什么采用计数器的方式？"><a href="#为什么采用计数器的方式？" class="headerlink" title="为什么采用计数器的方式？"></a>为什么采用计数器的方式？</h2><ul>
+<li><strong>允许同一个线程重复获取同一把锁。</strong></li>
+</ul>
 <blockquote>
-<p>参考资料</p>
-<ul>
-<li><a href="https://8thlight.com/blog/uncle-bob/2012/08/13/the-clean-architecture.html" target="_blank" rel="noopener">https://8thlight.com/blog/uncle-bob/2012/08/13/the-clean-architecture.html</a></li>
-<li><a href="https://www.jianshu.com/p/c6a1a5c9a49b" target="_blank" rel="noopener">https://www.jianshu.com/p/c6a1a5c9a49b</a></li>
-<li><a href="https://blog.csdn.net/YANGDAHUAN/article/details/80388849" target="_blank" rel="noopener">https://blog.csdn.net/YANGDAHUAN/article/details/80388849</a></li>
-<li><a href="https://www.jianshu.com/p/552c3a1c5fe5" target="_blank" rel="noopener">https://www.jianshu.com/p/552c3a1c5fe5</a></li>
-<li><a href="https://www.jianshu.com/p/e0258ce7d392" target="_blank" rel="noopener">https://www.jianshu.com/p/e0258ce7d392</a></li>
-</ul>
+<p>HotSpot 虚拟机中具体的锁实现。</p>
 </blockquote>
+<h1 id="重量级锁"><a href="#重量级锁" class="headerlink" title="重量级锁"></a>重量级锁</h1><ul>
+<li><p>JVM 中<strong>最基础</strong>的锁实现。</p>
+</li>
+<li><p>阻塞加锁失败的线程，锁被释放时唤醒。</p>
+</li>
+<li><p>阻塞及唤醒依靠操作系统完成，<strong>开销大</strong>。</p>
+</li>
+</ul>
+<h2 id="自旋状态"><a href="#自旋状态" class="headerlink" title="自旋状态"></a>自旋状态</h2><ul>
+<li><p>为了尽量<strong>避免昂贵的线程阻塞、唤醒操作</strong>。</p>
+</li>
+<li><p>在线程<strong>进入阻塞状态之前</strong>，或被<strong>唤醒后竞争不到锁</strong>的情况下<strong>进入自旋状态</strong>。</p>
+</li>
+<li><p><strong>在处理器上空跑</strong>并且轮询锁是否被释放。</p>
+</li>
+<li><p>与线程阻塞相比，<strong>自旋状态可能会浪费大量的处理器资源</strong>。</p>
+</li>
+<li><p>JVM 不能根据等待时间的长短来选择自旋还是阻塞。</p>
+</li>
+<li><p>JVM 采用<strong>自适应自旋</strong>，根据以往自旋等待时能否获得锁，<strong>动态调整自旋时间</strong>（循环数目）。</p>
+</li>
+</ul>
+<h3 id="自旋状态的副作用：不公平的锁机制"><a href="#自旋状态的副作用：不公平的锁机制" class="headerlink" title="自旋状态的副作用：不公平的锁机制"></a>自旋状态的副作用：<strong>不公平的锁机制</strong></h3><ul>
+<li><p>阻塞状态的线程，没有办法立刻竞争被释放的锁。</p>
+</li>
+<li><p>自旋状态的线程，很有可能优先获得锁。</p>
+</li>
+</ul>
+<h1 id="轻量级锁"><a href="#轻量级锁" class="headerlink" title="轻量级锁"></a>轻量级锁</h1><ul>
+<li><strong>没有锁竞争的情况。</strong></li>
+</ul>
+<h2 id="怎样区分轻量级锁和重量级锁？"><a href="#怎样区分轻量级锁和重量级锁？" class="headerlink" title="怎样区分轻量级锁和重量级锁？"></a>怎样区分轻量级锁和重量级锁？</h2><p>对象头的标记字段（mark word）最后两位用来表示该对象的锁状态。</p>
+<table>
+<thead>
+<tr>
+<th>值</th>
+<th>含义</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>00</td>
+<td>轻量级锁</td>
+</tr>
+<tr>
+<td>01</td>
+<td>无锁或偏向锁</td>
+</tr>
+<tr>
+<td>10</td>
+<td>重量级锁</td>
+</tr>
+<tr>
+<td>11</td>
+<td>垃圾回收标记</td>
+</tr>
+</tbody>
+</table>
+<h2 id="加锁操作"><a href="#加锁操作" class="headerlink" title="加锁操作"></a>加锁操作</h2><p>判断是否是重量级锁</p>
+<h3 id="判断为非重量级锁"><a href="#判断为非重量级锁" class="headerlink" title="判断为非重量级锁"></a>判断为非重量级锁</h3><ul>
+<li><p>在当前线程的当前栈桢中划出一块空间作为该锁的锁记录。</p>
+</li>
+<li><p><strong>将锁对象的标记字段复制到锁记录中。</strong></p>
+</li>
+<li><p>JVM 尝试<strong>用 CAS 操作替换锁对象的标记字段</strong>。（不懂）</p>
+</li>
+</ul>
+<p>比较标记字段是否为 X…X01</p>
+<pre><code>- 是，替换为锁记录地址，成功获得锁，继续执行。
+- 否
+    - 线程重复获得同一把锁，JVM 将锁记录清理，代表锁被重复获取。
+    - **其他线程持有锁，JVM 将该锁膨胀为重量级锁**，阻塞该线程。
+</code></pre><h2 id="解锁操作"><a href="#解锁操作" class="headerlink" title="解锁操作"></a>解锁操作</h2><h3 id="锁记录值为-0"><a href="#锁记录值为-0" class="headerlink" title="锁记录值为 0"></a>锁记录值为 0</h3><p>重复进入同一把锁，直接返回。（不懂）</p>
+<h3 id="锁记录值不为-0"><a href="#锁记录值不为-0" class="headerlink" title="锁记录值不为 0"></a>锁记录值不为 0</h3><p>JVM 尝试用 CAS 操作比较标记字段是否为当前锁记录地址</p>
+<ul>
+<li><p>是，替换为锁记录的值，锁释放。</p>
+</li>
+<li><p>否，表示锁已膨胀为重量级锁，进入重量级锁释放过程。</p>
+</li>
+</ul>
+<h1 id="偏向锁"><a href="#偏向锁" class="headerlink" title="偏向锁"></a>偏向锁</h1><h2 id="加锁操作-1"><a href="#加锁操作-1" class="headerlink" title="加锁操作"></a>加锁操作</h2><ul>
+<li><p>锁对象支持偏向锁。</p>
+</li>
+<li><p>JVM 通过 CAS 操作，将<strong>当前线程地址记录在锁对象的标记字段</strong>，将标记字段<strong>最后三位设为 101</strong>。</p>
+</li>
+</ul>
+<h3 id="线程请求锁时"><a href="#线程请求锁时" class="headerlink" title="线程请求锁时"></a>线程请求锁时</h3><p>判断锁对象标记字段：</p>
+<ol>
+<li><p><strong>最后三位是否为 101</strong></p>
+</li>
+<li><p>是否<strong>包含当前线程的地址</strong></p>
+</li>
+<li><p>epoch 值是否<strong>和锁对象的类的 epoch 值相同</strong></p>
+</li>
+</ol>
+<ul>
+<li><p>都满足则当前线程持有该偏向锁，直接返回。</p>
+</li>
+<li><p>2 不满足，epoch 值相等时，JVM 需要撤销该偏向锁。</p>
+</li>
+<li><p>2 满足，epoch 值不等时，当前线程可以将该锁重偏向至自己。</p>
+</li>
+</ul>
+<h2 id="epoch-值"><a href="#epoch-值" class="headerlink" title="epoch 值"></a>epoch 值</h2><ul>
+<li><p>每个类维护一个 epoch 值。</p>
+</li>
+<li><p>设置偏向锁时，JVM 要将 epoch 值复制到锁对象标记字段中。</p>
+</li>
+<li><p><strong>撤销偏向锁</strong>要求持有偏向锁的<strong>线程到达安全点</strong>，再将偏向锁<strong>替换成轻量级锁</strong>。</p>
+</li>
+<li><p>某类锁对象<strong>撤销数超过一个阈值，JVM 宣布该类偏向锁失效</strong>。</p>
+</li>
+<li><p>宣布偏向锁失效时，JVM 将该类的 epoch 值加 1。</p>
+</li>
+<li><p>为了保证当前持有偏向锁并且已加锁的线程<strong>不丢锁</strong>，</p>
+<ul>
+<li><p>JVM <strong>遍历所有线程的 Java 栈</strong>，找出该类已加锁实例，</p>
+</li>
+<li><p>将标记字段的 epoch 值加 1（<strong>需要所有线程处于安全点状态</strong>）。</p>
+</li>
+</ul>
+</li>
+<li><p><strong>总撤销数超过另一个阈值</strong> JVM 认为<strong>这个类不再适合偏向锁</strong>。</p>
+<ul>
+<li><p>JVM 会<strong>撤销该类实例的偏向锁</strong>，</p>
+</li>
+<li><p>之后<strong>加锁直接设置轻量级锁</strong>。</p>
+</li>
+</ul>
+</li>
+</ul>
 
           
         
@@ -2259,7 +2276,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://blog.ennis.info/2018/07/22/5种写法实现单例模式/">
+    <link itemprop="mainEntityOfPage" href="http://blog.ennis.info/2018/08/31/笔记-深入拆解Java虚拟机-13Java内存模型/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Ennis L.M. Wu">
@@ -2278,7 +2295,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2018/07/22/5种写法实现单例模式/" itemprop="url">5种写法实现单例模式</a></h1>
+                <a class="post-title-link" href="/2018/08/31/笔记-深入拆解Java虚拟机-13Java内存模型/" itemprop="url">「深入拆解 Java 虚拟机」13 Java 内存模型</a></h1>
         
 
         <div class="post-meta">
@@ -2290,8 +2307,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-07-22T09:37:52+08:00">
-                2018-07-22
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-08-31T14:44:23+08:00">
+                2018-08-31
               </time>
             
 
@@ -2313,8 +2330,8 @@
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/设计模式/" itemprop="url" rel="index">
-                    <span itemprop="name">设计模式</span>
+                  <a href="/categories/《深入拆解-Java-虚拟机》/" itemprop="url" rel="index">
+                    <span itemprop="name">《深入拆解 Java 虚拟机》</span>
                   </a>
                 </span>
 
@@ -2352,66 +2369,468 @@
       
         
           
-            <h1 id="饿汉式"><a href="#饿汉式" class="headerlink" title="饿汉式"></a>饿汉式</h1><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Singleton</span> </span>&#123;  </span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> Singleton instance = <span class="keyword">new</span> Singleton();</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="title">Singleton</span> <span class="params">()</span></span>&#123;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> Singleton <span class="title">getInstance</span><span class="params">()</span> </span>&#123;  </span><br><span class="line">        <span class="keyword">return</span> instance;  </span><br><span class="line">    &#125;  </span><br><span class="line"> &#125;</span><br></pre></td></tr></table></figure>
-<p>饿汉式在类加载时初始化。</p>
-<p>优点：</p>
-<ul>
-<li>简单。</li>
-<li>天生线程安全。</li>
+            <p>原文：<a href="https://time.geekbang.org/column/article/13484" target="_blank" rel="noopener">https://time.geekbang.org/column/article/13484</a></p>
+<h1 id="编译器优化的重排序"><a href="#编译器优化的重排序" class="headerlink" title="编译器优化的重排序"></a>编译器优化的重排序</h1><ul>
+<li><p>保证遵守 as-if-serial 属性。</p>
+</li>
+<li><p>操作之间存在数据依赖，不能调整顺序。</p>
+</li>
+</ul>
+<h1 id="Java-内存模型与-happens-before-关系"><a href="#Java-内存模型与-happens-before-关系" class="headerlink" title="Java 内存模型与 happens-before 关系"></a>Java 内存模型与 happens-before 关系</h1><ul>
+<li><p>用来描述两个操作的内存可见性。</p>
+</li>
+<li><p>操作 X happens-before 操作 Y，X 的结果对于 Y 可见。</p>
+</li>
+<li><p>happens-before 关系具有传递性。</p>
+</li>
+<li><p>解决这种数据竞争的关键：构造一个跨线程的 happens-before 关系。</p>
+</li>
+</ul>
+<p>线程间的 happens-before 关系：</p>
+<ol>
+<li><p>解锁操作 happens-before 之后（时钟顺序）对同一把锁的加锁操作。</p>
+</li>
+<li><p>volatile 字段的写操作 happens-before 之后（时钟顺序）对同一字段的读操作。</p>
+</li>
+<li><p>线程的启动操作（Thread.starts()） happens-before 该线程的第一个操作。</p>
+</li>
+<li><p>线程的最后一个操作 happens-before 它的终止事件（Thread.isAlive() 或 Thread.join()）。</p>
+</li>
+<li><p>线程对其他线程的中断操作 happens-before 被中断线程所收到的中断事件（即被中断线程的 InterruptedException 异常，或者第三个线程针对被中断线程的 Thread.interrupted 或者 Thread.isInterrupted 调用）。</p>
+</li>
+<li><p>构造器中的最后一个操作 happens-before 析构器的第一个操作。</p>
+</li>
+</ol>
+<h1 id="Java-内存模型的底层实现"><a href="#Java-内存模型的底层实现" class="headerlink" title="Java 内存模型的底层实现"></a>Java 内存模型的底层实现</h1><ul>
+<li>通过内存屏障（memory barrier）禁止重排序。</li>
+</ul>
+<p>开不太懂，之后再看</p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://blog.ennis.info/2018/08/29/笔记-深入拆解Java虚拟机-1112垃圾回收/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Ennis L.M. Wu">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar/portrait.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Ennis Wu">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/08/29/笔记-深入拆解Java虚拟机-1112垃圾回收/" itemprop="url">「深入拆解 Java 虚拟机」11 12 垃圾回收</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-08-29T15:50:47+08:00">
+                2018-08-29
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/《深入拆解-Java-虚拟机》/" itemprop="url" rel="index">
+                    <span itemprop="name">《深入拆解 Java 虚拟机》</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>原文：<a href="https://time.geekbang.org/column/article/13091" target="_blank" rel="noopener">https://time.geekbang.org/column/article/13091</a></p>
+<h1 id="如何辨别对象是否死亡"><a href="#如何辨别对象是否死亡" class="headerlink" title="如何辨别对象是否死亡"></a>如何辨别对象是否死亡</h1><h2 id="引用计数法（reference-counting）"><a href="#引用计数法（reference-counting）" class="headerlink" title="引用计数法（reference counting）"></a>引用计数法（reference counting）</h2><ul>
+<li><p>为每个对象添加一个引用计数器。</p>
+</li>
+<li><p>为 0 时死亡。</p>
+</li>
 </ul>
 <p>缺点：</p>
-<ul>
-<li>初始化时机不能由开发者控制，初始化太早造成资源的浪费。</li>
-<li>初始化依赖于其他数据，难以控制其他数据是否准备好。</li>
+<ol>
+<li><p>需要<strong>额外的空间</strong>。</p>
+</li>
+<li><p>更新操作<strong>繁琐</strong>。</p>
+</li>
+<li><p><strong>无法处理循环引用对象</strong>（a 与 b 相互引用）。</p>
+</li>
+</ol>
+<h2 id="可达性分析"><a href="#可达性分析" class="headerlink" title="可达性分析"></a>可达性分析</h2><p>GC Roots（由堆外指向堆内的引用）包括不限于：</p>
+<ol>
+<li><p>Java 方法栈桢中的局部变量。</p>
+</li>
+<li><p>已加载类的静态变量。</p>
+</li>
+<li><p>JNI handles。<strong>不懂</strong></p>
+</li>
+<li><p>已启动且未停止的 Java 线程。</p>
+</li>
+</ol>
+<p>可达性分析算法：</p>
+<ol>
+<li><p>将一系列 GC Roots 作为初始的存活对象合集（live set）。</p>
+</li>
+<li><p>标记（mark）：从该合集出发，探索所有能够被该集合引用到的对象，将其加入到该集合中。</p>
+</li>
+<li><p>未被探索到的对象是死亡的，是可以回收的。</p>
+</li>
+</ol>
+<p>需要解决的问题：</p>
+<p>在多线程环境下，其他线程可能会更新已经访问过的对象中的引用，从而造成误报（将引用设置为 null）或者漏报（将引用设置为未被访问过的对象）。</p>
+<h1 id="Stop-the-world"><a href="#Stop-the-world" class="headerlink" title="Stop-the-world"></a>Stop-the-world</h1><ul>
+<li><p>停止其他非垃圾回收线程的工作，直到完成垃圾回收。</p>
+</li>
+<li><p>暂停时间（GC pause）。</p>
+</li>
 </ul>
-<h1 id="懒汉式"><a href="#懒汉式" class="headerlink" title="懒汉式"></a>懒汉式</h1><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Singleton</span> </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">volatile</span> Singleton instance;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="title">Singleton</span><span class="params">()</span> </span>&#123;&#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> Singleton <span class="title">getInstance</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (instance == <span class="keyword">null</span>) &#123;</span><br><span class="line">            <span class="keyword">synchronized</span> (Singleton.class) &#123;</span><br><span class="line">                <span class="keyword">if</span> (instance == <span class="keyword">null</span>) &#123;</span><br><span class="line">                    instance = <span class="keyword">new</span> Singleton();</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> instance;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>EventBus使用的方式。</p>
-<p>优点：</p>
-<ul>
-<li>第一次使用时加载，避免了资源浪费。</li>
+<h1 id="安全点（safepoint）"><a href="#安全点（safepoint）" class="headerlink" title="安全点（safepoint）"></a>安全点（safepoint）</h1><blockquote>
+<p>当 Java 虚拟机收到 Stop-the-world 请求，它便会等待所有的线程都到达安全点，才允许请求 Stop-the-world 的线程进行独占的工作。</p>
+</blockquote>
+<h2 id="本地代码的安全点"><a href="#本地代码的安全点" class="headerlink" title="本地代码的安全点"></a>本地代码的安全点</h2><ul>
+<li><p>Java 程序通过 JNI 执行<strong>本地代码</strong>时，这段代码<strong>不访问 Java 对象、调用 Java 方法或者返回至原 Java 方法</strong>。</p>
+</li>
+<li><p><strong>API 入口处进行安全点检测</strong>（safepoint poll）。</p>
+</li>
 </ul>
+<h2 id="解释执行字节码的安全点"><a href="#解释执行字节码的安全点" class="headerlink" title="解释执行字节码的安全点"></a>解释执行字节码的安全点</h2><ul>
+<li><p><strong>字节码与字节码之间</strong>。</p>
+</li>
+<li><p>有安全点请求时，<strong>执行一条字节码进行一次安全点检测</strong>。</p>
+</li>
+</ul>
+<h2 id="执行即时编译器生成的机器码"><a href="#执行即时编译器生成的机器码" class="headerlink" title="执行即时编译器生成的机器码"></a>执行即时编译器生成的机器码</h2><ul>
+<li><p>生成机器码时，<strong>即时编译器插入安全点检测</strong>。</p>
+</li>
+<li><p>HotSpot 虚拟机：在生成代码的方法出口、非计数循环的循环回边（back-edge）处插入。</p>
+</li>
+</ul>
+<h2 id="阻塞的线程属于安全点。"><a href="#阻塞的线程属于安全点。" class="headerlink" title="阻塞的线程属于安全点。"></a>阻塞的线程属于安全点。</h2><h1 id="垃圾回收的三种方式"><a href="#垃圾回收的三种方式" class="headerlink" title="垃圾回收的三种方式"></a>垃圾回收的三种方式</h1><h2 id="清除（sweep）"><a href="#清除（sweep）" class="headerlink" title="清除（sweep）"></a>清除（sweep）</h2><blockquote>
+<p>把死亡对象所占据的内存标记为空闲内存，记录在一个空闲列表（free list）中。</p>
+</blockquote>
+<p><img src="/images/posts/JVM/1112/sweep.png" alt="sweep"></p>
 <p>缺点：</p>
-<ul>
-<li>复杂。</li>
-<li>即使是双重检查有时也会失效（可能性极低）。</li>
-</ul>
-<h1 id="静态内部类模式"><a href="#静态内部类模式" class="headerlink" title="静态内部类模式"></a>静态内部类模式</h1><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Singleton</span> </span>&#123; </span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="title">Singleton</span><span class="params">()</span></span>&#123;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> Singleton <span class="title">getInstance</span><span class="params">()</span></span>&#123;  </span><br><span class="line">        <span class="keyword">return</span> SingletonHolder.sInstance;  </span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="class"><span class="keyword">class</span> <span class="title">SingletonHolder</span> </span>&#123;  </span><br><span class="line">        <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> Singleton sInstance = <span class="keyword">new</span> Singleton();  </span><br><span class="line">    &#125;  </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>《Effective Java》第一版中推荐的写法。<br>内部类加载时初始化，内部类在第一次被调用时类加载。</p>
-<p>优点：</p>
-<ul>
-<li>简单。</li>
-<li>巧妙的利用内部类实现线程安全。</li>
-</ul>
-<h1 id="枚举模式"><a href="#枚举模式" class="headerlink" title="枚举模式"></a>枚举模式</h1><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">enum</span> Singleton &#123;  </span><br><span class="line">     INSTANCE;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>《Effective Java》第二版中推荐的写法。</p>
-<p>优点：</p>
-<ul>
-<li>极简。</li>
-<li>线程安全。</li>
-<li><strong>绝对完美单例，可以抵御反序列化、反射。</strong></li>
-</ul>
+<ol>
+<li><p>造成<strong>内存碎片</strong>。</p>
+</li>
+<li><p>堆中对象必须是连续分布的，可能出现总空闲内存足够，无法分配的极端情况。</p>
+</li>
+<li><p>分配<strong>效率较低</strong>。</p>
+</li>
+</ol>
+<h2 id="压缩（compact）"><a href="#压缩（compact）" class="headerlink" title="压缩（compact）"></a>压缩（compact）</h2><blockquote>
+<p>把存活的对象聚集到内存区域的起始位置，留下一段连续的内存空间。</p>
+</blockquote>
+<p><img src="/images/posts/JVM/1112/compact.png" alt="compact"></p>
 <p>缺点：</p>
-<ul>
-<li>降低可读性。</li>
-<li>无法被继承，降低扩展性。</li>
-</ul>
-<h1 id="容器模式"><a href="#容器模式" class="headerlink" title="容器模式"></a>容器模式</h1><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">SingletonManager</span> </span>&#123; </span><br><span class="line">　　<span class="keyword">private</span> <span class="keyword">static</span> Map&lt;String, Object&gt; objMap = <span class="keyword">new</span> HashMap&lt;String,Object&gt;();</span><br><span class="line">　　</span><br><span class="line">　　<span class="function"><span class="keyword">private</span> <span class="title">SingletonManager</span><span class="params">()</span> </span>&#123; </span><br><span class="line">　　&#125;</span><br><span class="line">　　</span><br><span class="line">　　<span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">registerService</span><span class="params">(String key, Object instance)</span> </span>&#123;</span><br><span class="line">　　　　<span class="keyword">if</span> (!objMap.containsKey(key) ) &#123;</span><br><span class="line">　　　　　　objMap.put(key, instance) ;</span><br><span class="line">　　　　&#125;</span><br><span class="line">　　&#125;</span><br><span class="line">　　</span><br><span class="line">　　<span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="title">ObjectgetService</span><span class="params">(String key)</span> </span>&#123;</span><br><span class="line">　　　　<span class="keyword">return</span> objMap.get(key) ;</span><br><span class="line">　　&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>使用单例管理器统一管理所有单例，可以使用统一接口实现操作，这里只是写了简单的实现，没有优化获取操作，没有优化线程。</p>
-<p>优点：</p>
-<ul>
-<li>方便统一管理。</li>
-<li>降低耦合。</li>
-</ul>
+<ol>
+<li>压缩算法有<strong>性能开销</strong>。</li>
+</ol>
+<h2 id="复制（copy）"><a href="#复制（copy）" class="headerlink" title="复制（copy）"></a>复制（copy）</h2><blockquote>
+<p>把内存区域分为两等分，分别用两个指针 from 和 to 来维护，只是用 from 指针指向的内存区域来分配内存。当发生垃圾回收时，把存活的对象复制到 to 指针指向的内存区域中，交换 from 指针和 to 指针的内容。</p>
+</blockquote>
+<p><img src="/images/posts/JVM/1112/copy.png" alt="copy"></p>
 <p>缺点：</p>
-<ul>
-<li>不能及时找到获取途径，增加开发者的学习成本。</li>
-<li>未得到广泛认可。</li>
+<p>1.堆空间的使用<strong>效率极其低下</strong>。</p>
+<p>12 未更新</p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://blog.ennis.info/2018/08/29/笔记-深入拆解Java虚拟机-10Java对象的内存分布/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Ennis L.M. Wu">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar/portrait.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Ennis Wu">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/08/29/笔记-深入拆解Java虚拟机-10Java对象的内存分布/" itemprop="url">「深入拆解 Java 虚拟机」10 Java 对象的内存分布</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-08-29T09:38:58+08:00">
+                2018-08-29
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/《深入拆解-Java-虚拟机》/" itemprop="url" rel="index">
+                    <span itemprop="name">《深入拆解 Java 虚拟机》</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>原文：<a href="https://time.geekbang.org/column/article/13081" target="_blank" rel="noopener">https://time.geekbang.org/column/article/13081</a></p>
+<h1 id="Java-新建对象的方式"><a href="#Java-新建对象的方式" class="headerlink" title="Java 新建对象的方式"></a>Java 新建对象的方式</h1><ul>
+<li><p>new 语句</p>
+</li>
+<li><p>反射</p>
+</li>
+<li><p>Object.clone 方法</p>
+</li>
+<li><p>反序列化</p>
+</li>
+<li><p>Unsafe.allocateInstance 方法</p>
+</li>
 </ul>
-<h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><p>本文一共提供了5种单例模式的实现，最推荐使用静态内部类的方式。饿汉式虽然简单但是容易造成资源浪费，懒汉式过于复杂，即便是双重检查版本也有可能DCL失效，枚举虽然是完美单例但是扩展性低，容器模式需要大量代码优化线程安全和获取操作并且增加了开发者的学习成本。</p>
-<p>参考资料：</p>
-<ul>
-<li><a href="https://www.cnblogs.com/dongyu666/p/6971783.html" target="_blank" rel="noopener">https://www.cnblogs.com/dongyu666/p/6971783.html</a></li>
-<li><a href="https://blog.csdn.net/itachi85/article/details/50510124" target="_blank" rel="noopener">https://blog.csdn.net/itachi85/article/details/50510124</a></li>
+<h1 id="压缩指针"><a href="#压缩指针" class="headerlink" title="压缩指针"></a>压缩指针</h1><h2 id="对象头（object-header）"><a href="#对象头（object-header）" class="headerlink" title="对象头（object header）"></a>对象头（object header）</h2><ul>
+<li><p>每个 Java 对象都有。</p>
+</li>
+<li><p>由<strong>标记字段、类型指针</strong>构成。</p>
+</li>
+<li><p>标记字段：存储 Java 虚拟机有关该对象的运行数据（如哈希码、GC 信息、锁信息）。</p>
+</li>
+<li><p>类型指针：指向该对象的类。</p>
+</li>
+<li><p>64 位 Java 虚拟机中，对象头占 16 个字节。</p>
+</li>
+</ul>
+<h2 id="压缩指针-1"><a href="#压缩指针-1" class="headerlink" title="压缩指针"></a>压缩指针</h2><ul>
+<li><p>开启压缩指针：-XX:+UseCompressedOops（默认开启）。</p>
+</li>
+<li><p><strong>将堆中原本 64 位的 Java 对象指针压缩成 32 位。</strong></p>
+</li>
+<li><p>类型指针也被压缩成 32 位，<strong>对象头的大小从 16 字节降至 12 字节。</strong></p>
+</li>
+<li><p>还可以作用于<strong>引用类型的字段</strong>，<strong>引用类型数组</strong>。</p>
+</li>
+</ul>
+<h1 id="内存对齐"><a href="#内存对齐" class="headerlink" title="内存对齐"></a>内存对齐</h1><ul>
+<li><p>虚拟机选项 -XX:ObjectAlignmentInBytes，默认值为 8。</p>
+</li>
+<li><p>默认情况，堆中对象（包括字段之间）起始地址要对齐至 8 的倍数。</p>
+</li>
+<li><p>浪费掉的空间称之为对象间的填充（padding）。</p>
+</li>
+<li><p>32 位压缩指针可以寻址到 2 的 35 次方个字节（32GB 地址空间，超过 32GB 会关闭压缩指针）。</p>
+</li>
+<li><p>压缩指针解引用：左移 3 位，再加上一个固定偏移量。</p>
+</li>
+<li><p>字段内存对齐的一个原因：<strong>让字段只出现在同一 CPU 的缓存行中</strong>。<strong>不懂</strong></p>
+</li>
+</ul>
+<h1 id="字段重排列"><a href="#字段重排列" class="headerlink" title="字段重排列"></a>字段重排列</h1><ul>
+<li>Java 虚拟机重新分配字段的顺序，达到内存对齐</li>
 </ul>
 
           
@@ -2452,7 +2871,7 @@
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/page/4/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/4/">4</a><span class="page-number current">5</span><a class="page-number" href="/page/6/">6</a><a class="extend next" rel="next" href="/page/6/"><i class="fa fa-angle-right"></i></a>
+    <a class="extend prev" rel="prev" href="/page/4/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/4/">4</a><span class="page-number current">5</span><a class="page-number" href="/page/6/">6</a><span class="space">&hellip;</span><a class="page-number" href="/page/8/">8</a><a class="extend next" rel="next" href="/page/6/"><i class="fa fa-angle-right"></i></a>
   </nav>
 
 
@@ -2502,7 +2921,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">59</span>
+                  <span class="site-state-item-count">76</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -2513,7 +2932,7 @@
               
               <div class="site-state-item site-state-categories">
                 <a href="/categories/index.html">
-                  <span class="site-state-item-count">14</span>
+                  <span class="site-state-item-count">10</span>
                   <span class="site-state-item-name">分类</span>
                 </a>
               </div>
@@ -2524,7 +2943,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">26</span>
+                  <span class="site-state-item-count">37</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>
@@ -2584,7 +3003,7 @@
 
     <footer id="footer" class="footer">
       <div class="footer-inner">
-        <div class="copyright">&copy; 2018 &mdash; <span itemprop="copyrightYear">2019</span>
+        <div class="copyright">&copy; 2018 &mdash; <span itemprop="copyrightYear">2020</span>
   <span class="with-love">
     <i class="fa fa-user"></i>
   </span>

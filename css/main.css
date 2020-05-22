@@ -1089,11 +1089,6 @@ pre .javascript .function {
 .back-to-top.back-to-top-on {
   bottom: 19px;
 }
-.header {
-  background: url("/images/avatar/header.jpg");
-no-repeat
-  background-size: auto 100%;
-}
 .header-inner {
   position: relative;
 }
@@ -1944,7 +1939,7 @@ no-repeat
   width: 4px;
   height: 4px;
   border-radius: 50%;
-  background: #ff1c24;
+  background: #dbffff;
 }
 .links-of-blogroll {
   font-size: 13px;

@@ -72,7 +72,7 @@
 
 
 
-  <meta name="keywords" content="计算机网络,TCP/IP," />
+  <meta name="keywords" content="计算机网络,TCP,IP," />
 
 
 
@@ -86,16 +86,16 @@
 
 
 <meta name="description" content="名词解释   缩写 英文全称 中文     AS Autonomous System 自治系统   IGP Interior Gateway Protocol 内部网关协议/域内选路协议   EGP Exterier Gateway Protocol 外部网关协议/域内选路协议的分隔选路协议   BGP Border Gateway Protocol 边界网关协议   RIP Routing In">
-<meta name="keywords" content="计算机网络,TCP&#x2F;IP">
+<meta name="keywords" content="计算机网络,TCP,IP">
 <meta property="og:type" content="article">
-<meta property="og:title" content="《TCPIP详解卷1》010阅读笔记">
+<meta property="og:title" content="「TCP&#x2F;IP详解 卷1」010 阅读笔记">
 <meta property="og:url" content="http://blog.ennis.info/2018/06/13/《TCPIP详解卷1》010阅读笔记/index.html">
 <meta property="og:site_name" content="Ennis Wu">
 <meta property="og:description" content="名词解释   缩写 英文全称 中文     AS Autonomous System 自治系统   IGP Interior Gateway Protocol 内部网关协议/域内选路协议   EGP Exterier Gateway Protocol 外部网关协议/域内选路协议的分隔选路协议   BGP Border Gateway Protocol 边界网关协议   RIP Routing In">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2019-01-26T13:26:29.024Z">
+<meta property="og:updated_time" content="2020-05-21T17:16:56.571Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="《TCPIP详解卷1》010阅读笔记">
+<meta name="twitter:title" content="「TCP&#x2F;IP详解 卷1」010 阅读笔记">
 <meta name="twitter:description" content="名词解释   缩写 英文全称 中文     AS Autonomous System 自治系统   IGP Interior Gateway Protocol 内部网关协议/域内选路协议   EGP Exterier Gateway Protocol 外部网关协议/域内选路协议的分隔选路协议   BGP Border Gateway Protocol 边界网关协议   RIP Routing In">
 
 
@@ -132,7 +132,7 @@
 
 
 
-  <title>《TCPIP详解卷1》010阅读笔记 | Ennis Wu</title>
+  <title>「TCP/IP详解 卷1」010 阅读笔记 | Ennis Wu</title>
   
 
 
@@ -338,6 +338,18 @@
 
  </div>
     </header>
+    <script>
+      let images = [
+         'header0.jpg',
+         'header1.jpg',
+         'header2.png'
+      ];
+      let image = images[Math.floor(Math.random() * images.length)];
+      window.document.getElementById('header').style.cssText 
+      = 'background: url(/images/avatar/' 
+      + image
+      + '); no-repeat; background-size: auto 100%;';
+    </script>
 
     <main id="main" class="main">
       <div class="main-inner">
@@ -376,7 +388,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">《TCPIP详解卷1》010阅读笔记</h1>
+          <h1 class="post-title" itemprop="name headline">「TCP/IP详解 卷1」010 阅读笔记</h1>
         
 
         <div class="post-meta">
@@ -411,8 +423,8 @@
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/TCP-IP/" itemprop="url" rel="index">
-                    <span itemprop="name">TCP/IP</span>
+                  <a href="/categories/《TCP-IP详解-卷1》/" itemprop="url" rel="index">
+                    <span itemprop="name">《TCP/IP详解 卷1》</span>
                   </a>
                 </span>
 
@@ -448,7 +460,7 @@
       
 
       
-        <h4 id="名词解释"><a href="#名词解释" class="headerlink" title="名词解释"></a>名词解释</h4><table>
+        <h1 id="名词解释"><a href="#名词解释" class="headerlink" title="名词解释"></a>名词解释</h1><table>
 <thead>
 <tr>
 <th>缩写</th>
@@ -495,106 +507,136 @@
 </tbody>
 </table>
 <ul>
-<li>IGP用于自治系统内。</li>
-<li>EGP用于自治系统之间。</li>
-<li>BGP意在取代EGP。<br><br></li>
-</ul>
-<h4 id="动态选路"><a href="#动态选路" class="headerlink" title="动态选路"></a>动态选路</h4><ul>
-<li>相邻路由器之间进行通信，告知对方每个路由器当前所连接的网络。</li>
-<li>路由守护程序根据从相邻路由器收到的信息更新内核中的路由表。</li>
-<li>随时间变化时，路由是由路由守护程序动态地增加或删除。</li>
-<li>如果路由守护程序发现前往同一信宿存在多条路由，选择最佳路由加入内核路由表。</li>
-<li>如果路由守护程序发现一条链路已经断开，删除受影响的路由或增加一条路由绕过。</li>
-<li>每个自治系统由单个<strong>实体</strong>管理。==什么是实体？==<br><br></li>
-</ul>
-<h4 id="RIP：选路信息协议"><a href="#RIP：选路信息协议" class="headerlink" title="RIP：选路信息协议"></a>RIP：选路信息协议</h4><ul>
-<li>正式描述文件RFC 1058 [Hedrick 1988a]。</li>
-<li>RIP报文包含在UDP数据报中。</li>
-<li>RIP的度量是以跳计数的。</li>
-<li>最多携带25个路由。<br><br></li>
-</ul>
-<h6 id="度量"><a href="#度量" class="headerlink" title="度量"></a>度量</h6><ul>
-<li>直接连接接口的跳数为1。</li>
-<li>一个路由器到一个网络有多条路由，路由器选择跳数最小的路由。</li>
-<li>度量为16表示无路由到达该IP地址。<br><br></li>
-</ul>
-<h6 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h6><ul>
-<li>RIP没有子网地址的概念。</li>
-<li>路由器或链路发生故障后在稳定下来这段时间可能发生路由环路。</li>
-<li>度量最大值限制了可以使用RIP的网络的大小。<br><br></li>
-</ul>
-<h4 id="RIP版本2"><a href="#RIP版本2" class="headerlink" title="RIP版本2"></a>RIP版本2</h4><ul>
-<li>RFC 1388 [Malkin 1993a] 对RIP定义进行了扩充。</li>
-<li>路由域字段：数据报的所有者。</li>
-<li>选路标记字段：携带一个EGP和BGP的自治系统号。</li>
-<li>子网掩码字段：应用于相应的IP地址。</li>
-<li>下一站IP地址字段：指明发往目的IP地址的报文应该发往哪里。</li>
-<li>除了支持广播，还支持多播。<br><br></li>
-</ul>
-<h4 id="OSPF：开放最短路径优先"><a href="#OSPF：开放最短路径优先" class="headerlink" title="OSPF：开放最短路径优先"></a>OSPF：开放最短路径优先</h4><ul>
-<li>RFC 1247 [Moy 1991] 对第2版OSPF进行了描述。</li>
-<li>OSPF克服了RIP所有限制。</li>
-<li>路由器不与临站交换距离信息，主动测试与临站相连的链路状态。</li>
-<li>信息发给其他临站，临站将这些信息在自治系统中传播出去。</li>
-<li>路由器接收这些链路状态信息，建立完整的路由表。</li>
-<li>链路状态协议总是比距离向量协议稳定更快。</li>
-<li>OSPF直接使用IP，不使用UDP或TCP。</li>
-<li>优于RIP的特点：</li>
-<li><ol>
-<li>可以对每个IP服务类型计算各自的路由集。</li>
-</ol>
+<li><p>IGP 用于自治系统内。</p>
 </li>
-<li><ol start="2">
-<li>给每个接口指派一个无维数的费用。</li>
-</ol>
+<li><p>EGP 用于自治系统之间。</p>
 </li>
-<li><ol start="3">
-<li>同一个目的地址存在多个相同费用的路由时，平均分配流量。</li>
-</ol>
-</li>
-<li><ol start="4">
-<li>支持子网，子网掩码与每个通告相连。</li>
-</ol>
-</li>
-<li><ol start="5">
-<li>无编号网络。</li>
-</ol>
-</li>
-<li><ol start="6">
-<li>简单鉴别机制。</li>
-</ol>
-</li>
-<li><ol start="7">
-<li>采用多播而不是广播形式，减少系统负载。<br><br></li>
-</ol>
+<li><p>BGP 意在取代 EGP。</p>
 </li>
 </ul>
-<h4 id="BGP：边界网关协议"><a href="#BGP：边界网关协议" class="headerlink" title="BGP：边界网关协议"></a>BGP：边界网关协议</h4><ul>
-<li>RFC 1267 [Lougheed and Rekhter 1991] 对第3版BGP进行描述。</li>
-<li>BGP系统之间交换网络可到达信息，包括所必须经过的自治系统的所有路径。</li>
-<li>使用BGP的一个目的是减少通过流量。</li>
-<li>允许使用基于策略的选路。</li>
-<li>使用TCP作为其传输层协议。</li>
-<li>BGP是一个距离测量协议，列举了到每个目的地址的路由，排除了一些距离向量协议的问题。</li>
-<li>定期发送keepalive报文给临站来监测TCP连接对端的链路或主机失败。</li>
-<li>应用层的keepalive报文与TCP的keepalive报文选项相互独立。<br><br></li>
+<h1 id="动态选路"><a href="#动态选路" class="headerlink" title="动态选路"></a>动态选路</h1><ul>
+<li><p>相邻路由器之间进行通信，告知对方每个路由器当前所连接的网络。</p>
+</li>
+<li><p>路由守护程序根据从相邻路由器收到的信息更新内核中的路由表。</p>
+</li>
+<li><p>随时间变化时，路由是由路由守护程序动态地增加或删除。</p>
+</li>
+<li><p>如果路由守护程序发现前往同一信宿存在多条路由，选择最佳路由加入内核路由表。</p>
+</li>
+<li><p>如果路由守护程序发现一条链路已经断开，删除受影响的路由或增加一条路由绕过。</p>
+</li>
+<li><p>每个自治系统由单个<strong>实体</strong>管理。==什么是实体？==</p>
+</li>
 </ul>
-<h4 id="CIDR：无类型域间选路"><a href="#CIDR：无类型域间选路" class="headerlink" title="CIDR：无类型域间选路"></a>CIDR：无类型域间选路</h4><ul>
-<li>RFC 1518 [Rekher and Li 1993], RFC 1519 [Fuller et al. 1993]对它描述。</li>
-<li>[Ford, Rekhter, and Braun 1993] 综述。</li>
-<li>一个防止路由表膨胀的方法，也成为超网。</li>
-<li>采用分配多个IP地址的方式，使许多表项总和成更少的数目</li>
-<li>必须满足3种特性：</li>
-<li><ol>
-<li>IP地址必须具有相同的高位地址比特。</li>
+<h1 id="RIP：选路信息协议"><a href="#RIP：选路信息协议" class="headerlink" title="RIP：选路信息协议"></a>RIP：选路信息协议</h1><ul>
+<li><p>正式描述文件 RFC 1058 [Hedrick 1988a]。</p>
+</li>
+<li><p>RIP 报文包含在 UDP 数据报中。</p>
+</li>
+<li><p>RIP 的度量是以跳计数的。</p>
+</li>
+<li><p>最多携带 25 个路由。</p>
+</li>
+</ul>
+<h2 id="度量"><a href="#度量" class="headerlink" title="度量"></a>度量</h2><ul>
+<li><p>直接连接接口的跳数为 1。</p>
+</li>
+<li><p>一个路由器到一个网络有多条路由，路由器选择跳数最小的路由。</p>
+</li>
+<li><p>度量为 16 表示无路由到达该 IP 地址。</p>
+</li>
+</ul>
+<h2 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h2><ul>
+<li><p>RIP 没有子网地址的概念。</p>
+</li>
+<li><p>路由器或链路发生故障后在稳定下来这段时间可能发生路由环路。</p>
+</li>
+<li><p>度量最大值限制了可以使用 RIP 的网络的大小。</p>
+</li>
+</ul>
+<h1 id="RIP-版本-2"><a href="#RIP-版本-2" class="headerlink" title="RIP 版本 2"></a>RIP 版本 2</h1><ul>
+<li><p>RFC 1388 [Malkin 1993a] 对 RIP 定义进行了扩充。</p>
+</li>
+<li><p>路由域字段：数据报的所有者。</p>
+</li>
+<li><p>选路标记字段：携带一个 EGP 和 BGP 的自治系统号。</p>
+</li>
+<li><p>子网掩码字段：应用于相应的 IP 地址。</p>
+</li>
+<li><p>下一站 IP 地址字段：指明发往目的 IP 地址的报文应该发往哪里。</p>
+</li>
+<li><p>除了支持广播，还支持多播。</p>
+</li>
+</ul>
+<h1 id="OSPF：开放最短路径优先"><a href="#OSPF：开放最短路径优先" class="headerlink" title="OSPF：开放最短路径优先"></a>OSPF：开放最短路径优先</h1><ul>
+<li><p>RFC 1247 [Moy 1991] 对第 2 版 OSPF 进行了描述。</p>
+</li>
+<li><p>OSPF 克服了 RIP 所有限制。</p>
+</li>
+<li><p>路由器不与临站交换距离信息，主动测试与临站相连的链路状态。</p>
+</li>
+<li><p>信息发给其他临站，临站将这些信息在自治系统中传播出去。</p>
+</li>
+<li><p>路由器接收这些链路状态信息，建立完整的路由表。</p>
+</li>
+<li><p>链路状态协议总是比距离向量协议稳定更快。</p>
+</li>
+<li><p>OSPF 直接使用 IP，不使用 UDP 或 TCP。</p>
+</li>
+<li><p>优于 RIP 的特点：</p>
+<ol>
+<li><p>可以对每个 IP 服务类型计算各自的路由集。</p>
+</li>
+<li><p>给每个接口指派一个无维数的费用。</p>
+</li>
+<li><p>同一个目的地址存在多个相同费用的路由时，平均分配流量。</p>
+</li>
+<li><p>支持子网，子网掩码与每个通告相连。</p>
+</li>
+<li><p>无编号网络。</p>
+</li>
+<li><p>简单鉴别机制。</p>
+</li>
+<li><p>采用多播而不是广播形式，减少系统负载。</p>
+</li>
 </ol>
 </li>
-<li><ol start="2">
-<li>路由表和选路算法必须扩展成根据32 bit IP地址和32 bit 掩码做出选路决策。</li>
-</ol>
+</ul>
+<h1 id="BGP：边界网关协议"><a href="#BGP：边界网关协议" class="headerlink" title="BGP：边界网关协议"></a>BGP：边界网关协议</h1><ul>
+<li><p>RFC 1267 [Lougheed and Rekhter 1991] 对第 3 版 BGP 进行描述。</p>
 </li>
-<li><ol start="3">
-<li>选路协议要有32 bit掩码。</li>
+<li><p>BGP 系统之间交换网络可到达信息，包括所必须经过的自治系统的所有路径。</p>
+</li>
+<li><p>使用 BGP 的一个目的是减少通过流量。</p>
+</li>
+<li><p>允许使用基于策略的选路。</p>
+</li>
+<li><p>使用 TCP 作为其传输层协议。</p>
+</li>
+<li><p>BGP 是一个距离测量协议，列举了到每个目的地址的路由，排除了一些距离向量协议的问题。</p>
+</li>
+<li><p>定期发送 keepalive 报文给临站来监测 TCP 连接对端的链路或主机失败。</p>
+</li>
+<li><p>应用层的 keepalive 报文与 TCP 的 keepalive 报文选项相互独立。</p>
+</li>
+</ul>
+<h1 id="CIDR：无类型域间选路"><a href="#CIDR：无类型域间选路" class="headerlink" title="CIDR：无类型域间选路"></a>CIDR：无类型域间选路</h1><ul>
+<li><p>RFC 1518 [Rekher and Li 1993], RFC 1519 [Fuller et al. 1993] 对它描述。</p>
+</li>
+<li><p>[Ford, Rekhter, and Braun 1993] 综述。</p>
+</li>
+<li><p>一个防止路由表膨胀的方法，也成为超网。</p>
+</li>
+<li><p>采用分配多个 IP 地址的方式，使许多表项总和成更少的数目</p>
+</li>
+<li><p>必须满足 3 种特性：</p>
+<ol>
+<li><p>IP地址必须具有相同的高位地址比特。</p>
+</li>
+<li><p>路由表和选路算法必须扩展成根据 32 bit IP 地址和 32 bit 掩码做出选路决策。</p>
+</li>
+<li><p>选路协议要有 32 bit 掩码。</p>
+</li>
 </ol>
 </li>
 </ul>
@@ -646,7 +688,9 @@
           
             <a href="/tags/计算机网络/" rel="tag"># 计算机网络</a>
           
-            <a href="/tags/TCP-IP/" rel="tag"># TCP/IP</a>
+            <a href="/tags/TCP/" rel="tag"># TCP</a>
+          
+            <a href="/tags/IP/" rel="tag"># IP</a>
           
         </div>
       
@@ -659,8 +703,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2018/06/12/《TCPIP详解卷1》007、008、009阅读笔记/" rel="next" title="《TCPIP详解卷1》007、008、009阅读笔记">
-                <i class="fa fa-chevron-left"></i> 《TCPIP详解卷1》007、008、009阅读笔记
+              <a href="/2018/06/12/《TCPIP详解卷1》007、008、009阅读笔记/" rel="next" title="「TCP/IP详解 卷1」007、008、009 阅读笔记">
+                <i class="fa fa-chevron-left"></i> 「TCP/IP详解 卷1」007、008、009 阅读笔记
               </a>
             
           </div>
@@ -669,8 +713,8 @@
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2018/07/20/转-Java反射完全解析/" rel="prev" title="[转]Java反射完全解析">
-                [转]Java反射完全解析 <i class="fa fa-chevron-right"></i>
+              <a href="/2018/07/20/转-Java反射完全解析/" rel="prev" title="「转载」Java 反射完全解析">
+                「转载」Java 反射完全解析 <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
@@ -752,7 +796,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">59</span>
+                  <span class="site-state-item-count">76</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -763,7 +807,7 @@
               
               <div class="site-state-item site-state-categories">
                 <a href="/categories/index.html">
-                  <span class="site-state-item-count">14</span>
+                  <span class="site-state-item-count">10</span>
                   <span class="site-state-item-name">分类</span>
                 </a>
               </div>
@@ -774,7 +818,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">26</span>
+                  <span class="site-state-item-count">37</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>
@@ -830,7 +874,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#名词解释"><span class="nav-number">1.</span> <span class="nav-text">名词解释</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#动态选路"><span class="nav-number">2.</span> <span class="nav-text">动态选路</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#RIP：选路信息协议"><span class="nav-number">3.</span> <span class="nav-text">RIP：选路信息协议</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#度量"><span class="nav-number">3.0.1.</span> <span class="nav-text">度量</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#问题"><span class="nav-number">3.0.2.</span> <span class="nav-text">问题</span></a></li></ol></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#RIP版本2"><span class="nav-number">4.</span> <span class="nav-text">RIP版本2</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#OSPF：开放最短路径优先"><span class="nav-number">5.</span> <span class="nav-text">OSPF：开放最短路径优先</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#BGP：边界网关协议"><span class="nav-number">6.</span> <span class="nav-text">BGP：边界网关协议</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#CIDR：无类型域间选路"><span class="nav-number">7.</span> <span class="nav-text">CIDR：无类型域间选路</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#名词解释"><span class="nav-number">1.</span> <span class="nav-text">名词解释</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#动态选路"><span class="nav-number">2.</span> <span class="nav-text">动态选路</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#RIP：选路信息协议"><span class="nav-number">3.</span> <span class="nav-text">RIP：选路信息协议</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#度量"><span class="nav-number">3.1.</span> <span class="nav-text">度量</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#问题"><span class="nav-number">3.2.</span> <span class="nav-text">问题</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#RIP-版本-2"><span class="nav-number">4.</span> <span class="nav-text">RIP 版本 2</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#OSPF：开放最短路径优先"><span class="nav-number">5.</span> <span class="nav-text">OSPF：开放最短路径优先</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#BGP：边界网关协议"><span class="nav-number">6.</span> <span class="nav-text">BGP：边界网关协议</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#CIDR：无类型域间选路"><span class="nav-number">7.</span> <span class="nav-text">CIDR：无类型域间选路</span></a></li></ol></div>
             
 
           </div>
@@ -850,7 +894,7 @@
 
     <footer id="footer" class="footer">
       <div class="footer-inner">
-        <div class="copyright">&copy; 2018 &mdash; <span itemprop="copyrightYear">2019</span>
+        <div class="copyright">&copy; 2018 &mdash; <span itemprop="copyrightYear">2020</span>
   <span class="with-love">
     <i class="fa fa-user"></i>
   </span>

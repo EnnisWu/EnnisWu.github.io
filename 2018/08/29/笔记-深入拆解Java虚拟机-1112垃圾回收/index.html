@@ -72,7 +72,7 @@
 
 
 
-  <meta name="keywords" content="JVM," />
+  <meta name="keywords" content="未完成,JVM," />
 
 
 
@@ -85,21 +85,21 @@
 
 
 
-<meta name="description" content="如何辨别对象是否死亡引用计数法（reference counting） 为每个对象添加一个引用计数器。 为 0 时死亡。  缺点：  需要额外的空间。 更新操作繁琐。 无法处理循环引用对象（a 与 b 相互引用）。  可达性分析GC Roots（由堆外指向堆内的引用）包括不限于：  Java 方法栈桢中的局部变量。 已加载类的静态变量。 JNI handles。不懂 已启动且未停止的 Java 线">
-<meta name="keywords" content="JVM">
+<meta name="description" content="原文：https://time.geekbang.org/column/article/13091 如何辨别对象是否死亡引用计数法（reference counting） 为每个对象添加一个引用计数器。  为 0 时死亡。   缺点：  需要额外的空间。  更新操作繁琐。  无法处理循环引用对象（a 与 b 相互引用）。   可达性分析GC Roots（由堆外指向堆内的引用）包括不限于：  Jav">
+<meta name="keywords" content="未完成,JVM">
 <meta property="og:type" content="article">
-<meta property="og:title" content="笔记-深入拆解Java虚拟机-1112垃圾回收">
+<meta property="og:title" content="「深入拆解 Java 虚拟机」11 12 垃圾回收">
 <meta property="og:url" content="http://blog.ennis.info/2018/08/29/笔记-深入拆解Java虚拟机-1112垃圾回收/index.html">
 <meta property="og:site_name" content="Ennis Wu">
-<meta property="og:description" content="如何辨别对象是否死亡引用计数法（reference counting） 为每个对象添加一个引用计数器。 为 0 时死亡。  缺点：  需要额外的空间。 更新操作繁琐。 无法处理循环引用对象（a 与 b 相互引用）。  可达性分析GC Roots（由堆外指向堆内的引用）包括不限于：  Java 方法栈桢中的局部变量。 已加载类的静态变量。 JNI handles。不懂 已启动且未停止的 Java 线">
+<meta property="og:description" content="原文：https://time.geekbang.org/column/article/13091 如何辨别对象是否死亡引用计数法（reference counting） 为每个对象添加一个引用计数器。  为 0 时死亡。   缺点：  需要额外的空间。  更新操作繁琐。  无法处理循环引用对象（a 与 b 相互引用）。   可达性分析GC Roots（由堆外指向堆内的引用）包括不限于：  Jav">
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="http://blog.ennis.info/images/posts/JVM/1112/sweep.png">
 <meta property="og:image" content="http://blog.ennis.info/images/posts/JVM/1112/compact.png">
 <meta property="og:image" content="http://blog.ennis.info/images/posts/JVM/1112/copy.png">
-<meta property="og:updated_time" content="2019-01-26T13:26:29.083Z">
+<meta property="og:updated_time" content="2020-05-21T16:44:01.306Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="笔记-深入拆解Java虚拟机-1112垃圾回收">
-<meta name="twitter:description" content="如何辨别对象是否死亡引用计数法（reference counting） 为每个对象添加一个引用计数器。 为 0 时死亡。  缺点：  需要额外的空间。 更新操作繁琐。 无法处理循环引用对象（a 与 b 相互引用）。  可达性分析GC Roots（由堆外指向堆内的引用）包括不限于：  Java 方法栈桢中的局部变量。 已加载类的静态变量。 JNI handles。不懂 已启动且未停止的 Java 线">
+<meta name="twitter:title" content="「深入拆解 Java 虚拟机」11 12 垃圾回收">
+<meta name="twitter:description" content="原文：https://time.geekbang.org/column/article/13091 如何辨别对象是否死亡引用计数法（reference counting） 为每个对象添加一个引用计数器。  为 0 时死亡。   缺点：  需要额外的空间。  更新操作繁琐。  无法处理循环引用对象（a 与 b 相互引用）。   可达性分析GC Roots（由堆外指向堆内的引用）包括不限于：  Jav">
 <meta name="twitter:image" content="http://blog.ennis.info/images/posts/JVM/1112/sweep.png">
 
 
@@ -136,7 +136,7 @@
 
 
 
-  <title>笔记-深入拆解Java虚拟机-1112垃圾回收 | Ennis Wu</title>
+  <title>「深入拆解 Java 虚拟机」11 12 垃圾回收 | Ennis Wu</title>
   
 
 
@@ -342,6 +342,18 @@
 
  </div>
     </header>
+    <script>
+      let images = [
+         'header0.jpg',
+         'header1.jpg',
+         'header2.png'
+      ];
+      let image = images[Math.floor(Math.random() * images.length)];
+      window.document.getElementById('header').style.cssText 
+      = 'background: url(/images/avatar/' 
+      + image
+      + '); no-repeat; background-size: auto 100%;';
+    </script>
 
     <main id="main" class="main">
       <div class="main-inner">
@@ -380,7 +392,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">笔记-深入拆解Java虚拟机-1112垃圾回收</h1>
+          <h1 class="post-title" itemprop="name headline">「深入拆解 Java 虚拟机」11 12 垃圾回收</h1>
         
 
         <div class="post-meta">
@@ -415,8 +427,8 @@
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Java虚拟机/" itemprop="url" rel="index">
-                    <span itemprop="name">Java虚拟机</span>
+                  <a href="/categories/《深入拆解-Java-虚拟机》/" itemprop="url" rel="index">
+                    <span itemprop="name">《深入拆解 Java 虚拟机》</span>
                   </a>
                 </span>
 
@@ -452,49 +464,70 @@
       
 
       
-        <h1 id="如何辨别对象是否死亡"><a href="#如何辨别对象是否死亡" class="headerlink" title="如何辨别对象是否死亡"></a>如何辨别对象是否死亡</h1><h2 id="引用计数法（reference-counting）"><a href="#引用计数法（reference-counting）" class="headerlink" title="引用计数法（reference counting）"></a>引用计数法（reference counting）</h2><ul>
-<li>为每个对象添加一个引用计数器。</li>
-<li>为 0 时死亡。</li>
+        <p>原文：<a href="https://time.geekbang.org/column/article/13091" target="_blank" rel="noopener">https://time.geekbang.org/column/article/13091</a></p>
+<h1 id="如何辨别对象是否死亡"><a href="#如何辨别对象是否死亡" class="headerlink" title="如何辨别对象是否死亡"></a>如何辨别对象是否死亡</h1><h2 id="引用计数法（reference-counting）"><a href="#引用计数法（reference-counting）" class="headerlink" title="引用计数法（reference counting）"></a>引用计数法（reference counting）</h2><ul>
+<li><p>为每个对象添加一个引用计数器。</p>
+</li>
+<li><p>为 0 时死亡。</p>
+</li>
 </ul>
 <p>缺点：</p>
 <ol>
-<li>需要<strong>额外的空间</strong>。</li>
-<li>更新操作<strong>繁琐</strong>。</li>
-<li><strong>无法处理循环引用对象</strong>（a 与 b 相互引用）。</li>
+<li><p>需要<strong>额外的空间</strong>。</p>
+</li>
+<li><p>更新操作<strong>繁琐</strong>。</p>
+</li>
+<li><p><strong>无法处理循环引用对象</strong>（a 与 b 相互引用）。</p>
+</li>
 </ol>
 <h2 id="可达性分析"><a href="#可达性分析" class="headerlink" title="可达性分析"></a>可达性分析</h2><p>GC Roots（由堆外指向堆内的引用）包括不限于：</p>
 <ol>
-<li>Java 方法栈桢中的局部变量。</li>
-<li>已加载类的静态变量。</li>
-<li>JNI handles。<strong>不懂</strong></li>
-<li>已启动且未停止的 Java 线程。</li>
+<li><p>Java 方法栈桢中的局部变量。</p>
+</li>
+<li><p>已加载类的静态变量。</p>
+</li>
+<li><p>JNI handles。<strong>不懂</strong></p>
+</li>
+<li><p>已启动且未停止的 Java 线程。</p>
+</li>
 </ol>
 <p>可达性分析算法：</p>
 <ol>
-<li>将一系列 GC Roots 作为初始的存活对象合集（live set）。</li>
-<li>标记（mark）：从该合集出发，探索所有能够被该集合引用到的对象，将其加入到该集合中。</li>
-<li>未被探索到的对象是死亡的，是可以回收的。</li>
+<li><p>将一系列 GC Roots 作为初始的存活对象合集（live set）。</p>
+</li>
+<li><p>标记（mark）：从该合集出发，探索所有能够被该集合引用到的对象，将其加入到该集合中。</p>
+</li>
+<li><p>未被探索到的对象是死亡的，是可以回收的。</p>
+</li>
 </ol>
 <p>需要解决的问题：</p>
 <p>在多线程环境下，其他线程可能会更新已经访问过的对象中的引用，从而造成误报（将引用设置为 null）或者漏报（将引用设置为未被访问过的对象）。</p>
 <h1 id="Stop-the-world"><a href="#Stop-the-world" class="headerlink" title="Stop-the-world"></a>Stop-the-world</h1><ul>
-<li>停止其他非垃圾回收线程的工作，直到完成垃圾回收。</li>
-<li>暂停时间（GC pause）。</li>
+<li><p>停止其他非垃圾回收线程的工作，直到完成垃圾回收。</p>
+</li>
+<li><p>暂停时间（GC pause）。</p>
+</li>
 </ul>
 <h1 id="安全点（safepoint）"><a href="#安全点（safepoint）" class="headerlink" title="安全点（safepoint）"></a>安全点（safepoint）</h1><blockquote>
 <p>当 Java 虚拟机收到 Stop-the-world 请求，它便会等待所有的线程都到达安全点，才允许请求 Stop-the-world 的线程进行独占的工作。</p>
 </blockquote>
 <h2 id="本地代码的安全点"><a href="#本地代码的安全点" class="headerlink" title="本地代码的安全点"></a>本地代码的安全点</h2><ul>
-<li>Java 程序通过 JNI 执行<strong>本地代码</strong>时，这段代码<strong>不访问 Java 对象、调用 Java 方法或者返回至原 Java 方法</strong>。</li>
-<li><strong>API 入口处进行安全点检测</strong>（safepoint poll）。</li>
+<li><p>Java 程序通过 JNI 执行<strong>本地代码</strong>时，这段代码<strong>不访问 Java 对象、调用 Java 方法或者返回至原 Java 方法</strong>。</p>
+</li>
+<li><p><strong>API 入口处进行安全点检测</strong>（safepoint poll）。</p>
+</li>
 </ul>
 <h2 id="解释执行字节码的安全点"><a href="#解释执行字节码的安全点" class="headerlink" title="解释执行字节码的安全点"></a>解释执行字节码的安全点</h2><ul>
-<li><strong>字节码与字节码之间</strong>。</li>
-<li>有安全点请求时，<strong>执行一条字节码进行一次安全点检测</strong>。</li>
+<li><p><strong>字节码与字节码之间</strong>。</p>
+</li>
+<li><p>有安全点请求时，<strong>执行一条字节码进行一次安全点检测</strong>。</p>
+</li>
 </ul>
 <h2 id="执行即时编译器生成的机器码"><a href="#执行即时编译器生成的机器码" class="headerlink" title="执行即时编译器生成的机器码"></a>执行即时编译器生成的机器码</h2><ul>
-<li>生成机器码时，<strong>即时编译器插入安全点检测</strong>。</li>
-<li>HotSpot 虚拟机：在生成代码的方法出口、非计数循环的循环回边（back-edge）处插入。</li>
+<li><p>生成机器码时，<strong>即时编译器插入安全点检测</strong>。</p>
+</li>
+<li><p>HotSpot 虚拟机：在生成代码的方法出口、非计数循环的循环回边（back-edge）处插入。</p>
+</li>
 </ul>
 <h2 id="阻塞的线程属于安全点。"><a href="#阻塞的线程属于安全点。" class="headerlink" title="阻塞的线程属于安全点。"></a>阻塞的线程属于安全点。</h2><h1 id="垃圾回收的三种方式"><a href="#垃圾回收的三种方式" class="headerlink" title="垃圾回收的三种方式"></a>垃圾回收的三种方式</h1><h2 id="清除（sweep）"><a href="#清除（sweep）" class="headerlink" title="清除（sweep）"></a>清除（sweep）</h2><blockquote>
 <p>把死亡对象所占据的内存标记为空闲内存，记录在一个空闲列表（free list）中。</p>
@@ -502,9 +535,12 @@
 <p><img src="/images/posts/JVM/1112/sweep.png" alt="sweep"></p>
 <p>缺点：</p>
 <ol>
-<li>造成<strong>内存碎片</strong>。</li>
-<li>堆中对象必须是连续分布的，可能出现总空闲内存足够，无法分配的极端情况。</li>
-<li>分配<strong>效率较低</strong>。</li>
+<li><p>造成<strong>内存碎片</strong>。</p>
+</li>
+<li><p>堆中对象必须是连续分布的，可能出现总空闲内存足够，无法分配的极端情况。</p>
+</li>
+<li><p>分配<strong>效率较低</strong>。</p>
+</li>
 </ol>
 <h2 id="压缩（compact）"><a href="#压缩（compact）" class="headerlink" title="压缩（compact）"></a>压缩（compact）</h2><blockquote>
 <p>把存活的对象聚集到内存区域的起始位置，留下一段连续的内存空间。</p>
@@ -520,10 +556,7 @@
 <p><img src="/images/posts/JVM/1112/copy.png" alt="copy"></p>
 <p>缺点：</p>
 <p>1.堆空间的使用<strong>效率极其低下</strong>。</p>
-<p>12未更新</p>
-<h1 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h1><blockquote>
-<p><a href="https://time.geekbang.org/column/article/13091" target="_blank" rel="noopener">https://time.geekbang.org/column/article/13091</a></p>
-</blockquote>
+<p>12 未更新</p>
 
       
     </div>
@@ -570,6 +603,8 @@
       
         <div class="post-tags">
           
+            <a href="/tags/未完成/" rel="tag"># 未完成</a>
+          
             <a href="/tags/JVM/" rel="tag"># JVM</a>
           
         </div>
@@ -583,8 +618,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2018/08/29/笔记-深入拆解Java虚拟机-10Java对象的内存分布/" rel="next" title="笔记-深入拆解Java虚拟机-10Java对象的内存分布">
-                <i class="fa fa-chevron-left"></i> 笔记-深入拆解Java虚拟机-10Java对象的内存分布
+              <a href="/2018/08/29/笔记-深入拆解Java虚拟机-10Java对象的内存分布/" rel="next" title="「深入拆解 Java 虚拟机」10 Java 对象的内存分布">
+                <i class="fa fa-chevron-left"></i> 「深入拆解 Java 虚拟机」10 Java 对象的内存分布
               </a>
             
           </div>
@@ -593,8 +628,8 @@
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2018/08/31/笔记-深入拆解Java虚拟机-13Java内存模型/" rel="prev" title="笔记-深入拆解Java虚拟机-13Java内存模型">
-                笔记-深入拆解Java虚拟机-13Java内存模型 <i class="fa fa-chevron-right"></i>
+              <a href="/2018/08/31/笔记-深入拆解Java虚拟机-13Java内存模型/" rel="prev" title="「深入拆解 Java 虚拟机」13 Java 内存模型">
+                「深入拆解 Java 虚拟机」13 Java 内存模型 <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
@@ -676,7 +711,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">59</span>
+                  <span class="site-state-item-count">76</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -687,7 +722,7 @@
               
               <div class="site-state-item site-state-categories">
                 <a href="/categories/index.html">
-                  <span class="site-state-item-count">14</span>
+                  <span class="site-state-item-count">10</span>
                   <span class="site-state-item-name">分类</span>
                 </a>
               </div>
@@ -698,7 +733,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">26</span>
+                  <span class="site-state-item-count">37</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>
@@ -754,7 +789,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#如何辨别对象是否死亡"><span class="nav-number">1.</span> <span class="nav-text">如何辨别对象是否死亡</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#引用计数法（reference-counting）"><span class="nav-number">1.1.</span> <span class="nav-text">引用计数法（reference counting）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#可达性分析"><span class="nav-number">1.2.</span> <span class="nav-text">可达性分析</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Stop-the-world"><span class="nav-number">2.</span> <span class="nav-text">Stop-the-world</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#安全点（safepoint）"><span class="nav-number">3.</span> <span class="nav-text">安全点（safepoint）</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#本地代码的安全点"><span class="nav-number">3.1.</span> <span class="nav-text">本地代码的安全点</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#解释执行字节码的安全点"><span class="nav-number">3.2.</span> <span class="nav-text">解释执行字节码的安全点</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#执行即时编译器生成的机器码"><span class="nav-number">3.3.</span> <span class="nav-text">执行即时编译器生成的机器码</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#阻塞的线程属于安全点。"><span class="nav-number">3.4.</span> <span class="nav-text">阻塞的线程属于安全点。</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#垃圾回收的三种方式"><span class="nav-number">4.</span> <span class="nav-text">垃圾回收的三种方式</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#清除（sweep）"><span class="nav-number">4.1.</span> <span class="nav-text">清除（sweep）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#压缩（compact）"><span class="nav-number">4.2.</span> <span class="nav-text">压缩（compact）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#复制（copy）"><span class="nav-number">4.3.</span> <span class="nav-text">复制（copy）</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#参考"><span class="nav-number">5.</span> <span class="nav-text">参考</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#如何辨别对象是否死亡"><span class="nav-number">1.</span> <span class="nav-text">如何辨别对象是否死亡</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#引用计数法（reference-counting）"><span class="nav-number">1.1.</span> <span class="nav-text">引用计数法（reference counting）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#可达性分析"><span class="nav-number">1.2.</span> <span class="nav-text">可达性分析</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Stop-the-world"><span class="nav-number">2.</span> <span class="nav-text">Stop-the-world</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#安全点（safepoint）"><span class="nav-number">3.</span> <span class="nav-text">安全点（safepoint）</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#本地代码的安全点"><span class="nav-number">3.1.</span> <span class="nav-text">本地代码的安全点</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#解释执行字节码的安全点"><span class="nav-number">3.2.</span> <span class="nav-text">解释执行字节码的安全点</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#执行即时编译器生成的机器码"><span class="nav-number">3.3.</span> <span class="nav-text">执行即时编译器生成的机器码</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#阻塞的线程属于安全点。"><span class="nav-number">3.4.</span> <span class="nav-text">阻塞的线程属于安全点。</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#垃圾回收的三种方式"><span class="nav-number">4.</span> <span class="nav-text">垃圾回收的三种方式</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#清除（sweep）"><span class="nav-number">4.1.</span> <span class="nav-text">清除（sweep）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#压缩（compact）"><span class="nav-number">4.2.</span> <span class="nav-text">压缩（compact）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#复制（copy）"><span class="nav-number">4.3.</span> <span class="nav-text">复制（copy）</span></a></li></ol></li></ol></div>
             
 
           </div>
@@ -774,7 +809,7 @@
 
     <footer id="footer" class="footer">
       <div class="footer-inner">
-        <div class="copyright">&copy; 2018 &mdash; <span itemprop="copyrightYear">2019</span>
+        <div class="copyright">&copy; 2018 &mdash; <span itemprop="copyrightYear">2020</span>
   <span class="with-love">
     <i class="fa fa-user"></i>
   </span>

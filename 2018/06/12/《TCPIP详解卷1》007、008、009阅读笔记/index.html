@@ -72,7 +72,7 @@
 
 
 
-  <meta name="keywords" content="计算机网络,TCP/IP," />
+  <meta name="keywords" content="计算机网络,TCP,IP," />
 
 
 
@@ -85,18 +85,18 @@
 
 
 
-<meta name="description" content="007，Ping的工作原理Unix系统的实现 把ICMP报文中标识符字段设置成发送进程的ID号（识别多个Ping程序实例）。 序列号从0开始，每发送一次新的回显请求就 + 1。 Ping程序允许我们查看是否有分组丢失、失序或重复。  旧版本Ping程序 每秒发送一个回显请求。 打印返回的每个分组的每个回显应答。  新版本Ping程序 需要加上 - s 选项以旧版本模式运行。 Ping程序只发送一个">
-<meta name="keywords" content="计算机网络,TCP&#x2F;IP">
+<meta name="description" content="007，Ping 的工作原理Unix 系统的实现 把 ICMP 报文中标识符字段设置成发送进程的 ID 号（识别多个 Ping 程序实例）。  序列号从 0 开始，每发送一次新的回显请求就 + 1。  Ping 程序允许我们查看是否有分组丢失、失序或重复。   旧版本 Ping 程序 每秒发送一个回显请求。  打印返回的每个分组的每个回显应答。   新版本 Ping 程序 需要加上 - s 选项以">
+<meta name="keywords" content="计算机网络,TCP,IP">
 <meta property="og:type" content="article">
-<meta property="og:title" content="《TCPIP详解卷1》007、008、009阅读笔记">
+<meta property="og:title" content="「TCP&#x2F;IP详解 卷1」007、008、009 阅读笔记">
 <meta property="og:url" content="http://blog.ennis.info/2018/06/12/《TCPIP详解卷1》007、008、009阅读笔记/index.html">
 <meta property="og:site_name" content="Ennis Wu">
-<meta property="og:description" content="007，Ping的工作原理Unix系统的实现 把ICMP报文中标识符字段设置成发送进程的ID号（识别多个Ping程序实例）。 序列号从0开始，每发送一次新的回显请求就 + 1。 Ping程序允许我们查看是否有分组丢失、失序或重复。  旧版本Ping程序 每秒发送一个回显请求。 打印返回的每个分组的每个回显应答。  新版本Ping程序 需要加上 - s 选项以旧版本模式运行。 Ping程序只发送一个">
+<meta property="og:description" content="007，Ping 的工作原理Unix 系统的实现 把 ICMP 报文中标识符字段设置成发送进程的 ID 号（识别多个 Ping 程序实例）。  序列号从 0 开始，每发送一次新的回显请求就 + 1。  Ping 程序允许我们查看是否有分组丢失、失序或重复。   旧版本 Ping 程序 每秒发送一个回显请求。  打印返回的每个分组的每个回显应答。   新版本 Ping 程序 需要加上 - s 选项以">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2019-01-26T13:26:29.017Z">
+<meta property="og:updated_time" content="2020-05-21T17:12:20.422Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="《TCPIP详解卷1》007、008、009阅读笔记">
-<meta name="twitter:description" content="007，Ping的工作原理Unix系统的实现 把ICMP报文中标识符字段设置成发送进程的ID号（识别多个Ping程序实例）。 序列号从0开始，每发送一次新的回显请求就 + 1。 Ping程序允许我们查看是否有分组丢失、失序或重复。  旧版本Ping程序 每秒发送一个回显请求。 打印返回的每个分组的每个回显应答。  新版本Ping程序 需要加上 - s 选项以旧版本模式运行。 Ping程序只发送一个">
+<meta name="twitter:title" content="「TCP&#x2F;IP详解 卷1」007、008、009 阅读笔记">
+<meta name="twitter:description" content="007，Ping 的工作原理Unix 系统的实现 把 ICMP 报文中标识符字段设置成发送进程的 ID 号（识别多个 Ping 程序实例）。  序列号从 0 开始，每发送一次新的回显请求就 + 1。  Ping 程序允许我们查看是否有分组丢失、失序或重复。   旧版本 Ping 程序 每秒发送一个回显请求。  打印返回的每个分组的每个回显应答。   新版本 Ping 程序 需要加上 - s 选项以">
 
 
 
@@ -132,7 +132,7 @@
 
 
 
-  <title>《TCPIP详解卷1》007、008、009阅读笔记 | Ennis Wu</title>
+  <title>「TCP/IP详解 卷1」007、008、009 阅读笔记 | Ennis Wu</title>
   
 
 
@@ -338,6 +338,18 @@
 
  </div>
     </header>
+    <script>
+      let images = [
+         'header0.jpg',
+         'header1.jpg',
+         'header2.png'
+      ];
+      let image = images[Math.floor(Math.random() * images.length)];
+      window.document.getElementById('header').style.cssText 
+      = 'background: url(/images/avatar/' 
+      + image
+      + '); no-repeat; background-size: auto 100%;';
+    </script>
 
     <main id="main" class="main">
       <div class="main-inner">
@@ -376,7 +388,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">《TCPIP详解卷1》007、008、009阅读笔记</h1>
+          <h1 class="post-title" itemprop="name headline">「TCP/IP详解 卷1」007、008、009 阅读笔记</h1>
         
 
         <div class="post-meta">
@@ -411,8 +423,8 @@
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/TCP-IP/" itemprop="url" rel="index">
-                    <span itemprop="name">TCP/IP</span>
+                  <a href="/categories/《TCP-IP详解-卷1》/" itemprop="url" rel="index">
+                    <span itemprop="name">《TCP/IP详解 卷1》</span>
                   </a>
                 </span>
 
@@ -448,69 +460,95 @@
       
 
       
-        <h4 id="007，Ping的工作原理"><a href="#007，Ping的工作原理" class="headerlink" title="007，Ping的工作原理"></a>007，Ping的工作原理</h4><h6 id="Unix系统的实现"><a href="#Unix系统的实现" class="headerlink" title="Unix系统的实现"></a>Unix系统的实现</h6><ul>
-<li>把ICMP报文中标识符字段设置成发送进程的ID号（识别多个Ping程序实例）。</li>
-<li>序列号从0开始，每发送一次新的回显请求就 + 1。</li>
-<li>Ping程序允许我们查看是否有分组丢失、失序或重复。<br><br></li>
+        <h1 id="007，Ping-的工作原理"><a href="#007，Ping-的工作原理" class="headerlink" title="007，Ping 的工作原理"></a>007，Ping 的工作原理</h1><h2 id="Unix-系统的实现"><a href="#Unix-系统的实现" class="headerlink" title="Unix 系统的实现"></a>Unix 系统的实现</h2><ul>
+<li><p>把 ICMP 报文中标识符字段设置成发送进程的 ID 号（识别多个 Ping 程序实例）。</p>
+</li>
+<li><p>序列号从 0 开始，每发送一次新的回显请求就 + 1。</p>
+</li>
+<li><p>Ping 程序允许我们查看是否有分组丢失、失序或重复。</p>
+</li>
 </ul>
-<h6 id="旧版本Ping程序"><a href="#旧版本Ping程序" class="headerlink" title="旧版本Ping程序"></a>旧版本Ping程序</h6><ul>
-<li>每秒发送一个回显请求。</li>
-<li>打印返回的每个分组的每个回显应答。<br><br></li>
+<h2 id="旧版本-Ping-程序"><a href="#旧版本-Ping-程序" class="headerlink" title="旧版本 Ping 程序"></a>旧版本 Ping 程序</h2><ul>
+<li><p>每秒发送一个回显请求。</p>
+</li>
+<li><p>打印返回的每个分组的每个回显应答。</p>
+</li>
 </ul>
-<h6 id="新版本Ping程序"><a href="#新版本Ping程序" class="headerlink" title="新版本Ping程序"></a>新版本Ping程序</h6><ul>
-<li>需要加上 - s 选项以旧版本模式运行。</li>
-<li>Ping程序只发送一个回显请求。</li>
-<li>收到回显应答输出“host is alive”，20秒内没收到输出“no answer”。<br><br></li>
+<h2 id="新版本-Ping-程序"><a href="#新版本-Ping-程序" class="headerlink" title="新版本 Ping 程序"></a>新版本 Ping 程序</h2><ul>
+<li><p>需要加上 - s 选项以旧版本模式运行。</p>
+</li>
+<li><p>Ping 程序只发送一个回显请求。</p>
+</li>
+<li><p>收到回显应答输出 “host is alive”，20 秒内没收到输出 “no answer”。</p>
+</li>
 </ul>
-<h4 id="008，Traceroute的工作原理"><a href="#008，Traceroute的工作原理" class="headerlink" title="008，Traceroute的工作原理"></a>008，Traceroute的工作原理</h4><ul>
-<li>每个处理数据报的路由器都要把TTL的值减1或停留的秒数。</li>
-<li>大多数路由器转发数据报的时延都小于1秒，TTL最终成为一个跳站计数器。</li>
-<li>如果TTL字段是1，路由器将该数据报丢弃，并向信源机放一份ICMP“超时”信息。</li>
-<li>Traceroute程序发送一份TTL字段为1的IP数据报为目的主机，第一个路由器丢弃并发回超时ICMP报文，然后Traceroute程序发送一份TTL字段为2的数据报，得到第二个路由器的地址，以此类推。</li>
-<li>目的主机收到TTL值为1的IP数据报，不会丢弃并产生ICMP超时报文。</li>
-<li>Traceroute程序发送一份不可能值作为UDP端口号（大于30000）的UDP数据报给目的主机，目的主机产生一份“端口不可达”错误的ICMP报文。</li>
-<li>Traceroute程序区分收到的ICMP报文是超时还是端口不可达判断是否结束。<br><br></li>
+<h1 id="008，Traceroute-的工作原理"><a href="#008，Traceroute-的工作原理" class="headerlink" title="008，Traceroute 的工作原理"></a>008，Traceroute 的工作原理</h1><ul>
+<li><p>每个处理数据报的路由器都要把 TTL 的值减 1 或停留的秒数。</p>
+</li>
+<li><p>大多数路由器转发数据报的时延都小于 1 秒，TTL 最终成为一个跳站计数器。</p>
+</li>
+<li><p>如果 TTL 字段是 1，路由器将该数据报丢弃，并向信源机放一份 ICMP “超时”信息。</p>
+</li>
+<li><p>Traceroute 程序发送一份 TTL 字段为 1 的 IP 数据报为目的主机，第一个路由器丢弃并发回超时 ICMP 报文，然后 Traceroute 程序发送一份 TTL 字段为 2 的数据报，得到第二个路由器的地址，以此类推。</p>
+</li>
+<li><p>目的主机收到 TTL 值为 1 的 IP 数据报，不会丢弃并产生 ICMP 超时报文。</p>
+</li>
+<li><p>Traceroute 程序发送一份不可能值作为 UDP 端口号（大于 30000）的 UDP 数据报给目的主机，目的主机产生一份“端口不可达”错误的 ICMP 报文。</p>
+</li>
+<li><p>Traceroute 程序区分收到的 ICMP 报文是超时还是端口不可达判断是否结束。</p>
+</li>
 </ul>
-<h4 id="009，IP包选路的工作原理"><a href="#009，IP包选路的工作原理" class="headerlink" title="009，IP包选路的工作原理"></a>009，IP包选路的工作原理</h4><h6 id="选路的原理"><a href="#选路的原理" class="headerlink" title="选路的原理"></a>选路的原理</h6><ul>
-<li>IP搜索路由表的步骤：</li>
-<li><ol>
-<li>搜索匹配的主机地址。</li>
+<h1 id="009，IP-包选路的工作原理"><a href="#009，IP-包选路的工作原理" class="headerlink" title="009，IP 包选路的工作原理"></a>009，IP 包选路的工作原理</h1><h2 id="选路的原理"><a href="#选路的原理" class="headerlink" title="选路的原理"></a>选路的原理</h2><ul>
+<li><p>IP 搜索路由表的步骤：</p>
+<ol>
+<li><p>搜索匹配的主机地址。</p>
+</li>
+<li><p>搜索比配的网络地址。</p>
+</li>
+<li><p>搜索默认表项。</p>
+</li>
 </ol>
 </li>
-<li><ol start="2">
-<li>搜索比配的网络地址。</li>
-</ol>
+<li><p>IP 层进行的选路是一种选路机制，它搜索路由表并决定向哪个网络接口发送分组。</p>
 </li>
-<li><ol start="3">
-<li>搜索默认表项。</li>
-</ol>
+<li><p>选路策略决定把哪些路由放入路由表的规则，路由守护程序提供选路策略。</p>
 </li>
-<li>IP层进行的选路是一种选路机制，它搜索路由表并决定向哪个网络接口发送分组。</li>
-<li>选路策略决定把哪些路由放入路由表的规则，路由守护程序提供选路策略。<br><br></li>
 </ul>
-<h6 id="初始化路由表"><a href="#初始化路由表" class="headerlink" title="初始化路由表"></a>初始化路由表</h6><ul>
-<li>在系统引导时显示地的在初始化文件中运行route命令。<br><br></li>
+<h2 id="初始化路由表"><a href="#初始化路由表" class="headerlink" title="初始化路由表"></a>初始化路由表</h2><ul>
+<li>在系统引导时显示地的在初始化文件中运行 route 命令。</li>
 </ul>
-<h6 id="没有到达目的地的路由"><a href="#没有到达目的地的路由" class="headerlink" title="没有到达目的地的路由"></a>没有到达目的地的路由</h6><p>路由表中没有默认项，又没有找到匹配项。</p>
+<h2 id="没有到达目的地的路由"><a href="#没有到达目的地的路由" class="headerlink" title="没有到达目的地的路由"></a>没有到达目的地的路由</h2><p>路由表中没有默认项，又没有找到匹配项。</p>
 <ul>
-<li>数据报由本地主机产生：向应用程序返回一个“主机不可达差错”或“网络不可达差错”。</li>
-<li>被转发的数据报：向原始发送端发送一份ICMP主机不可达差错报文。<br><br></li>
+<li><p>数据报由本地主机产生：向应用程序返回一个“主机不可达差错”或“网络不可达差错”。</p>
+</li>
+<li><p>被转发的数据报：向原始发送端发送一份 ICMP 主机不可达差错报文。</p>
+</li>
 </ul>
-<h6 id="ICMP重定向差错"><a href="#ICMP重定向差错" class="headerlink" title="ICMP重定向差错"></a>ICMP重定向差错</h6><ul>
-<li>当数据报应该被发送到另一个路由器时，收到数据报的路由器要发送ICMP重定向差错报文给IP数据报的发送端。</li>
-<li>重定向一般用来让具有很少选路信息的主机逐渐建立更完善的路由表。<br><br></li>
+<h2 id="ICMP-重定向差错"><a href="#ICMP-重定向差错" class="headerlink" title="ICMP 重定向差错"></a>ICMP 重定向差错</h2><ul>
+<li><p>当数据报应该被发送到另一个路由器时，收到数据报的路由器要发送 ICMP 重定向差错报文给 IP 数据报的发送端。</p>
+</li>
+<li><p>重定向一般用来让具有很少选路信息的主机逐渐建立更完善的路由表。</p>
+</li>
 </ul>
-<h6 id="ICMP重定向报文"><a href="#ICMP重定向报文" class="headerlink" title="ICMP重定向报文"></a>ICMP重定向报文</h6><ul>
-<li>重定向报文只能由路由器生成。</li>
-<li>重定向报文是为主机使用的。<br><br></li>
+<h2 id="ICMP-重定向报文"><a href="#ICMP-重定向报文" class="headerlink" title="ICMP 重定向报文"></a>ICMP 重定向报文</h2><ul>
+<li><p>重定向报文只能由路由器生成。</p>
+</li>
+<li><p>重定向报文是为主机使用的。</p>
+</li>
 </ul>
-<h6 id="ICMP路由器发现报文"><a href="#ICMP路由器发现报文" class="headerlink" title="ICMP路由器发现报文"></a>ICMP路由器发现报文</h6><ul>
-<li>一份报文可以通告多个地址。</li>
-<li>路由器启动时定期在所有广播或多播传送接口上发送通告报文。</li>
-<li>某个接口被关闭时，该接口上发送一份通告报文，生命周期值设为0。</li>
-<li>监听来自主机的请求报文，并发送通告报文以响应。</li>
-<li>主机在引导期间发送请求报文。</li>
-<li>监听来自相邻路由器的请求报文。</li>
+<h2 id="ICMP-路由器发现报文"><a href="#ICMP-路由器发现报文" class="headerlink" title="ICMP 路由器发现报文"></a>ICMP 路由器发现报文</h2><ul>
+<li><p>一份报文可以通告多个地址。</p>
+</li>
+<li><p>路由器启动时定期在所有广播或多播传送接口上发送通告报文。</p>
+</li>
+<li><p>某个接口被关闭时，该接口上发送一份通告报文，生命周期值设为 0。</p>
+</li>
+<li><p>监听来自主机的请求报文，并发送通告报文以响应。</p>
+</li>
+<li><p>主机在引导期间发送请求报文。</p>
+</li>
+<li><p>监听来自相邻路由器的请求报文。</p>
+</li>
 </ul>
 
       
@@ -560,7 +598,9 @@
           
             <a href="/tags/计算机网络/" rel="tag"># 计算机网络</a>
           
-            <a href="/tags/TCP-IP/" rel="tag"># TCP/IP</a>
+            <a href="/tags/TCP/" rel="tag"># TCP</a>
+          
+            <a href="/tags/IP/" rel="tag"># IP</a>
           
         </div>
       
@@ -573,8 +613,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2018/06/12/《TCPIP详解卷1》006阅读笔记/" rel="next" title="《TCPIP详解卷1》006阅读笔记">
-                <i class="fa fa-chevron-left"></i> 《TCPIP详解卷1》006阅读笔记
+              <a href="/2018/06/12/《TCPIP详解卷1》006阅读笔记/" rel="next" title="「TCP/IP详解 卷1」006 阅读笔记">
+                <i class="fa fa-chevron-left"></i> 「TCP/IP详解 卷1」006 阅读笔记
               </a>
             
           </div>
@@ -583,8 +623,8 @@
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2018/06/13/《TCPIP详解卷1》010阅读笔记/" rel="prev" title="《TCPIP详解卷1》010阅读笔记">
-                《TCPIP详解卷1》010阅读笔记 <i class="fa fa-chevron-right"></i>
+              <a href="/2018/06/13/《TCPIP详解卷1》010阅读笔记/" rel="prev" title="「TCP/IP详解 卷1」010 阅读笔记">
+                「TCP/IP详解 卷1」010 阅读笔记 <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
@@ -666,7 +706,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">59</span>
+                  <span class="site-state-item-count">76</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -677,7 +717,7 @@
               
               <div class="site-state-item site-state-categories">
                 <a href="/categories/index.html">
-                  <span class="site-state-item-count">14</span>
+                  <span class="site-state-item-count">10</span>
                   <span class="site-state-item-name">分类</span>
                 </a>
               </div>
@@ -688,7 +728,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">26</span>
+                  <span class="site-state-item-count">37</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>
@@ -744,7 +784,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#007，Ping的工作原理"><span class="nav-number">1.</span> <span class="nav-text">007，Ping的工作原理</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#Unix系统的实现"><span class="nav-number">1.0.1.</span> <span class="nav-text">Unix系统的实现</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#旧版本Ping程序"><span class="nav-number">1.0.2.</span> <span class="nav-text">旧版本Ping程序</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#新版本Ping程序"><span class="nav-number">1.0.3.</span> <span class="nav-text">新版本Ping程序</span></a></li></ol></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#008，Traceroute的工作原理"><span class="nav-number">2.</span> <span class="nav-text">008，Traceroute的工作原理</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#009，IP包选路的工作原理"><span class="nav-number">3.</span> <span class="nav-text">009，IP包选路的工作原理</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#选路的原理"><span class="nav-number">3.0.1.</span> <span class="nav-text">选路的原理</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#初始化路由表"><span class="nav-number">3.0.2.</span> <span class="nav-text">初始化路由表</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#没有到达目的地的路由"><span class="nav-number">3.0.3.</span> <span class="nav-text">没有到达目的地的路由</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#ICMP重定向差错"><span class="nav-number">3.0.4.</span> <span class="nav-text">ICMP重定向差错</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#ICMP重定向报文"><span class="nav-number">3.0.5.</span> <span class="nav-text">ICMP重定向报文</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#ICMP路由器发现报文"><span class="nav-number">3.0.6.</span> <span class="nav-text">ICMP路由器发现报文</span></a></li></ol></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#007，Ping-的工作原理"><span class="nav-number">1.</span> <span class="nav-text">007，Ping 的工作原理</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Unix-系统的实现"><span class="nav-number">1.1.</span> <span class="nav-text">Unix 系统的实现</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#旧版本-Ping-程序"><span class="nav-number">1.2.</span> <span class="nav-text">旧版本 Ping 程序</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#新版本-Ping-程序"><span class="nav-number">1.3.</span> <span class="nav-text">新版本 Ping 程序</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#008，Traceroute-的工作原理"><span class="nav-number">2.</span> <span class="nav-text">008，Traceroute 的工作原理</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#009，IP-包选路的工作原理"><span class="nav-number">3.</span> <span class="nav-text">009，IP 包选路的工作原理</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#选路的原理"><span class="nav-number">3.1.</span> <span class="nav-text">选路的原理</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#初始化路由表"><span class="nav-number">3.2.</span> <span class="nav-text">初始化路由表</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#没有到达目的地的路由"><span class="nav-number">3.3.</span> <span class="nav-text">没有到达目的地的路由</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#ICMP-重定向差错"><span class="nav-number">3.4.</span> <span class="nav-text">ICMP 重定向差错</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#ICMP-重定向报文"><span class="nav-number">3.5.</span> <span class="nav-text">ICMP 重定向报文</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#ICMP-路由器发现报文"><span class="nav-number">3.6.</span> <span class="nav-text">ICMP 路由器发现报文</span></a></li></ol></li></ol></div>
             
 
           </div>
@@ -764,7 +804,7 @@
 
     <footer id="footer" class="footer">
       <div class="footer-inner">
-        <div class="copyright">&copy; 2018 &mdash; <span itemprop="copyrightYear">2019</span>
+        <div class="copyright">&copy; 2018 &mdash; <span itemprop="copyrightYear">2020</span>
   <span class="with-love">
     <i class="fa fa-user"></i>
   </span>

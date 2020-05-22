@@ -85,19 +85,19 @@
 
 
 
-<meta name="description" content="注解处理器（annotation processor） 可以为 Java 编译器添加编译规则。 可以修改已有的 Java 源文件。 可以生成新的 Java 源文件。  注解处理器的原理Java 编译器的工作流程  将源文件解析为抽象语法树。 调用已注册的注解处理器。 生成字节码。   2 调用注解处理器生成了新的源文件将重复 1、2。  实现注解处理器Processor 接口12345678910">
+<meta name="description" content="原文：https://time.geekbang.org/column/article/40189 注解处理器（annotation processor） 可以为 Java 编译器添加编译规则。  可以修改已有的 Java 源文件。  可以生成新的 Java 源文件。   注解处理器的原理Java 编译器的工作流程  将源文件解析为抽象语法树。  调用已注册的注解处理器。  生成字节码。    2">
 <meta name="keywords" content="JVM">
 <meta property="og:type" content="article">
-<meta property="og:title" content="笔记-深入拆解Java虚拟机-27注解处理器">
+<meta property="og:title" content="「深入拆解 Java 虚拟机」27 注解处理器">
 <meta property="og:url" content="http://blog.ennis.info/2018/12/06/笔记-深入拆解Java虚拟机-27注解处理器/index.html">
 <meta property="og:site_name" content="Ennis Wu">
-<meta property="og:description" content="注解处理器（annotation processor） 可以为 Java 编译器添加编译规则。 可以修改已有的 Java 源文件。 可以生成新的 Java 源文件。  注解处理器的原理Java 编译器的工作流程  将源文件解析为抽象语法树。 调用已注册的注解处理器。 生成字节码。   2 调用注解处理器生成了新的源文件将重复 1、2。  实现注解处理器Processor 接口12345678910">
+<meta property="og:description" content="原文：https://time.geekbang.org/column/article/40189 注解处理器（annotation processor） 可以为 Java 编译器添加编译规则。  可以修改已有的 Java 源文件。  可以生成新的 Java 源文件。   注解处理器的原理Java 编译器的工作流程  将源文件解析为抽象语法树。  调用已注册的注解处理器。  生成字节码。    2">
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="http://blog.ennis.info/images/posts/JVM/27/compilation_process.png">
-<meta property="og:updated_time" content="2019-01-26T13:26:29.141Z">
+<meta property="og:updated_time" content="2020-05-21T16:48:15.942Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="笔记-深入拆解Java虚拟机-27注解处理器">
-<meta name="twitter:description" content="注解处理器（annotation processor） 可以为 Java 编译器添加编译规则。 可以修改已有的 Java 源文件。 可以生成新的 Java 源文件。  注解处理器的原理Java 编译器的工作流程  将源文件解析为抽象语法树。 调用已注册的注解处理器。 生成字节码。   2 调用注解处理器生成了新的源文件将重复 1、2。  实现注解处理器Processor 接口12345678910">
+<meta name="twitter:title" content="「深入拆解 Java 虚拟机」27 注解处理器">
+<meta name="twitter:description" content="原文：https://time.geekbang.org/column/article/40189 注解处理器（annotation processor） 可以为 Java 编译器添加编译规则。  可以修改已有的 Java 源文件。  可以生成新的 Java 源文件。   注解处理器的原理Java 编译器的工作流程  将源文件解析为抽象语法树。  调用已注册的注解处理器。  生成字节码。    2">
 <meta name="twitter:image" content="http://blog.ennis.info/images/posts/JVM/27/compilation_process.png">
 
 
@@ -134,7 +134,7 @@
 
 
 
-  <title>笔记-深入拆解Java虚拟机-27注解处理器 | Ennis Wu</title>
+  <title>「深入拆解 Java 虚拟机」27 注解处理器 | Ennis Wu</title>
   
 
 
@@ -340,6 +340,18 @@
 
  </div>
     </header>
+    <script>
+      let images = [
+         'header0.jpg',
+         'header1.jpg',
+         'header2.png'
+      ];
+      let image = images[Math.floor(Math.random() * images.length)];
+      window.document.getElementById('header').style.cssText 
+      = 'background: url(/images/avatar/' 
+      + image
+      + '); no-repeat; background-size: auto 100%;';
+    </script>
 
     <main id="main" class="main">
       <div class="main-inner">
@@ -378,7 +390,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">笔记-深入拆解Java虚拟机-27注解处理器</h1>
+          <h1 class="post-title" itemprop="name headline">「深入拆解 Java 虚拟机」27 注解处理器</h1>
         
 
         <div class="post-meta">
@@ -413,8 +425,8 @@
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Java虚拟机/" itemprop="url" rel="index">
-                    <span itemprop="name">Java虚拟机</span>
+                  <a href="/categories/《深入拆解-Java-虚拟机》/" itemprop="url" rel="index">
+                    <span itemprop="name">《深入拆解 Java 虚拟机》</span>
                   </a>
                 </span>
 
@@ -450,16 +462,23 @@
       
 
       
-        <h1 id="注解处理器（annotation-processor）"><a href="#注解处理器（annotation-processor）" class="headerlink" title="注解处理器（annotation processor）"></a>注解处理器（annotation processor）</h1><ul>
-<li>可以为 Java 编译器<strong>添加编译规则</strong>。</li>
-<li>可以<strong>修改</strong>已有的 Java <strong>源文件</strong>。</li>
-<li>可以<strong>生成</strong>新的 Java <strong>源文件</strong>。</li>
+        <p>原文：<a href="https://time.geekbang.org/column/article/40189" target="_blank" rel="noopener">https://time.geekbang.org/column/article/40189</a></p>
+<h1 id="注解处理器（annotation-processor）"><a href="#注解处理器（annotation-processor）" class="headerlink" title="注解处理器（annotation processor）"></a>注解处理器（annotation processor）</h1><ul>
+<li><p>可以为 Java 编译器<strong>添加编译规则</strong>。</p>
+</li>
+<li><p>可以<strong>修改</strong>已有的 Java <strong>源文件</strong>。</p>
+</li>
+<li><p>可以<strong>生成</strong>新的 Java <strong>源文件</strong>。</p>
+</li>
 </ul>
 <h1 id="注解处理器的原理"><a href="#注解处理器的原理" class="headerlink" title="注解处理器的原理"></a>注解处理器的原理</h1><h2 id="Java-编译器的工作流程"><a href="#Java-编译器的工作流程" class="headerlink" title="Java 编译器的工作流程"></a>Java 编译器的工作流程</h2><p><img src="/images/posts/JVM/27/compilation_process.png" alt="compilation_process"></p>
 <ol>
-<li><strong>将源文件解析为抽象语法树。</strong></li>
-<li><strong>调用已注册的注解处理器。</strong></li>
-<li><strong>生成字节码。</strong></li>
+<li><p><strong>将源文件解析为抽象语法树。</strong></p>
+</li>
+<li><p><strong>调用已注册的注解处理器。</strong></p>
+</li>
+<li><p><strong>生成字节码。</strong></p>
+</li>
 </ol>
 <ul>
 <li>2 调用注解处理器生成了新的源文件将重复 1、2。</li>
@@ -475,8 +494,10 @@
 <li>所有的<strong>注解处理器类需要实现 Processor 接口</strong>。</li>
 </ul>
 <h3 id="注册-Java-编译器的插件"><a href="#注册-Java-编译器的插件" class="headerlink" title="注册 Java 编译器的插件"></a>注册 Java 编译器的插件</h3><ul>
-<li>方法一：直接使用 javac 命令的 -processor 参数。</li>
-<li>方法二：将注解处理器编译生成的 class 文件压缩入 jar 包中，在 jar 包配置文件中记录该注解处理器的包名及类名。</li>
+<li><p>方法一：直接使用 javac 命令的 -processor 参数。</p>
+</li>
+<li><p>方法二：将注解处理器编译生成的 class 文件压缩入 jar 包中，在 jar 包配置文件中记录该注解处理器的包名及类名。</p>
+</li>
 </ul>
 <p>启动 Java 编译器时，会寻找 classpath 路径上的 jar 包是否包含上述配置文件，并自动注册其中记录的注解处理器。</p>
 <ul>
@@ -489,19 +510,20 @@
 <li><strong>修改抽象语法树</strong>涉及 Java 编译器的内部 API，<strong>可能随着版本变更失效</strong>。</li>
 </ul>
 <h1 id="利用注解处理器生成新的源码"><a href="#利用注解处理器生成新的源码" class="headerlink" title="利用注解处理器生成新的源码"></a>利用注解处理器生成新的源码</h1><ul>
-<li>通过 Filer.createSourceFile 方法获得一个文件的概念。</li>
-<li>并通过 PrintWriter 将具体的内容写入。</li>
+<li><p>通过 Filer.createSourceFile 方法获得一个文件的概念。</p>
+</li>
+<li><p>并通过 PrintWriter 将具体的内容写入。</p>
+</li>
 </ul>
 <h1 id="附件"><a href="#附件" class="headerlink" title="附件"></a>附件</h1><ul>
-<li><a href="https://docs.oracle.com/javase/10/docs/api/javax/lang/model/element/package-summary.html" target="_blank" rel="noopener">Element 类 API 3</a></li>
-<li><a href="http://notatube.blogspot.com/2010/11/project-lombok-trick-explained.html" target="_blank" rel="noopener">修改抽象语法树 API</a><ul>
+<li><p><a href="https://docs.oracle.com/javase/10/docs/api/javax/lang/model/element/package-summary.html" target="_blank" rel="noopener">Element 类 API 3</a></p>
+</li>
+<li><p><a href="http://notatube.blogspot.com/2010/11/project-lombok-trick-explained.html" target="_blank" rel="noopener">修改抽象语法树 API</a></p>
+<ul>
 <li><a href="http://jnb.ociweb.com/jnb/jnbJan2010.html#controversy" target="_blank" rel="noopener">Lombok 的回应</a></li>
 </ul>
 </li>
 </ul>
-<h1 id="引用"><a href="#引用" class="headerlink" title="引用"></a>引用</h1><blockquote>
-<p><a href="https://time.geekbang.org/column/article/40189" target="_blank" rel="noopener">https://time.geekbang.org/column/article/40189</a></p>
-</blockquote>
 
       
     </div>
@@ -561,8 +583,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2018/12/05/笔记-深入拆解Java虚拟机-32JNI的运行机制/" rel="next" title="笔记-深入拆解Java虚拟机-32JNI的运行机制">
-                <i class="fa fa-chevron-left"></i> 笔记-深入拆解Java虚拟机-32JNI的运行机制
+              <a href="/2018/12/05/笔记-深入拆解Java虚拟机-32JNI的运行机制/" rel="next" title="「深入拆解 Java 虚拟机」32 JNI 的运行机制">
+                <i class="fa fa-chevron-left"></i> 「深入拆解 Java 虚拟机」32 JNI 的运行机制
               </a>
             
           </div>
@@ -571,8 +593,8 @@
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2018/12/08/笔记-深入拆解Java虚拟机-33JavaAgent与字节码注入/" rel="prev" title="笔记-深入拆解Java虚拟机-33JavaAgent与字节码注入">
-                笔记-深入拆解Java虚拟机-33JavaAgent与字节码注入 <i class="fa fa-chevron-right"></i>
+              <a href="/2018/12/08/笔记-深入拆解Java虚拟机-33JavaAgent与字节码注入/" rel="prev" title="「深入拆解 Java 虚拟机」33 JavaAgent 与字节码注入">
+                「深入拆解 Java 虚拟机」33 JavaAgent 与字节码注入 <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
@@ -654,7 +676,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">59</span>
+                  <span class="site-state-item-count">76</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -665,7 +687,7 @@
               
               <div class="site-state-item site-state-categories">
                 <a href="/categories/index.html">
-                  <span class="site-state-item-count">14</span>
+                  <span class="site-state-item-count">10</span>
                   <span class="site-state-item-name">分类</span>
                 </a>
               </div>
@@ -676,7 +698,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">26</span>
+                  <span class="site-state-item-count">37</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>
@@ -732,7 +754,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#注解处理器（annotation-processor）"><span class="nav-number">1.</span> <span class="nav-text">注解处理器（annotation processor）</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#注解处理器的原理"><span class="nav-number">2.</span> <span class="nav-text">注解处理器的原理</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Java-编译器的工作流程"><span class="nav-number">2.1.</span> <span class="nav-text">Java 编译器的工作流程</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#实现注解处理器"><span class="nav-number">2.2.</span> <span class="nav-text">实现注解处理器</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Processor-接口"><span class="nav-number">2.2.1.</span> <span class="nav-text">Processor 接口</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#注册-Java-编译器的插件"><span class="nav-number">2.2.2.</span> <span class="nav-text">注册 Java 编译器的插件</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#利用注解处理器修改已有的源码"><span class="nav-number">3.</span> <span class="nav-text">利用注解处理器修改已有的源码</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#利用注解处理器生成新的源码"><span class="nav-number">4.</span> <span class="nav-text">利用注解处理器生成新的源码</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#附件"><span class="nav-number">5.</span> <span class="nav-text">附件</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#引用"><span class="nav-number">6.</span> <span class="nav-text">引用</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#注解处理器（annotation-processor）"><span class="nav-number">1.</span> <span class="nav-text">注解处理器（annotation processor）</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#注解处理器的原理"><span class="nav-number">2.</span> <span class="nav-text">注解处理器的原理</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Java-编译器的工作流程"><span class="nav-number">2.1.</span> <span class="nav-text">Java 编译器的工作流程</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#实现注解处理器"><span class="nav-number">2.2.</span> <span class="nav-text">实现注解处理器</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Processor-接口"><span class="nav-number">2.2.1.</span> <span class="nav-text">Processor 接口</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#注册-Java-编译器的插件"><span class="nav-number">2.2.2.</span> <span class="nav-text">注册 Java 编译器的插件</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#利用注解处理器修改已有的源码"><span class="nav-number">3.</span> <span class="nav-text">利用注解处理器修改已有的源码</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#利用注解处理器生成新的源码"><span class="nav-number">4.</span> <span class="nav-text">利用注解处理器生成新的源码</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#附件"><span class="nav-number">5.</span> <span class="nav-text">附件</span></a></li></ol></div>
             
 
           </div>
@@ -752,7 +774,7 @@
 
     <footer id="footer" class="footer">
       <div class="footer-inner">
-        <div class="copyright">&copy; 2018 &mdash; <span itemprop="copyrightYear">2019</span>
+        <div class="copyright">&copy; 2018 &mdash; <span itemprop="copyrightYear">2020</span>
   <span class="with-love">
     <i class="fa fa-user"></i>
   </span>

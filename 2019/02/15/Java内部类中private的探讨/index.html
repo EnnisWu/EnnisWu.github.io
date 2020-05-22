@@ -72,7 +72,7 @@
 
 
 
-  <meta name="keywords" content="Java,Java基础," />
+  <meta name="keywords" content="Java,内部类," />
 
 
 
@@ -86,16 +86,16 @@
 
 
 <meta name="description" content="Java 内部类一直是一个很特殊的类，它与外部类和该外部类的其他内部类总有着千丝万缕的联系，本文讨论的是内部类中的 private 修饰符。 以下测试基于下面的代码 1234567891011121314151617181920212223242526272829303132333435363738394041public class Outer &amp;#123;    private int out">
-<meta name="keywords" content="Java,Java基础">
+<meta name="keywords" content="Java,内部类">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Java内部类中private的探讨">
+<meta property="og:title" content="「原创」Java 内部类中 private 的探讨">
 <meta property="og:url" content="http://blog.ennis.info/2019/02/15/Java内部类中private的探讨/index.html">
 <meta property="og:site_name" content="Ennis Wu">
 <meta property="og:description" content="Java 内部类一直是一个很特殊的类，它与外部类和该外部类的其他内部类总有着千丝万缕的联系，本文讨论的是内部类中的 private 修饰符。 以下测试基于下面的代码 1234567891011121314151617181920212223242526272829303132333435363738394041public class Outer &amp;#123;    private int out">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2019-03-16T06:44:56.582Z">
+<meta property="og:updated_time" content="2020-05-18T17:18:17.561Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Java内部类中private的探讨">
+<meta name="twitter:title" content="「原创」Java 内部类中 private 的探讨">
 <meta name="twitter:description" content="Java 内部类一直是一个很特殊的类，它与外部类和该外部类的其他内部类总有着千丝万缕的联系，本文讨论的是内部类中的 private 修饰符。 以下测试基于下面的代码 1234567891011121314151617181920212223242526272829303132333435363738394041public class Outer &amp;#123;    private int out">
 
 
@@ -132,7 +132,7 @@
 
 
 
-  <title>Java内部类中private的探讨 | Ennis Wu</title>
+  <title>「原创」Java 内部类中 private 的探讨 | Ennis Wu</title>
   
 
 
@@ -338,6 +338,18 @@
 
  </div>
     </header>
+    <script>
+      let images = [
+         'header0.jpg',
+         'header1.jpg',
+         'header2.png'
+      ];
+      let image = images[Math.floor(Math.random() * images.length)];
+      window.document.getElementById('header').style.cssText 
+      = 'background: url(/images/avatar/' 
+      + image
+      + '); no-repeat; background-size: auto 100%;';
+    </script>
 
     <main id="main" class="main">
       <div class="main-inner">
@@ -376,7 +388,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">Java内部类中private的探讨</h1>
+          <h1 class="post-title" itemprop="name headline">「原创」Java 内部类中 private 的探讨</h1>
         
 
         <div class="post-meta">
@@ -521,7 +533,7 @@
           
             <a href="/tags/Java/" rel="tag"># Java</a>
           
-            <a href="/tags/Java基础/" rel="tag"># Java基础</a>
+            <a href="/tags/内部类/" rel="tag"># 内部类</a>
           
         </div>
       
@@ -534,8 +546,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2019/02/14/View绘制流程/" rel="next" title="View绘制流程">
-                <i class="fa fa-chevron-left"></i> View绘制流程
+              <a href="/2019/02/14/View绘制流程/" rel="next" title="「笔记」View 绘制流程">
+                <i class="fa fa-chevron-left"></i> 「笔记」View 绘制流程
               </a>
             
           </div>
@@ -544,8 +556,8 @@
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2019/02/16/HashMap的相关问题/" rel="prev" title="HashMap的相关问题">
-                HashMap的相关问题 <i class="fa fa-chevron-right"></i>
+              <a href="/2019/02/16/HashMap的相关问题/" rel="prev" title="「笔记」HashMap 的相关问题">
+                「笔记」HashMap 的相关问题 <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
@@ -627,7 +639,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">59</span>
+                  <span class="site-state-item-count">76</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -638,7 +650,7 @@
               
               <div class="site-state-item site-state-categories">
                 <a href="/categories/index.html">
-                  <span class="site-state-item-count">14</span>
+                  <span class="site-state-item-count">10</span>
                   <span class="site-state-item-name">分类</span>
                 </a>
               </div>
@@ -649,7 +661,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">26</span>
+                  <span class="site-state-item-count">37</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>
@@ -725,7 +737,7 @@
 
     <footer id="footer" class="footer">
       <div class="footer-inner">
-        <div class="copyright">&copy; 2018 &mdash; <span itemprop="copyrightYear">2019</span>
+        <div class="copyright">&copy; 2018 &mdash; <span itemprop="copyrightYear">2020</span>
   <span class="with-love">
     <i class="fa fa-user"></i>
   </span>

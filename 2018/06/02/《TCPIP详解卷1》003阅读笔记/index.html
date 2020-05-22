@@ -72,7 +72,7 @@
 
 
 
-  <meta name="keywords" content="计算机网络,TCP/IP," />
+  <meta name="keywords" content="计算机网络,TCP,IP,看不懂," />
 
 
 
@@ -85,18 +85,18 @@
 
 
 
-<meta name="description" content="IP的正式规范文件：RFC 791 所有TCP、UDP、ICMP及IGMP数据都以IP数据报格式传输。不可靠：不能保证IP数据报能够成功到达目的地。可靠性必须由上层提供。无连接：IP不维护后续数据报的状态信息。每个数据报的处理相互独立。IP数据报可以不按发送顺序接收。 传输次序：网络字节序/big endian（大端）字节序 IP首部字段   字段名 长度      版本 4位 4   首部长度">
-<meta name="keywords" content="计算机网络,TCP&#x2F;IP">
+<meta name="description" content="IP 的正式规范文件：RFC 791 所有 TCP、UDP、ICMP 及 IGMP 数据都以 IP 数据报格式传输。 不可靠：不能保证 IP 数据报能够成功到达目的地。可靠性必须由上层提供。 无连接：IP 不维护后续数据报的状态信息。每个数据报的处理相互独立。IP 数据报可以不按发送顺序接收。 传输次序：网络字节序 /big endian（大端）字节序 IP首部字段   字段名 长度      版">
+<meta name="keywords" content="计算机网络,TCP,IP,看不懂">
 <meta property="og:type" content="article">
-<meta property="og:title" content="《TCP&#x2F;IP详解卷1》003阅读笔记">
+<meta property="og:title" content="「TCP&#x2F;IP详解 卷1」003 阅读笔记">
 <meta property="og:url" content="http://blog.ennis.info/2018/06/02/《TCPIP详解卷1》003阅读笔记/index.html">
 <meta property="og:site_name" content="Ennis Wu">
-<meta property="og:description" content="IP的正式规范文件：RFC 791 所有TCP、UDP、ICMP及IGMP数据都以IP数据报格式传输。不可靠：不能保证IP数据报能够成功到达目的地。可靠性必须由上层提供。无连接：IP不维护后续数据报的状态信息。每个数据报的处理相互独立。IP数据报可以不按发送顺序接收。 传输次序：网络字节序/big endian（大端）字节序 IP首部字段   字段名 长度      版本 4位 4   首部长度">
+<meta property="og:description" content="IP 的正式规范文件：RFC 791 所有 TCP、UDP、ICMP 及 IGMP 数据都以 IP 数据报格式传输。 不可靠：不能保证 IP 数据报能够成功到达目的地。可靠性必须由上层提供。 无连接：IP 不维护后续数据报的状态信息。每个数据报的处理相互独立。IP 数据报可以不按发送顺序接收。 传输次序：网络字节序 /big endian（大端）字节序 IP首部字段   字段名 长度      版">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2019-01-26T13:26:29.002Z">
+<meta property="og:updated_time" content="2020-05-21T16:55:37.922Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="《TCP&#x2F;IP详解卷1》003阅读笔记">
-<meta name="twitter:description" content="IP的正式规范文件：RFC 791 所有TCP、UDP、ICMP及IGMP数据都以IP数据报格式传输。不可靠：不能保证IP数据报能够成功到达目的地。可靠性必须由上层提供。无连接：IP不维护后续数据报的状态信息。每个数据报的处理相互独立。IP数据报可以不按发送顺序接收。 传输次序：网络字节序/big endian（大端）字节序 IP首部字段   字段名 长度      版本 4位 4   首部长度">
+<meta name="twitter:title" content="「TCP&#x2F;IP详解 卷1」003 阅读笔记">
+<meta name="twitter:description" content="IP 的正式规范文件：RFC 791 所有 TCP、UDP、ICMP 及 IGMP 数据都以 IP 数据报格式传输。 不可靠：不能保证 IP 数据报能够成功到达目的地。可靠性必须由上层提供。 无连接：IP 不维护后续数据报的状态信息。每个数据报的处理相互独立。IP 数据报可以不按发送顺序接收。 传输次序：网络字节序 /big endian（大端）字节序 IP首部字段   字段名 长度      版">
 
 
 
@@ -132,7 +132,7 @@
 
 
 
-  <title>《TCP/IP详解卷1》003阅读笔记 | Ennis Wu</title>
+  <title>「TCP/IP详解 卷1」003 阅读笔记 | Ennis Wu</title>
   
 
 
@@ -338,6 +338,18 @@
 
  </div>
     </header>
+    <script>
+      let images = [
+         'header0.jpg',
+         'header1.jpg',
+         'header2.png'
+      ];
+      let image = images[Math.floor(Math.random() * images.length)];
+      window.document.getElementById('header').style.cssText 
+      = 'background: url(/images/avatar/' 
+      + image
+      + '); no-repeat; background-size: auto 100%;';
+    </script>
 
     <main id="main" class="main">
       <div class="main-inner">
@@ -376,7 +388,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">《TCP/IP详解卷1》003阅读笔记</h1>
+          <h1 class="post-title" itemprop="name headline">「TCP/IP详解 卷1」003 阅读笔记</h1>
         
 
         <div class="post-meta">
@@ -411,8 +423,8 @@
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/TCP-IP/" itemprop="url" rel="index">
-                    <span itemprop="name">TCP/IP</span>
+                  <a href="/categories/《TCP-IP详解-卷1》/" itemprop="url" rel="index">
+                    <span itemprop="name">《TCP/IP详解 卷1》</span>
                   </a>
                 </span>
 
@@ -448,10 +460,12 @@
       
 
       
-        <p>IP的正式规范文件：RFC 791</p>
-<p>所有TCP、UDP、ICMP及IGMP数据都以IP数据报格式传输。<br>不可靠：不能保证IP数据报能够成功到达目的地。可靠性必须由上层提供。<br>无连接：IP不维护后续数据报的状态信息。每个数据报的处理相互独立。IP数据报可以不按发送顺序接收。</p>
-<p>传输次序：网络字节序/big endian（大端）字节序</p>
-<h4 id="IP首部字段"><a href="#IP首部字段" class="headerlink" title="IP首部字段"></a>IP首部字段</h4><table>
+        <p>IP 的正式规范文件：RFC 791</p>
+<p>所有 TCP、UDP、ICMP 及 IGMP 数据都以 IP 数据报格式传输。</p>
+<p>不可靠：不能保证 IP 数据报能够成功到达目的地。可靠性必须由上层提供。</p>
+<p>无连接：IP 不维护后续数据报的状态信息。每个数据报的处理相互独立。IP 数据报可以不按发送顺序接收。</p>
+<p>传输次序：网络字节序 /big endian（大端）字节序</p>
+<h1 id="IP首部字段"><a href="#IP首部字段" class="headerlink" title="IP首部字段"></a>IP首部字段</h1><table>
 <thead>
 <tr>
 <th>字段名</th>
@@ -462,81 +476,93 @@
 <tbody>
 <tr>
 <td>版本</td>
-<td>4位</td>
+<td>4 位</td>
 <td>4</td>
 </tr>
 <tr>
 <td>首部长度</td>
-<td>4位</td>
-<td>首部占32bit字的数目，没有任何选项，值为5，首部最长60字节</td>
+<td>4 位</td>
+<td>首部占 32 bit 字的数目，没有任何选项，值为 5，首部最长 60 字节</td>
 </tr>
 <tr>
 <td>服务类型（TOS）</td>
-<td>8位</td>
-<td>3bit优先权子字段（已忽略），4bitTOS子字段，1bit未用位（置为0）</td>
+<td>8 位</td>
+<td>3 bit 优先权子字段（已忽略），4 bit TOS 子字段，1 bit 未用位（置为 0）</td>
 </tr>
 <tr>
 <td>总长度</td>
-<td>16位</td>
-<td>字节为单位，最长65535字节。<strong>必要内容</strong></td>
+<td>16 位</td>
+<td>字节为单位，最长 65535 字节。<strong>必要内容</strong></td>
 </tr>
 <tr>
 <td>位标识</td>
-<td>16位</td>
+<td>16 位</td>
 <td>唯一标识主机发送的每一份数据报</td>
 </tr>
 <tr>
 <td>位标志</td>
-<td>3位</td>
+<td>3 位</td>
 <td></td>
 </tr>
 <tr>
 <td>位片偏移</td>
-<td>13位</td>
+<td>13 位</td>
 <td></td>
 </tr>
 <tr>
 <td>生存时间（TTL）</td>
-<td>8位</td>
-<td>经过的最多路由器数，初始值通常为64或32，源主机设置。</td>
+<td>8 位</td>
+<td>经过的最多路由器数，初始值通常为 64 或 32，源主机设置。</td>
 </tr>
 <tr>
 <td>协议</td>
-<td>8位</td>
+<td>8 位</td>
 <td></td>
 </tr>
 <tr>
 <td>首部校验和</td>
-<td>16位</td>
-<td>根据IP首部计算校验和码。</td>
+<td>16 位</td>
+<td>根据 IP 首部计算校验和码。</td>
 </tr>
 <tr>
 <td>选项</td>
 <td></td>
-<td>可选，可变长。32bit为界限，不够时插入值为0的填充字节。</td>
+<td>可选，可变长。32 bit 为界限，不够时插入值为 0 的填充字节。</td>
 </tr>
 </tbody>
 </table>
 <ul>
-<li>首部长度：从包头格式图看出，是以32bit为一行的，一行包括若干字段。首部长度的数值是以32bit为单位来描述的，比如四位全为1，十六进制本来是0X0F，也就是十进制的15但是，<strong>这个字段的1不是数值1，而是指1个单位即一个32bit。</strong>所以如果该字段是1111的话。就是15*32bit=60Byte了。 </li>
-<li>4bit的TOS代表：最小时延、最大吞吐量、最高可靠性、最小费用。</li>
-<li>首部长度、总长度计算数据内容的起始位置和长度。</li>
-<li>TTL为0时丢弃数据报，发送ICMP报文通知源主机。</li>
-<li>首部校验和：如果校验和错误，丢弃数据报，但不生成差错报文，由上层发现并重传。</li>
+<li><p>首部长度：从包头格式图看出，是以 32 bit 为一行的，一行包括若干字段。首部长度的数值是以 32 bit 为单位来描述的，比如四位全为 1，十六进制本来是 0X0F，也就是十进制的 15 但是，<strong>这个字段的 1 不是数值 1，而是指 1 个单位即一个 32 bit。</strong>所以如果该字段是 1111 的话。就是 15 * 32 bit = 60 Byte 了。</p>
+</li>
+<li><p>4 bit 的 TOS 代表：最小时延、最大吞吐量、最高可靠性、最小费用。</p>
+</li>
+<li><p>首部长度、总长度计算数据内容的起始位置和长度。</p>
+</li>
+<li><p>TTL 为 0 时丢弃数据报，发送 ICMP 报文通知源主机。</p>
+</li>
+<li><p>首部校验和：如果校验和错误，丢弃数据报，但不生成差错报文，由上层发现并重传。</p>
+</li>
 </ul>
-<h4 id="IP路由选择"><a href="#IP路由选择" class="headerlink" title="IP路由选择"></a>IP路由选择</h4><p>目的主机与源主机直接相连，或都在一个共享网络上，IP数据报直接送到目的主机。<br>否则发往默认路由，由路由器转发。<br><br></p>
-<h6 id="IP层可以配置成路由器或主机"><a href="#IP层可以配置成路由器或主机" class="headerlink" title="IP层可以配置成路由器或主机"></a>IP层可以配置成路由器或主机</h6><p>主机：不转发<br>路由器：转发<br>内含路由器的主机：不转发<br><br></p>
-<h6 id="收到数据报来自网络接口时（即非本地生成的数据报）"><a href="#收到数据报来自网络接口时（即非本地生成的数据报）" class="headerlink" title="收到数据报来自网络接口时（即非本地生成的数据报）"></a>收到数据报来自网络接口时（即非本地生成的数据报）</h6><ul>
-<li>检查IP地址<ul>
-<li>是本机IP地址之一或IP广播地址：发送到指定协议模块<ul>
-<li>IP层设置为路由器：转发</li>
-<li>否则：丢弃<br><br></li>
-</ul>
+<h1 id="IP路由选择"><a href="#IP路由选择" class="headerlink" title="IP路由选择"></a>IP路由选择</h1><p>目的主机与源主机直接相连，或都在一个共享网络上，IP 数据报直接送到目的主机。</p>
+<p>否则发往默认路由，由路由器转发。</p>
+<h2 id="IP-层可以配置成路由器或主机"><a href="#IP-层可以配置成路由器或主机" class="headerlink" title="IP 层可以配置成路由器或主机"></a>IP 层可以配置成路由器或主机</h2><p>主机：不转发</p>
+<p>路由器：转发</p>
+<p>内含路由器的主机：不转发</p>
+<h2 id="收到数据报来自网络接口时（即非本地生成的数据报）"><a href="#收到数据报来自网络接口时（即非本地生成的数据报）" class="headerlink" title="收到数据报来自网络接口时（即非本地生成的数据报）"></a>收到数据报来自网络接口时（即非本地生成的数据报）</h2><ul>
+<li><p>检查 IP 地址</p>
+<ul>
+<li><p>是本机 IP 地址之一或 IP 广播地址：发送到指定协议模块</p>
+<ul>
+<li><p>IP 层设置为路由器：转发</p>
+</li>
+<li><p>否则：丢弃</p>
 </li>
 </ul>
 </li>
 </ul>
-<h6 id="路由表"><a href="#路由表" class="headerlink" title="路由表"></a>路由表</h6><table>
+</li>
+</ul>
+<h2 id="路由表"><a href="#路由表" class="headerlink" title="路由表"></a>路由表</h2><table>
 <thead>
 <tr>
 <th>项</th>
@@ -545,53 +571,62 @@
 </thead>
 <tbody>
 <tr>
-<td>目的IP地址</td>
-<td>表中标志字段指定类型。完整的主机地址：非0主机号。网络地址：主机号为0。</td>
+<td>目的 IP 地址</td>
+<td>表中标志字段指定类型。完整的主机地址：非 0 主机号。网络地址：主机号为 0。</td>
 </tr>
 <tr>
-<td>下一跳路由器IP地址</td>
-<td>或者有直接连接的网络IP地址。</td>
+<td>下一跳路由器 IP 地址</td>
+<td>或者有直接连接的网络 IP 地址。</td>
 </tr>
 <tr>
 <td>标志</td>
-<td>一个指明目的IP地址类型，==<strong>一个标志下一站路由器时真下一站路由器还是直接相连的接口。</strong>看不懂这句==</td>
+<td>一个指明目的 IP 地址类型，==<strong>一个标志下一站路由器时真下一站路由器还是直接相连的接口。</strong>看不懂这句==</td>
 </tr>
 <tr>
 <td>指定网络接口</td>
 </tr>
 </tbody>
 </table>
-<p>IP不知道目的的完整路径<br><br></p>
-<h6 id="IP路由选择主要功能"><a href="#IP路由选择主要功能" class="headerlink" title="IP路由选择主要功能"></a>IP路由选择主要功能</h6><p>搜索路由表</p>
+<p>IP 不知道目的的完整路径</p>
+<h2 id="IP-路由选择主要功能"><a href="#IP-路由选择主要功能" class="headerlink" title="IP 路由选择主要功能"></a>IP 路由选择主要功能</h2><p>搜索路由表</p>
 <ol>
-<li>寻找与目的IP完全匹配（网络号和主机号）的条目</li>
-<li>寻找与目的网络号相匹配的条目（必须考虑子网掩码）</li>
-<li>寻找“默认”的条目</li>
+<li><p>寻找与目的 IP 完全匹配（网络号和主机号）的条目</p>
+</li>
+<li><p>寻找与目的网络号相匹配的条目（必须考虑子网掩码）</p>
+</li>
+<li><p>寻找“默认”的条目</p>
+</li>
 </ol>
-<p>如果找到，报文发送指定的下一站路由器或直接相连的网络接口。<br>如果都未成功，则不能被传送，向应用返回错误<br><br></p>
-<h4 id="子网寻址"><a href="#子网寻址" class="headerlink" title="子网寻址"></a>子网寻址</h4><p>==看不懂图==</p>
+<p>如果找到，报文发送指定的下一站路由器或直接相连的网络接口。</p>
+<p>如果都未成功，则不能被传送，向应用返回错误</p>
+<h1 id="子网寻址"><a href="#子网寻址" class="headerlink" title="子网寻址"></a>子网寻址</h1><p>==看不懂图==</p>
 <ul>
-<li>所有主机都要求支持子网寻址。</li>
-<li>IP地址 = 网络号 + 子网号 + 主机号</li>
-<li>B类IP地址 = 网络号（16位）+ 子网号（8位）+ 主机号（8位）</li>
-<li>子网对外部路由器来说隐藏了内部网络组织。</li>
-<li>子网划分缩减了路由表的规模。</li>
-<li>子网对于子网内部的路由器不透明。==不懂==</li>
+<li><p>所有主机都要求支持子网寻址。</p>
+</li>
+<li><p>IP 地址 = 网络号 + 子网号 + 主机号</p>
+</li>
+<li><p>B 类 IP 地址 = 网络号（16 位）+ 子网号（8 位）+ 主机号（8 位）</p>
+</li>
+<li><p>子网对外部路由器来说隐藏了内部网络组织。</p>
+</li>
+<li><p>子网划分缩减了路由表的规模。</p>
+</li>
+<li><p>子网对于子网内部的路由器不透明。==不懂==</p>
+</li>
 </ul>
-<h4 id="子网掩码"><a href="#子网掩码" class="headerlink" title="子网掩码"></a>子网掩码</h4><ul>
-<li>标识多少bit用于子网号，多少bit用于主机号。</li>
-<li>掩码是32bit的值，值为1留给网络号和子网号，值为0留给主机号。</li>
-<li>给定IP地址和子网掩码后可以确定：</li>
-<li><ol>
-<li>本子网上的主机。</li>
-</ol>
+<h1 id="子网掩码"><a href="#子网掩码" class="headerlink" title="子网掩码"></a>子网掩码</h1><ul>
+<li><p>标识多少 bit 用于子网号，多少bit用于主机号。</p>
 </li>
-<li><ol start="2">
-<li>本网络中其他子网中的主机。</li>
-</ol>
+<li><p>掩码是 32 bit 的值，值为1留给网络号和子网号，值为 0 留给主机号。</p>
 </li>
-<li><ol start="3">
-<li>其他网络上的主机。</li>
+<li><p>给定 IP 地址和子网掩码后可以确定：</p>
+<ol>
+<li><p>本子网上的主机。</p>
+</li>
+<li><p>本网络中其他子网中的主机。</p>
+</li>
+<li><p>其他网络上的主机。</p>
+</li>
 </ol>
 </li>
 </ul>
@@ -643,7 +678,11 @@
           
             <a href="/tags/计算机网络/" rel="tag"># 计算机网络</a>
           
-            <a href="/tags/TCP-IP/" rel="tag"># TCP/IP</a>
+            <a href="/tags/TCP/" rel="tag"># TCP</a>
+          
+            <a href="/tags/IP/" rel="tag"># IP</a>
+          
+            <a href="/tags/看不懂/" rel="tag"># 看不懂</a>
           
         </div>
       
@@ -656,8 +695,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2018/05/31/《TCPIP详解卷1》002阅读笔记/" rel="next" title="《TCPIP详解卷1》002阅读笔记">
-                <i class="fa fa-chevron-left"></i> 《TCPIP详解卷1》002阅读笔记
+              <a href="/2018/05/31/《TCPIP详解卷1》002阅读笔记/" rel="next" title="「TCP/IP详解 卷1」002 阅读笔记">
+                <i class="fa fa-chevron-left"></i> 「TCP/IP详解 卷1」002 阅读笔记
               </a>
             
           </div>
@@ -666,8 +705,8 @@
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2018/06/12/《TCPIP详解卷1》004阅读笔记/" rel="prev" title="《TCPIP详解卷1》004阅读笔记">
-                《TCPIP详解卷1》004阅读笔记 <i class="fa fa-chevron-right"></i>
+              <a href="/2018/06/12/《TCPIP详解卷1》004阅读笔记/" rel="prev" title="「TCP/IP详解 卷1」004 阅读笔记">
+                「TCP/IP详解 卷1」004 阅读笔记 <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
@@ -749,7 +788,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">59</span>
+                  <span class="site-state-item-count">76</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -760,7 +799,7 @@
               
               <div class="site-state-item site-state-categories">
                 <a href="/categories/index.html">
-                  <span class="site-state-item-count">14</span>
+                  <span class="site-state-item-count">10</span>
                   <span class="site-state-item-name">分类</span>
                 </a>
               </div>
@@ -771,7 +810,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">26</span>
+                  <span class="site-state-item-count">37</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>
@@ -827,7 +866,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#IP首部字段"><span class="nav-number">1.</span> <span class="nav-text">IP首部字段</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#IP路由选择"><span class="nav-number">2.</span> <span class="nav-text">IP路由选择</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#IP层可以配置成路由器或主机"><span class="nav-number">2.0.1.</span> <span class="nav-text">IP层可以配置成路由器或主机</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#收到数据报来自网络接口时（即非本地生成的数据报）"><span class="nav-number">2.0.2.</span> <span class="nav-text">收到数据报来自网络接口时（即非本地生成的数据报）</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#路由表"><span class="nav-number">2.0.3.</span> <span class="nav-text">路由表</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#IP路由选择主要功能"><span class="nav-number">2.0.4.</span> <span class="nav-text">IP路由选择主要功能</span></a></li></ol></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#子网寻址"><span class="nav-number">3.</span> <span class="nav-text">子网寻址</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#子网掩码"><span class="nav-number">4.</span> <span class="nav-text">子网掩码</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#IP首部字段"><span class="nav-number">1.</span> <span class="nav-text">IP首部字段</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#IP路由选择"><span class="nav-number">2.</span> <span class="nav-text">IP路由选择</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#IP-层可以配置成路由器或主机"><span class="nav-number">2.1.</span> <span class="nav-text">IP 层可以配置成路由器或主机</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#收到数据报来自网络接口时（即非本地生成的数据报）"><span class="nav-number">2.2.</span> <span class="nav-text">收到数据报来自网络接口时（即非本地生成的数据报）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#路由表"><span class="nav-number">2.3.</span> <span class="nav-text">路由表</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#IP-路由选择主要功能"><span class="nav-number">2.4.</span> <span class="nav-text">IP 路由选择主要功能</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#子网寻址"><span class="nav-number">3.</span> <span class="nav-text">子网寻址</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#子网掩码"><span class="nav-number">4.</span> <span class="nav-text">子网掩码</span></a></li></ol></div>
             
 
           </div>
@@ -847,7 +886,7 @@
 
     <footer id="footer" class="footer">
       <div class="footer-inner">
-        <div class="copyright">&copy; 2018 &mdash; <span itemprop="copyrightYear">2019</span>
+        <div class="copyright">&copy; 2018 &mdash; <span itemprop="copyrightYear">2020</span>
   <span class="with-love">
     <i class="fa fa-user"></i>
   </span>
