@@ -370,6 +370,433 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://blog.ennis.info/2018/08/29/笔记-深入拆解Java虚拟机-1112垃圾回收/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Ennis L.M. Wu">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar/portrait.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Ennis Wu">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/08/29/笔记-深入拆解Java虚拟机-1112垃圾回收/" itemprop="url">「深入拆解 Java 虚拟机」11 12 垃圾回收</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-08-29T15:50:47+08:00">
+                2018-08-29
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/《深入拆解-Java-虚拟机》/" itemprop="url" rel="index">
+                    <span itemprop="name">《深入拆解 Java 虚拟机》</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>原文：<a href="https://time.geekbang.org/column/article/13091" target="_blank" rel="noopener">https://time.geekbang.org/column/article/13091</a></p>
+<h1 id="如何辨别对象是否死亡"><a href="#如何辨别对象是否死亡" class="headerlink" title="如何辨别对象是否死亡"></a>如何辨别对象是否死亡</h1><h2 id="引用计数法（reference-counting）"><a href="#引用计数法（reference-counting）" class="headerlink" title="引用计数法（reference counting）"></a>引用计数法（reference counting）</h2><ul>
+<li><p>为每个对象添加一个引用计数器。</p>
+</li>
+<li><p>为 0 时死亡。</p>
+</li>
+</ul>
+<p>缺点：</p>
+<ol>
+<li><p>需要<strong>额外的空间</strong>。</p>
+</li>
+<li><p>更新操作<strong>繁琐</strong>。</p>
+</li>
+<li><p><strong>无法处理循环引用对象</strong>（a 与 b 相互引用）。</p>
+</li>
+</ol>
+<h2 id="可达性分析"><a href="#可达性分析" class="headerlink" title="可达性分析"></a>可达性分析</h2><p>GC Roots（由堆外指向堆内的引用）包括不限于：</p>
+<ol>
+<li><p>Java 方法栈桢中的局部变量。</p>
+</li>
+<li><p>已加载类的静态变量。</p>
+</li>
+<li><p>JNI handles。<strong>不懂</strong></p>
+</li>
+<li><p>已启动且未停止的 Java 线程。</p>
+</li>
+</ol>
+<p>可达性分析算法：</p>
+<ol>
+<li><p>将一系列 GC Roots 作为初始的存活对象合集（live set）。</p>
+</li>
+<li><p>标记（mark）：从该合集出发，探索所有能够被该集合引用到的对象，将其加入到该集合中。</p>
+</li>
+<li><p>未被探索到的对象是死亡的，是可以回收的。</p>
+</li>
+</ol>
+<p>需要解决的问题：</p>
+<p>在多线程环境下，其他线程可能会更新已经访问过的对象中的引用，从而造成误报（将引用设置为 null）或者漏报（将引用设置为未被访问过的对象）。</p>
+<h1 id="Stop-the-world"><a href="#Stop-the-world" class="headerlink" title="Stop-the-world"></a>Stop-the-world</h1><ul>
+<li><p>停止其他非垃圾回收线程的工作，直到完成垃圾回收。</p>
+</li>
+<li><p>暂停时间（GC pause）。</p>
+</li>
+</ul>
+<h1 id="安全点（safepoint）"><a href="#安全点（safepoint）" class="headerlink" title="安全点（safepoint）"></a>安全点（safepoint）</h1><blockquote>
+<p>当 Java 虚拟机收到 Stop-the-world 请求，它便会等待所有的线程都到达安全点，才允许请求 Stop-the-world 的线程进行独占的工作。</p>
+</blockquote>
+<h2 id="本地代码的安全点"><a href="#本地代码的安全点" class="headerlink" title="本地代码的安全点"></a>本地代码的安全点</h2><ul>
+<li><p>Java 程序通过 JNI 执行<strong>本地代码</strong>时，这段代码<strong>不访问 Java 对象、调用 Java 方法或者返回至原 Java 方法</strong>。</p>
+</li>
+<li><p><strong>API 入口处进行安全点检测</strong>（safepoint poll）。</p>
+</li>
+</ul>
+<h2 id="解释执行字节码的安全点"><a href="#解释执行字节码的安全点" class="headerlink" title="解释执行字节码的安全点"></a>解释执行字节码的安全点</h2><ul>
+<li><p><strong>字节码与字节码之间</strong>。</p>
+</li>
+<li><p>有安全点请求时，<strong>执行一条字节码进行一次安全点检测</strong>。</p>
+</li>
+</ul>
+<h2 id="执行即时编译器生成的机器码"><a href="#执行即时编译器生成的机器码" class="headerlink" title="执行即时编译器生成的机器码"></a>执行即时编译器生成的机器码</h2><ul>
+<li><p>生成机器码时，<strong>即时编译器插入安全点检测</strong>。</p>
+</li>
+<li><p>HotSpot 虚拟机：在生成代码的方法出口、非计数循环的循环回边（back-edge）处插入。</p>
+</li>
+</ul>
+<h2 id="阻塞的线程属于安全点。"><a href="#阻塞的线程属于安全点。" class="headerlink" title="阻塞的线程属于安全点。"></a>阻塞的线程属于安全点。</h2><h1 id="垃圾回收的三种方式"><a href="#垃圾回收的三种方式" class="headerlink" title="垃圾回收的三种方式"></a>垃圾回收的三种方式</h1><h2 id="清除（sweep）"><a href="#清除（sweep）" class="headerlink" title="清除（sweep）"></a>清除（sweep）</h2><blockquote>
+<p>把死亡对象所占据的内存标记为空闲内存，记录在一个空闲列表（free list）中。</p>
+</blockquote>
+<p><img src="/images/posts/JVM/1112/sweep.png" alt="sweep"></p>
+<p>缺点：</p>
+<ol>
+<li><p>造成<strong>内存碎片</strong>。</p>
+</li>
+<li><p>堆中对象必须是连续分布的，可能出现总空闲内存足够，无法分配的极端情况。</p>
+</li>
+<li><p>分配<strong>效率较低</strong>。</p>
+</li>
+</ol>
+<h2 id="压缩（compact）"><a href="#压缩（compact）" class="headerlink" title="压缩（compact）"></a>压缩（compact）</h2><blockquote>
+<p>把存活的对象聚集到内存区域的起始位置，留下一段连续的内存空间。</p>
+</blockquote>
+<p><img src="/images/posts/JVM/1112/compact.png" alt="compact"></p>
+<p>缺点：</p>
+<ol>
+<li>压缩算法有<strong>性能开销</strong>。</li>
+</ol>
+<h2 id="复制（copy）"><a href="#复制（copy）" class="headerlink" title="复制（copy）"></a>复制（copy）</h2><blockquote>
+<p>把内存区域分为两等分，分别用两个指针 from 和 to 来维护，只是用 from 指针指向的内存区域来分配内存。当发生垃圾回收时，把存活的对象复制到 to 指针指向的内存区域中，交换 from 指针和 to 指针的内容。</p>
+</blockquote>
+<p><img src="/images/posts/JVM/1112/copy.png" alt="copy"></p>
+<p>缺点：</p>
+<p>1.堆空间的使用<strong>效率极其低下</strong>。</p>
+<p>12 未更新</p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://blog.ennis.info/2018/08/29/笔记-深入拆解Java虚拟机-10Java对象的内存分布/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Ennis L.M. Wu">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar/portrait.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Ennis Wu">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/08/29/笔记-深入拆解Java虚拟机-10Java对象的内存分布/" itemprop="url">「深入拆解 Java 虚拟机」10 Java 对象的内存分布</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-08-29T09:38:58+08:00">
+                2018-08-29
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/《深入拆解-Java-虚拟机》/" itemprop="url" rel="index">
+                    <span itemprop="name">《深入拆解 Java 虚拟机》</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>原文：<a href="https://time.geekbang.org/column/article/13081" target="_blank" rel="noopener">https://time.geekbang.org/column/article/13081</a></p>
+<h1 id="Java-新建对象的方式"><a href="#Java-新建对象的方式" class="headerlink" title="Java 新建对象的方式"></a>Java 新建对象的方式</h1><ul>
+<li><p>new 语句</p>
+</li>
+<li><p>反射</p>
+</li>
+<li><p>Object.clone 方法</p>
+</li>
+<li><p>反序列化</p>
+</li>
+<li><p>Unsafe.allocateInstance 方法</p>
+</li>
+</ul>
+<h1 id="压缩指针"><a href="#压缩指针" class="headerlink" title="压缩指针"></a>压缩指针</h1><h2 id="对象头（object-header）"><a href="#对象头（object-header）" class="headerlink" title="对象头（object header）"></a>对象头（object header）</h2><ul>
+<li><p>每个 Java 对象都有。</p>
+</li>
+<li><p>由<strong>标记字段、类型指针</strong>构成。</p>
+</li>
+<li><p>标记字段：存储 Java 虚拟机有关该对象的运行数据（如哈希码、GC 信息、锁信息）。</p>
+</li>
+<li><p>类型指针：指向该对象的类。</p>
+</li>
+<li><p>64 位 Java 虚拟机中，对象头占 16 个字节。</p>
+</li>
+</ul>
+<h2 id="压缩指针-1"><a href="#压缩指针-1" class="headerlink" title="压缩指针"></a>压缩指针</h2><ul>
+<li><p>开启压缩指针：-XX:+UseCompressedOops（默认开启）。</p>
+</li>
+<li><p><strong>将堆中原本 64 位的 Java 对象指针压缩成 32 位。</strong></p>
+</li>
+<li><p>类型指针也被压缩成 32 位，<strong>对象头的大小从 16 字节降至 12 字节。</strong></p>
+</li>
+<li><p>还可以作用于<strong>引用类型的字段</strong>，<strong>引用类型数组</strong>。</p>
+</li>
+</ul>
+<h1 id="内存对齐"><a href="#内存对齐" class="headerlink" title="内存对齐"></a>内存对齐</h1><ul>
+<li><p>虚拟机选项 -XX:ObjectAlignmentInBytes，默认值为 8。</p>
+</li>
+<li><p>默认情况，堆中对象（包括字段之间）起始地址要对齐至 8 的倍数。</p>
+</li>
+<li><p>浪费掉的空间称之为对象间的填充（padding）。</p>
+</li>
+<li><p>32 位压缩指针可以寻址到 2 的 35 次方个字节（32GB 地址空间，超过 32GB 会关闭压缩指针）。</p>
+</li>
+<li><p>压缩指针解引用：左移 3 位，再加上一个固定偏移量。</p>
+</li>
+<li><p>字段内存对齐的一个原因：<strong>让字段只出现在同一 CPU 的缓存行中</strong>。<strong>不懂</strong></p>
+</li>
+</ul>
+<h1 id="字段重排列"><a href="#字段重排列" class="headerlink" title="字段重排列"></a>字段重排列</h1><ul>
+<li>Java 虚拟机重新分配字段的顺序，达到内存对齐</li>
+</ul>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://blog.ennis.info/2018/08/10/笔记-深入拆解Java虚拟机-0809JVM是怎么实现invokedynamic的？/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1878,496 +2305,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://blog.ennis.info/2018/08/01/笔记-深入拆解Java虚拟机-06JVM是如何处理异常的？/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Ennis L.M. Wu">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar/portrait.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Ennis Wu">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/08/01/笔记-深入拆解Java虚拟机-06JVM是如何处理异常的？/" itemprop="url">「深入拆解 Java 虚拟机」06 JVM 是如何处理异常的？</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-08-01T14:41:48+08:00">
-                2018-08-01
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/《深入拆解-Java-虚拟机》/" itemprop="url" rel="index">
-                    <span itemprop="name">《深入拆解 Java 虚拟机》</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>原文：<a href="https://time.geekbang.org/column/article/12134" target="_blank" rel="noopener">https://time.geekbang.org/column/article/12134</a></p>
-<h1 id="异常的基本概念"><a href="#异常的基本概念" class="headerlink" title="异常的基本概念"></a>异常的基本概念</h1><p><img src="/images/posts/JVM/06/throwable.png" alt="throwable"></p>
-<ul>
-<li>Error：涵盖程序不应捕获的异常（JVM 抛出）。</li>
-</ul>
-<p>程序出发 Error 时，执行状态已经无法恢复，需要终止线程甚至终止虚拟机。</p>
-<ul>
-<li><p>Exception：涵盖程序可能需要捕获且处理的异常。</p>
-</li>
-<li><p>RuntimeException：表示“程序虽然无法继续执行，但是还能抢救一下”的情况。</p>
-</li>
-<li><p><strong>RuntimeException 和 Error 非检查异常（unchecked exception）。其他异常属于检查异常（checked exception）。</strong></p>
-</li>
-<li><p>检查异常需要程序显式地捕获，或者在方法声明中用 throws 关键字再次抛出。</p>
-</li>
-</ul>
-<h2 id="常实例的构造十分昂贵。"><a href="#常实例的构造十分昂贵。" class="headerlink" title="常实例的构造十分昂贵。"></a>常实例的构造十分昂贵。</h2><p>在构造异常实例时，Java 虚拟机需要<strong>生成该异常的栈轨迹</strong>（stack trace）。</p>
-<ul>
-<li><p>逐一访问当前线程的 Java 栈帧。</p>
-</li>
-<li><p>记录下各种调试信息（方法名，方法所在类名，文件名，代码中第几行）。</p>
-</li>
-<li><p>Java 虚拟机会<strong>忽略异常构造器和填充栈帧的Java方法</strong>（Throwable.fillInStackTrace），直接从新建异常位置开始算起。</p>
-</li>
-<li><p>Java 虚拟机会<strong>忽略标记为不可见的 Java 方法栈帧</strong>。</p>
-</li>
-</ul>
-<h3 id="是否可以缓存异常实例，在需要用到的时候直接抛出？"><a href="#是否可以缓存异常实例，在需要用到的时候直接抛出？" class="headerlink" title="是否可以缓存异常实例，在需要用到的时候直接抛出？"></a>是否可以缓存异常实例，在需要用到的时候直接抛出？</h3><ul>
-<li><p>从语法角度上，是允许的。</p>
-</li>
-<li><p><strong>对应的栈轨迹并非 throw 语句的位置，而是新建异常的位置。</strong></p>
-</li>
-</ul>
-<h1 id="Java-虚拟机是如何捕获异常的？"><a href="#Java-虚拟机是如何捕获异常的？" class="headerlink" title="Java 虚拟机是如何捕获异常的？"></a>Java 虚拟机是如何捕获异常的？</h1><p>编译生成的字节码中，<strong>每个方法都附带一个异常表</strong>。</p>
-<p>异常表中每一个条目代表一个异常处理器。</p>
-<p>异常处理器的组成：</p>
-<ul>
-<li><p>from 指针</p>
-</li>
-<li><p>to 指针</p>
-</li>
-<li><p>target 指针</p>
-</li>
-<li><p>所捕获的异常类型</p>
-</li>
-</ul>
-<p>注：指针的值是字节码索引（bytecode index，bci），用来定位字节码。</p>
-<p><strong>from 指针和 to 指针：标示异常处理器所监控的范围（如 try 代码块范围）。</strong></p>
-<p><strong>target 指针：指向异常处理器的起始位置（如 catch 代码块起始位置）。</strong></p>
-<h2 id="触发异常的处理流程"><a href="#触发异常的处理流程" class="headerlink" title="触发异常的处理流程"></a>触发异常的处理流程</h2><ol>
-<li><p>Java 虚拟机<strong>从上至下遍历异常表</strong>中的所有条目。</p>
-</li>
-<li><p><strong>触发异常</strong>的字节码的索引值<strong>在某个异常表条目的监控范围内</strong>，Java 虚拟机判断所抛出的异常和该条目想要捕获的异常<strong>是否匹配</strong>。</p>
-</li>
-<li><p>如果<strong>匹配</strong>，Java 虚拟机将控制流<strong>转移至该条目 target 指针指向</strong>的字节码。</p>
-</li>
-<li><p>如果<strong>遍历完所有</strong>异常表条目，仍<strong>未匹配</strong>到异常处理器，<strong>弹出当前方法对应的 Java 栈帧，在调用者（caller）中重复上述操作</strong>。</p>
-</li>
-<li><p>finally 代码块的编译，当前版本 Java 编译器，是<strong>复制 finally 代码块的内容，分别放在 try-catch 代码块所有正常执行路径和异常执行路径的出口中</strong>。</p>
-</li>
-</ol>
-<p><img src="/images/posts/JVM/06/trigger_exception.png" alt="trigger_exception"></p>
-<p>针对异常执行路径，Java 编译器会生成一个或多个异常表条目，监控整个 try-catch 代码块，并且捕获所有种类的异常（在 javap 中以 any 指代）。</p>
-<p>这些异常表条目的 target 指针将指向另一份复制的 finally 代码块。</p>
-<p>在这个 finally 代码块的最后，Java 编译器会重新抛出所捕获的异常。</p>
-<p><strong>如果 catch 代码块捕获了异常，并且触发了另一个异常，那么 finally 捕获并且重抛后者，忽略前者。</strong></p>
-<h1 id="Java-7-的-Suppressed-异常以及语法糖"><a href="#Java-7-的-Suppressed-异常以及语法糖" class="headerlink" title="Java 7 的 Suppressed 异常以及语法糖"></a>Java 7 的 Suppressed 异常以及语法糖</h1><h2 id="Suppressed-异常"><a href="#Suppressed-异常" class="headerlink" title="Suppressed 异常"></a>Suppressed 异常</h2><p>允许将一个异常附于另一个异常之上。</p>
-<p><strong>抛出的异常可以附带多个异常信息。</strong></p>
-<p>finally 代码块缺少指向所捕获异常的引用，这个新特性使用起来非常繁琐。</p>
-<h2 id="try-with-resources"><a href="#try-with-resources" class="headerlink" title="try-with-resources"></a>try-with-resources</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">try</span> (  ); <span class="comment">// try-with-resources</span></span><br></pre></td></tr></table></figure>
-<p>在字节码层面自动使用 Suppressed 异常。</p>
-<p><strong>自动关闭资源</strong>（实现 AutoCloseable 接口）。</p>
-<h2 id="同一-catch-代码块捕获多种异常"><a href="#同一-catch-代码块捕获多种异常" class="headerlink" title="同一 catch 代码块捕获多种异常"></a>同一 catch 代码块捕获多种异常</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">try</span> &#123;</span><br><span class="line">  </span><br><span class="line">&#125; <span class="keyword">catch</span> (SomeException | OtherException e) &#123;</span><br><span class="line">  </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://blog.ennis.info/2018/08/01/转-传输层和应用层的协议和作用/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Ennis L.M. Wu">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar/portrait.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Ennis Wu">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/08/01/转-传输层和应用层的协议和作用/" itemprop="url">「转载」传输层和应用层的协议和作用</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-08-01T00:03:07+08:00">
-                2018-08-01
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/计算机网络/" itemprop="url" rel="index">
-                    <span itemprop="name">计算机网络</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>转自：<a href="https://blog.csdn.net/DarkAngel1228/article/details/78581019" target="_blank" rel="noopener">五.传输层和应用层的协议和作用</a></p>
-<h1 id="TCP-IP-传输层概述"><a href="#TCP-IP-传输层概述" class="headerlink" title="TCP/IP 传输层概述"></a>TCP/IP 传输层概述</h1><p>TCP/IP 是指一整套数据通信协议，传输层完成端到端的连接和传输。</p>
-<h2 id="TCP-IP-传输层包含的两个协议"><a href="#TCP-IP-传输层包含的两个协议" class="headerlink" title="TCP/IP 传输层包含的两个协议"></a>TCP/IP 传输层包含的两个协议</h2><ul>
-<li>传输控制协议</li>
-</ul>
-<p>Transmission Control Protocol —— TCP</p>
-<ul>
-<li>用户数据报协议</li>
-</ul>
-<p>User Dategram Protocol —— UDP</p>
-<h2 id="常用的-TCP-端口及应用"><a href="#常用的-TCP-端口及应用" class="headerlink" title="常用的 TCP 端口及应用"></a>常用的 TCP 端口及应用</h2><p>TCP 在网络中使用的范围很广，下面将列出一些常用的端口号及其功能.以便进一步对 TCP 进行检测和管理。</p>
-<table>
-<thead>
-<tr>
-<th>端口</th>
-<th>协议</th>
-<th>说明</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>80</td>
-<td>http</td>
-<td>web服务器所开放的进程端口,用于客户端http访问</td>
-</tr>
-<tr>
-<td>21</td>
-<td>FTP</td>
-<td>FTP服务器所开放的控制端口,用于上传下载</td>
-</tr>
-<tr>
-<td>23</td>
-<td>Telnet</td>
-<td>用于远程登录,通过连接目的计算机的这一端口,得到验证后可以远程控制管理目标计算机</td>
-</tr>
-<tr>
-<td>25</td>
-<td>SMTP</td>
-<td>SMTP服务器开放的端口,用于发送邮件</td>
-</tr>
-<tr>
-<td>53</td>
-<td>DNS</td>
-<td>DNS服务器开放的端口,当用户输入网站的名称后,由DNS负责将它解析成IP地址,这个过程中用到的端口号就是53</td>
-</tr>
-</tbody>
-</table>
-<h2 id="常用的-UDP-端口及应用"><a href="#常用的-UDP-端口及应用" class="headerlink" title="常用的 UDP 端口及应用"></a>常用的 UDP 端口及应用</h2><table>
-<thead>
-<tr>
-<th>端口</th>
-<th>协议</th>
-<th>说明</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>7</td>
-<td>Echo</td>
-<td>将收到的数据包回送到发送器</td>
-</tr>
-<tr>
-<td>53</td>
-<td>Nameserver</td>
-<td>域名服务</td>
-</tr>
-<tr>
-<td>69</td>
-<td>TFTP</td>
-<td>简单文件传输协议</td>
-</tr>
-<tr>
-<td>111</td>
-<td>RPC</td>
-<td>远程过程调用</td>
-</tr>
-<tr>
-<td>123</td>
-<td>NTP</td>
-<td>网络时间协议</td>
-</tr>
-</tbody>
-</table>
-<h1 id="常用的应用层协议"><a href="#常用的应用层协议" class="headerlink" title="常用的应用层协议"></a>常用的应用层协议</h1><table>
-<thead>
-<tr>
-<th>缩写</th>
-<th>全文</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>http</td>
-<td>超文本传送协议</td>
-</tr>
-<tr>
-<td>https</td>
-<td>基于安全套接字层的http协议</td>
-</tr>
-<tr>
-<td>ftp</td>
-<td>文件传输协议</td>
-</tr>
-<tr>
-<td>dns</td>
-<td>域名系统</td>
-</tr>
-<tr>
-<td>smtp</td>
-<td>邮件传输协议</td>
-</tr>
-<tr>
-<td>pop3</td>
-<td>邮局协议</td>
-</tr>
-<tr>
-<td>ssh</td>
-<td>安全外壳协议</td>
-</tr>
-</tbody>
-</table>
-<h2 id="HTTP"><a href="#HTTP" class="headerlink" title="HTTP"></a>HTTP</h2><p>用于传输 Internet 浏览器使用的普通文本,超文本,音频和视频等数据</p>
-<p>端口号：TCP 的 80</p>
-<h2 id="HTTPS"><a href="#HTTPS" class="headerlink" title="HTTPS"></a>HTTPS</h2><p>基于 HTTP 开发,提供加密,可以确保消息的私有性和完整性</p>
-<p>端口号：443</p>
-<h2 id="FTP"><a href="#FTP" class="headerlink" title="FTP"></a>FTP</h2><p>用于传输文件</p>
-<p>端口号：TCP 的 21 和 20</p>
-<h2 id="DNS"><a href="#DNS" class="headerlink" title="DNS"></a>DNS</h2><p>用来完成域名和 IP 地址之间的映射</p>
-<p>端口号：TCP 或 UDP 的 53</p>
-<p><img src="/images/posts/传输层和应用层的协议和作用/DNS.png" alt="DNS"></p>
-<h2 id="SMTP"><a href="#SMTP" class="headerlink" title="SMTP"></a>SMTP</h2><p>用于发送和接收邮件</p>
-<p>端口号：25</p>
-<h2 id="POP3"><a href="#POP3" class="headerlink" title="POP3"></a>POP3</h2><p>用于客户端接收邮件</p>
-<p>端口号：110</p>
-<h2 id="SSH"><a href="#SSH" class="headerlink" title="SSH"></a>SSH</h2><p>建立在应用层和传输层基础上的安全协议，ssh 是目前较可靠，专为远程登录会话和其他网络服务提供安全性的协议，利用 ssh 协议可以有效防止远程管理过程中的信息泄漏问题。</p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -2422,7 +2359,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">76</span>
+                  <span class="site-state-item-count">78</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -2433,7 +2370,7 @@
               
               <div class="site-state-item site-state-categories">
                 <a href="/categories/index.html">
-                  <span class="site-state-item-count">10</span>
+                  <span class="site-state-item-count">12</span>
                   <span class="site-state-item-name">分类</span>
                 </a>
               </div>
@@ -2444,7 +2381,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">37</span>
+                  <span class="site-state-item-count">39</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>

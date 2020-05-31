@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://blog.ennis.info/"/>
-  <updated>2020-05-18T17:52:11.521Z</updated>
+  <updated>2020-05-24T11:14:16.722Z</updated>
   <id>http://blog.ennis.info/</id>
   
   <author>
@@ -15,6 +15,60 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>「算法面试通关 40 讲」算法模板</title>
+    <link href="http://blog.ennis.info/2020/05/24/%E7%AE%97%E6%B3%95%E6%A8%A1%E6%9D%BF/"/>
+    <id>http://blog.ennis.info/2020/05/24/算法模板/</id>
+    <published>2020-05-24T09:21:12.000Z</published>
+    <updated>2020-05-24T11:14:16.722Z</updated>
+    
+    <content type="html"><![CDATA[<p>原文：<a href="https://time.geekbang.org/course/detail/100019701-73421" target="_blank" rel="noopener">58 | 课程重点回顾</a></p><h1 id="递归模板"><a href="#递归模板" class="headerlink" title="递归模板"></a>递归模板</h1><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">recursion</span><span class="params">(level, param1, param2, ...)</span>:</span></span><br><span class="line"></span><br><span class="line">    <span class="comment"># recursion terminator</span></span><br><span class="line">    <span class="keyword">if</span> level &gt; MAX_LEVEL</span><br><span class="line">        print_result</span><br><span class="line">        <span class="keyword">return</span></span><br><span class="line">    </span><br><span class="line">    <span class="comment"># process logic in current level</span></span><br><span class="line">    process_data(level, data...)</span><br><span class="line"></span><br><span class="line">    <span class="comment"># drill down</span></span><br><span class="line">    self.recursion(level + <span class="number">1</span>, p1, ...)</span><br><span class="line"></span><br><span class="line">    <span class="comment"># reverse the current level status if needed</span></span><br><span class="line">    reverse_state(level)</span><br></pre></td></tr></table></figure><h1 id="深度优先搜索模板"><a href="#深度优先搜索模板" class="headerlink" title="深度优先搜索模板"></a>深度优先搜索模板</h1><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">visited = set()</span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">dfs</span><span class="params">(node, visited)</span>:</span></span><br><span class="line">    visited.add(node)</span><br><span class="line">    <span class="comment"># process current node here.</span></span><br><span class="line">    ...</span><br><span class="line">    <span class="keyword">for</span> next_node <span class="keyword">in</span> node.children():</span><br><span class="line">        <span class="keyword">if</span> <span class="keyword">not</span> next_node <span class="keyword">in</span> visited:</span><br><span class="line">            dif(next_node, visited)</span><br></pre></td></tr></table></figure><h1 id="广度优先搜索模板"><a href="#广度优先搜索模板" class="headerlink" title="广度优先搜索模板"></a>广度优先搜索模板</h1><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">BFS</span><span class="params">(graph, start, end)</span>:</span></span><br><span class="line"></span><br><span class="line">    queue = []</span><br><span class="line">    queue.append([start])</span><br><span class="line">    visited.add(start)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">while</span> queue:</span><br><span class="line">        node = queue.pop()</span><br><span class="line">        visited.add(node)</span><br><span class="line"></span><br><span class="line">        process(node)</span><br><span class="line">        nodes = generate_related_nodes(node)</span><br><span class="line">        queue.push(nodes)</span><br><span class="line">    </span><br><span class="line">    <span class="comment"># other processing work</span></span><br><span class="line">    ...</span><br></pre></td></tr></table></figure><h1 id="二分查找模板"><a href="#二分查找模板" class="headerlink" title="二分查找模板"></a>二分查找模板</h1><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">left, right = <span class="number">0</span>, len(array) - <span class="number">1</span></span><br><span class="line"><span class="keyword">while</span> left &lt;= right:</span><br><span class="line">    <span class="comment"># (left + right) / 2 可能越界</span></span><br><span class="line">    mid = left + (right - left) / <span class="number">2</span></span><br><span class="line">    <span class="keyword">if</span> array[mid] == target:</span><br><span class="line">        <span class="comment"># find the target!!</span></span><br><span class="line">        <span class="keyword">break</span> <span class="keyword">or</span> <span class="keyword">return</span> result</span><br><span class="line">    <span class="keyword">elif</span> array[mid] &lt; target:</span><br><span class="line">        left = mid + <span class="number">1</span></span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        right = mid - <span class="number">1</span></span><br></pre></td></tr></table></figure><h1 id="动态规划模板"><a href="#动态规划模板" class="headerlink" title="动态规划模板"></a>动态规划模板</h1><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 状态定义</span></span><br><span class="line">dp = <span class="keyword">new</span> <span class="keyword">int</span> [m + <span class="number">1</span>][n + <span class="number">1</span>];</span><br><span class="line"></span><br><span class="line"><span class="comment">// 初始状态</span></span><br><span class="line">dp[<span class="number">0</span>][<span class="number">0</span>] = x;</span><br><span class="line">dp[<span class="number">0</span>][<span class="number">1</span>] = y;</span><br><span class="line">...</span><br><span class="line"></span><br><span class="line"><span class="comment">// DP状态的推导</span></span><br><span class="line"><span class="keyword">for</span> i = <span class="number">0</span>; i &lt;= n; ++i &#123;</span><br><span class="line">    <span class="keyword">for</span> j = <span class="number">0</span>; j &lt;= m; ++j &#123;</span><br><span class="line">        ...</span><br><span class="line"></span><br><span class="line">        d[i][j] = min &#123;dp[i - <span class="number">1</span>][j], dp[i][j - <span class="number">1</span>], etc.&#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">return</span> dp[m][n]; 最优解</span><br></pre></td></tr></table></figure>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;p&gt;原文：&lt;a href=&quot;https://time.geekbang.org/course/detail/100019701-73421&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;58 | 课程重点回顾&lt;/a&gt;&lt;/p&gt;
+&lt;h1 id=&quot;递归模板&quot;&gt;&lt;a 
+      
+    
+    </summary>
+    
+      <category term="《算法面试通关 40 讲》" scheme="http://blog.ennis.info/categories/%E3%80%8A%E7%AE%97%E6%B3%95%E9%9D%A2%E8%AF%95%E9%80%9A%E5%85%B3-40-%E8%AE%B2%E3%80%8B/"/>
+    
+    
+      <category term="算法" scheme="http://blog.ennis.info/tags/%E7%AE%97%E6%B3%95/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>「算法面试通关 40 讲」常用的位运算</title>
+    <link href="http://blog.ennis.info/2020/05/24/%E5%B8%B8%E7%94%A8%E7%9A%84%E4%BD%8D%E8%BF%90%E7%AE%97/"/>
+    <id>http://blog.ennis.info/2020/05/24/常用的位运算/</id>
+    <published>2020-05-24T09:10:26.000Z</published>
+    <updated>2020-05-24T11:13:57.338Z</updated>
+    
+    <content type="html"><![CDATA[<p>原文：<a href="https://time.geekbang.org/course/detail/100019701-67645" target="_blank" rel="noopener">39 | 理论讲解：位运算</a></p><h1 id="常用的位运算"><a href="#常用的位运算" class="headerlink" title="常用的位运算"></a>常用的位运算</h1><ul><li><p>判断奇数</p><p>  <code>x &amp; 1 == 1</code></p></li><li><p>清零最低位的 <code>1</code></p><p>  <code>X = X &amp; (X - 1)</code></p></li><li><p>得到最低位的 <code>1</code></p><p>  <code>X &amp; -X</code></p></li></ul><h1 id="更为复杂的位运算操作"><a href="#更为复杂的位运算操作" class="headerlink" title="更为复杂的位运算操作"></a>更为复杂的位运算操作</h1><ol><li><p>将 <code>x</code> 最右边的 <code>n</code> 位清零</p><p> <code>x &amp; (~0 &lt;&lt; n)</code></p></li><li><p>获取 <code>x</code> 的第 <code>n</code> 位值</p><p> <code>(x &gt;&gt; n) &amp; 1</code></p></li><li><p>获取 <code>x</code> 的第 <code>n</code> 位的幂值</p><p> <code>x &amp; (1 &lt;&lt; (n - 1))</code></p></li><li><p>仅将第 <code>n</code> 位置为 <code>1</code></p><p> <code>x | (1 &lt;&lt; n)</code></p></li><li><p>仅将第 <code>n</code> 为置为 <code>0</code></p><p> <code>x &amp; (~(1 &lt;&lt; n))</code></p></li><li><p>将 <code>x</code> 为高位至第 <code>n</code> 位（含）清零</p><p> <code>x &amp; ((1 &lt;&lt; n) - 1)</code></p></li><li><p>将第 <code>n</code> 位至第 <code>0</code> 位（含）清零</p><p> <code>x &amp; (~((1 &lt;&lt; (n + 1)) - 1))</code></p></li></ol>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;p&gt;原文：&lt;a href=&quot;https://time.geekbang.org/course/detail/100019701-67645&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;39 | 理论讲解：位运算&lt;/a&gt;&lt;/p&gt;
+&lt;h1 id=&quot;常用的位运算&quot;
+      
+    
+    </summary>
+    
+      <category term="《算法面试通关 40 讲》" scheme="http://blog.ennis.info/categories/%E3%80%8A%E7%AE%97%E6%B3%95%E9%9D%A2%E8%AF%95%E9%80%9A%E5%85%B3-40-%E8%AE%B2%E3%80%8B/"/>
+    
+    
+      <category term="算法" scheme="http://blog.ennis.info/tags/%E7%AE%97%E6%B3%95/"/>
+    
+      <category term="位运算" scheme="http://blog.ennis.info/tags/%E4%BD%8D%E8%BF%90%E7%AE%97/"/>
+    
+  </entry>
   
   <entry>
     <title>「转载」HTTP 中 GET 与 POST 的区别</title>
@@ -508,62 +562,6 @@
     
     
       <category term="Android" scheme="http://blog.ennis.info/tags/Android/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>「转载」Android 类加载</title>
-    <link href="http://blog.ennis.info/2019/03/18/%E8%BD%AC-Android%E7%B1%BB%E5%8A%A0%E8%BD%BD/"/>
-    <id>http://blog.ennis.info/2019/03/18/转-Android类加载/</id>
-    <published>2019-03-18T11:11:04.000Z</published>
-    <updated>2020-05-18T17:40:43.738Z</updated>
-    
-    <content type="html"><![CDATA[<p>转自：<a href="https://juejin.im/post/5c31c3ebf265da614e2c3b68" target="_blank" rel="noopener">Android Classloader机制</a></p><h1 id="JVM-类加载机制"><a href="#JVM-类加载机制" class="headerlink" title="JVM 类加载机制"></a>JVM 类加载机制</h1><p>JVM 将描述类的数据从 Class 文件加载到内存，并对数据进行校验、转换解析和初始化，最终形成可以被虚拟机直接使用的 Java 类型。</p><h2 id="类的生命周期"><a href="#类的生命周期" class="headerlink" title="类的生命周期"></a>类的生命周期</h2><blockquote><p>类从被加载到虚拟机内存中开始，到卸载出内存为止。</p></blockquote><p>整个生命周期包括 7 个阶段：<strong>加载（Loading）、验证（Verification）、准备（Preparation）、解析（Resolution）、初始化（Initialization）、使用（Using）和卸载（Unloading）</strong>。</p><p>验证、准备、解析3个部分统称为连接（Linking）。</p><p><img src="/images/posts/android/类加载/class_lifecycle.jpg" alt="各阶段发生顺序" title="各阶段发生顺序"></p><h2 id="类加载器"><a href="#类加载器" class="headerlink" title="类加载器"></a>类加载器</h2><ul><li><p><strong>对于任意一个类，需要由加载它的类加载器和这个类本身一同确立其在 JVM 中的唯一性。</strong></p></li><li><p>每一个类加载器，都拥有一个独立的类名称空间。</p></li></ul><blockquote><p>比较两个类是否“相等”，只有在这两个类是由同一个类加载器加载的前提下才有意义，否则，即使这两个类来源于同一个 Class 文件，被同一个虚拟机加载，只要加载它们的类加载器不同，那这两个类就必定不相等。 </p></blockquote><h2 id="JDK-8-及之前的双亲委派模型"><a href="#JDK-8-及之前的双亲委派模型" class="headerlink" title="JDK 8 及之前的双亲委派模型"></a>JDK 8 及之前的双亲委派模型</h2><ul><li><p>Java 应用程序一般由 3 种类加载器互相配合进行加载。</p></li><li><p>如果有必要，可以自定义的类加载器。</p></li></ul><p><img src="/images/posts/android/类加载/jvm_classloader.jpg" alt="类加载器之间的关系" title="类加载器之间的关系"></p><ul><li><p>这种层次关系称为类加载器的双亲委派模型（Parents Delegation Model）。</p></li><li><p><strong>双亲委派模型要求除了顶层的启动类加载器外，其余的类加载器都应当有父类加载器。</strong></p></li><li><p><strong>父子关系一般不会以继承（Inheritance）的关系来实现，而是都使用组合（Composition）关系来复用父加载器的代码。</strong></p></li></ul><h3 id="双亲委派模型的工作过程"><a href="#双亲委派模型的工作过程" class="headerlink" title="双亲委派模型的工作过程"></a>双亲委派模型的工作过程</h3><ol><li><p>一个类加载器收到类加载的请求。</p></li><li><p><strong>把这个请求委派给父类加载器去完成。</strong></p></li><li><p>父加载器反馈自己无法完成这个加载请求（它的搜索范围中没有找到所需的类）。</p></li><li><p>子加载器尝试自己加载。</p></li></ol><h3 id="启动类加载器（Bootstrap-ClassLoader）"><a href="#启动类加载器（Bootstrap-ClassLoader）" class="headerlink" title="启动类加载器（Bootstrap ClassLoader）"></a>启动类加载器（Bootstrap ClassLoader）</h3><ul><li><p>加载以下类库到 JVM 内存</p><ul><li><p>存放在 ＜JAVA_HOME＞\lib 目录中的</p></li><li><p>或者被 -Xbootclasspath 参数所指定的路径中的</p></li><li><p>并且是虚拟机识别的类库</p></li></ul></li><li><p>无法被 Java 程序直接引用。</p></li><li><p>把加载请求委派给引导类加载器，直接使用 null 代替。</p></li></ul><h3 id="扩展类加载器（Extension-ClassLoader）"><a href="#扩展类加载器（Extension-ClassLoader）" class="headerlink" title="扩展类加载器（Extension ClassLoader）"></a>扩展类加载器（Extension ClassLoader）</h3><ul><li><p>由 sun.misc.Launcher $ExtClassLoader 实现。</p></li><li><p>加载以下类库到 JVM 内存</p><ul><li><p>存放在＜JAVA_HOME＞\lib\ext目录中的</p></li><li><p>或者被 java.ext.dirs 系统变量所指定的路径中的所有类库</p></li></ul></li><li><p>开发者可以直接使用扩展类加载器。</p></li></ul><h3 id="应用程序类加载器（Application-ClassLoader）"><a href="#应用程序类加载器（Application-ClassLoader）" class="headerlink" title="应用程序类加载器（Application ClassLoader）"></a>应用程序类加载器（Application ClassLoader）</h3><blockquote><p>也称为系统类加载器</p></blockquote><ul><li><p>由 sun.misc.Launcher $App-ClassLoader 实现。</p></li><li><p>加载以下类库到 JVM 内存</p><ul><li>用户类路径（ClassPath）上所指定的类库</li></ul></li><li><p>开发者可以直接使用这个类加载器。</p></li><li><p>如果应用程序中没有自定义过自己的类加载器，一般情况下这个就是程序中默认的类加载器。</p></li></ul><h3 id="JDK-9-双亲委派模型的更改"><a href="#JDK-9-双亲委派模型的更改" class="headerlink" title="JDK 9 双亲委派模型的更改"></a>JDK 9 双亲委派模型的更改</h3><ul><li><p>Java 9 引入了模块系统，并且略微更改了上述的类加载器。</p></li><li><p>扩展类加载器被改名为平台类加载器（platform class loader）。</p></li><li><p>Java SE中除了少数几个关键模块，比如说 java.base 是由启动类加载器加载之外，其他的模块均由平台类加载器所加载。</p></li></ul><h1 id="Android-类加载机制"><a href="#Android-类加载机制" class="headerlink" title="Android 类加载机制"></a>Android 类加载机制</h1><ul><li><p><strong>本质上 Android 和传统的 JVM 是一样的。</strong></p><ul><li><p>需要通过类加载器将目标类加载到内存</p></li><li><p>类加载器之间符合双亲委派模型</p></li><li><p>类有对应的生命周期</p></li></ul></li><li><p>基于移动设备的特点，如内存以及电量等诸多方面跟一般的 PC 设备都有本质的区别，Google 开发了更符合移动设备的用于执行 Java 代码的虚拟机，即 Dalvik 和 ART。</p></li><li><p>Android 5.0 开始采用 ART 虚拟机替代 Dalvik。</p></li><li><p><strong>ART 从 dex 字节码加载类。将多个 Class 文件合并成一个 classes.dex 文件。</strong></p></li></ul><p><img src="/images/posts/android/类加载/android_classloader.jpg" alt="类加载器关系图" title="类加载器关系图"></p><ul><li><p>在 8.0 之前</p><ul><li><p>DexClassLoader：能够加载未安装的 apk</p></li><li><p>PathClassLoader：只能加载系统中已经安装过的 apk</p></li></ul></li><li><p>从 8.0 开始</p><ul><li><p>PathClassLoader 也可以加载未安装的 apk</p></li><li><p>PathClassLoader 可以完全替代 DexClassLoader</p></li></ul></li></ul>]]></content>
-    
-    <summary type="html">
-    
-      
-      
-        &lt;p&gt;转自：&lt;a href=&quot;https://juejin.im/post/5c31c3ebf265da614e2c3b68&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;Android Classloader机制&lt;/a&gt;&lt;/p&gt;
-&lt;h1 id=&quot;JVM-类加载
-      
-    
-    </summary>
-    
-      <category term="Android" scheme="http://blog.ennis.info/categories/Android/"/>
-    
-    
-      <category term="Android" scheme="http://blog.ennis.info/tags/Android/"/>
-    
-      <category term="类加载" scheme="http://blog.ennis.info/tags/%E7%B1%BB%E5%8A%A0%E8%BD%BD/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>「笔记」synchronized 的相关问题</title>
-    <link href="http://blog.ennis.info/2019/02/18/Java%E5%B9%B6%E5%8F%91%E4%B9%8Bsynchronized/"/>
-    <id>http://blog.ennis.info/2019/02/18/Java并发之synchronized/</id>
-    <published>2019-02-18T06:24:12.000Z</published>
-    <updated>2020-05-18T17:30:56.937Z</updated>
-    
-    <content type="html"><![CDATA[<h1 id="原文"><a href="#原文" class="headerlink" title="原文"></a>原文</h1><ul><li><p><a href="https://juejin.im/post/594a24defe88c2006aa01f1c" target="_blank" rel="noopener">Java 之 synchronized 详解</a></p></li><li><p><a href="https://blog.csdn.net/xiao__gui/article/details/8188833" target="_blank" rel="noopener">Java线程同步：synchronized锁住的是代码还是对象</a></p></li><li><p><a href="https://www.jianshu.com/p/a499d13ca702" target="_blank" rel="noopener">Java并发之synchronized深度解析</a></p></li></ul><h1 id="锁机制的特性"><a href="#锁机制的特性" class="headerlink" title="锁机制的特性"></a>锁机制的特性</h1><ul><li><p>互斥性</p></li><li><p>可见性</p></li></ul><h1 id="用法"><a href="#用法" class="headerlink" title="用法"></a>用法</h1><h2 id="修饰代码块"><a href="#修饰代码块" class="headerlink" title="修饰代码块"></a>修饰代码块</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">synchronized</span>(object) &#123;&#125;</span><br></pre></td></tr></table></figure><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">synchronized</span>(类.class) &#123;&#125;</span><br></pre></td></tr></table></figure><h2 id="修饰方法"><a href="#修饰方法" class="headerlink" title="修饰方法"></a>修饰方法</h2><ul><li>成员方法</li></ul><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">synchronized</span> <span class="keyword">void</span> <span class="title">method1</span><span class="params">()</span> </span>&#123;&#125;</span><br></pre></td></tr></table></figure><p>等同于</p><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">method1</span><span class="params">()</span> </span>&#123;</span><br><span class="line"><span class="keyword">synchronized</span>(<span class="keyword">this</span>) &#123;&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><ul><li>静态方法</li></ul><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">synchronized</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">method2</span><span class="params">()</span> </span>&#123;&#125;</span><br></pre></td></tr></table></figure><p>等同于</p><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">static</span> <span class="keyword">void</span> <span class="title">method2</span><span class="params">()</span> </span>&#123;</span><br><span class="line"><span class="keyword">synchronized</span>(该类.class) &#123;&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><h1 id="锁的是对象还是代码？"><a href="#锁的是对象还是代码？" class="headerlink" title="锁的是对象还是代码？"></a>锁的是对象还是代码？</h1><ul><li><strong>synchronized 锁的是对象</strong>，线程只有拿到了锁对象才能执行 synchronized 那段代码，否则阻塞等待。</li></ul><p>也就是说，如果锁对象是 this，那么同步机制仅对该对象有效。</p><ul><li><p>线程拿到锁对象后，<strong>其他线程可以执行非 synchronized 代码</strong>。</p></li><li><p>同时访问 static synchronized 方法和 synchronized 方法可以并行。</p></li></ul><p>前者锁对象是 Class 对象，后者锁对象是 this，锁对象不同，两个方法可以并行。</p><h2 id="如果想锁全局怎么办"><a href="#如果想锁全局怎么办" class="headerlink" title="如果想锁全局怎么办"></a>如果想锁全局怎么办</h2><ul><li><strong>锁住该类对应的 Class 对象。</strong></li></ul><p>Class 类比较特殊，每个类都会有一个对应的 Class 对象且唯一，由 JVM 维护。</p><ul><li>提供一个公用的锁对象。（例如声明为 static 的字段）</li></ul><h1 id="synchronized-的性质"><a href="#synchronized-的性质" class="headerlink" title="synchronized 的性质"></a>synchronized 的性质</h1><h2 id="可重入性"><a href="#可重入性" class="headerlink" title="可重入性"></a>可重入性</h2><ul><li><p><strong>同一线程的外层函数获得锁之后，内层函数可以直接再次获取该锁。</strong></p></li><li><p>可避免死锁、提升封装性。</p></li></ul><p>线程从 A 方法进入 B 方法时不需要释放锁后重新申请，可直接获得锁对象。</p><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">synchronized</span> <span class="keyword">void</span> <span class="title">methodA</span><span class="params">()</span> </span>&#123;</span><br><span class="line">methodB();</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">synchronized</span> <span class="keyword">void</span> <span class="title">methodB</span><span class="params">()</span> </span>&#123;&#125;</span><br></pre></td></tr></table></figure><ul><li><p>同一个方法是可重入的。</p></li><li><p><strong>可重入不要求是同一个方法。</strong></p></li><li><p><strong>可重入不要求是同一个类中的。</strong></p></li></ul><h2 id="不可中断性"><a href="#不可中断性" class="headerlink" title="不可中断性"></a>不可中断性</h2><ul><li><p>如果锁对象被其他线程获得，只能阻塞等待。</p></li><li><p>如果锁对象永远不被释放，只能永远等待。</p></li></ul><h1 id="其他注意事项"><a href="#其他注意事项" class="headerlink" title="其他注意事项"></a>其他注意事项</h1><ul><li><p><strong>锁对象不能为 null。</strong></p></li><li><p><strong>synchronized 关键字不能被继承。</strong></p></li></ul><p>父类中的 synchronized 修饰方法，子类重写该方法时，默认情况不同步，必须显示的使用 synchronized 关键字。</p><ul><li><p>抽象方法不能使用 synchronized 关键字。</p></li><li><p>构造方法不能使用 synchronized 关键字，但可以使用 <code>synchronized(this) {}</code>。</p></li><li><p>synchronized 有系统开销，尽量减小锁的粒度（作用域范围）。</p></li><li><p>避免死锁。</p></li></ul><h1 id="synchronized-实现原理（字节码）"><a href="#synchronized-实现原理（字节码）" class="headerlink" title="synchronized 实现原理（字节码）"></a>synchronized 实现原理（字节码）</h1><blockquote><p><a href="/2018/10/17/笔记-深入拆解Java虚拟机-14Java虚拟机是怎么实现synchronized的？">详细实现原理</a></p></blockquote><ul><li><p>同步块使用 monitorenter 和 moniterexit 指令。</p></li><li><p>同步方法使用修饰符 ACC_SYNCHRONIZED 。</p></li><li><p>同步本质上都是通过监视器（monitor）提供支持。</p></li><li><p>所有对象都有一个自己的监视器（monitor）。</p></li><li><p>本地内存中共享变量副本发生变化后，解锁之前将本地内存中共享变量的值刷新到主存。</p></li><li><p>其他线程获取到锁后，去主内存中读取该共享变量的新值。</p></li></ul><h2 id="可重入性原理"><a href="#可重入性原理" class="headerlink" title="可重入性原理"></a>可重入性原理</h2><ul><li><p>锁对象监视器计数为 0 时，线程进入监视器，并设置计数器 为 1。（monitorenter）</p></li><li><p>线程重入监视器时，计数器 +1。（monitorenter）</p></li><li><p>线程退出监视器时，计数器 -1。（monitorexit）</p></li><li><p>如果监视器与其他线程关联，该线程阻塞等待，直到监视器计数器为 0。</p></li></ul><h1 id="synchronized-的缺陷"><a href="#synchronized-的缺陷" class="headerlink" title="synchronized 的缺陷"></a>synchronized 的缺陷</h1><ul><li><p><strong>效率低</strong>：试图获得锁时<strong>不能设定超时</strong>，<strong>不能中断</strong>。</p></li><li><p><strong>不灵活</strong>：加锁和解锁的<strong>时机和条件单一</strong>。</p></li><li><p><strong>无法知道是否成功获取到锁。</strong></p></li></ul>]]></content>
-    
-    <summary type="html">
-    
-      
-      
-        &lt;h1 id=&quot;原文&quot;&gt;&lt;a href=&quot;#原文&quot; class=&quot;headerlink&quot; title=&quot;原文&quot;&gt;&lt;/a&gt;原文&lt;/h1&gt;&lt;ul&gt;
-&lt;li&gt;&lt;p&gt;&lt;a href=&quot;https://juejin.im/post/594a24defe88c2006aa01f1c&quot; tar
-      
-    
-    </summary>
-    
-      <category term="Java" scheme="http://blog.ennis.info/categories/Java/"/>
-    
-    
-      <category term="Java" scheme="http://blog.ennis.info/tags/Java/"/>
-    
-      <category term="Java多线程" scheme="http://blog.ennis.info/tags/Java%E5%A4%9A%E7%BA%BF%E7%A8%8B/"/>
     
   </entry>
   

@@ -1,6 +1,29 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title><![CDATA[「算法面试通关 40 讲」算法模板]]></title>
+    <url>%2F2020%2F05%2F24%2F%E7%AE%97%E6%B3%95%E6%A8%A1%E6%9D%BF%2F</url>
+    <content type="text"><![CDATA[原文：58 | 课程重点回顾 递归模板123456789101112131415def recursion(level, param1, param2, ...): # recursion terminator if level &gt; MAX_LEVEL print_result return # process logic in current level process_data(level, data...) # drill down self.recursion(level + 1, p1, ...) # reverse the current level status if needed reverse_state(level) 深度优先搜索模板12345678visited = set()def dfs(node, visited): visited.add(node) # process current node here. ... for next_node in node.children(): if not next_node in visited: dif(next_node, visited) 广度优先搜索模板12345678910111213141516def BFS(graph, start, end): queue = [] queue.append([start]) visited.add(start) while queue: node = queue.pop() visited.add(node) process(node) nodes = generate_related_nodes(node) queue.push(nodes) # other processing work ... 二分查找模板1234567891011left, right = 0, len(array) - 1while left &lt;= right: # (left + right) / 2 可能越界 mid = left + (right - left) / 2 if array[mid] == target: # find the target!! break or return result elif array[mid] &lt; target: left = mid + 1 else: right = mid - 1 动态规划模板123456789101112131415161718// 状态定义dp = new int [m + 1][n + 1];// 初始状态dp[0][0] = x;dp[0][1] = y;...// DP状态的推导for i = 0; i &lt;= n; ++i &#123; for j = 0; j &lt;= m; ++j &#123; ... d[i][j] = min &#123;dp[i - 1][j], dp[i][j - 1], etc.&#125; &#125;&#125;return dp[m][n]; 最优解]]></content>
+      <categories>
+        <category>《算法面试通关 40 讲》</category>
+      </categories>
+      <tags>
+        <tag>算法</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title><![CDATA[「算法面试通关 40 讲」常用的位运算]]></title>
+    <url>%2F2020%2F05%2F24%2F%E5%B8%B8%E7%94%A8%E7%9A%84%E4%BD%8D%E8%BF%90%E7%AE%97%2F</url>
+    <content type="text"><![CDATA[原文：39 | 理论讲解：位运算 常用的位运算 判断奇数 x &amp; 1 == 1 清零最低位的 1 X = X &amp; (X - 1) 得到最低位的 1 X &amp; -X 更为复杂的位运算操作 将 x 最右边的 n 位清零 x &amp; (~0 &lt;&lt; n) 获取 x 的第 n 位值 (x &gt;&gt; n) &amp; 1 获取 x 的第 n 位的幂值 x &amp; (1 &lt;&lt; (n - 1)) 仅将第 n 位置为 1 x | (1 &lt;&lt; n) 仅将第 n 为置为 0 x &amp; (~(1 &lt;&lt; n)) 将 x 为高位至第 n 位（含）清零 x &amp; ((1 &lt;&lt; n) - 1) 将第 n 位至第 0 位（含）清零 x &amp; (~((1 &lt;&lt; (n + 1)) - 1))]]></content>
+      <categories>
+        <category>《算法面试通关 40 讲》</category>
+      </categories>
+      <tags>
+        <tag>算法</tag>
+        <tag>位运算</tag>
+      </tags>
+  </entry>
+  <entry>
     <title><![CDATA[「转载」HTTP 中 GET 与 POST 的区别]]></title>
     <url>%2F2020%2F05%2F16%2FHTTP%E4%B8%ADGET%E4%B8%8EPOST%E7%9A%84%E5%8C%BA%E5%88%AB%2F</url>
     <content type="text"><![CDATA[w3schools 答案 GET 在浏览器回退时是无害的，而 POST 会再次提交请求。 GET 产生的 URL 地址可以被 Bookmark，而 POST 不可以。 GET 请求会被浏览器主动 cache，而 POST 不会，除非手动设置。 GET 请求只能进行 url 编码，而 POST 支持多种编码方式。 GET 请求参数会被完整保留在浏览器历史记录里，而 POST 中的参数不会被保留。 GET 请求在 URL 中传送的参数是有长度限制的，而 POST 没有。 对参数的数据类型，GET 只接受 ASCII 字符，而 POST 没有限制。 GET 比 POST 更不安全，因为参数直接暴露在 URL 上，所以不能用来传递敏感信息。 GET 参数通过 URL 传递，POST 放在 Request body 中。 注意 GET 产生一个 TCP 数据包，POST 产生两个 TCP 数据包。 对于 GET 方式的请求，浏览器会把 header 和 data 一并发送出去，服务器响应 200（返回数据）。 而对于 POST，浏览器先发送 header，服务器响应 100 continue，浏览器再发送 data，服务器响应 200 ok（返回数据）。 只有部分浏览器会发两个数据包，且 header 要加相应参数，且服务端要支持。 增删查改中，GET 语义对应查，POST 语义对应增。]]></content>

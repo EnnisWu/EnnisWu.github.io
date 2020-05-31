@@ -370,6 +370,496 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://blog.ennis.info/2018/08/01/笔记-深入拆解Java虚拟机-06JVM是如何处理异常的？/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Ennis L.M. Wu">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar/portrait.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Ennis Wu">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/08/01/笔记-深入拆解Java虚拟机-06JVM是如何处理异常的？/" itemprop="url">「深入拆解 Java 虚拟机」06 JVM 是如何处理异常的？</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-08-01T14:41:48+08:00">
+                2018-08-01
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/《深入拆解-Java-虚拟机》/" itemprop="url" rel="index">
+                    <span itemprop="name">《深入拆解 Java 虚拟机》</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>原文：<a href="https://time.geekbang.org/column/article/12134" target="_blank" rel="noopener">https://time.geekbang.org/column/article/12134</a></p>
+<h1 id="异常的基本概念"><a href="#异常的基本概念" class="headerlink" title="异常的基本概念"></a>异常的基本概念</h1><p><img src="/images/posts/JVM/06/throwable.png" alt="throwable"></p>
+<ul>
+<li>Error：涵盖程序不应捕获的异常（JVM 抛出）。</li>
+</ul>
+<p>程序出发 Error 时，执行状态已经无法恢复，需要终止线程甚至终止虚拟机。</p>
+<ul>
+<li><p>Exception：涵盖程序可能需要捕获且处理的异常。</p>
+</li>
+<li><p>RuntimeException：表示“程序虽然无法继续执行，但是还能抢救一下”的情况。</p>
+</li>
+<li><p><strong>RuntimeException 和 Error 非检查异常（unchecked exception）。其他异常属于检查异常（checked exception）。</strong></p>
+</li>
+<li><p>检查异常需要程序显式地捕获，或者在方法声明中用 throws 关键字再次抛出。</p>
+</li>
+</ul>
+<h2 id="常实例的构造十分昂贵。"><a href="#常实例的构造十分昂贵。" class="headerlink" title="常实例的构造十分昂贵。"></a>常实例的构造十分昂贵。</h2><p>在构造异常实例时，Java 虚拟机需要<strong>生成该异常的栈轨迹</strong>（stack trace）。</p>
+<ul>
+<li><p>逐一访问当前线程的 Java 栈帧。</p>
+</li>
+<li><p>记录下各种调试信息（方法名，方法所在类名，文件名，代码中第几行）。</p>
+</li>
+<li><p>Java 虚拟机会<strong>忽略异常构造器和填充栈帧的Java方法</strong>（Throwable.fillInStackTrace），直接从新建异常位置开始算起。</p>
+</li>
+<li><p>Java 虚拟机会<strong>忽略标记为不可见的 Java 方法栈帧</strong>。</p>
+</li>
+</ul>
+<h3 id="是否可以缓存异常实例，在需要用到的时候直接抛出？"><a href="#是否可以缓存异常实例，在需要用到的时候直接抛出？" class="headerlink" title="是否可以缓存异常实例，在需要用到的时候直接抛出？"></a>是否可以缓存异常实例，在需要用到的时候直接抛出？</h3><ul>
+<li><p>从语法角度上，是允许的。</p>
+</li>
+<li><p><strong>对应的栈轨迹并非 throw 语句的位置，而是新建异常的位置。</strong></p>
+</li>
+</ul>
+<h1 id="Java-虚拟机是如何捕获异常的？"><a href="#Java-虚拟机是如何捕获异常的？" class="headerlink" title="Java 虚拟机是如何捕获异常的？"></a>Java 虚拟机是如何捕获异常的？</h1><p>编译生成的字节码中，<strong>每个方法都附带一个异常表</strong>。</p>
+<p>异常表中每一个条目代表一个异常处理器。</p>
+<p>异常处理器的组成：</p>
+<ul>
+<li><p>from 指针</p>
+</li>
+<li><p>to 指针</p>
+</li>
+<li><p>target 指针</p>
+</li>
+<li><p>所捕获的异常类型</p>
+</li>
+</ul>
+<p>注：指针的值是字节码索引（bytecode index，bci），用来定位字节码。</p>
+<p><strong>from 指针和 to 指针：标示异常处理器所监控的范围（如 try 代码块范围）。</strong></p>
+<p><strong>target 指针：指向异常处理器的起始位置（如 catch 代码块起始位置）。</strong></p>
+<h2 id="触发异常的处理流程"><a href="#触发异常的处理流程" class="headerlink" title="触发异常的处理流程"></a>触发异常的处理流程</h2><ol>
+<li><p>Java 虚拟机<strong>从上至下遍历异常表</strong>中的所有条目。</p>
+</li>
+<li><p><strong>触发异常</strong>的字节码的索引值<strong>在某个异常表条目的监控范围内</strong>，Java 虚拟机判断所抛出的异常和该条目想要捕获的异常<strong>是否匹配</strong>。</p>
+</li>
+<li><p>如果<strong>匹配</strong>，Java 虚拟机将控制流<strong>转移至该条目 target 指针指向</strong>的字节码。</p>
+</li>
+<li><p>如果<strong>遍历完所有</strong>异常表条目，仍<strong>未匹配</strong>到异常处理器，<strong>弹出当前方法对应的 Java 栈帧，在调用者（caller）中重复上述操作</strong>。</p>
+</li>
+<li><p>finally 代码块的编译，当前版本 Java 编译器，是<strong>复制 finally 代码块的内容，分别放在 try-catch 代码块所有正常执行路径和异常执行路径的出口中</strong>。</p>
+</li>
+</ol>
+<p><img src="/images/posts/JVM/06/trigger_exception.png" alt="trigger_exception"></p>
+<p>针对异常执行路径，Java 编译器会生成一个或多个异常表条目，监控整个 try-catch 代码块，并且捕获所有种类的异常（在 javap 中以 any 指代）。</p>
+<p>这些异常表条目的 target 指针将指向另一份复制的 finally 代码块。</p>
+<p>在这个 finally 代码块的最后，Java 编译器会重新抛出所捕获的异常。</p>
+<p><strong>如果 catch 代码块捕获了异常，并且触发了另一个异常，那么 finally 捕获并且重抛后者，忽略前者。</strong></p>
+<h1 id="Java-7-的-Suppressed-异常以及语法糖"><a href="#Java-7-的-Suppressed-异常以及语法糖" class="headerlink" title="Java 7 的 Suppressed 异常以及语法糖"></a>Java 7 的 Suppressed 异常以及语法糖</h1><h2 id="Suppressed-异常"><a href="#Suppressed-异常" class="headerlink" title="Suppressed 异常"></a>Suppressed 异常</h2><p>允许将一个异常附于另一个异常之上。</p>
+<p><strong>抛出的异常可以附带多个异常信息。</strong></p>
+<p>finally 代码块缺少指向所捕获异常的引用，这个新特性使用起来非常繁琐。</p>
+<h2 id="try-with-resources"><a href="#try-with-resources" class="headerlink" title="try-with-resources"></a>try-with-resources</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">try</span> (  ); <span class="comment">// try-with-resources</span></span><br></pre></td></tr></table></figure>
+<p>在字节码层面自动使用 Suppressed 异常。</p>
+<p><strong>自动关闭资源</strong>（实现 AutoCloseable 接口）。</p>
+<h2 id="同一-catch-代码块捕获多种异常"><a href="#同一-catch-代码块捕获多种异常" class="headerlink" title="同一 catch 代码块捕获多种异常"></a>同一 catch 代码块捕获多种异常</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">try</span> &#123;</span><br><span class="line">  </span><br><span class="line">&#125; <span class="keyword">catch</span> (SomeException | OtherException e) &#123;</span><br><span class="line">  </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://blog.ennis.info/2018/08/01/转-传输层和应用层的协议和作用/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Ennis L.M. Wu">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar/portrait.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Ennis Wu">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/08/01/转-传输层和应用层的协议和作用/" itemprop="url">「转载」传输层和应用层的协议和作用</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-08-01T00:03:07+08:00">
+                2018-08-01
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/计算机网络/" itemprop="url" rel="index">
+                    <span itemprop="name">计算机网络</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>转自：<a href="https://blog.csdn.net/DarkAngel1228/article/details/78581019" target="_blank" rel="noopener">五.传输层和应用层的协议和作用</a></p>
+<h1 id="TCP-IP-传输层概述"><a href="#TCP-IP-传输层概述" class="headerlink" title="TCP/IP 传输层概述"></a>TCP/IP 传输层概述</h1><p>TCP/IP 是指一整套数据通信协议，传输层完成端到端的连接和传输。</p>
+<h2 id="TCP-IP-传输层包含的两个协议"><a href="#TCP-IP-传输层包含的两个协议" class="headerlink" title="TCP/IP 传输层包含的两个协议"></a>TCP/IP 传输层包含的两个协议</h2><ul>
+<li>传输控制协议</li>
+</ul>
+<p>Transmission Control Protocol —— TCP</p>
+<ul>
+<li>用户数据报协议</li>
+</ul>
+<p>User Dategram Protocol —— UDP</p>
+<h2 id="常用的-TCP-端口及应用"><a href="#常用的-TCP-端口及应用" class="headerlink" title="常用的 TCP 端口及应用"></a>常用的 TCP 端口及应用</h2><p>TCP 在网络中使用的范围很广，下面将列出一些常用的端口号及其功能.以便进一步对 TCP 进行检测和管理。</p>
+<table>
+<thead>
+<tr>
+<th>端口</th>
+<th>协议</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>80</td>
+<td>http</td>
+<td>web服务器所开放的进程端口,用于客户端http访问</td>
+</tr>
+<tr>
+<td>21</td>
+<td>FTP</td>
+<td>FTP服务器所开放的控制端口,用于上传下载</td>
+</tr>
+<tr>
+<td>23</td>
+<td>Telnet</td>
+<td>用于远程登录,通过连接目的计算机的这一端口,得到验证后可以远程控制管理目标计算机</td>
+</tr>
+<tr>
+<td>25</td>
+<td>SMTP</td>
+<td>SMTP服务器开放的端口,用于发送邮件</td>
+</tr>
+<tr>
+<td>53</td>
+<td>DNS</td>
+<td>DNS服务器开放的端口,当用户输入网站的名称后,由DNS负责将它解析成IP地址,这个过程中用到的端口号就是53</td>
+</tr>
+</tbody>
+</table>
+<h2 id="常用的-UDP-端口及应用"><a href="#常用的-UDP-端口及应用" class="headerlink" title="常用的 UDP 端口及应用"></a>常用的 UDP 端口及应用</h2><table>
+<thead>
+<tr>
+<th>端口</th>
+<th>协议</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>7</td>
+<td>Echo</td>
+<td>将收到的数据包回送到发送器</td>
+</tr>
+<tr>
+<td>53</td>
+<td>Nameserver</td>
+<td>域名服务</td>
+</tr>
+<tr>
+<td>69</td>
+<td>TFTP</td>
+<td>简单文件传输协议</td>
+</tr>
+<tr>
+<td>111</td>
+<td>RPC</td>
+<td>远程过程调用</td>
+</tr>
+<tr>
+<td>123</td>
+<td>NTP</td>
+<td>网络时间协议</td>
+</tr>
+</tbody>
+</table>
+<h1 id="常用的应用层协议"><a href="#常用的应用层协议" class="headerlink" title="常用的应用层协议"></a>常用的应用层协议</h1><table>
+<thead>
+<tr>
+<th>缩写</th>
+<th>全文</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>http</td>
+<td>超文本传送协议</td>
+</tr>
+<tr>
+<td>https</td>
+<td>基于安全套接字层的http协议</td>
+</tr>
+<tr>
+<td>ftp</td>
+<td>文件传输协议</td>
+</tr>
+<tr>
+<td>dns</td>
+<td>域名系统</td>
+</tr>
+<tr>
+<td>smtp</td>
+<td>邮件传输协议</td>
+</tr>
+<tr>
+<td>pop3</td>
+<td>邮局协议</td>
+</tr>
+<tr>
+<td>ssh</td>
+<td>安全外壳协议</td>
+</tr>
+</tbody>
+</table>
+<h2 id="HTTP"><a href="#HTTP" class="headerlink" title="HTTP"></a>HTTP</h2><p>用于传输 Internet 浏览器使用的普通文本,超文本,音频和视频等数据</p>
+<p>端口号：TCP 的 80</p>
+<h2 id="HTTPS"><a href="#HTTPS" class="headerlink" title="HTTPS"></a>HTTPS</h2><p>基于 HTTP 开发,提供加密,可以确保消息的私有性和完整性</p>
+<p>端口号：443</p>
+<h2 id="FTP"><a href="#FTP" class="headerlink" title="FTP"></a>FTP</h2><p>用于传输文件</p>
+<p>端口号：TCP 的 21 和 20</p>
+<h2 id="DNS"><a href="#DNS" class="headerlink" title="DNS"></a>DNS</h2><p>用来完成域名和 IP 地址之间的映射</p>
+<p>端口号：TCP 或 UDP 的 53</p>
+<p><img src="/images/posts/传输层和应用层的协议和作用/DNS.png" alt="DNS"></p>
+<h2 id="SMTP"><a href="#SMTP" class="headerlink" title="SMTP"></a>SMTP</h2><p>用于发送和接收邮件</p>
+<p>端口号：25</p>
+<h2 id="POP3"><a href="#POP3" class="headerlink" title="POP3"></a>POP3</h2><p>用于客户端接收邮件</p>
+<p>端口号：110</p>
+<h2 id="SSH"><a href="#SSH" class="headerlink" title="SSH"></a>SSH</h2><p>建立在应用层和传输层基础上的安全协议，ssh 是目前较可靠，专为远程登录会话和其他网络服务提供安全性的协议，利用 ssh 协议可以有效防止远程管理过程中的信息泄漏问题。</p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://blog.ennis.info/2018/07/30/笔记-深入拆解Java虚拟机-0405JVM是如何执行方法调用的？/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -2485,558 +2975,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://blog.ennis.info/2018/06/13/《TCPIP详解卷1》010阅读笔记/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Ennis L.M. Wu">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar/portrait.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Ennis Wu">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/06/13/《TCPIP详解卷1》010阅读笔记/" itemprop="url">「TCP/IP详解 卷1」010 阅读笔记</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-06-13T20:05:37+08:00">
-                2018-06-13
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/《TCP-IP详解-卷1》/" itemprop="url" rel="index">
-                    <span itemprop="name">《TCP/IP详解 卷1》</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h1 id="名词解释"><a href="#名词解释" class="headerlink" title="名词解释"></a>名词解释</h1><table>
-<thead>
-<tr>
-<th>缩写</th>
-<th>英文全称</th>
-<th>中文</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>AS</td>
-<td>Autonomous System</td>
-<td>自治系统</td>
-</tr>
-<tr>
-<td>IGP</td>
-<td>Interior Gateway Protocol</td>
-<td>内部网关协议/域内选路协议</td>
-</tr>
-<tr>
-<td>EGP</td>
-<td>Exterier Gateway Protocol</td>
-<td>外部网关协议/域内选路协议的分隔选路协议</td>
-</tr>
-<tr>
-<td>BGP</td>
-<td>Border Gateway Protocol</td>
-<td>边界网关协议</td>
-</tr>
-<tr>
-<td>RIP</td>
-<td>Routing Infomation Protocol</td>
-<td>选路信息协议</td>
-</tr>
-<tr>
-<td>OSPF</td>
-<td>Open Shortest Path First</td>
-<td>开放最短路径优先协议</td>
-</tr>
-<tr>
-<td>CIDR</td>
-<td>Classless Inter-Domain Routing</td>
-<td>无类别域间路由</td>
-</tr>
-</tbody>
-</table>
-<ul>
-<li><p>IGP 用于自治系统内。</p>
-</li>
-<li><p>EGP 用于自治系统之间。</p>
-</li>
-<li><p>BGP 意在取代 EGP。</p>
-</li>
-</ul>
-<h1 id="动态选路"><a href="#动态选路" class="headerlink" title="动态选路"></a>动态选路</h1><ul>
-<li><p>相邻路由器之间进行通信，告知对方每个路由器当前所连接的网络。</p>
-</li>
-<li><p>路由守护程序根据从相邻路由器收到的信息更新内核中的路由表。</p>
-</li>
-<li><p>随时间变化时，路由是由路由守护程序动态地增加或删除。</p>
-</li>
-<li><p>如果路由守护程序发现前往同一信宿存在多条路由，选择最佳路由加入内核路由表。</p>
-</li>
-<li><p>如果路由守护程序发现一条链路已经断开，删除受影响的路由或增加一条路由绕过。</p>
-</li>
-<li><p>每个自治系统由单个<strong>实体</strong>管理。==什么是实体？==</p>
-</li>
-</ul>
-<h1 id="RIP：选路信息协议"><a href="#RIP：选路信息协议" class="headerlink" title="RIP：选路信息协议"></a>RIP：选路信息协议</h1><ul>
-<li><p>正式描述文件 RFC 1058 [Hedrick 1988a]。</p>
-</li>
-<li><p>RIP 报文包含在 UDP 数据报中。</p>
-</li>
-<li><p>RIP 的度量是以跳计数的。</p>
-</li>
-<li><p>最多携带 25 个路由。</p>
-</li>
-</ul>
-<h2 id="度量"><a href="#度量" class="headerlink" title="度量"></a>度量</h2><ul>
-<li><p>直接连接接口的跳数为 1。</p>
-</li>
-<li><p>一个路由器到一个网络有多条路由，路由器选择跳数最小的路由。</p>
-</li>
-<li><p>度量为 16 表示无路由到达该 IP 地址。</p>
-</li>
-</ul>
-<h2 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h2><ul>
-<li><p>RIP 没有子网地址的概念。</p>
-</li>
-<li><p>路由器或链路发生故障后在稳定下来这段时间可能发生路由环路。</p>
-</li>
-<li><p>度量最大值限制了可以使用 RIP 的网络的大小。</p>
-</li>
-</ul>
-<h1 id="RIP-版本-2"><a href="#RIP-版本-2" class="headerlink" title="RIP 版本 2"></a>RIP 版本 2</h1><ul>
-<li><p>RFC 1388 [Malkin 1993a] 对 RIP 定义进行了扩充。</p>
-</li>
-<li><p>路由域字段：数据报的所有者。</p>
-</li>
-<li><p>选路标记字段：携带一个 EGP 和 BGP 的自治系统号。</p>
-</li>
-<li><p>子网掩码字段：应用于相应的 IP 地址。</p>
-</li>
-<li><p>下一站 IP 地址字段：指明发往目的 IP 地址的报文应该发往哪里。</p>
-</li>
-<li><p>除了支持广播，还支持多播。</p>
-</li>
-</ul>
-<h1 id="OSPF：开放最短路径优先"><a href="#OSPF：开放最短路径优先" class="headerlink" title="OSPF：开放最短路径优先"></a>OSPF：开放最短路径优先</h1><ul>
-<li><p>RFC 1247 [Moy 1991] 对第 2 版 OSPF 进行了描述。</p>
-</li>
-<li><p>OSPF 克服了 RIP 所有限制。</p>
-</li>
-<li><p>路由器不与临站交换距离信息，主动测试与临站相连的链路状态。</p>
-</li>
-<li><p>信息发给其他临站，临站将这些信息在自治系统中传播出去。</p>
-</li>
-<li><p>路由器接收这些链路状态信息，建立完整的路由表。</p>
-</li>
-<li><p>链路状态协议总是比距离向量协议稳定更快。</p>
-</li>
-<li><p>OSPF 直接使用 IP，不使用 UDP 或 TCP。</p>
-</li>
-<li><p>优于 RIP 的特点：</p>
-<ol>
-<li><p>可以对每个 IP 服务类型计算各自的路由集。</p>
-</li>
-<li><p>给每个接口指派一个无维数的费用。</p>
-</li>
-<li><p>同一个目的地址存在多个相同费用的路由时，平均分配流量。</p>
-</li>
-<li><p>支持子网，子网掩码与每个通告相连。</p>
-</li>
-<li><p>无编号网络。</p>
-</li>
-<li><p>简单鉴别机制。</p>
-</li>
-<li><p>采用多播而不是广播形式，减少系统负载。</p>
-</li>
-</ol>
-</li>
-</ul>
-<h1 id="BGP：边界网关协议"><a href="#BGP：边界网关协议" class="headerlink" title="BGP：边界网关协议"></a>BGP：边界网关协议</h1><ul>
-<li><p>RFC 1267 [Lougheed and Rekhter 1991] 对第 3 版 BGP 进行描述。</p>
-</li>
-<li><p>BGP 系统之间交换网络可到达信息，包括所必须经过的自治系统的所有路径。</p>
-</li>
-<li><p>使用 BGP 的一个目的是减少通过流量。</p>
-</li>
-<li><p>允许使用基于策略的选路。</p>
-</li>
-<li><p>使用 TCP 作为其传输层协议。</p>
-</li>
-<li><p>BGP 是一个距离测量协议，列举了到每个目的地址的路由，排除了一些距离向量协议的问题。</p>
-</li>
-<li><p>定期发送 keepalive 报文给临站来监测 TCP 连接对端的链路或主机失败。</p>
-</li>
-<li><p>应用层的 keepalive 报文与 TCP 的 keepalive 报文选项相互独立。</p>
-</li>
-</ul>
-<h1 id="CIDR：无类型域间选路"><a href="#CIDR：无类型域间选路" class="headerlink" title="CIDR：无类型域间选路"></a>CIDR：无类型域间选路</h1><ul>
-<li><p>RFC 1518 [Rekher and Li 1993], RFC 1519 [Fuller et al. 1993] 对它描述。</p>
-</li>
-<li><p>[Ford, Rekhter, and Braun 1993] 综述。</p>
-</li>
-<li><p>一个防止路由表膨胀的方法，也成为超网。</p>
-</li>
-<li><p>采用分配多个 IP 地址的方式，使许多表项总和成更少的数目</p>
-</li>
-<li><p>必须满足 3 种特性：</p>
-<ol>
-<li><p>IP地址必须具有相同的高位地址比特。</p>
-</li>
-<li><p>路由表和选路算法必须扩展成根据 32 bit IP 地址和 32 bit 掩码做出选路决策。</p>
-</li>
-<li><p>选路协议要有 32 bit 掩码。</p>
-</li>
-</ol>
-</li>
-</ul>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://blog.ennis.info/2018/06/12/《TCPIP详解卷1》007、008、009阅读笔记/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Ennis L.M. Wu">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar/portrait.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Ennis Wu">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/06/12/《TCPIP详解卷1》007、008、009阅读笔记/" itemprop="url">「TCP/IP详解 卷1」007、008、009 阅读笔记</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-06-12T20:32:56+08:00">
-                2018-06-12
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/《TCP-IP详解-卷1》/" itemprop="url" rel="index">
-                    <span itemprop="name">《TCP/IP详解 卷1》</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h1 id="007，Ping-的工作原理"><a href="#007，Ping-的工作原理" class="headerlink" title="007，Ping 的工作原理"></a>007，Ping 的工作原理</h1><h2 id="Unix-系统的实现"><a href="#Unix-系统的实现" class="headerlink" title="Unix 系统的实现"></a>Unix 系统的实现</h2><ul>
-<li><p>把 ICMP 报文中标识符字段设置成发送进程的 ID 号（识别多个 Ping 程序实例）。</p>
-</li>
-<li><p>序列号从 0 开始，每发送一次新的回显请求就 + 1。</p>
-</li>
-<li><p>Ping 程序允许我们查看是否有分组丢失、失序或重复。</p>
-</li>
-</ul>
-<h2 id="旧版本-Ping-程序"><a href="#旧版本-Ping-程序" class="headerlink" title="旧版本 Ping 程序"></a>旧版本 Ping 程序</h2><ul>
-<li><p>每秒发送一个回显请求。</p>
-</li>
-<li><p>打印返回的每个分组的每个回显应答。</p>
-</li>
-</ul>
-<h2 id="新版本-Ping-程序"><a href="#新版本-Ping-程序" class="headerlink" title="新版本 Ping 程序"></a>新版本 Ping 程序</h2><ul>
-<li><p>需要加上 - s 选项以旧版本模式运行。</p>
-</li>
-<li><p>Ping 程序只发送一个回显请求。</p>
-</li>
-<li><p>收到回显应答输出 “host is alive”，20 秒内没收到输出 “no answer”。</p>
-</li>
-</ul>
-<h1 id="008，Traceroute-的工作原理"><a href="#008，Traceroute-的工作原理" class="headerlink" title="008，Traceroute 的工作原理"></a>008，Traceroute 的工作原理</h1><ul>
-<li><p>每个处理数据报的路由器都要把 TTL 的值减 1 或停留的秒数。</p>
-</li>
-<li><p>大多数路由器转发数据报的时延都小于 1 秒，TTL 最终成为一个跳站计数器。</p>
-</li>
-<li><p>如果 TTL 字段是 1，路由器将该数据报丢弃，并向信源机放一份 ICMP “超时”信息。</p>
-</li>
-<li><p>Traceroute 程序发送一份 TTL 字段为 1 的 IP 数据报为目的主机，第一个路由器丢弃并发回超时 ICMP 报文，然后 Traceroute 程序发送一份 TTL 字段为 2 的数据报，得到第二个路由器的地址，以此类推。</p>
-</li>
-<li><p>目的主机收到 TTL 值为 1 的 IP 数据报，不会丢弃并产生 ICMP 超时报文。</p>
-</li>
-<li><p>Traceroute 程序发送一份不可能值作为 UDP 端口号（大于 30000）的 UDP 数据报给目的主机，目的主机产生一份“端口不可达”错误的 ICMP 报文。</p>
-</li>
-<li><p>Traceroute 程序区分收到的 ICMP 报文是超时还是端口不可达判断是否结束。</p>
-</li>
-</ul>
-<h1 id="009，IP-包选路的工作原理"><a href="#009，IP-包选路的工作原理" class="headerlink" title="009，IP 包选路的工作原理"></a>009，IP 包选路的工作原理</h1><h2 id="选路的原理"><a href="#选路的原理" class="headerlink" title="选路的原理"></a>选路的原理</h2><ul>
-<li><p>IP 搜索路由表的步骤：</p>
-<ol>
-<li><p>搜索匹配的主机地址。</p>
-</li>
-<li><p>搜索比配的网络地址。</p>
-</li>
-<li><p>搜索默认表项。</p>
-</li>
-</ol>
-</li>
-<li><p>IP 层进行的选路是一种选路机制，它搜索路由表并决定向哪个网络接口发送分组。</p>
-</li>
-<li><p>选路策略决定把哪些路由放入路由表的规则，路由守护程序提供选路策略。</p>
-</li>
-</ul>
-<h2 id="初始化路由表"><a href="#初始化路由表" class="headerlink" title="初始化路由表"></a>初始化路由表</h2><ul>
-<li>在系统引导时显示地的在初始化文件中运行 route 命令。</li>
-</ul>
-<h2 id="没有到达目的地的路由"><a href="#没有到达目的地的路由" class="headerlink" title="没有到达目的地的路由"></a>没有到达目的地的路由</h2><p>路由表中没有默认项，又没有找到匹配项。</p>
-<ul>
-<li><p>数据报由本地主机产生：向应用程序返回一个“主机不可达差错”或“网络不可达差错”。</p>
-</li>
-<li><p>被转发的数据报：向原始发送端发送一份 ICMP 主机不可达差错报文。</p>
-</li>
-</ul>
-<h2 id="ICMP-重定向差错"><a href="#ICMP-重定向差错" class="headerlink" title="ICMP 重定向差错"></a>ICMP 重定向差错</h2><ul>
-<li><p>当数据报应该被发送到另一个路由器时，收到数据报的路由器要发送 ICMP 重定向差错报文给 IP 数据报的发送端。</p>
-</li>
-<li><p>重定向一般用来让具有很少选路信息的主机逐渐建立更完善的路由表。</p>
-</li>
-</ul>
-<h2 id="ICMP-重定向报文"><a href="#ICMP-重定向报文" class="headerlink" title="ICMP 重定向报文"></a>ICMP 重定向报文</h2><ul>
-<li><p>重定向报文只能由路由器生成。</p>
-</li>
-<li><p>重定向报文是为主机使用的。</p>
-</li>
-</ul>
-<h2 id="ICMP-路由器发现报文"><a href="#ICMP-路由器发现报文" class="headerlink" title="ICMP 路由器发现报文"></a>ICMP 路由器发现报文</h2><ul>
-<li><p>一份报文可以通告多个地址。</p>
-</li>
-<li><p>路由器启动时定期在所有广播或多播传送接口上发送通告报文。</p>
-</li>
-<li><p>某个接口被关闭时，该接口上发送一份通告报文，生命周期值设为 0。</p>
-</li>
-<li><p>监听来自主机的请求报文，并发送通告报文以响应。</p>
-</li>
-<li><p>主机在引导期间发送请求报文。</p>
-</li>
-<li><p>监听来自相邻路由器的请求报文。</p>
-</li>
-</ul>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -3091,7 +3029,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">76</span>
+                  <span class="site-state-item-count">78</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -3102,7 +3040,7 @@
               
               <div class="site-state-item site-state-categories">
                 <a href="/categories/index.html">
-                  <span class="site-state-item-count">10</span>
+                  <span class="site-state-item-count">12</span>
                   <span class="site-state-item-name">分类</span>
                 </a>
               </div>
@@ -3113,7 +3051,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">37</span>
+                  <span class="site-state-item-count">39</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>
